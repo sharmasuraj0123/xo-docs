@@ -1,0 +1,43 @@
+---
+title: XO Launchpad
+description: One-click container deployments for any app, anywhere.
+icon: Rocket
+---
+
+import { Cards, Card } from 'fumadocs-ui/components/card';
+import { Zap, BookOpen, LayoutTemplate, MousePointerClick, FileCode } from 'lucide-react';
+
+XO Launchpad is a rapid deployment platform built for developers and founders who want to ship without the DevOps overhead. Deploy from GitHub, from your local machine, or from a template — in minutes.
+
+<Cards>
+  <Card
+    icon={<Zap size={18} className="text-green-400" />}
+    title="Quickstart"
+    description="Your first deployment in a few steps."
+    href="/docs/xo-launchpad/quickstart"
+  />
+  <Card
+    icon={<BookOpen size={18} className="text-green-400" />}
+    title="Overview"
+    description="Platform capabilities and deployment methods."
+    href="/docs/xo-launchpad/overview"
+  />
+  <Card
+    icon={<LayoutTemplate size={18} className="text-green-400" />}
+    title="Templates"
+    description="n8n workflows, GaiaNet nodes, and more — one click to launch."
+    href="/docs/xo-launchpad/templates"
+  />
+  <Card
+    icon={<MousePointerClick size={18} className="text-green-400" />}
+    title="No-Code Deployment"
+    description="Deploy from Local, GitHub, or Lovable without writing infra code."
+    href="/docs/xo-launchpad/no-code-deployment"
+  />
+  <Card
+    icon={<FileCode size={18} className="text-green-400" />}
+    title="Sample Docker Files"
+    description="Ready-to-use Dockerfiles for Python, Node.js, Next.js, and Vite."
+    href="/docs/xo-launchpad/sample-docker-files"
+  />
+</Cards>

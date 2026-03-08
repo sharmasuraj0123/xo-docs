@@ -1,0 +1,103 @@
+---
+title: OpenClaw
+description: Deploy your OpenClaw AI agent gateway on XO in under 10 minutes.
+icon: Bot
+---
+
+import { VideoEmbed } from '@/components/video-embed';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Accordions, Accordion } from 'fumadocs-ui/components/accordion';
+
+OpenClaw is an AI agent gateway you deploy on XO. Connect it to Telegram, give it your Anthropic API key, and your agent is live — no infrastructure to manage.
+
+## Setup Walkthrough
+
+<VideoEmbed id="aaf97b32aa3c40679deaf7cf5e4ebee5" title="OpenClaw Setup on XO Builders" />
+
+## What You'll Need
+
+- An [XO account](https://beta.xo.builders)
+- An Anthropic API key
+- A Telegram bot token (from [@BotFather](https://t.me/botfather))
+
+## Deploy OpenClaw
+
+<Steps>
+  <Step>
+    ### Create a New Project
+    Go to [beta.xo.builders](https://beta.xo.builders). Click the **+** icon next to **My Projects** in the left sidebar.
+
+    Select **OpenClaw Project** and click **Create Project**.
+  </Step>
+  <Step>
+    ### Configure Project Details
+    Fill in the project creation form:
+
+    | Field | Value |
+    |---|---|
+    | **Project Name** | A unique name — e.g. `xo-openclaw` (note this down, you'll need it later) |
+    | **Anthropic API Key** | Your Anthropic API key |
+    | **Telegram Bot Token** | Your token from @BotFather |
+    | **Volume Size** | Default 2 GB is fine for most setups |
+
+    Click **Create Project**.
+  </Step>
+  <Step>
+    ### Authenticate
+    An **XO Workspaces Auth** pop-up will appear. Review the permissions and click **Allow**.
+
+    Close the pop-up once authentication succeeds.
+  </Step>
+  <Step>
+    ### Wait for Startup
+    Your workspace takes **8–10 minutes** to provision. The OpenClaw environment is being set up in the background.
+
+    <Callout type="info">
+      Don't close the tab. You'll see the project status update when it's ready.
+    </Callout>
+  </Step>
+  <Step>
+    ### Open the OpenClaw Gateway
+    Once running, click **Configure** in the top right corner.
+
+    In the **Deployment Details** menu, select **OpenClaw Gateway**. This opens the OpenClaw Dashboard in a new tab.
+  </Step>
+  <Step>
+    ### Connect to the Gateway
+    In the OpenClaw Dashboard:
+
+    1. Go to the **Overview** tab
+    2. In the **Gateway Token** field, enter the exact project name you used in Step 2 (e.g. `xo-openclaw`)
+    3. Click **Connect**
+
+    The status indicator turns **green (OK)** when connected.
+  </Step>
+  <Step>
+    ### Test Your Agent
+    Navigate to the **Chat** tab in the sidebar. Send a message — try `hello`.
+
+    Your agent responds. OpenClaw is live.
+  </Step>
+</Steps>
+
+<Callout type="warn">
+  The Gateway Token must exactly match your project name from Step 2. A mismatch will prevent the dashboard from connecting.
+</Callout>
+
+## Troubleshooting
+
+<Accordions>
+  <Accordion title="Status isn't turning green after connecting">
+    Double-check that your Gateway Token exactly matches your project name — it's case-sensitive. If it still won't connect, wait another minute and try again. The container may still be warming up.
+  </Accordion>
+  <Accordion title="Agent isn't responding in chat">
+    Verify your Anthropic API key is valid and has available credits. Check the project logs via the XO dashboard or the `get_xo_app_logs` MCP tool.
+  </Accordion>
+  <Accordion title="Telegram bot isn't receiving messages">
+    Confirm your bot token is correct and that you haven't revoked it via @BotFather. The Telegram integration activates once the gateway status is OK.
+  </Accordion>
+  <Accordion title="Startup is taking longer than 10 minutes">
+    Refresh the dashboard. If the project is still initialising after 15 minutes, delete and recreate the project — provisioning occasionally times out on first attempt.
+  </Accordion>
+</Accordions>

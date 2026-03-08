@@ -1,0 +1,6 @@
+{
+  "title": "XO Swarm",
+  "root": true,
+  "icon": "Network",
+  "pages": ["index", "openclaw"]
+}

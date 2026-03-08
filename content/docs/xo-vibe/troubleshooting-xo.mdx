@@ -1,0 +1,36 @@
+---
+title: Troubleshooting XO
+icon: Wrench
+description: Common problems and quick solutions for XO Vibe.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
+
+Run into issues? Here are common problems and quick solutions.
+
+<Accordions>
+  <Accordion title="My build is stuck or slow">
+    - Try rephrasing your prompt to be more specific.
+    - If code generation is stuck and the UI shows "generating response", click the stop button. Save all files in your text editor, then open the console and run:
+    ```bash
+    npm install
+    npm run dev
+    ```
+    - Check your internet connection or try refreshing.
+    - Open Task Manager to monitor your computer's memory usage.
+  </Accordion>
+
+  <Accordion title="Output isn't what I expected">
+    - Be more detailed with your requirements — for example: "mobile responsive UI with a dark sidebar".
+    - Build small, iterative, and specific. Don't try to generate the whole app in one prompt.
+  </Accordion>
+
+  <Accordion title="Agent errors or code bugs">
+    Copy the error logs from the console and paste them directly into the prompt input box. XO will diagnose and fix the issue automatically.
+  </Accordion>
+</Accordions>
+
+<Callout type="info">
+  Need more help? Message our GPT-powered support agent at [XO Support Hub](https://support.xo.builders).
+</Callout>

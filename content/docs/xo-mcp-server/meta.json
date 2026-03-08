@@ -1,0 +1,5 @@
+{
+  "title": "XO MCP Server",
+  "root": true,
+  "pages": ["index", "overview", "setup", "integrations"]
+}

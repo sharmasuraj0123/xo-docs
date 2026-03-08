@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:xo-builders.gitbook.io)",
+      "WebSearch",
+      "WebFetch(domain:www.loom.com)"
+    ]
+  }
+}

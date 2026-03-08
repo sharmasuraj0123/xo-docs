@@ -1,0 +1,144 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+@source '../node_modules/fumadocs-ui/dist/**/*.js';
+
+/* XO.builders — Clerk-inspired clean dark aesthetic, XO brand green */
+:root {
+  --color-fd-background: #09090b;
+  --color-fd-foreground: #fafafa;
+  --color-fd-card: #111113;
+  --color-fd-card-foreground: #fafafa;
+  --color-fd-popover: #111113;
+  --color-fd-popover-foreground: #fafafa;
+  --color-fd-muted: #18181b;
+  --color-fd-muted-foreground: #a1a1aa;
+  --color-fd-border: #27272a;
+  --color-fd-primary: #83d63a;
+  --color-fd-primary-foreground: #09090b;
+  --color-fd-secondary: #18181b;
+  --color-fd-secondary-foreground: #fafafa;
+  --color-fd-accent: #18181b;
+  --color-fd-accent-foreground: #fafafa;
+  --color-fd-ring: #83d63a;
+}
+
+.dark {
+  --color-fd-background: #09090b;
+  --color-fd-foreground: #fafafa;
+  --color-fd-card: #111113;
+  --color-fd-card-foreground: #fafafa;
+  --color-fd-popover: #111113;
+  --color-fd-popover-foreground: #fafafa;
+  --color-fd-muted: #18181b;
+  --color-fd-muted-foreground: #a1a1aa;
+  --color-fd-border: #27272a;
+  --color-fd-primary: #83d63a;
+  --color-fd-primary-foreground: #09090b;
+  --color-fd-secondary: #18181b;
+  --color-fd-secondary-foreground: #fafafa;
+  --color-fd-accent: #18181b;
+  --color-fd-accent-foreground: #fafafa;
+  --color-fd-ring: #83d63a;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: #09090b;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+/* Code blocks */
+pre {
+  background: #0c0c0e !important;
+  border: 1px solid #27272a !important;
+  border-radius: 8px !important;
+}
+
+/* Inline code */
+:not(pre) > code {
+  background: #18181b;
+  border: 1px solid #27272a;
+  color: #e4e4e7;
+  border-radius: 5px;
+  padding: 0.15em 0.4em;
+  font-size: 0.875em;
+}
+
+/* Cards */
+[data-card="true"] {
+  background: #111113 !important;
+  border: 1px solid #27272a !important;
+  border-radius: 12px !important;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+[data-card="true"]:hover {
+  border-color: #3f3f46 !important;
+  background: #18181b !important;
+}
+
+/* Active sidebar item */
+[data-active='true'] {
+  color: #83d63a !important;
+  background-color: rgba(131, 214, 58, 0.06) !important;
+}
+
+/* Sidebar */
+#nd-sidebar {
+  background: #09090b !important;
+  border-color: #27272a !important;
+}
+
+/* Mobile nav */
+header#nd-subnav {
+  background: rgba(9, 9, 11, 0.92) !important;
+  border-color: #27272a !important;
+  backdrop-filter: blur(8px);
+}
+
+/* Search */
+[data-search-full] {
+  background: #111113 !important;
+  border-color: #27272a !important;
+}
+[data-search-full]:hover {
+  border-color: #3f3f46 !important;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+thead tr {
+  border-bottom: 1px solid #27272a;
+}
+tbody tr {
+  border-bottom: 1px solid #1c1c1f;
+}
+th {
+  color: #a1a1aa;
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

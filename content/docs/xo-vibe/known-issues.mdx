@@ -1,0 +1,35 @@
+---
+title: Known Issues
+icon: AlertTriangle
+description: Minor visual and functional glitches you might encounter in XO Vibe.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+These are minor visual or functional glitches you might encounter while using XO. XO is still doing its job behind the scenes — most of these will be resolved soon.
+
+<Callout type="warn">
+  These are UI artifacts only. Your builds and data are not affected.
+</Callout>
+
+## Code Streaming Glitch
+
+**Problem:** Sometimes when code is being streamed on-screen, it may appear to blink, flicker, or glitch.
+
+**Reality:** XO is still processing and generating code correctly. It's just a UI artifact — the output is fine.
+
+## Duplicate Builder Agent Tasks
+
+**Problem:** The Builder Agent may appear to be executing the same task twice.
+
+**Reality:** It's a visual duplication only. XO is smart enough to skip redundant builds under the hood.
+
+## Manual File Save Required
+
+**Problem:** Occasionally, you may need to manually save a file before hitting "Run".
+
+**Fix:** Always double-check that your latest edits have been saved before executing.
+
+---
+
+We're actively fixing these — thanks for your patience as we continue to polish the experience.

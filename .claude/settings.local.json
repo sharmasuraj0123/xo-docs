@@ -3,7 +3,8 @@
     "allow": [
       "WebFetch(domain:xo-builders.gitbook.io)",
       "WebSearch",
-      "WebFetch(domain:www.loom.com)"
+      "WebFetch(domain:www.loom.com)",
+      "Bash(xargs ls:*)"
     ]
   }
 }

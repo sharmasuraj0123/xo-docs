@@ -1,0 +1,104 @@
+---
+title: Backup & Restore
+description: Encrypt, version, and restore your OpenClaw agent state with a single conversation.
+icon: HardDrive
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Accordions, Accordion } from 'fumadocs-ui/components/accordion';
+
+The Snapshot skill adds encrypted, versioned backups to your OpenClaw agent. Your entire `~/.openclaw` folder gets compressed, encrypted, and pushed to a private GitHub repo — restore it on any machine with one conversation.
+
+{/* ## Setup Walkthrough */}
+
+{/* <VideoEmbed id="PLACEHOLDER" title="OpenClaw Backup & Restore Setup" /> */}
+
+## What You'll Need
+
+- An [XO Workspace with OpenClaw deployed](/docs/xo-workspaces/openclaw)
+- A private GitHub repository to store backups
+- A GitHub personal access token with `repo` scope ([create one here](https://github.com/settings/tokens))
+- A strong passphrase for encryption
+
+## Set Up the Skill
+
+<Steps>
+  <Step>
+    ### Clone the Skill
+
+    Navigate to your OpenClaw skills directory and clone the repository:
+
+    `cd ~/.openclaw/workspace/skills && git clone https://github.com/KrishBhimani/openclaw-snapshot`
+  </Step>
+  <Step>
+    ### Configure Credentials
+
+    Navigate into the skill directory and create your `.env` file:
+
+    `cd ~/.openclaw/workspace/skills/openclaw-snapshot && cp .env.example .env`
+
+    Open the `.env` file and fill in your credentials:
+
+    | Field | Required | Description | Default |
+    |-------|----------|-------------|---------|
+    | `BACKUP_PASSWORD` | Yes | Passphrase for GPG AES-256 encryption | — |
+    | `GITHUB_PAT` | Yes | GitHub personal access token with `repo` scope | — |
+    | `GITHUB_USERNAME` | Yes | Your GitHub username | — |
+    | `REPO_NAME` | Yes | Name of the private GitHub transport repo | — |
+  </Step>
+  <Step>
+    ### Start a New Session
+
+    Start a new OpenClaw session. The snapshot skill loads automatically and is ready to use.
+  </Step>
+</Steps>
+
+
+## Back Up Your Agent
+
+Tell your agent to back up. No commands to memorise — natural language works:
+
+- *"Take a backup of the OpenClaw"*
+- *"Use snapshot to back up my workspace"*
+- *"Save a snapshot of my agent"*
+
+The agent compresses your `~/.openclaw` folder, encrypts it with GPG (AES-256), splits it into chunks if needed, and pushes everything to your private GitHub repo. It reports the backup timestamp and size when done.
+
+<Callout type="info">
+  The skill retains the 10 most recent backups. Older versions are auto-deleted on each new backup.
+</Callout>
+
+## Restore Your Agent
+
+Same conversational approach — tell your agent what you need:
+
+- **Restore the latest backup** — *"Restore my agent"* or *"Load the latest backup"*
+- **Restore a specific version** — *"Restore version 20260227-120000"*
+- **List available versions** — *"Show me available backups"*
+
+The agent pulls the backup from GitHub, verifies the checksum, decrypts, and extracts it into `~/.openclaw`.
+
+<Callout type="warn">
+  After restoring, go to [beta.xo.builders](https://beta.xo.builders), open your project, click **Configure**, and hit the **OpenClaw Restart** button to restart the gateway. WhatsApp sessions are excluded from backups for security — reconnect them manually after a restore.
+</Callout>
+
+## How It Works
+
+<Accordions>
+  <Accordion title="Encryption pipeline">
+    Backups pipe `tar` output directly into `gpg --symmetric --cipher-algo AES256` — no unencrypted intermediate files touch disk. The encrypted archive is a single `.tgz.gpg` file before chunking.
+  </Accordion>
+  <Accordion title="Chunking for GitHub">
+    GitHub enforces a 100 MB per-file limit. The skill splits encrypted archives into 95 MB chunks (leaving overhead margin) named `part-000.gpg`, `part-001.gpg`, etc. During restore, chunks are reassembled in order before decryption.
+  </Accordion>
+  <Accordion title="Manifest format">
+    Each backup version lives in its own timestamped folder inside the transport repo. A `manifest.json` file tracks the timestamp, chunk count, total size, SHA-256 checksum, and an ordered parts list for integrity verification during restore.
+  </Accordion>
+  <Accordion title="Exclude patterns">
+    These paths are excluded from backups: `.git`, `node_modules`, `*.sock`, WhatsApp sessions and credentials, `.env` files, and the backup repo itself. The skill scripts are included — they restore alongside your agent state.
+  </Accordion>
+  <Accordion title="Version retention">
+    The skill keeps the 10 most recent backup versions. Each new backup checks the version count and auto-deletes the oldest if the limit is exceeded. Versions are identified by their `YYYYMMDD-HHMMSS` timestamp.
+  </Accordion>
+</Accordions>

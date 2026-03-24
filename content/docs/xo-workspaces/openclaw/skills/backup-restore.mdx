@@ -129,14 +129,20 @@ Replace the second URL with the value from your `.env` file. If the origin alrea
 ## How It Works
 
 <Accordions>
-  <Accordion title="Encryption pipeline">
-    Backups pipe `tar` output directly into `gpg --symmetric --cipher-algo AES256` — no unencrypted intermediate files touch disk. The encrypted archive is a single `.tgz.gpg` file before chunking.
+  <Accordion title="Backup pipeline">
+    Backups pipe `tar` output directly into `gpg --symmetric --cipher-algo AES256` — no unencrypted intermediate files touch disk. If the encrypted archive exceeds 95 MB, it splits into chunks before pushing to GitHub.
+
+    <img src="/images/backup_pipeline_flow.svg" alt="Backup pipeline flow" />
   </Accordion>
-  <Accordion title="Chunking for GitHub">
-    GitHub enforces a 100 MB per-file limit. The skill splits encrypted archives into 95 MB chunks (leaving overhead margin) named `part-000.gpg`, `part-001.gpg`, etc. During restore, chunks are reassembled in order before decryption.
+  <Accordion title="Restore pipeline">
+    The restore process clones the transport repo, picks a version, reassembles chunks, verifies the SHA-256 checksum, decrypts, and extracts into `~/.openclaw`.
+
+    <img src="/images/restore_pipeline_flow.svg" alt="Restore pipeline flow" />
   </Accordion>
-  <Accordion title="Manifest format">
-    Each backup version lives in its own timestamped folder inside the transport repo. A `manifest.json` file tracks the timestamp, chunk count, total size, SHA-256 checksum, and an ordered parts list for integrity verification during restore.
+  <Accordion title="Transport repo structure">
+    Each backup version lives in its own timestamped folder inside the transport repo. A `manifest.json` file tracks the timestamp, chunk count, total size, SHA-256 checksum, and an ordered parts list. Small backups have a single chunk; larger ones split into 95 MB parts.
+
+    <img src="/images/transport_repo_structure.svg" alt="Transport repo structure" />
   </Accordion>
   <Accordion title="Exclude patterns">
     These paths are excluded from backups: `.git`, `node_modules`, `*.sock`, WhatsApp sessions and credentials, `.env` files, and the backup repo itself. The skill scripts are included — they restore alongside your agent state.

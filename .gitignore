@@ -23,3 +23,7 @@
 *.pem
 npm-debug.log*
 docs/superpowers
+
+# github & claude
+.github/
+.claude/

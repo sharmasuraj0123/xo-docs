@@ -1,0 +1,89 @@
+---
+title: Switch to OpenAI Codex
+description: Change your OpenClaw agent's model to OpenAI Codex with ChatGPT OAuth.
+icon: RefreshCw
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { VideoEmbed } from '@/components/video-embed';
+
+<VideoEmbed id="6f69ba65b815491a881a465ff442662c" title="Switch OpenClaw to OpenAI Codex" />
+
+## What You'll Need
+
+- A [deployed OpenClaw agent](/docs/xo-workspaces/openclaw)
+- An OpenAI account (email, Google, or Apple login)
+
+## Change the Model
+
+<Steps>
+  <Step>
+    ### Run the Config Wizard
+
+    Open your workspace in any IDE or **Code-Server**, then open a terminal and run:
+
+    ```bash
+    openclaw config
+    ```
+  </Step>
+  <Step>
+    ### Select Gateway Location
+
+    When prompted with **"Where will the Gateway run?"**, select **Local (this machine)**.
+  </Step>
+  <Step>
+    ### Pick the Model Section
+
+    The wizard asks which sections to configure. Use arrow keys and spacebar to select:
+
+    - **Model** (pick provider + credentials)
+  </Step>
+  <Step>
+    ### Choose OpenAI Codex
+
+    Follow the prompts:
+
+    | Prompt | Selection |
+    |--------|-----------|
+    | **Model/auth provider** | OpenAI |
+    | **OpenAI auth method** | OpenAI Codex (ChatGPT OAuth) |
+  </Step>
+  <Step>
+    ### Authenticate with OpenAI
+
+    The terminal generates a unique auth URL. Copy it and open it in your browser.
+
+    Sign in to OpenAI with your credentials. You'll see a **"Sign in to Codex with ChatGPT"** screen — review the permissions and click **Continue**.
+  </Step>
+  <Step>
+    ### Complete the Connection
+
+    After you see **"Authentication successful"**, copy the `localhost` redirect URI from the browser's address bar. Switch back to your terminal and paste it when prompted.
+
+    The config wizard finalizes and your agent now uses OpenAI Codex.
+  </Step>
+</Steps>
+
+## Verify the Config
+
+Run `openclaw models list` in your terminal to confirm the available models, or open `openclaw.json` in your workspace. The `agents.defaults` section reflects the new model:
+
+```jsonc
+"agents": {
+  "defaults": {
+    "model": {
+      "primary": "openai-codex/gpt-5.3-codex"
+    },
+    "models": {
+      "openai-codex/gpt-5.3-codex": {},
+      "openai-codex/gpt-5-2-codex": {},
+      "anthropic/claude-opus-4-5": {}
+    },
+    "maxConcurrent": 4,
+    "subagents": {
+      "maxConcurrent": 8
+    }
+  }
+}
+```

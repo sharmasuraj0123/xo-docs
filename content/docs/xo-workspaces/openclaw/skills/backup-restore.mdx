@@ -25,11 +25,18 @@ The Snapshot skill adds encrypted, versioned backups to your OpenClaw agent. You
 
 <Steps>
   <Step>
-    ### Clone the Skill
+    ### Pull the Latest Skills
 
-    Navigate to your OpenClaw skills directory and clone the repository:
+    Open your workspace in any IDE or **Code-Server**, then open a terminal and pull the latest updates:
 
-    `cd ~/.openclaw/workspace/skills && git clone https://github.com/KrishBhimani/openclaw-snapshot`
+    `cd ~/xo-cowork-api && git pull`
+  </Step>
+  <Step>
+    ### Copy the Skill
+
+    Copy the backup skill from `xo-cowork-api` to your OpenClaw skills directory:
+
+    `cp -r ~/xo-cowork-api/.claude/skills/openclaw-snapshot ~/.openclaw/workspace/skills/`
   </Step>
   <Step>
     ### Configure Credentials

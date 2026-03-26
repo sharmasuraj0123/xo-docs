@@ -1,7 +1,5 @@
 # XO.builders Docs
 
-Depolyment Commit 3/25-A
-
 Technical documentation site for the [XO.builders](https://xo.builders) platform. Built with [Fumadocs](https://fumadocs.vercel.app/) + Next.js 15.
 
 ## Quick Start
@@ -17,15 +15,16 @@ Open [http://localhost:3000](http://localhost:3000).
 
 - **Framework:** Next.js 15 (App Router, React 19)
 - **Docs Engine:** Fumadocs (MDX-based, auto-generated navigation)
-- **Styling:** Tailwind CSS 4 with custom XO dark theme
-- **Deployment:** Docker (standalone build) to `registry.xo.builders`
+- **Styling:** Tailwind CSS 4 with light/dark theme support
+- **Deployment:** Vercel (from GitHub)
 
 ## Project Structure
 
 ```
 app/                  Next.js pages and layouts
+app/api/search/       Search API route
 content/docs/         MDX documentation files (source of truth)
-components/           Custom React components
+components/           Custom React components (VideoEmbed, AskXO)
 lib/                  Utilities (Fumadocs source loader)
 public/               Static assets (images, logos)
 ```
@@ -34,11 +33,9 @@ public/               Static assets (images, logos)
 
 | Section | Path | Description |
 |---------|------|-------------|
-| XO Vibe | `content/docs/xo-vibe/` | AI-native app builder |
+| XO Workspaces | `content/docs/xo-workspaces/` | AI agent workspaces (OpenClaw) |
 | XO Launchpad | `content/docs/xo-launchpad/` | One-click deployment platform |
 | XO MCP Server | `content/docs/xo-mcp-server/` | MCP integration guides |
-| XO Workspaces | `content/docs/xo-workspaces/` | AI agent workspaces |
-| Support Hub | `content/docs/xo-support-hub.mdx` | Support resources |
 
 ## Contributing
 
@@ -109,7 +106,7 @@ See [AGENTS.md](./AGENTS.md) for the full voice & style guide and terminology ta
 
 ## Deployment
 
-Pushes to `main` trigger the GitHub Actions workflow which builds a Docker image and pushes it to `registry.xo.builders`. The Dockerfile uses a multi-stage build (Node 20 Alpine) with standalone output.
+Deployed on Vercel from GitHub. Pushes to `main` trigger automatic deployments.
 
 ## For AI Agents
 

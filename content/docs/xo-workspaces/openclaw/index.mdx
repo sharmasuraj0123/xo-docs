@@ -7,7 +7,7 @@ icon: Bot
 import { VideoEmbed } from '@/components/video-embed';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { Callout } from 'fumadocs-ui/components/callout';
-import { Accordions, Accordion } from 'fumadocs-ui/components/accordion';
+
 
 OpenClaw is an AI agent gateway you deploy on XO. Connect it to Telegram, give it your Anthropic API key, and your agent is live — no infrastructure to manage.
 
@@ -82,22 +82,7 @@ OpenClaw is an AI agent gateway you deploy on XO. Connect it to Telegram, give i
 
 ## Troubleshooting
 
-<VideoEmbed id="aaf97b32aa3c40679deaf7cf5e4ebee5" title="OpenClaw Troubleshooting" />
-
-<Accordions>
-  <Accordion title="Status isn't turning green after connecting">
-    Double-check that your Gateway Token exactly matches your project name — it's case-sensitive. If it still won't connect, wait another minute and try again. The container may still be warming up.
-  </Accordion>
-  <Accordion title="Agent isn't responding in chat">
-    Verify your Anthropic API key is valid and has available credits. Check the project logs via the XO dashboard or the `get_xo_app_logs` MCP tool.
-  </Accordion>
-  <Accordion title="Telegram bot isn't receiving messages">
-    Confirm your bot token is correct and that you haven't revoked it via @BotFather. The Telegram integration activates once the gateway status is OK.
-  </Accordion>
-  <Accordion title="Startup is taking longer than 10 minutes">
-    Refresh the dashboard. If the project is still initialising after 15 minutes, delete and recreate the project — provisioning occasionally times out on first attempt.
-  </Accordion>
-</Accordions>
+Running into issues? Check the [Troubleshooting](/docs/xo-workspaces/openclaw/troubleshooting) page for common fixes.
 
 ## Next Steps
 

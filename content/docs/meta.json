@@ -1,4 +1,4 @@
 {
   "title": "XO Docs",
-  "pages": ["index", "xo-vibe", "xo-launchpad", "xo-mcp-server", "xo-workspaces", "xo-support-hub"]
+  "pages": ["index", "xo-workspaces", "xo-launchpad", "xo-mcp-server"]
 }

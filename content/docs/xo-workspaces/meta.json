@@ -2,5 +2,5 @@
   "title": "XO Workspaces",
   "root": true,
   "icon": "Network",
-  "pages": ["index", "core-platform-setup", "agents", "org", "troubleshooting"]
+  "pages": ["index", "core-platform-setup", "agents", "troubleshooting"]
 }

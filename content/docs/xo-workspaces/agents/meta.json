@@ -1,4 +1,4 @@
 {
   "title": "Agents",
-  "pages": ["index", "openclaw", "claude-code", "custom-agent"]
+  "pages": ["index", "openclaw"]
 }

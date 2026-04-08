@@ -19,18 +19,43 @@ import { VideoEmbed } from '@/components/video-embed';
 
 <Steps>
   <Step>
+    ### Open Your Project
+
+    Go to [beta.xo.builders](https://beta.xo.builders) and select your OpenClaw project from the sidebar.
+
+    ![Select your OpenClaw project on the dashboard](/images/codex-select-project-1.jpeg)
+  </Step>
+  <Step>
+    ### Open Configure
+
+    Click **Configure** in the top-right corner of the project page.
+
+    ![Click Configure on the project dashboard](/images/codex-click-configure-2.jpeg)
+  </Step>
+  <Step>
+    ### Launch Code-Server
+
+    In the Deployment Details panel, click **code-server** to open the browser-based IDE.
+
+    ![Click code-server to open the IDE](/images/codex-click-codeserver-3.jpeg)
+  </Step>
+  <Step>
     ### Run the Config Wizard
 
-    Open your workspace in any IDE or **Code-Server**, then open a terminal and run:
+    In the Code-Server terminal, run:
 
     ```bash
     openclaw config
     ```
+
+    ![Running openclaw configure in the terminal](/images/codex-openclaw-configure-1.png)
   </Step>
   <Step>
     ### Select Gateway Location
 
     When prompted with **"Where will the Gateway run?"**, select **Local (this machine)**.
+
+    ![Selecting Local gateway location](/images/codex-select-local-2.png)
   </Step>
   <Step>
     ### Pick the Model Section
@@ -38,30 +63,55 @@ import { VideoEmbed } from '@/components/video-embed';
     The wizard asks which sections to configure. Use arrow keys and spacebar to select:
 
     - **Model** (pick provider + credentials)
+
+    ![Selecting the Model section to configure](/images/codex-select-model-3.png)
   </Step>
   <Step>
     ### Choose OpenAI Codex
 
-    Follow the prompts:
+    In the **Model/auth provider** list, scroll down and select **OpenAI Codex**.
 
-    | Prompt | Selection |
-    |--------|-----------|
-    | **Model/auth provider** | OpenAI |
-    | **OpenAI auth method** | OpenAI Codex (ChatGPT OAuth) |
+    ![Selecting OpenAI Codex as the model provider](/images/codex-select-openai-codex-4.png)
   </Step>
   <Step>
     ### Authenticate with OpenAI
 
-    The terminal generates a unique auth URL. Copy it and open it in your browser.
+    The terminal generates a unique OAuth URL and waits for a redirect URI. Copy the URL and open it in your local browser.
 
-    Sign in to OpenAI with your credentials. You'll see a **"Sign in to Codex with ChatGPT"** screen — review the permissions and click **Continue**.
+    ![OAuth URL ready in the terminal](/images/codex-auth-url-5.png)
+
+    Sign in to OpenAI with your email, Google, Apple, or Microsoft account.
+
+    ![OpenAI sign-in page](/images/codex-open-auth-browser-6.png)
+
+    Review the **"Sign in to Codex with ChatGPT"** permissions screen and click **Continue**.
+
+    ![Codex permissions screen — click Continue](/images/codex-sign-in-7.png)
   </Step>
   <Step>
     ### Complete the Connection
 
-    After you see **"Authentication successful"**, copy the `localhost` redirect URI from the browser's address bar. Switch back to your terminal and paste it when prompted.
+    After authentication, the browser redirects to a `localhost` URL. The page itself won't load — that's expected. Copy the full URL from the address bar.
 
-    The config wizard finalizes and your agent now uses OpenAI Codex.
+    ![Copy the localhost redirect URI from the address bar](/images/codex-copy-uri-9.png)
+
+    Switch back to your terminal and paste the redirect URI when prompted.
+
+    ![Pasting the redirect URI in the terminal](/images/codex-paste-uri-10.png)
+  </Step>
+  <Step>
+    ### Select Models
+
+    The wizard shows the available Codex models. Use arrow keys and spacebar to pick the models you want in the `/model` picker (e.g., **gpt-5.3-codex**, **gpt-5.4**).
+
+    ![Selecting models in the multi-select picker](/images/codex-select-model-11.png)
+  </Step>
+  <Step>
+    ### Finish the Wizard
+
+    Back at the section menu, scroll to **Continue (Done)** and press Enter. The config wizard finalizes and your agent now uses OpenAI Codex.
+
+    ![Selecting Continue to finish configuration](/images/codex-continue-12.png)
   </Step>
 </Steps>
 

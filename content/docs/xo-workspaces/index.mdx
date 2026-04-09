@@ -1,41 +1,116 @@
 ---
 title: XO Workspaces
-description: Deploy and manage AI agent workspaces with persistent knowledge bases on XO.
+description: The home for your AI Agent Team. Launch agents quickly and securely in a remote execution environment.
 icon: Network
 ---
 
 import { Cards, Card } from 'fumadocs-ui/components/card';
 import { Callout } from 'fumadocs-ui/components/callout';
-import { Bot } from 'lucide-react';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Bot, Rocket, FolderPlus, ShieldCheck, Code2, Wrench, BookOpen } from 'lucide-react';
 
-XO Workspaces lets you run multi-agent AI systems that share memory, coordinate tasks, and respond across channels — all hosted and managed through XO.
+# XO Workspace
 
-## What is XO Workspaces?
+**The home for your AI Agent Team.**
 
-XO Workspaces is XO's multi-agent orchestration layer. Deploy AI agents that:
+XO Workspace lets you quickly and securely launch AI agents in an isolated remote execution environment — no local setup, no infrastructure to manage. Pick a template, create a project, and your agent is live.
 
-- Share a persistent **knowledge base** — agents learn and remember across sessions
-- Coordinate autonomously across tasks without manual handoffs
-- Respond to users via Telegram, Discord, WhatsApp, and more
-- Scale from a single agent to a full team of specialised roles
+---
 
-## Knowledge Bases
+## How it works
 
-Every XO Workspaces deployment includes a knowledge base your agents can read from and write to in real time. Feed it documentation, product data, internal processes — your agents use it to answer questions and make decisions.
+<Cards>
+  <Card icon={<FolderPlus size={18} className="text-green-400" />} title="1. Create a Project">
+    Every agent runs inside a project — a secure, sandboxed environment in the cloud.
+  </Card>
+  <Card icon={<Bot size={18} className="text-green-400" />} title="2. Choose your Agent">
+    Pick a pre-configured agent template or bring your own custom agent.
+  </Card>
+  <Card icon={<Rocket size={18} className="text-green-400" />} title="3. Launch">
+    Your agent spins up instantly in a secure remote execution environment, ready to work.
+  </Card>
+</Cards>
 
-Update a knowledge base via the [XO MCP Server](/docs/xo-mcp-server) using the `update_knowledgebase_using_text` tool, or query it with `ask_question`.
+---
 
-<Callout type="info">
-  Knowledge bases are scoped to your deployment. Each workspace has its own isolated context.
-</Callout>
+## Get Started
 
-## Projects
+<Steps>
+  <Step>
+    ### Create an Account
+
+    Sign up at [beta.xo.builders](https://beta.xo.builders/sign-up) using your GitHub, Google, or GitLab account. The Basic plan is free and gets you running immediately.
+
+    [Full sign-up guide →](/docs/xo-workspaces/core-platform-setup/create-account)
+  </Step>
+  <Step>
+    ### Create a New Project
+
+    From your workspace dashboard, click **New Project**. Give it a name and you're ready to choose your agent.
+  </Step>
+  <Step>
+    ### Choose your Agent
+
+    You'll be presented with three options:
+
+    <Cards>
+      <Card
+        icon={<Bot size={18} className="text-green-400" />}
+        title="OpenClaw"
+        description="A pre-configured OpenClaw agent — ready to deploy with built-in skills and integrations."
+        href="/docs/xo-workspaces/openclaw"
+      />
+      <Card
+        icon={<Code2 size={18} className="text-green-400" />}
+        title="Claude Code"
+        description="A pre-configured Claude Code agent for AI-assisted software development."
+        href="/docs/xo-workspaces/claude-code"
+      />
+      <Card
+        icon={<Wrench size={18} className="text-green-400" />}
+        title="Blank Project"
+        description="Bring your own custom agent and run it in a secure remote environment. Full DIY control."
+        href="/docs/xo-workspaces/core-platform-setup"
+      />
+    </Cards>
+
+    <Callout type="info">
+      More agent templates are coming soon. OpenClaw and Claude Code are available now.
+    </Callout>
+  </Step>
+</Steps>
+
+---
+
+## Why XO Workspace?
+
+<Cards>
+  <Card icon={<ShieldCheck size={18} className="text-green-400" />} title="Secure by Default">
+    Every project runs in an isolated remote execution environment — your agent never touches your local machine.
+  </Card>
+  <Card icon={<Rocket size={18} className="text-green-400" />} title="Zero Setup">
+    Pre-configured templates mean your agent is ready the moment you launch. No dependency hell, no config files to wrangle.
+  </Card>
+  <Card icon={<Bot size={18} className="text-green-400" />} title="Your Agent Team, in One Place">
+    Manage all your agents from a single workspace dashboard. Monitor, restart, and share projects with collaborators.
+  </Card>
+</Cards>
+
+---
+
+## Explore the Docs
 
 <Cards>
   <Card
+    icon={<BookOpen size={18} className="text-green-400" />}
+    title="Core Platform Setup"
+    description="Account creation, dashboard navigation, machine management, and project sharing."
+    href="/docs/xo-workspaces/core-platform-setup"
+  />
+  <Card
     icon={<Bot size={18} className="text-green-400" />}
     title="OpenClaw"
-    description="Deploy OpenClaw as a fully managed AI agent on XO. Setup, configuration, and troubleshooting."
+    description="Guides, skills, and troubleshooting for your OpenClaw agent."
     href="/docs/xo-workspaces/openclaw"
   />
 </Cards>

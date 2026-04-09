@@ -1,105 +1,67 @@
 ---
-title: Setup
-description: Deploy your OpenClaw AI agent gateway on XO in under 10 minutes.
+title: OpenClaw
+description: Deploy and manage your OpenClaw AI agent on XO.
 icon: Bot
 ---
 
-import { VideoEmbed } from '@/components/video-embed';
-import { Step, Steps } from 'fumadocs-ui/components/steps';
-import { Callout } from 'fumadocs-ui/components/callout';
+import { Cards, Card } from 'fumadocs-ui/components/card';
+import { Rocket, MessageSquare, Cpu, Blocks, Archive, Wrench } from 'lucide-react';
 
+OpenClaw is an AI agent gateway that runs in your XO Workspace. Connect it to Telegram (or Slack, WhatsApp), give it an Anthropic API key, and your agent is live — handling conversations, running tasks, and staying online 24/7.
 
-OpenClaw is an AI agent gateway you deploy on XO. Connect it to Telegram, give it your Anthropic API key, and your agent is live — no infrastructure to manage.
+---
 
-## Setup Walkthrough
+## Get OpenClaw Running
 
-<VideoEmbed id="a5a6481638a04ec49472a9b94c0959ab" title="OpenClaw Setup on XO Builders" />
+<Cards>
+  <Card
+    icon={<Rocket size={18} className="text-green-400" />}
+    title="Setup"
+    description="Deploy OpenClaw on XO in under 10 minutes. Start here."
+    href="/docs/xo-workspaces/agents/openclaw/setup"
+  />
+</Cards>
 
-## What You'll Need
+---
 
-- An [XO account](https://beta.xo.builders)
-- An Anthropic API key
-- A Telegram bot token (from [@BotFather](https://t.me/botfather))
+## Extend and Configure
 
-## Deploy OpenClaw
+<Cards>
+  <Card
+    icon={<MessageSquare size={18} className="text-green-400" />}
+    title="Channels"
+    description="Connect your agent to Slack, WhatsApp, and other messaging platforms."
+    href="/docs/xo-workspaces/agents/openclaw/channels"
+  />
+  <Card
+    icon={<Cpu size={18} className="text-green-400" />}
+    title="Models"
+    description="Switch your agent's underlying model — Codex, Sonnet, and more."
+    href="/docs/xo-workspaces/agents/openclaw/models"
+  />
+  <Card
+    icon={<Blocks size={18} className="text-green-400" />}
+    title="Integrations"
+    description="Wire in external tools — Manus, v0-vercel, and more."
+    href="/docs/xo-workspaces/agents/openclaw/integrations"
+  />
+  <Card
+    icon={<Archive size={18} className="text-green-400" />}
+    title="Skills"
+    description="Add capabilities to your agent — backup & restore and more."
+    href="/docs/xo-workspaces/agents/openclaw/skills"
+  />
+</Cards>
 
-<Steps>
-  <Step>
-    ### Create a New Project
-    Go to [beta.xo.builders](https://beta.xo.builders).
+---
 
-    ![XO Builders dashboard](/images/openclaw-setup-01-dashboard.jpeg)
+## Help
 
-    Click the **+** icon next to **My Projects** in the left sidebar.
-
-    ![Click the + icon to create a new project](/images/openclaw-setup-02-new-project-button.jpeg)
-
-    Select **OpenClaw** and click **Create Agent**.
-
-    ![Select OpenClaw and click Create Agent](/images/openclaw-setup-03-select-template.jpeg)
-  </Step>
-  <Step>
-    ### Configure Project Details
-    Fill in the project creation form:
-
-    | Field | Value |
-    |---|---|
-    | **Project Name** | A unique name — e.g. `xo-openclaw` (note this down, you'll need it later) |
-    | **Anthropic API Key** | Your Anthropic API key |
-    | **Telegram Bot Token** | Your token from @BotFather |
-    | **WhatsApp** | Optional — scan the QR code shown in the form to connect your agent to WhatsApp |
-    | **Volume Size** | Default 2 GB is fine for most setups |
-
-    You can add and remove channels as needed.
-
-    ![Project creation form — optionally add WhatsApp](/images/openclaw-setup-04-add-whatsapp.jpeg)
-
-    ![Remove a channel from your project](/images/openclaw-setup-05-remove-channel.jpeg)
-
-    Click **Create Project**.
-
-    ![Click Create Project to launch](/images/openclaw-setup-06-create-project.jpeg)
-  </Step>
-  <Step>
-    ### Wait for Startup
-    Your workspace takes **8–10 minutes** to provision. The OpenClaw environment is being set up in the background.
-
-    <Callout type="info">
-      Don't close the tab. You'll see the project status update when it's ready.
-    </Callout>
-  </Step>
-  <Step>
-    ### Open the OpenClaw Gateway
-    Once running, click **Configure** in the top right corner.
-
-    In the **Deployment Details** menu, select **OpenClaw Gateway**. This opens the OpenClaw Dashboard in a new tab.
-  </Step>
-  <Step>
-    ### Connect to the Gateway
-    In the OpenClaw Dashboard:
-
-    1. Go to the **Overview** tab
-    2. In the **Gateway Token** field, enter the exact project name you used in Step 2 (e.g. `xo-openclaw`)
-    3. Click **Connect**
-
-    The status indicator turns **green (OK)** when connected.
-  </Step>
-  <Step>
-    ### Test Your Agent
-    Navigate to the **Chat** tab in the sidebar. Send a message — try `hello`.
-
-    Your agent responds. OpenClaw is live.
-  </Step>
-</Steps>
-
-<Callout type="warn">
-  The Gateway Token must exactly match your project name from Step 2. A mismatch will prevent the dashboard from connecting.
-</Callout>
-
-## Troubleshooting
-
-Running into issues? Check the [Troubleshooting](/docs/xo-workspaces/troubleshooting/agents/openclaw) page for common fixes.
-
-## Next Steps
-
-Your agent is live — now protect its state. Set up [Backup & Restore](/docs/xo-workspaces/agents/openclaw/skills/backup-restore) to encrypt and version your agent folder with a single conversation.
+<Cards>
+  <Card
+    icon={<Wrench size={18} className="text-green-400" />}
+    title="Troubleshooting"
+    description="Gateway errors, unresponsive agents, slow startups — common fixes in one place."
+    href="/docs/xo-workspaces/troubleshooting/agents/openclaw"
+  />
+</Cards>

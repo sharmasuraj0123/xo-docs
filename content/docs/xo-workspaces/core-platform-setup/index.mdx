@@ -1,33 +1,44 @@
 ---
-title: Core Platform Setup and Button Layout
-description: Set up your XO account, navigate the dashboard, and manage your workspace machines.
+title: Your Account
+description: Create your XO account and learn how to manage your workspace.
 icon: Settings
 ---
 
 import { Cards, Card } from 'fumadocs-ui/components/card';
-import { UserPlus, RefreshCw, Monitor, Share2 } from 'lucide-react';
+import { UserPlus, RefreshCw, Monitor, Share2, ArrowRight } from 'lucide-react';
 
-Everything you need to go from zero to a running workspace. These guides walk you through account creation, the dashboard buttons and controls, machine management, and project sharing.
+Before you can launch an agent, you need an XO account and an active workspace. Start with account creation — everything else in this section is available once you're up and running.
 
-## Guides
+---
+
+## First Time
 
 <Cards>
   <Card
     icon={<UserPlus size={18} className="text-green-400" />}
     title="Create an Account"
-    description="Register on XO, pick your username, and select a plan."
+    description="Sign up on XO, pick your username, and select a plan. Takes under 2 minutes."
     href="/docs/xo-workspaces/core-platform-setup/create-account"
   />
+</Cards>
+
+---
+
+## Managing Your Workspace
+
+Once your project is running, use these guides to operate and share your workspace.
+
+<Cards>
   <Card
     icon={<RefreshCw size={18} className="text-green-400" />}
-    title="Access and Restart Your Machine"
+    title="Manage Your Machine"
     description="Stop, restart, and monitor your workspace machine from the dashboard."
     href="/docs/xo-workspaces/core-platform-setup/access-restart-machine"
   />
   <Card
     icon={<Monitor size={18} className="text-green-400" />}
-    title="Access Your Machine via VS Code Server"
-    description="Open a browser-based VS Code IDE and start running commands."
+    title="Access via VS Code Server"
+    description="Open a browser-based VS Code IDE and run commands without any local install."
     href="/docs/xo-workspaces/core-platform-setup/vs-code-server"
   />
   <Card
@@ -37,3 +48,9 @@ Everything you need to go from zero to a running workspace. These guides walk yo
     href="/docs/xo-workspaces/core-platform-setup/share-project"
   />
 </Cards>
+
+---
+
+## What's Next?
+
+Account ready? Head back to [Getting Started](/docs/xo-workspaces) and create your first project — then pick your agent.

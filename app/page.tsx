@@ -27,7 +27,7 @@ const products: { title: string; desc: string; href: string; icon: ComponentType
 const quickLinks: { title: string; href: string; icon: ComponentType<{ size?: number; className?: string }> }[] = [
   { title: 'Deploy from GitHub', href: '/docs/xo-launchpad/no-code-deployment/deploying-from-github-repository', icon: Github },
   { title: 'Deploy from Local', href: '/docs/xo-launchpad/no-code-deployment/deploying-from-local', icon: HardDrive },
-  { title: 'OpenClaw Setup', href: '/docs/xo-workspaces/openclaw', icon: Bot },
+  { title: 'OpenClaw Setup', href: '/docs/xo-workspaces/agents/openclaw', icon: Bot },
   { title: 'MCP Setup', href: '/docs/xo-mcp-server/setup', icon: Settings },
   { title: 'Templates', href: '/docs/xo-launchpad/templates', icon: LayoutTemplate },
 ];

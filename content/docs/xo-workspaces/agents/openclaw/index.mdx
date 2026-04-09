@@ -1,0 +1,67 @@
+---
+title: OpenClaw
+description: Deploy and manage your OpenClaw AI agent on XO.
+icon: Bot
+---
+
+import { Cards, Card } from 'fumadocs-ui/components/card';
+import { Rocket, MessageSquare, Cpu, Blocks, Archive, Wrench } from 'lucide-react';
+
+OpenClaw is an AI agent gateway that runs in your XO Workspace. Connect it to Telegram (or Slack, WhatsApp), give it an Anthropic API key, and your agent is live — handling conversations, running tasks, and staying online 24/7.
+
+---
+
+## Get OpenClaw Running
+
+<Cards>
+  <Card
+    icon={<Rocket size={18} className="text-green-400" />}
+    title="Setup"
+    description="Deploy OpenClaw on XO in under 10 minutes. Start here."
+    href="/docs/xo-workspaces/agents/openclaw/setup"
+  />
+</Cards>
+
+---
+
+## Extend and Configure
+
+<Cards>
+  <Card
+    icon={<MessageSquare size={18} className="text-green-400" />}
+    title="Channels"
+    description="Connect your agent to Slack, WhatsApp, and other messaging platforms."
+    href="/docs/xo-workspaces/agents/openclaw/channels"
+  />
+  <Card
+    icon={<Cpu size={18} className="text-green-400" />}
+    title="Models"
+    description="Switch your agent's underlying model — Codex, Sonnet, and more."
+    href="/docs/xo-workspaces/agents/openclaw/models"
+  />
+  <Card
+    icon={<Blocks size={18} className="text-green-400" />}
+    title="Integrations"
+    description="Wire in external tools — Manus, v0-vercel, and more."
+    href="/docs/xo-workspaces/agents/openclaw/integrations"
+  />
+  <Card
+    icon={<Archive size={18} className="text-green-400" />}
+    title="Skills"
+    description="Add capabilities to your agent — backup & restore and more."
+    href="/docs/xo-workspaces/agents/openclaw/skills"
+  />
+</Cards>
+
+---
+
+## Help
+
+<Cards>
+  <Card
+    icon={<Wrench size={18} className="text-green-400" />}
+    title="Troubleshooting"
+    description="Gateway errors, unresponsive agents, slow startups — common fixes in one place."
+    href="/docs/xo-workspaces/troubleshooting/agents/openclaw"
+  />
+</Cards>

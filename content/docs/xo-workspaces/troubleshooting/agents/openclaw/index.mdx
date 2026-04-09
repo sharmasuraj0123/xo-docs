@@ -1,0 +1,116 @@
+---
+title: OpenClaw
+description: Fix common OpenClaw issues — from gateway errors to unresponsive agents.
+icon: Bot
+---
+
+import { VideoEmbed } from '@/components/video-embed';
+import { Accordions, Accordion } from 'fumadocs-ui/components/accordion';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+## Video Walkthrough
+
+<VideoEmbed id="aaf97b32aa3c40679deaf7cf5e4ebee5" title="OpenClaw Troubleshooting" />
+
+## Common Issues & Fixes
+
+<Accordions>
+  <Accordion title='"Failed to Create Project" Error'>
+    If you see this error when creating a project:
+
+    - Project name might have spaces or special characters
+    - Use hyphens or underscores instead
+    - Keep it simple: letters, numbers, hyphens, underscores only
+    - Example: Use `my-cool-project` instead of `My Cool Project!`
+  </Accordion>
+
+  <Accordion title="Gateway Token Error">
+    If you get authentication failures:
+
+    - Your gateway token = your exact project name (case-sensitive)
+    - Check `.env` file for `GATEWAY_TOKEN=`
+    - Or check `openclaw.json` → `gateway.auth.token`
+    - Make sure it matches your project name exactly
+  </Accordion>
+
+  <Accordion title="Telegram/Agent Not Responding">
+    Check in this order:
+
+    1. Verify your Telegram bot token is correct
+    2. Verify your Anthropic API key is valid
+    3. Check if the gateway stopped
+
+    If the gateway stopped:
+
+    1. Go to **Dashboard → Your Project → Open Workspace**
+    2. Find the `xo-cowork-api/` folder
+    3. Restart the gateway — either run the command below or click the **OpenClaw Restart** button in **Configure**:
+
+    ```bash
+    ./xo-cowork-api/openclaw.sh restart
+    ```
+
+    4. Check the logs shown after running the command
+  </Accordion>
+
+  <Accordion title='"AI service is temporarily overloaded" Error'>
+    This means the model provider is having issues:
+
+    - Switch to a different model
+    - Try Sonnet 4.5 or Opus 4.5 if having Anthropic issues
+  </Accordion>
+
+  <Accordion title="Control UI/Dashboard Not Loading">
+    If the dashboard shows "Control UI assets not found":
+
+    - This is a known issue in OpenClaw version 2026.3.22
+    - The gateway still works — chat through connected channels
+    - Wait for OpenClaw to fix it in the next version
+  </Accordion>
+
+  <Accordion title="502 Bad Gateway on OpenClaw Dashboard">
+    If you just created a new project, the gateway isn't ready yet. Wait **10–15 minutes** for the workspace to fully provision before opening the OpenClaw Gateway.
+
+    If the error persists after the startup period, check the **Gateway Won't Start After Troubleshooting** section below.
+  </Accordion>
+
+  <Accordion title="Gateway Won't Start After Troubleshooting">
+    If the OpenClaw Gateway keeps showing errors and common fixes haven't resolved it:
+
+    1. Open your workspace in any IDE (VS Code, JetBrains, etc.)
+    2. Open a terminal and check the gateway status:
+
+    ```bash
+    ~/xo-cowork-api/openclaw.sh status
+    ```
+
+    3. Review the errors shown in the terminal output
+    4. If the error points to `openclaw.json`, open the file and fix the issue (malformed JSON, missing fields, invalid values)
+    5. Go to the XO platform and click the **OpenClaw Restart** button in **Configure**
+    6. Wait a few minutes, then open the gateway again
+
+    This can be an iterative process — check the logs, fix the error, restart, and repeat until the gateway comes up clean.
+  </Accordion>
+
+  <Accordion title="Status isn't turning green after connecting">
+    Double-check that your Gateway Token exactly matches your project name — it's case-sensitive. If it still won't connect, wait another minute and try again. The container may still be warming up.
+  </Accordion>
+
+  <Accordion title="Telegram bot isn't receiving messages">
+    Confirm your bot token is correct and that you haven't revoked it via @BotFather. The Telegram integration activates once the gateway status is OK.
+  </Accordion>
+
+  <Accordion title="Startup is taking longer than 10 minutes">
+    Refresh the dashboard. If the project is still initialising after 15 minutes, delete and recreate the project — provisioning occasionally times out on first attempt.
+  </Accordion>
+</Accordions>
+
+## Troubleshooting Tips
+
+<Callout type="info">
+  Most issues come down to wrong API keys or tokens — check these first. Always verify billing/usage isn't maxed out and check logs for specific error messages.
+</Callout>
+
+## Need Visual Help?
+
+Check out our [OpenClaw video tutorials](https://youtube.com/playlist?list=PLO0-1AdgW2ZsTv1qikBuyTlS69iptJocv&si=vm2q4TE6xDZLVskv) — covers setup, common problems, and troubleshooting.

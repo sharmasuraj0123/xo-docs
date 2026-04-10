@@ -1,4 +1,4 @@
 {
   "title": "OpenClaw",
-  "pages": ["index", "channels", "integrations", "models", "skills"]
+  "pages": ["index", "setup", "restart-gateway", "channels", "integrations", "models", "skills"]
 }

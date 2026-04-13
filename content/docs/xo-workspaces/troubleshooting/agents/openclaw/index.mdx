@@ -39,19 +39,13 @@ import { Callout } from 'fumadocs-ui/components/callout';
 
     If you don't remember your project name, open the workspace to check it:
 
-    1. Switch to the **XO** tab and click **Configure**
+    1. Open the [Configure panel](/docs/xo-workspaces/core-platform-setup/access-restart-machine) and click **code-server**
 
-    ![Click Configure](/images/ts-click-configure.jpeg)
-
-    2. Open **code-server** (or any IDE — see [VS Code Server guide](/docs/xo-workspaces/core-platform-setup/vs-code-server) for setup)
-
-    ![Click code-server](/images/ts-click-codeserver.jpeg)
-
-    3. Open the `.openclaw` folder
+    2. Open the `.openclaw` folder
 
     ![Open .openclaw folder](/images/ts-openclaw-folder.jpeg)
 
-    4. Open the `.env` file
+    3. Open the `.env` file
 
     ![Open .env file](/images/ts-env-file.jpeg)
 
@@ -69,21 +63,17 @@ import { Callout } from 'fumadocs-ui/components/callout';
 
     Open the workspace to check your tokens are correct:
 
-    1. Click **Configure** on your project
+    1. Open the [Configure panel](/docs/xo-workspaces/core-platform-setup/access-restart-machine) and click **code-server**
 
-    ![Click Configure](/images/ts-click-configure.jpeg)
-
-    2. Open **code-server** (or any IDE — see [VS Code Server guide](/docs/xo-workspaces/core-platform-setup/vs-code-server))
-
-    ![Click code-server](/images/ts-click-codeserver.jpeg)
-
-    3. Open the `.openclaw` folder → `.env` file
+    2. Open the `.openclaw` folder → `.env` file
 
     ![Open .openclaw folder](/images/ts-openclaw-folder.jpeg)
 
     ![Open .env file](/images/ts-env-file.jpeg)
 
-    4. Verify `TELEGRAM_BOT_TOKEN` and `ANTHROPIC_API_KEY` are set and correct
+    3. Verify `TELEGRAM_BOT_TOKEN` and `ANTHROPIC_API_KEY` are set and correct
+
+    ![Environment variables in .env file](/images/ts-env-variables.jpeg)
 
     ### Restart the Gateway
 
@@ -97,11 +87,7 @@ import { Callout } from 'fumadocs-ui/components/callout';
 
     ### Quick Steps
 
-    1. Open a terminal in your workspace — click **Application Menu → New Terminal**
-
-    ![Application Menu](/images/model-app-menu.jpeg)
-
-    ![New Terminal](/images/model-new-terminal.jpeg)
+    1. Open your workspace from the [Configure panel](/docs/xo-workspaces/core-platform-setup/access-restart-machine#opening-your-ide), [open a terminal](/docs/xo-workspaces/core-platform-setup/vs-code-server#open-a-terminal)
 
     2. Run `openclaw config`
 
@@ -143,8 +129,7 @@ import { Callout } from 'fumadocs-ui/components/callout';
   <Accordion title="Gateway Won't Start After Troubleshooting">
     If the OpenClaw Gateway keeps showing errors and common fixes haven't resolved it:
 
-    1. Open your workspace in any IDE (VS Code, JetBrains, etc.)
-    2. Open a terminal and check the gateway status:
+    1. Open your workspace from the [Configure panel](/docs/xo-workspaces/core-platform-setup/access-restart-machine#opening-your-ide), [open a terminal](/docs/xo-workspaces/core-platform-setup/vs-code-server#open-a-terminal), and check the gateway status:
 
     ```bash
     ~/xo-cowork-api/openclaw.sh status
@@ -152,10 +137,10 @@ import { Callout } from 'fumadocs-ui/components/callout';
 
     ![OpenClaw status output](/images/ts-openclaw-status.jpeg)
 
-    3. Review the errors shown in the terminal output
-    4. If the error points to `openclaw.json`, open the file and fix the issue (malformed JSON, missing fields, invalid values)
-    5. Go to the XO platform and click the **OpenClaw Restart** button in **Configure**
-    6. Wait a few minutes, then open the gateway again
+    2. Review the errors shown in the terminal output
+    3. If the error points to `openclaw.json`, open the file and fix the issue (malformed JSON, missing fields, invalid values)
+    4. Open the [Configure panel](/docs/xo-workspaces/core-platform-setup/access-restart-machine) and click **OpenClaw Restart**
+    5. Wait a few minutes, then open the gateway again
 
     This can be an iterative process — check the logs, fix the error, restart, and repeat until the gateway comes up clean.
   </Accordion>

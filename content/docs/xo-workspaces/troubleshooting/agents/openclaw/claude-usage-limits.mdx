@@ -25,7 +25,7 @@ Fix it by reconfiguring your model provider inside your workspace. The whole pro
 <Step>
 ### Open your project
 
-Go to [beta.xo.builders](https://beta.xo.builders), find the project showing the error, and click **Configure** in the top-right corner.
+Go to [beta.xo.builders](https://beta.xo.builders), find the project showing the error, and open the [Configure panel](/docs/xo-workspaces/core-platform-setup/access-restart-machine).
 
 ![Configure button](/images/troubleshooting/configure.jpeg)
 </Step>
@@ -41,7 +41,7 @@ Click **Open Workspace** and choose your IDE — VS Code, Cursor, or Code Server
 <Step>
 ### Run the config tool
 
-Open the terminal inside your IDE and run:
+Open your workspace from the [Configure panel](/docs/xo-workspaces/core-platform-setup/access-restart-machine#opening-your-ide), [open a terminal](/docs/xo-workspaces/core-platform-setup/vs-code-server#open-a-terminal), and run:
 
 ```bash
 openclaw config
@@ -107,7 +107,7 @@ Pick the provider you want to use. Full instructions for each option are below.
 <Step>
 ### Restart the gateway
 
-Once config is saved, restart OpenClaw to apply the changes. Either click the **OpenClaw Restart** button in **Configure**, or run this in the terminal:
+Once config is saved, restart OpenClaw to apply the changes. Open the [Configure panel](/docs/xo-workspaces/core-platform-setup/access-restart-machine) and click **OpenClaw Restart**, or run this in the terminal:
 
 ```bash
 ./xo-cowork-api/openclaw.sh restart

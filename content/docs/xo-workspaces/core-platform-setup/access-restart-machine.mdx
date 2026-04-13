@@ -1,90 +1,120 @@
 ---
 title: Access and Restart Your Machine
-description: Stop, restart, and monitor your workspace machine from the XO dashboard.
+description: Manage your workspace — open your IDE, monitor resources, restart services, and control your machine.
 icon: RefreshCw
 ---
 
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { Callout } from 'fumadocs-ui/components/callout';
 
-If your workspace IDE isn't loading or your environment feels stuck, a quick stop-and-restart cycle usually resolves it. This guide covers every button you'll interact with on the dashboard to manage your machine.
+The Configure panel is your workspace control center. From here you can open your IDE, restart the OpenClaw gateway, stop/start your machine, and monitor resource usage.
 
 ## What You'll Need
 
 - An [XO account](/docs/xo-workspaces/core-platform-setup/create-account) with an active workspace
 
-## Dashboard Button Layout
+## Open the Configure Panel
 
-Here's a quick reference for the key buttons on your workspace dashboard:
+From your project on [beta.xo.builders](https://beta.xo.builders), click **Configure** in the top-right corner.
 
-| Button | What It Does |
-|--------|-------------|
-| **Configure** | Opens the workspace management panel where you access your IDE and machine controls |
-| **IDE buttons** (Code-Server, etc.) | Opens the selected browser-based IDE for your workspace |
-| **Stop** | Shuts down your workspace machine |
-| **Start** | Boots your workspace machine back up |
-| **Refresh** | Reloads the dashboard panel to reflect the latest machine status |
+![Project page](/images/cfg-project-page.jpeg)
+
+![Click Configure](/images/cfg-click-configure.jpeg)
+
+If your machine is stopped, click **Start** to boot it up.
+
+![Click Start](/images/cfg-click-start.jpeg)
+
+Once the machine is running, the panel shows all your workspace controls and live stats.
+
+## Monitoring Resources
+
+The panel displays real-time CPU and RAM usage for your workspace.
+
+![CPU and RAM Usage](/images/cfg-cpu-usage.jpeg)
+
+## Service Status
+
+The panel shows the status of your services. When everything is ready, you'll see **Up** next to each service.
+
+**OpenClaw Gateway** — The gateway is running and ready to accept connections.
+
+**Cowork API** — The workspace backend is running.
+
+![Services Up](/images/cfg-gateway-up.jpeg)
+
+<Callout type="warn">
+  Wait for both services to show **Up** before opening the gateway or IDE. New projects take **10–15 minutes** to provision.
+</Callout>
+
+## Opening Your IDE
+
+Two options to access your workspace:
+
+**Desktop IDE (VS Code / Cursor)** — Click **VS Code** to open the workspace in your desktop editor.
+
+![VS Code option](/images/cfg-vscode-option.jpeg)
+
+**Browser IDE (Code-Server)** — Click **code-server** to open a browser-based VS Code. No install needed.
+
+![Code-Server option](/images/cfg-codeserver-option.jpeg)
+
+For detailed IDE setup, see the [VS Code Server guide](/docs/xo-workspaces/core-platform-setup/vs-code-server).
+
+## Opening the OpenClaw Gateway
+
+Click **OpenClaw Gateway** to open the dashboard.
+
+![Click OpenClaw Gateway](/images/cfg-openclaw-gateway.jpeg)
+
+Enter your project name in the **Gateway Token** field.
+
+![Gateway Token field](/images/cfg-gateway-token.jpeg)
+
+If you see "unauthorized: gateway token missing", enter the correct token — it's your exact project name (case-sensitive).
+
+![Gateway unauthorized error](/images/cfg-gateway-unauthorized.jpeg)
+
+## Restarting the OpenClaw Gateway
+
+Click **OpenClaw Restart** to restart the gateway service.
+
+![Click OpenClaw Restart](/images/cfg-openclaw-restart.jpeg)
+
+Wait for the confirmation:
+
+![Gateway restart confirmed](/images/cfg-restart-confirmed.jpeg)
+
+Give it a minute before opening the gateway again. For the terminal restart method (with logs), see the [Restart Gateway guide](/docs/xo-workspaces/agents/openclaw/restart-gateway).
 
 ## Restart Your Machine
 
+If your IDE isn't loading or your environment feels stuck, do a stop-and-restart cycle.
+
 <Steps>
-  <Step>
-    ### Open the Configure Panel
-
-    From your project dashboard, click **Configure** to open the workspace management panel.
-
-    ![Click Configure](/images/core-platform-setup/access-restart-machine-1.jpeg)
-  </Step>
-  <Step>
-    ### Access Your IDE
-
-    Click on your preferred IDE (e.g. **Code-Server**) to open it. If the IDE fails to load or hangs, proceed to the next step to restart the machine.
-
-    ![Select your IDE](/images/core-platform-setup/access-restart-machine-2.jpeg)
-  </Step>
-  <Step>
-    ### Refresh the Status
-
-    Click **Refresh** to get the current machine status before making changes.
-
-    ![Click Refresh](/images/core-platform-setup/access-restart-machine-3.jpeg)
-  </Step>
   <Step>
     ### Stop the Machine
 
-    Click **Stop** to shut down the workspace machine.
-
-    ![Click Stop](/images/core-platform-setup/access-restart-machine-4.jpeg)
-  </Step>
-  <Step>
-    ### Confirm the Machine Has Stopped
-
-    Click **Refresh** again and verify the status reads **stopped**.
-
-    ![Click Refresh again](/images/core-platform-setup/access-restart-machine-5.jpeg)
-
-    ![Machine status: stopped](/images/core-platform-setup/access-restart-machine-6.jpeg)
+    Click **Stop** to shut down the workspace machine. Click **Refresh** to confirm the status reads **stopped**.
   </Step>
   <Step>
     ### Start the Machine
 
     Click **Start** to boot the machine back up.
 
-    ![Click Start](/images/core-platform-setup/access-restart-machine-7.jpeg)
+    ![Click Start](/images/cfg-click-start.jpeg)
 
-    The status changes to **starting** while the machine initializes.
-
-    ![Machine status: starting](/images/core-platform-setup/access-restart-machine-8.jpeg)
+    Wait for the status to change from **starting** to **running**.
   </Step>
   <Step>
-    ### Verify the Machine Is Running
+    ### Verify Services Are Up
 
-    After a few moments, the status updates to **running**. Your workspace is now ready.
+    Check that both **OpenClaw Gateway** and **Cowork API** show **Up** before opening the gateway or IDE.
 
-    ![Machine status: running](/images/core-platform-setup/access-restart-machine-9.jpeg)
+    ![Services running](/images/cfg-panel-open.jpeg)
   </Step>
 </Steps>
 
 <Callout type="info">
-  If the machine stays in a **starting** state for more than a couple of minutes, try stopping and starting it again. If the issue persists, reach out via the [XO Support Hub](/docs/xo-support-hub).
+  If the machine stays in a **starting** state for more than a couple of minutes, try stopping and starting it again.
 </Callout>

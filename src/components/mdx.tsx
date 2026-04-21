@@ -1,9 +1,14 @@
-import defaultMdxComponents from 'fumadocs-ui/mdx';
-import type { MDXComponents } from 'mdx/types';
+import defaultMdxComponents from "fumadocs-ui/mdx";
+import type { MDXComponents } from "mdx/types";
+import { BrandIcon } from "./brand-icon";
+import { Card, Cards } from "./card";
 
 export function getMDXComponents(components?: MDXComponents) {
   return {
     ...defaultMdxComponents,
+    BrandIcon,
+    Card,
+    Cards,
     ...components,
   } satisfies MDXComponents;
 }

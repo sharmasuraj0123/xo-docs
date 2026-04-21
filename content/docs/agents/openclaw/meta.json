@@ -1,4 +1,12 @@
 {
   "title": "OpenClaw",
-  "pages": ["index", "setup", "restart-gateway", "channels", "models", "integrations", "skills"]
+  "icon": "OpenClaw",
+  "pages": [
+    "setup",
+    "restart-gateway",
+    "channels",
+    "models",
+    "integrations",
+    "skills"
+  ]
 }

@@ -1,11 +1,12 @@
 ---
 title: Claude Subscription No Longer Covers OpenClaw
 description: Fix the "LLM request rejected" error by switching your model provider or auth method.
+icon: Anthropic
 ---
 
-import { Step, Steps } from 'fumadocs-ui/components/steps';
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
-import { Callout } from 'fumadocs-ui/components/callout';
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { Callout } from "fumadocs-ui/components/callout";
 
 ## What Happened
 
@@ -14,7 +15,9 @@ Anthropic changed how Claude subscriptions work. Claude Pro and Team plans no lo
 If your agent replied with this on Telegram, WhatsApp, or any other channel:
 
 <Callout type="warn">
-  LLM request rejected: Third-party apps now draw from your extra usage, not your plan limits. We've added a $x credit to get you started. Claim it at claude.ai/settings/usage and keep going.
+	LLM request rejected: Third-party apps now draw from your extra usage, not
+	your plan limits. We've added a $x credit to get you started. Claim it at
+	claude.ai/settings/usage and keep going.
 </Callout>
 
 Fix it by reconfiguring your model provider inside your workspace. The whole process takes under 5 minutes.
@@ -28,6 +31,7 @@ Fix it by reconfiguring your model provider inside your workspace. The whole pro
 Go to [beta.xo.builders](https://beta.xo.builders), find the project showing the error, and open the [Configure panel](/docs/getting-started/manage-workspace).
 
 ![Configure button](/images/troubleshooting/configure.jpeg)
+
 </Step>
 
 <Step>
@@ -36,6 +40,7 @@ Go to [beta.xo.builders](https://beta.xo.builders), find the project showing the
 Click **Open Workspace** and choose your IDE — VS Code, Cursor, or Code Server (browser-based VS Code). All three work the same way for this.
 
 ![Open workspace IDE options](/images/troubleshooting/cursor-desktop.jpeg)
+
 </Step>
 
 <Step>
@@ -46,6 +51,7 @@ Open your workspace from the [Configure panel](/docs/getting-started/manage-work
 ```bash
 openclaw config
 ```
+
 </Step>
 
 <Step>
@@ -54,6 +60,7 @@ openclaw config
 Keep **Local** selected and hit **Enter**.
 
 ![Select Local gateway](/images/troubleshooting/openclaw-configure-local.png)
+
 </Step>
 
 <Step>
@@ -62,6 +69,7 @@ Keep **Local** selected and hit **Enter**.
 Select **Model** and hit **Enter**.
 
 ![Select Model section](/images/troubleshooting/model.png)
+
 </Step>
 
 <Step>
@@ -88,6 +96,7 @@ Pick the provider you want to use. Full instructions for each option are below.
     <Callout type="info">
       Newer versions of OpenClaw may show a slightly different auth menu, but the **Anthropic API key** option will always be present.
     </Callout>
+
   </Tab>
 
   <Tab value="Other Providers">
@@ -96,6 +105,7 @@ Pick the provider you want to use. Full instructions for each option are below.
     The steps are the same pattern: select provider → select auth method (if applicable) → paste your API key.
 
     Get your API key from your chosen provider's developer console before starting.
+
   </Tab>
 
   <Tab value="Codex">
@@ -114,5 +124,6 @@ Once config is saved, restart OpenClaw to apply the changes. Open the [Configure
 ```
 
 Wait a minute, then send a message to your agent to confirm it's responding again.
+
 </Step>
 </Steps>

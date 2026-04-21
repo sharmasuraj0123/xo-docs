@@ -1,4 +1,5 @@
 {
   "title": "Troubleshooting",
-  "pages": ["index", "agents", "org"]
+  "icons": "CircleHelp",
+  "pages": ["agents"]
 }

@@ -1,14 +1,17 @@
 ---
 title: Switch to OpenAI Codex
 description: Change your OpenClaw agent's model to OpenAI Codex with ChatGPT OAuth.
-icon: RefreshCw
+icon: Codex
 ---
 
-import { Step, Steps } from 'fumadocs-ui/components/steps';
-import { Callout } from 'fumadocs-ui/components/callout';
-import { VideoEmbed } from '@/components/video-embed';
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Callout } from "fumadocs-ui/components/callout";
+import { VideoEmbed } from "@/components/video-embed";
 
-<VideoEmbed id="6f69ba65b815491a881a465ff442662c" title="Switch OpenClaw to OpenAI Codex" />
+<VideoEmbed
+	id="6f69ba65b815491a881a465ff442662c"
+	title="Switch OpenClaw to OpenAI Codex"
+/>
 
 ## What You'll Need
 
@@ -24,6 +27,7 @@ import { VideoEmbed } from '@/components/video-embed';
     Go to [beta.xo.builders](https://beta.xo.builders) and select your OpenClaw project from the sidebar.
 
     ![Select your OpenClaw project on the dashboard](/images/codex-select-project-1.jpeg)
+
   </Step>
   <Step>
     ### Open Your Workspace
@@ -35,6 +39,7 @@ import { VideoEmbed } from '@/components/video-embed';
     ```
 
     ![Running openclaw configure in the terminal](/images/codex-openclaw-configure-1.png)
+
   </Step>
   <Step>
     ### Select Gateway Location
@@ -42,6 +47,7 @@ import { VideoEmbed } from '@/components/video-embed';
     When prompted with **"Where will the Gateway run?"**, select **Local (this machine)**.
 
     ![Selecting Local gateway location](/images/codex-select-local-2.png)
+
   </Step>
   <Step>
     ### Pick the Model Section
@@ -51,6 +57,7 @@ import { VideoEmbed } from '@/components/video-embed';
     - **Model** (pick provider + credentials)
 
     ![Selecting the Model section to configure](/images/codex-select-model-3.png)
+
   </Step>
   <Step>
     ### Choose OpenAI Codex
@@ -58,6 +65,7 @@ import { VideoEmbed } from '@/components/video-embed';
     In the **Model/auth provider** list, scroll down and select **OpenAI Codex**.
 
     ![Selecting OpenAI Codex as the model provider](/images/codex-select-openai-codex-4.png)
+
   </Step>
   <Step>
     ### Authenticate with OpenAI
@@ -73,6 +81,7 @@ import { VideoEmbed } from '@/components/video-embed';
     Review the **"Sign in to Codex with ChatGPT"** permissions screen and click **Continue**.
 
     ![Codex permissions screen — click Continue](/images/codex-sign-in-7.png)
+
   </Step>
   <Step>
     ### Complete the Connection
@@ -84,6 +93,7 @@ import { VideoEmbed } from '@/components/video-embed';
     Switch back to your terminal and paste the redirect URI when prompted.
 
     ![Pasting the redirect URI in the terminal](/images/codex-paste-uri-10.png)
+
   </Step>
   <Step>
     ### Select Models
@@ -91,6 +101,7 @@ import { VideoEmbed } from '@/components/video-embed';
     The wizard shows the available Codex models. Use arrow keys and spacebar to pick the models you want in the `/model` picker (e.g., **gpt-5.3-codex**, **gpt-5.4**).
 
     ![Selecting models in the multi-select picker](/images/codex-select-model-11.png)
+
   </Step>
   <Step>
     ### Finish the Wizard
@@ -98,6 +109,7 @@ import { VideoEmbed } from '@/components/video-embed';
     Back at the section menu, scroll to **Continue (Done)** and press Enter. The config wizard finalizes and your agent now uses OpenAI Codex.
 
     ![Selecting Continue to finish configuration](/images/codex-continue-12.png)
+
   </Step>
 </Steps>
 

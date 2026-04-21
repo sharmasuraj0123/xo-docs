@@ -5,7 +5,6 @@ icon: Settings
 ---
 
 import { Cards, Card } from 'fumadocs-ui/components/card';
-import { UserPlus, RefreshCw, Monitor, Share2, ArrowRight } from 'lucide-react';
 
 Before you can launch an agent, you need an XO account and an active workspace. Start with account creation — everything else in this section is available once you're up and running.
 
@@ -15,7 +14,7 @@ Before you can launch an agent, you need an XO account and an active workspace. 
 
 <Cards>
   <Card
-    icon={<UserPlus size={18} className="text-green-400" />}
+    icon={<span className="icon-[ph--user-plus] size-4.5 text-green-400" />}
     title="Create an Account"
     description="Sign up on XO, pick your username, and select a plan. Takes under 2 minutes."
     href="/docs/getting-started/create-account"
@@ -30,19 +29,19 @@ Once your project is running, use these guides to operate and share your workspa
 
 <Cards>
   <Card
-    icon={<RefreshCw size={18} className="text-green-400" />}
+    icon={<span className="icon-[ph--arrow-clockwise] size-4.5 text-green-400" />}
     title="Manage Your Machine"
     description="Stop, restart, and monitor your workspace machine from the dashboard."
     href="/docs/getting-started/manage-workspace"
   />
   <Card
-    icon={<Monitor size={18} className="text-green-400" />}
+    icon={<span className="icon-[ph--monitor] size-4.5 text-green-400" />}
     title="Access via VS Code Server"
     description="Open a browser-based VS Code IDE and run commands without any local install."
     href="/docs/getting-started/vs-code-server"
   />
   <Card
-    icon={<Share2 size={18} className="text-green-400" />}
+    icon={<span className="icon-[ph--share-network] size-4.5 text-green-400" />}
     title="Share Your Project"
     description="Grant and revoke collaborator access by email."
     href="/docs/getting-started/share-project"

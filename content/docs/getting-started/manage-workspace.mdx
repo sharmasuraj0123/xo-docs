@@ -1,11 +1,11 @@
 ---
 title: Manage Your Machine
 description: Manage your workspace — open your IDE, monitor resources, restart services, and control your machine.
-icon: RefreshCw
+icon: Manage
 ---
 
-import { Step, Steps } from 'fumadocs-ui/components/steps';
-import { Callout } from 'fumadocs-ui/components/callout';
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Callout } from "fumadocs-ui/components/callout";
 
 The Configure panel is your workspace control center. From here you can open your IDE, restart the OpenClaw gateway, stop/start your machine, and monitor resource usage.
 
@@ -44,7 +44,8 @@ The panel shows the status of your services. When everything is ready, you'll se
 ![Services Up](/images/cfg-gateway-up.jpeg)
 
 <Callout type="warn">
-  Wait for both services to show **Up** before opening the gateway or IDE. New projects take **10–15 minutes** to provision.
+	Wait for both services to show **Up** before opening the gateway or IDE. New
+	projects take **10–15 minutes** to provision.
 </Callout>
 
 ## Opening Your IDE
@@ -96,6 +97,7 @@ If your IDE isn't loading or your environment feels stuck, do a stop-and-restart
     ### Stop the Machine
 
     Click **Stop** to shut down the workspace machine. Click **Refresh** to confirm the status reads **stopped**.
+
   </Step>
   <Step>
     ### Start the Machine
@@ -105,6 +107,7 @@ If your IDE isn't loading or your environment feels stuck, do a stop-and-restart
     ![Click Start](/images/cfg-click-start.jpeg)
 
     Wait for the status to change from **starting** to **running**.
+
   </Step>
   <Step>
     ### Verify Services Are Up
@@ -112,9 +115,11 @@ If your IDE isn't loading or your environment feels stuck, do a stop-and-restart
     Check that both **OpenClaw Gateway** and **Cowork API** show **Up** before opening the gateway or IDE.
 
     ![Services running](/images/cfg-panel-open.jpeg)
+
   </Step>
 </Steps>
 
 <Callout type="info">
-  If the machine stays in a **starting** state for more than a couple of minutes, try stopping and starting it again.
+	If the machine stays in a **starting** state for more than a couple of
+	minutes, try stopping and starting it again.
 </Callout>

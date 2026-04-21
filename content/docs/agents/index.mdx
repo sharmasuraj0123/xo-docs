@@ -4,28 +4,27 @@ description: Deploy and manage AI agents on XO Workspaces.
 icon: Bot
 ---
 
-import { Cards, Card } from 'fumadocs-ui/components/card';
-import { Bot, Terminal, Blocks } from 'lucide-react';
+import { Cards, Card } from "fumadocs-ui/components/card";
 
 XO Workspaces supports multiple agent types. Deploy a pre-built agent or bring your own.
 
 <Cards>
-  <Card
-    icon={<Bot size={20} className="text-green-400" />}
-    title="OpenClaw"
-    description="AI agent gateway with Telegram, WhatsApp, and Slack support."
-    href="/docs/agents/openclaw"
-  />
-  <Card
-    icon={<Terminal size={20} className="text-green-400" />}
-    title="Claude Code"
-    description="Run Claude Code agents in XO Workspaces."
-    href="/docs/agents/claude-code"
-  />
-  <Card
-    icon={<Blocks size={20} className="text-green-400" />}
-    title="Custom Agent"
-    description="Bring your own agent and deploy it on XO."
-    href="/docs/agents/custom-agent"
-  />
+	<Card
+		icon={<BrandIcon name="openclaw" size={20} />}
+		title="OpenClaw"
+		description="AI agent gateway with Telegram, WhatsApp, and Slack support."
+		href="/docs/agents/openclaw"
+	/>
+	<Card
+		icon={<BrandIcon name="claude-code" size={20} />}
+		title="Claude Code"
+		description="Run Claude Code agents in XO Workspaces."
+		href="/docs/agents/claude-code"
+	/>
+	<Card
+		icon={<span className="icon-[ph--squares-four-fill] size-6" />}
+		title="Custom Agent"
+		description="Bring your own agent and deploy it on XO."
+		href="/docs/agents/custom-agent"
+	/>
 </Cards>

@@ -1,16 +1,19 @@
 ---
 title: OpenClaw
 description: Fix common OpenClaw issues — from gateway errors to unresponsive agents.
-icon: Bot
+icon: OpenClaw
 ---
 
-import { VideoEmbed } from '@/components/video-embed';
-import { Accordions, Accordion } from 'fumadocs-ui/components/accordion';
-import { Callout } from 'fumadocs-ui/components/callout';
+import { VideoEmbed } from "@/components/video-embed";
+import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
+import { Callout } from "fumadocs-ui/components/callout";
 
 ## Video Walkthrough
 
-<VideoEmbed id="aaf97b32aa3c40679deaf7cf5e4ebee5" title="OpenClaw Troubleshooting" />
+<VideoEmbed
+	id="aaf97b32aa3c40679deaf7cf5e4ebee5"
+	title="OpenClaw Troubleshooting"
+/>
 
 ## Common Issues & Fixes
 
@@ -22,6 +25,7 @@ import { Callout } from 'fumadocs-ui/components/callout';
     - Use hyphens or underscores instead
     - Keep it simple: letters, numbers, hyphens, underscores only
     - Example: Use `my-cool-project` instead of `My Cool Project!`
+
   </Accordion>
 
   <Accordion title="Gateway Token Error">
@@ -50,6 +54,7 @@ import { Callout } from 'fumadocs-ui/components/callout';
     ![Open .env file](/images/ts-env-file.jpeg)
 
     Your token is the `OPENCLAW_GATEWAY_TOKEN` value. You can also verify it in `openclaw.json` under `gateway.auth.token`
+
   </Accordion>
 
   <Accordion title="Telegram/Agent Not Responding">
@@ -78,6 +83,7 @@ import { Callout } from 'fumadocs-ui/components/callout';
     ### Restart the Gateway
 
     If tokens are correct but the agent still isn't responding, [restart the gateway](/docs/agents/openclaw/restart-gateway). If the gateway still won't start, see the **Gateway Won't Start After Troubleshooting** section.
+
   </Accordion>
 
   <Accordion title='"AI service is temporarily overloaded" Error'>
@@ -114,6 +120,7 @@ import { Callout } from 'fumadocs-ui/components/callout';
     ![Config complete](/images/model-config-done.jpeg)
 
     8. [Restart the gateway](/docs/agents/openclaw/restart-gateway) to apply changes
+
   </Accordion>
 
   <Accordion title="502 Bad Gateway on OpenClaw Dashboard">
@@ -124,6 +131,7 @@ import { Callout } from 'fumadocs-ui/components/callout';
     If you just created a new project, the gateway isn't ready yet. Wait **10–15 minutes** for the workspace to fully provision before opening the OpenClaw Gateway.
 
     If the error persists after the startup period, check the **Gateway Won't Start After Troubleshooting** section.
+
   </Accordion>
 
   <Accordion title="Gateway Won't Start After Troubleshooting">
@@ -143,6 +151,7 @@ import { Callout } from 'fumadocs-ui/components/callout';
     5. Wait a few minutes, then open the gateway again
 
     This can be an iterative process — check the logs, fix the error, restart, and repeat until the gateway comes up clean.
+
   </Accordion>
 
   <Accordion title="Startup Is Taking Longer Than 10 Minutes">
@@ -153,7 +162,9 @@ import { Callout } from 'fumadocs-ui/components/callout';
 ## Tips
 
 <Callout type="info">
-  Most issues come down to wrong API keys or tokens — check these first. Always verify billing/usage isn't maxed out and check logs for specific error messages.
+	Most issues come down to wrong API keys or tokens — check these first. Always
+	verify billing/usage isn't maxed out and check logs for specific error
+	messages.
 </Callout>
 
 ## Need Visual Help?

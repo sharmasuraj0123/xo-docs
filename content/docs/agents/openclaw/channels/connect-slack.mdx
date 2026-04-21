@@ -1,14 +1,17 @@
 ---
 title: Connect Slack
 description: Create a Slack app and connect it to your OpenClaw agent in under 5 minutes.
-icon: MessageSquare
+icon: Slack
 ---
 
-import { Step, Steps } from 'fumadocs-ui/components/steps';
-import { Callout } from 'fumadocs-ui/components/callout';
-import { VideoEmbed } from '@/components/video-embed';
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Callout } from "fumadocs-ui/components/callout";
+import { VideoEmbed } from "@/components/video-embed";
 
-<VideoEmbed id="8c863cba03614c628f6f018fe9600e84" title="OpenClaw Slack Integration" />
+<VideoEmbed
+	id="8c863cba03614c628f6f018fe9600e84"
+	title="OpenClaw Slack Integration"
+/>
 
 ## What You'll Need
 
@@ -99,6 +102,7 @@ import { VideoEmbed } from '@/components/video-embed';
     ![App manifest](/images/manifest.png)
 
     Click **Next**, then **Create**. Slack validates the manifest and creates the app.
+
   </Step>
   <Step>
     ### Install to Your Workspace
@@ -114,6 +118,7 @@ import { VideoEmbed } from '@/components/video-embed';
     Copy the **Bot User OAuth Token** — it starts with `xoxb-`.
 
     ![Bot User OAuth Token](/images/oauthtoken.png)
+
   </Step>
   <Step>
     ### Generate the App-Level Token
@@ -130,6 +135,7 @@ import { VideoEmbed } from '@/components/video-embed';
     Click **Generate** and copy the **App-Level Token** — it starts with `xapp-`.
 
     ![App-level token](/images/app-token.png)
+
   </Step>
   <Step>
     ### Connect in OpenClaw
@@ -148,9 +154,11 @@ import { VideoEmbed } from '@/components/video-embed';
     | **App-Level Token** | `xapp-...` |
 
     ![OpenClaw config terminal](/images/terminal.png)
+
   </Step>
 </Steps>
 
 <Callout type="info">
-  Want OpenClaw to respond to anyone who DMs the bot? Set `channels.slack.dmPolicy` to `"open"` in your `openclaw.json` config.
+	Want OpenClaw to respond to anyone who DMs the bot? Set
+	`channels.slack.dmPolicy` to `"open"` in your `openclaw.json` config.
 </Callout>

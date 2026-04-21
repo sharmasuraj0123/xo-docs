@@ -1,6 +1,7 @@
-@import 'tailwindcss';
-@import 'fumadocs-ui/css/neutral.css';
-@import 'fumadocs-ui/css/preset.css';
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+@plugin "@iconify/tailwind4";
 
 /*
  * Brand: #83d63a — hsl(92, 66%, 53%)
@@ -36,9 +37,4 @@
 
 html {
   scrollbar-gutter: stable;
-}
-
-html > body[data-scroll-locked] {
-  margin-right: 0px !important;
-  --removed-body-scroll-bar-size: 0px !important;
 }

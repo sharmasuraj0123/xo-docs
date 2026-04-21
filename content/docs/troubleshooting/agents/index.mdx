@@ -1,0 +1,31 @@
+---
+title: Agents
+description: Troubleshoot OpenClaw, Claude Code, and custom agent issues.
+icon: Bot
+---
+
+import { Cards, Card } from 'fumadocs-ui/components/card';
+import { Bot, Terminal, Blocks } from 'lucide-react';
+
+Find fixes organized by agent type.
+
+<Cards>
+  <Card
+    icon={<Bot size={18} className="text-green-400" />}
+    title="OpenClaw"
+    description="Gateway errors, unresponsive agents, Claude usage limits, and more."
+    href="/docs/troubleshooting/agents/openclaw"
+  />
+  <Card
+    icon={<Terminal size={18} className="text-green-400" />}
+    title="Claude Code"
+    description="Fix common Claude Code agent issues on XO Workspaces."
+    href="/docs/troubleshooting/agents/claude-code"
+  />
+  <Card
+    icon={<Blocks size={18} className="text-green-400" />}
+    title="Custom Agent"
+    description="Fix common custom agent issues on XO Workspaces."
+    href="/docs/troubleshooting/agents/custom-agent"
+  />
+</Cards>

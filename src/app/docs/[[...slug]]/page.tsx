@@ -21,6 +21,22 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
   const MDX = page.data.body;
   const markdownUrl = getPageMarkdownUrl(page).url;
 
+  const isIndex = !params.slug || params.slug.length === 0;
+
+  if (isIndex) {
+    return (
+      <DocsPage toc={[]} full>
+        <DocsBody>
+          <MDX
+            components={getMDXComponents({
+              a: createRelativeLink(source, page),
+            })}
+          />
+        </DocsBody>
+      </DocsPage>
+    );
+  }
+
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
       <DocsTitle>{page.data.title}</DocsTitle>

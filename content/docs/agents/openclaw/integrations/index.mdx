@@ -1,0 +1,25 @@
+---
+title: Integrations
+description: Wire external tools into your OpenClaw agent.
+icon: Blocks
+---
+
+import { Cards, Card } from 'fumadocs-ui/components/card';
+import { Bot, Rocket } from 'lucide-react';
+
+Wire external platforms and tools into OpenClaw to expand what your agent can do.
+
+<Cards>
+  <Card
+    icon={<Bot size={18} className="text-green-400" />}
+    title="Manus"
+    description="Control the Manus AI agent platform from OpenClaw — cloud tasks, local commands, desktop control, and hybrid mode."
+    href="/docs/agents/openclaw/integrations/manus"
+  />
+  <Card
+    icon={<Rocket size={18} className="text-green-400" />}
+    title="v0-vercel"
+    description="Generate UI/app code with AI, manage projects, and deploy to Vercel — all from OpenClaw."
+    href="/docs/agents/openclaw/integrations/v0-vercel"
+  />
+</Cards>

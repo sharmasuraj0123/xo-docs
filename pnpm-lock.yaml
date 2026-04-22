@@ -72,6 +72,12 @@ importers:
       '@biomejs/biome':
         specifier: ^2.4.12
         version: 2.4.12
+      '@iconify-json/line-md':
+        specifier: ^1.2.16
+        version: 1.2.16
+      '@iconify-json/lineicons':
+        specifier: ^1.2.6
+        version: 1.2.6
       '@iconify-json/mingcute':
         specifier: ^1.2.7
         version: 1.2.7
@@ -390,6 +396,12 @@ packages:
         optional: true
       tailwindcss:
         optional: true
+
+  '@iconify-json/line-md@1.2.16':
+    resolution: {integrity: sha512-esHPUQUp30NyqJWa7MNu6ExdG8z/aEFC5r56rVyRGhtJ7acOme6YtYPnDOgVu6p+kk24rM8602xkFuBC6g6x+w==}
+
+  '@iconify-json/lineicons@1.2.6':
+    resolution: {integrity: sha512-XDOzb5xUNxpOj0j2JPadPq4udrhYb92d6jT7jey9CAJfGhSyYMzk5vmNqWormZy0ETxiHojs2ERpY9KjLjt7rA==}
 
   '@iconify-json/mingcute@1.2.7':
     resolution: {integrity: sha512-bp4z6F53KAQp99aSL7qPCHL7HWUNGMNKIhfo/dx9pwVHiad/WusUbTOFXEZfpA44syJPzSOxa3O6Pwiq7qZz1g==}
@@ -2409,6 +2421,14 @@ snapshots:
     optionalDependencies:
       '@tailwindcss/oxide': 4.2.4
       tailwindcss: 4.2.4
+
+  '@iconify-json/line-md@1.2.16':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/lineicons@1.2.6':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify-json/mingcute@1.2.7':
     dependencies:

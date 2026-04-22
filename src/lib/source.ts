@@ -23,6 +23,12 @@ const ICON_CLASSES: Record<string, string> = {
   Terminal: "icon-[ph--terminal-window-fill]",
   UserPlus: "icon-[ph--user-plus-fill]",
   Slack: "icon-[ph--slack-logo-fill]",
+  Github: "icon-[ph--github-logo-fill]",
+  Python: "icon-[lineicons--python]",
+  NodeJs: "icon-[lineicons--nodejs]",
+  NextJs: "icon-[lineicons--nextjs]",
+  Vite: "icon-[lineicons--vite]",
+  Docker: "icon-[lineicons--docker]",
 };
 
 // Brand icon names → public/icons slug
@@ -35,6 +41,10 @@ const BRAND_ICONS: Record<string, string> = {
   Vercel: "vercel",
   Manus: "manus",
   V0: "v0",
+  Cursor: "cursor",
+  Devin: "devin",
+  Lovable: "lovable",
+  Mcp: "mcp",
 };
 
 function iconifyIconsPlugin() {

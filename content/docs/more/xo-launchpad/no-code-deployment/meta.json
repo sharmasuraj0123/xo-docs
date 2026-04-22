@@ -1,0 +1,4 @@
+{
+  "title": "No-Code Deployment",
+  "pages": ["index", "deploying-from-local", "deploying-from-github-repository", "deploying-from-lovable"]
+}

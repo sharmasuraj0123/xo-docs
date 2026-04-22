@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
-import { source } from "@/lib/source";
 import { siteUrl } from "@/lib/shared";
+import { source } from "@/lib/source";
 
 export const revalidate = false;
 

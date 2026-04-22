@@ -1,5 +1,5 @@
 {
-	"title": "XO MCP Server",
-	"icon": "Mcp",
-	"pages": ["overview", "setup", "integrations"]
+  "title": "XO MCP Server",
+  "icon": "Mcp",
+  "pages": ["overview", "setup", "integrations"]
 }

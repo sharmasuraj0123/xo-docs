@@ -1,5 +1,5 @@
 {
-	"title": "More",
-	"icon": "more",
-	"pages": ["xo-launchpad", "xo-mcp-server"]
+  "title": "More",
+  "icon": "more",
+  "pages": ["xo-launchpad", "xo-mcp-server"]
 }

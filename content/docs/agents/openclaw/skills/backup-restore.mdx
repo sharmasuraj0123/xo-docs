@@ -12,7 +12,7 @@ The Snapshot skill adds encrypted, versioned backups to your OpenClaw agent. You
 
 ## What You'll Need
 
-- An [XO Workspace with OpenClaw deployed](/docs/agents/openclaw)
+- An [XO Workspace with OpenClaw deployed](/agents/openclaw)
 - A private GitHub repository to store backups
 - A GitHub personal access token — either a [classic token](https://github.com/settings/tokens) with `repo` scope or a [fine-grained token](https://github.com/settings/personal-access-tokens) with **Contents** permission (read and write) on the backup repo
 - A strong passphrase for encryption
@@ -119,7 +119,7 @@ Add your new workspace's gateway origin to `openclaw.json`. Find the `OPENCLAW_C
 Replace the second URL with the value from your `.env` file. If the origin already exists, skip this step.
 
 <Callout type="warn">
-  After updating `openclaw.json`, open the [Configure panel](/docs/getting-started/manage-workspace) and click **OpenClaw Restart** to restart the gateway. WhatsApp sessions are excluded from backups for security — reconnect them manually after a restore.
+  After updating `openclaw.json`, open the [Configure panel](/getting-started/manage-workspace) and click **OpenClaw Restart** to restart the gateway. WhatsApp sessions are excluded from backups for security — reconnect them manually after a restore.
 </Callout>
 
 ## How It Works

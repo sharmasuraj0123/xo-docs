@@ -43,7 +43,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
     If you don't remember your project name, open the workspace to check it:
 
-    1. Open the [Configure panel](/docs/getting-started/manage-workspace) and click **code-server**
+    1. Open the [Configure panel](/getting-started/manage-workspace) and click **code-server**
 
     2. Open the `.openclaw` folder
 
@@ -68,7 +68,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
     Open the workspace to check your tokens are correct:
 
-    1. Open the [Configure panel](/docs/getting-started/manage-workspace) and click **code-server**
+    1. Open the [Configure panel](/getting-started/manage-workspace) and click **code-server**
 
     2. Open the `.openclaw` folder → `.env` file
 
@@ -82,18 +82,18 @@ import { Callout } from "fumadocs-ui/components/callout";
 
     ### Restart the Gateway
 
-    If tokens are correct but the agent still isn't responding, [restart the gateway](/docs/agents/openclaw/restart-gateway). If the gateway still won't start, see the **Gateway Won't Start After Troubleshooting** section.
+    If tokens are correct but the agent still isn't responding, [restart the gateway](/agents/openclaw/restart-gateway). If the gateway still won't start, see the **Gateway Won't Start After Troubleshooting** section.
 
   </Accordion>
 
   <Accordion title='"AI service is temporarily overloaded" Error'>
     This means the model provider is having issues. Switch to a different model by running `openclaw config` in your workspace terminal.
 
-    For detailed instructions, see the [Change Model guide](/docs/agents/openclaw/models/switch-to-codex) or the [OpenClaw model providers documentation](https://github.com/openclaw/openclaw/blob/main/docs/concepts/model-providers.md).
+    For detailed instructions, see the [Change Model guide](/agents/openclaw/models/switch-to-codex) or the [OpenClaw model providers documentation](https://github.com/openclaw/openclaw/blob/main/docs/concepts/model-providers.md).
 
     ### Quick Steps
 
-    1. Open your workspace from the [Configure panel](/docs/getting-started/manage-workspace#opening-your-ide), [open a terminal](/docs/getting-started/vs-code-server#open-a-terminal)
+    1. Open your workspace from the [Configure panel](/getting-started/manage-workspace#opening-your-ide), [open a terminal](/getting-started/vs-code-server#open-a-terminal)
 
     2. Run `openclaw config`
 
@@ -119,7 +119,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
     ![Config complete](/images/model-config-done.jpeg)
 
-    8. [Restart the gateway](/docs/agents/openclaw/restart-gateway) to apply changes
+    8. [Restart the gateway](/agents/openclaw/restart-gateway) to apply changes
 
   </Accordion>
 
@@ -137,7 +137,7 @@ import { Callout } from "fumadocs-ui/components/callout";
   <Accordion title="Gateway Won't Start After Troubleshooting">
     If the OpenClaw Gateway keeps showing errors and common fixes haven't resolved it:
 
-    1. Open your workspace from the [Configure panel](/docs/getting-started/manage-workspace#opening-your-ide), [open a terminal](/docs/getting-started/vs-code-server#open-a-terminal), and check the gateway status:
+    1. Open your workspace from the [Configure panel](/getting-started/manage-workspace#opening-your-ide), [open a terminal](/getting-started/vs-code-server#open-a-terminal), and check the gateway status:
 
     ```bash
     ~/xo-cowork-api/openclaw.sh status
@@ -147,7 +147,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
     2. Review the errors shown in the terminal output
     3. If the error points to `openclaw.json`, open the file and fix the issue (malformed JSON, missing fields, invalid values)
-    4. Open the [Configure panel](/docs/getting-started/manage-workspace) and click **OpenClaw Restart**
+    4. Open the [Configure panel](/getting-started/manage-workspace) and click **OpenClaw Restart**
     5. Wait a few minutes, then open the gateway again
 
     This can be an iterative process — check the logs, fix the error, restart, and repeat until the gateway comes up clean.

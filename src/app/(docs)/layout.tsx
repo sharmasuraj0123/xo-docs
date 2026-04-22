@@ -9,7 +9,7 @@ import { cn } from "@/lib/cn";
 import { baseOptions } from "@/lib/layout.shared";
 import { source } from "@/lib/source";
 
-export default function Layout({ children }: LayoutProps<"/docs">) {
+export default function Layout({ children }: LayoutProps<"/">) {
   return (
     <DocsLayout
       sidebar={{

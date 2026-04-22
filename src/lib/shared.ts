@@ -1,5 +1,6 @@
 export const appName = "XO Docs";
-export const docsRoute = "/docs";
+export const siteUrl = "https://docs.xo.builders";
+export const docsRoute = "/";
 export const docsImageRoute = "/og/docs";
 export const docsContentRoute = "/llms.mdx/docs";
 

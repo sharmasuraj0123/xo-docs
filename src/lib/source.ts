@@ -29,6 +29,15 @@ const ICON_CLASSES: Record<string, string> = {
   NextJs: "icon-[lineicons--nextjs]",
   Vite: "icon-[lineicons--vite]",
   Docker: "icon-[lineicons--docker]",
+  BookOpen: "icon-[ph--book-open-fill]",
+  Info: "icon-[ph--info-fill]",
+  LayoutTemplate: "icon-[ph--layout-fill]",
+  MousePointerClick: "icon-[ph--cursor-click-fill]",
+  Plug2: "icon-[ph--plug-fill]",
+  Puzzle: "icon-[ph--puzzle-piece-fill]",
+  Workflow: "icon-[ph--flow-arrow-fill]",
+  Zap: "icon-[ph--lightning-fill]",
+  more: "icon-[ph--dots-three-fill]",
 };
 
 // Brand icon names → public/icons slug
@@ -45,6 +54,7 @@ const BRAND_ICONS: Record<string, string> = {
   Devin: "devin",
   Lovable: "lovable",
   Mcp: "mcp",
+  N8n: "n8n",
 };
 
 function iconifyIconsPlugin() {

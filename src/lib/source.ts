@@ -13,6 +13,7 @@ const ICON_CLASSES: Record<string, string> = {
   CircleHelp: "icon-[ph--question-fill]",
   Cpu: "icon-[ph--cpu-fill]",
   HardDrive: "icon-[ph--hard-drive-fill]",
+  Hermes: "icon-[ph--paper-plane-tilt-fill]",
   Network: "icon-[ph--network-fill]",
   Monitor: "icon-[ph--monitor-fill]",
   Manage: "icon-[ph--air-traffic-control-fill]",

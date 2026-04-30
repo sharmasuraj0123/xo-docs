@@ -17,8 +17,10 @@ OpenClaw is an AI agent gateway you deploy on XO. Connect it to Telegram, give i
 ## What You'll Need
 
 - An [XO account](https://beta.xo.builders)
-- An Anthropic API key
-- A Telegram bot token (from [@BotFather](https://t.me/botfather))
+- **At least one model provider** — an Anthropic API key, an OpenAI API key, or both
+- **At least one channel** — a Telegram bot token (from [@BotFather](https://t.me/botfather)), a WhatsApp QR scan, or a Slack app token + bot token
+
+Any combination of providers and channels works.
 
 ## Deploy OpenClaw
 
@@ -45,27 +47,37 @@ OpenClaw is an AI agent gateway you deploy on XO. Connect it to Telegram, give i
     |---|---|
     | **Project Name** | A unique name — e.g. `xo-openclaw` (note this down, you'll need it later) |
     | **Anthropic API Key** | Your Anthropic API key |
+    | **OpenAI API Key** | Your OpenAI API key |
     | **Telegram Bot Token** | Your token from @BotFather |
-    | **WhatsApp** | Optional — scan the QR code shown in the form to connect your agent to WhatsApp |
+    | **WhatsApp** | Scan the QR code shown in the form |
+    | **Slack** | Your Slack app token and bot token |
     | **Volume Size** | Default 2 GB is fine for most setups |
 
-    You can add and remove channels as needed.
-
-    ![Project creation form — optionally add WhatsApp](/images/openclaw-setup-04-add-whatsapp.jpeg)
-
-    ![Remove a channel from your project](/images/openclaw-setup-05-remove-channel.jpeg)
+    **At least one provider (Anthropic or OpenAI) and at least one channel (Telegram, WhatsApp, or Slack) are required.**
 
     Click **Create Project**.
 
-    ![Click Create Project to launch](/images/openclaw-setup-06-create-project.jpeg)
+    ![Click Create Project](/images/openclaw-setup-06-create-project.jpeg)
   </Step>
   <Step>
     ### Wait for Startup
-    Your workspace takes **8–10 minutes** to provision. The OpenClaw environment is being set up in the background.
+    Open the [Configure panel](/getting-started/manage-workspace) to monitor provisioning.
+
+    ![Click Configure](/images/openclaw-setup-07-configure.jpeg)
 
     <Callout type="info">
-      Don't close the tab. You'll see the project status update when it's ready.
+      The agent is ready when the **OpenClaw Gateway** status shows **Up** in the Workspace Details sidebar.
     </Callout>
+  </Step>
+  <Step>
+    ### Connect Codex (Optional)
+    Prefer to use OpenAI Codex via your subscription instead of an Anthropic API key? Click **Connect Codex** next to the **Configure** button on your project card.
+
+    <Callout type="warn">
+      OAuth is only available **after provisioning is complete**. Wait for the workspace to finish starting up before clicking Connect Codex.
+    </Callout>
+
+    See [Connect Codex](/agents/oauth/codex) for the full OAuth walkthrough.
   </Step>
   <Step>
     ### Open the OpenClaw Gateway

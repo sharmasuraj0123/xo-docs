@@ -1,0 +1,26 @@
+---
+title: OAuth
+description: Authenticate XO agents with model providers via OAuth — use a subscription instead of an API key.
+icon: Plug2
+---
+
+import { Cards, Card } from "@/components/card";
+
+OAuth lets your XO agent authenticate with a model provider via your existing subscription — no API key required. Use the **Connect** button on your project card to start the flow.
+
+These flows are shared across agents. Any agent that exposes a Connect button (OpenClaw, Hermes, Claude Code) can use the same walkthrough.
+
+<Cards>
+	<Card
+		icon={<BrandIcon name="claude-code" size={20} />}
+		title="Connect Claude"
+		description="Authorize agents with a Claude account via OAuth."
+		href="/agents/oauth/claude"
+	/>
+	<Card
+		icon={<BrandIcon name="codex" size={20} />}
+		title="Connect Codex"
+		description="Authorize agents with an OpenAI Codex subscription via OAuth."
+		href="/agents/oauth/codex"
+	/>
+</Cards>

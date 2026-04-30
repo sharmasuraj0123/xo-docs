@@ -1,5 +1,5 @@
 {
   "title": "Claude Code",
   "icon": "ClaudeCode",
-  "pages": []
+  "pages": ["setup"]
 }

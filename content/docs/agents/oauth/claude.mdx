@@ -1,0 +1,63 @@
+---
+title: Connect Claude
+description: Authenticate XO agents with a Claude account via OAuth.
+icon: ClaudeCode
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+Connect your Claude account to an XO agent via OAuth — no API key required. This flow is shared across any agent that exposes a **Connect Claude** button (Claude Code, future agents).
+
+## What You'll Need
+
+- An XO project that has finished provisioning
+- A Claude account (Pro, Team, or Enterprise — any plan that grants Claude API access)
+
+## Connect Your Claude Account
+
+<Steps>
+  <Step>
+    ### Open Your Project
+    Open your project on [beta.xo.builders](https://beta.xo.builders).
+
+    ![Project page](/images/claude-oauth-01-project-page.jpeg)
+  </Step>
+  <Step>
+    ### Click Connect Claude
+    Next to the **Configure** button on your project card, click **Connect Claude**.
+
+    ![Click Connect Claude](/images/claude-oauth-02-connect-claude.jpeg)
+  </Step>
+  <Step>
+    ### Open the Authorization URL
+    In the Connect Claude modal, click **Open Authorization URL**. A new browser tab opens with the Claude sign-in.
+
+    ![Click Open Authorization URL](/images/claude-oauth-03-open-auth-url.jpeg)
+  </Step>
+  <Step>
+    ### Authorize
+    Sign in to your Claude account if prompted, then click **Authorize** to grant access.
+
+    ![Click Authorize](/images/claude-oauth-04-authorize.jpeg)
+  </Step>
+  <Step>
+    ### Copy the Code
+    Click **Copy Code** to copy the authorization code Claude returns.
+
+    ![Click Copy Code](/images/claude-oauth-05-copy-code.jpeg)
+  </Step>
+  <Step>
+    ### Paste and Submit
+    Switch back to the XO tab. Paste the code into the **Paste code here...** field and click **Submit**.
+
+    ![Paste the code and click Submit](/images/claude-oauth-06-paste-submit.webp)
+  </Step>
+  <Step>
+    ### Close the Modal
+    Once the connection is confirmed, close the setup modal.
+
+    ![Close the modal](/images/claude-oauth-07-close.jpeg)
+  </Step>
+</Steps>
+
+Your Claude account is now connected. Your agent will use it for all model calls.

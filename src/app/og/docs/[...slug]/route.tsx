@@ -1,10 +1,16 @@
+import fs from "node:fs";
+import path from "node:path";
 import { generate as DefaultImage } from "fumadocs-ui/og";
 import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
-import { appName } from "@/lib/shared";
 import { getPageImage, source } from "@/lib/source";
 
 export const revalidate = false;
+
+const iconBuffer = fs.readFileSync(
+  path.join(process.cwd(), "src/app/icon.png"),
+);
+const iconSrc = `data:image/png;base64,${iconBuffer.toString("base64")}`;
 
 export async function GET(
   _req: Request,
@@ -18,7 +24,19 @@ export async function GET(
     <DefaultImage
       title={page.data.title}
       description={page.data.description}
-      site={appName}
+      icon={
+        <div
+          style={{
+            width: 56,
+            height: 56,
+            backgroundImage: `url(${iconSrc})`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
+      }
+      primaryColor="rgba(131, 214, 58, 0.3)"
+      primaryTextColor="#83d63a"
     />,
     {
       width: 1200,

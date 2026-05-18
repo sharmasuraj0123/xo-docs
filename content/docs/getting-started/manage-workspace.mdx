@@ -13,17 +13,21 @@ The Configure panel is your workspace control center. From here you can open you
 
 - An [XO account](/getting-started/create-account) with an active workspace
 
-## Open the Configure Panel
+## Open Your Workspace
 
-From your project on [beta.xo.builders](https://beta.xo.builders), click **Configure** in the top-right corner.
+Open [beta.xo.builders](https://beta.xo.builders).
 
-![Project page](/images/cfg-project-page.jpeg)
+![XO Builders dashboard](/images/cfg-01-dashboard.jpeg)
 
-![Click Configure](/images/cfg-click-configure.jpeg)
+Select your agent from the sidebar.
+
+![Select your agent](/images/cfg-02-select-agent.jpeg)
 
 If your machine is stopped, click **Start** to boot it up.
 
-![Click Start](/images/cfg-click-start.jpeg)
+![Click Start](/images/cfg-03-click-start.jpeg)
+
+Wait for the agent status to transition to **Ready**.
 
 Once the machine is running, the panel shows all your workspace controls and live stats.
 
@@ -31,7 +35,7 @@ Once the machine is running, the panel shows all your workspace controls and liv
 
 The panel displays real-time CPU and RAM usage for your workspace.
 
-![CPU and RAM Usage](/images/cfg-cpu-usage.jpeg)
+![CPU and RAM Usage](/images/cfg-04-ready.webp)
 
 ## Service Status
 
@@ -41,7 +45,7 @@ The panel shows the status of your services. When everything is ready, you'll se
 
 **Cowork API** — The workspace backend is running.
 
-![Services Up](/images/cfg-gateway-up.jpeg)
+![Services Up](/images/cfg-05-services-up.webp)
 
 <Callout type="warn">
 	Wait for both services to show **Up** before opening the gateway or IDE. New
@@ -50,15 +54,15 @@ The panel shows the status of your services. When everything is ready, you'll se
 
 ## Opening Your IDE
 
-Two options to access your workspace:
+The **Agent Connections** panel lists all the ways you can connect to your workspace.
 
 **Desktop IDE (VS Code / Cursor)** — Click **VS Code** to open the workspace in your desktop editor.
 
-![VS Code option](/images/cfg-vscode-option.jpeg)
+![Click VS Code](/images/cfg-06-vscode.jpeg)
 
 **Browser IDE (Code-Server)** — Click **code-server** to open a browser-based VS Code. No install needed.
 
-![Code-Server option](/images/cfg-codeserver-option.jpeg)
+![Click code-server](/images/cfg-07-codeserver.jpeg)
 
 For detailed IDE setup, see the [VS Code Server guide](/getting-started/vs-code-server).
 
@@ -66,7 +70,7 @@ For detailed IDE setup, see the [VS Code Server guide](/getting-started/vs-code-
 
 Click **OpenClaw Gateway** to open the dashboard.
 
-![Click OpenClaw Gateway](/images/cfg-openclaw-gateway.jpeg)
+![Click OpenClaw Gateway](/images/cfg-08-openclaw-gateway.jpeg)
 
 Enter your project name in the **Gateway Token** field.
 
@@ -80,11 +84,11 @@ If you see "unauthorized: gateway token missing", enter the correct token — it
 
 Click **OpenClaw Restart** to restart the gateway service.
 
-![Click OpenClaw Restart](/images/cfg-openclaw-restart.jpeg)
+![Click OpenClaw Restart](/images/cfg-09-restart-click.jpeg)
 
-Wait for the confirmation:
+Wait for the **OpenClaw gateway restarted** confirmation.
 
-![Gateway restart confirmed](/images/cfg-restart-confirmed.jpeg)
+![Gateway restart confirmed](/images/cfg-10-restart-confirmed.jpeg)
 
 Give it a minute before opening the gateway again. For the terminal restart method (with logs), see the [Restart Gateway guide](/agents/openclaw/restart-gateway).
 
@@ -104,7 +108,7 @@ If your IDE isn't loading or your environment feels stuck, do a stop-and-restart
 
     Click **Start** to boot the machine back up.
 
-    ![Click Start](/images/cfg-click-start.jpeg)
+    ![Click Start](/images/cfg-03-click-start.jpeg)
 
     Wait for the status to change from **starting** to **running**.
 
@@ -113,8 +117,6 @@ If your IDE isn't loading or your environment feels stuck, do a stop-and-restart
     ### Verify Services Are Up
 
     Check that both **OpenClaw Gateway** and **Cowork API** show **Up** before opening the gateway or IDE.
-
-    ![Services running](/images/cfg-panel-open.jpeg)
 
   </Step>
 </Steps>

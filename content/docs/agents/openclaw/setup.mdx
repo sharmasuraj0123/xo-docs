@@ -12,7 +12,7 @@ OpenClaw is an AI agent gateway you deploy on XO. Connect it to Telegram, give i
 
 ## Setup Walkthrough
 
-<VideoEmbed id="68a7d09bf675444b9ece6e7d36e4bbde" title="OpenClaw Setup on XO Builders" />
+<VideoEmbed id="f1b132df7f084b6084b794e2b3ce6a96" title="OpenClaw Setup on XO Builders" />
 
 ## What You'll Need
 
@@ -31,13 +31,13 @@ Any combination of providers and channels works.
 
     ![XO Builders dashboard](/images/openclaw-setup-01-dashboard.jpeg)
 
-    Click the **+** icon next to **My Projects** in the left sidebar.
+    Click **New Project** in the left sidebar.
 
-    ![Click the + icon to create a new project](/images/openclaw-setup-02-new-project-button.jpeg)
+    ![Click New Project](/images/openclaw-setup-02-new-project.jpeg)
 
     Select **OpenClaw** and click **Create Agent**.
 
-    ![Select OpenClaw and click Create Agent](/images/openclaw-setup-03-select-template.jpeg)
+    ![Select OpenClaw and click Create Agent](/images/openclaw-setup-03-create-agent.jpeg)
   </Step>
   <Step>
     ### Configure Project Details
@@ -57,21 +57,33 @@ Any combination of providers and channels works.
 
     Click **Create Project**.
 
-    ![Click Create Project](/images/openclaw-setup-06-create-project.jpeg)
+    ![Click Create Project](/images/openclaw-setup-04-create-project.jpeg)
   </Step>
   <Step>
     ### Wait for Startup
-    Open the [Configure panel](/getting-started/manage-workspace) to monitor provisioning.
-
-    ![Click Configure](/images/openclaw-setup-07-configure.jpeg)
+    Your workspace takes about **5–6 minutes** to provision.
 
     <Callout type="info">
       The agent is ready when the **OpenClaw Gateway** status shows **Up** in the Workspace Details sidebar.
     </Callout>
   </Step>
   <Step>
+    ### Verify Setup
+    Open the **Overview** tab and review the setup checklist. Confirm **Model connected** and save your Anthropic API key from the project page if it isn't already filled in.
+
+    ![Overview setup checklist](/images/openclaw-setup-05-overview-checklist.jpeg)
+
+    You can also adjust your agent's **Data** sources, **Channels**, and **Secrets** from the same top-nav. These are optional — the defaults from project creation will work.
+  </Step>
+  <Step>
+    ### Set Up a Project Directory
+    Open the **Projects** tab and create a new project directory for your agent's work — e.g. `marketing`.
+
+    ![Create a project directory](/images/openclaw-setup-06-project-dir.webp)
+  </Step>
+  <Step>
     ### Connect Codex (Optional)
-    Prefer to use OpenAI Codex via your subscription instead of an Anthropic API key? Click **Connect Codex** next to the **Configure** button on your project card.
+    Prefer to use OpenAI Codex via your subscription instead of an Anthropic API key? Open **Connect Codex** from your project page to link your account via OAuth.
 
     <Callout type="warn">
       OAuth is only available **after provisioning is complete**. Wait for the workspace to finish starting up before clicking Connect Codex.
@@ -81,27 +93,21 @@ Any combination of providers and channels works.
   </Step>
   <Step>
     ### Open the OpenClaw Gateway
-    Open the [Configure panel](/getting-started/manage-workspace) and select **OpenClaw Gateway**. This opens the OpenClaw Dashboard in a new tab.
+    Open the **Launch** tab and select **OpenClaw Gateway**. This opens the OpenClaw Dashboard in a new tab.
 
-    ![Click OpenClaw Gateway](/images/openclaw-click-gateway.jpeg)
+    ![Click OpenClaw Gateway in the Launch tab](/images/openclaw-setup-07-gateway.jpeg)
   </Step>
   <Step>
     ### Connect to the Gateway
-    In the **Gateway Token** field, enter the exact project name you used in Step 2 (e.g. `xo-openclaw`).
+    In the **Gateway Token** field, enter the exact project name you used in Step 2 (e.g. `xo-openclaw`), then click **Connect**. The status indicator turns **green (OK)** when connected.
 
-    ![Enter Gateway Token](/images/openclaw-gateway-token.jpeg)
-
-    Click **Connect**.
-
-    ![Click Connect](/images/openclaw-click-connect.jpeg)
-
-    The status indicator turns **green (OK)** when connected.
+    ![Enter Gateway Token and click Connect](/images/openclaw-setup-08-token-connect.webp)
   </Step>
   <Step>
     ### Test Your Agent
     Navigate to the **Chat** tab in the sidebar. Send a message — try `hello`.
 
-    ![Test your agent in chat](/images/openclaw-test-chat.jpeg)
+    ![Test your agent in chat](/images/openclaw-setup-09-chat.jpeg)
 
     Your agent responds. OpenClaw is live.
   </Step>

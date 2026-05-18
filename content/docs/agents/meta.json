@@ -1,4 +1,4 @@
 {
   "title": "Agents",
-  "pages": ["openclaw", "claude-code", "hermes", "custom-agent", "oauth"]
+  "pages": ["openclaw", "claude-code", "hermes", "xo-cowork", "oauth"]
 }

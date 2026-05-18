@@ -43,7 +43,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
     If you don't remember your project name, open the workspace to check it:
 
-    1. Open the [Configure panel](/getting-started/manage-workspace) and click **code-server**
+    1. Open the **Launch** tab and click **code-server** under [Agent Connections](/getting-started/manage-workspace#opening-your-ide)
 
     2. Open the `.openclaw` folder
 
@@ -68,7 +68,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
     Open the workspace to check your tokens are correct:
 
-    1. Open the [Configure panel](/getting-started/manage-workspace) and click **code-server**
+    1. Open the **Launch** tab and click **code-server** under [Agent Connections](/getting-started/manage-workspace#opening-your-ide)
 
     2. Open the `.openclaw` folder → `.env` file
 
@@ -93,7 +93,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
     ### Quick Steps
 
-    1. Open your workspace from the [Configure panel](/getting-started/manage-workspace#opening-your-ide), [open a terminal](/getting-started/vs-code-server#open-a-terminal)
+    1. [Open your workspace IDE](/getting-started/manage-workspace#opening-your-ide), [open a terminal](/getting-started/vs-code-server#open-a-terminal)
 
     2. Run `openclaw config`
 
@@ -137,7 +137,7 @@ import { Callout } from "fumadocs-ui/components/callout";
   <Accordion title="Gateway Won't Start After Troubleshooting">
     If the OpenClaw Gateway keeps showing errors and common fixes haven't resolved it:
 
-    1. Open your workspace from the [Configure panel](/getting-started/manage-workspace#opening-your-ide), [open a terminal](/getting-started/vs-code-server#open-a-terminal), and check the gateway status:
+    1. [Open your workspace IDE](/getting-started/manage-workspace#opening-your-ide), [open a terminal](/getting-started/vs-code-server#open-a-terminal), and check the gateway status:
 
     ```bash
     ~/xo-cowork-api/openclaw.sh status
@@ -147,7 +147,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
     2. Review the errors shown in the terminal output
     3. If the error points to `openclaw.json`, open the file and fix the issue (malformed JSON, missing fields, invalid values)
-    4. Open the [Configure panel](/getting-started/manage-workspace) and click **OpenClaw Restart**
+    4. Open the **Launch** tab and click **[OpenClaw Restart](/getting-started/manage-workspace#restarting-the-openclaw-gateway)**
     5. Wait a few minutes, then open the gateway again
 
     This can be an iterative process — check the logs, fix the error, restart, and repeat until the gateway comes up clean.

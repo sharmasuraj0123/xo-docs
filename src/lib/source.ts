@@ -56,6 +56,7 @@ const BRAND_ICONS: Record<string, string> = {
   Lovable: "lovable",
   Mcp: "mcp",
   N8n: "n8n",
+  XoCowork: "xo-cowork",
 };
 
 function iconifyIconsPlugin() {

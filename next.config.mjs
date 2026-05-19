@@ -1,6 +1,6 @@
-import { createMDX } from "fumadocs-mdx/next";
-import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { createMDX } from "fumadocs-mdx/next";
 
 const withMDX = createMDX();
 

@@ -1,6 +1,6 @@
 {
   "title": "XO Cowork API",
-  "icon": "Network",
+  "icon": "XoCowork",
   "pages": [
     "overview",
     "auth-api",

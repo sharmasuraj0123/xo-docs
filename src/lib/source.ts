@@ -13,6 +13,7 @@ const ICON_CLASSES: Record<string, string> = {
   CircleHelp: "icon-[ph--question-fill]",
   Cpu: "icon-[ph--cpu-fill]",
   HardDrive: "icon-[ph--hard-drive-fill]",
+  Database: "icon-[ph--database-fill]",
   Network: "icon-[ph--network-fill]",
   Monitor: "icon-[ph--monitor-fill]",
   Manage: "icon-[ph--air-traffic-control-fill]",
@@ -23,7 +24,6 @@ const ICON_CLASSES: Record<string, string> = {
   Terminal: "icon-[ph--terminal-window-fill]",
   UserPlus: "icon-[ph--user-plus-fill]",
   Slack: "icon-[ph--slack-logo-fill]",
-  Github: "icon-[ph--github-logo-fill]",
   Python: "icon-[lineicons--python]",
   NodeJs: "icon-[lineicons--nodejs]",
   NextJs: "icon-[lineicons--nextjs]",
@@ -34,6 +34,7 @@ const ICON_CLASSES: Record<string, string> = {
   LayoutTemplate: "icon-[ph--layout-fill]",
   MousePointerClick: "icon-[ph--cursor-click-fill]",
   Plug2: "icon-[ph--plug-fill]",
+  Key: "icon-[ph--key-fill]",
   Puzzle: "icon-[ph--puzzle-piece-fill]",
   Workflow: "icon-[ph--flow-arrow-fill]",
   Zap: "icon-[ph--lightning-fill]",
@@ -57,6 +58,9 @@ const BRAND_ICONS: Record<string, string> = {
   Mcp: "mcp",
   N8n: "n8n",
   XoCowork: "xo-cowork",
+  GoogleDrive: "google-drive",
+  OneDrive: "onedrive",
+  Github: "github",
 };
 
 function iconifyIconsPlugin() {

@@ -1,0 +1,116 @@
+---
+title: Overview
+description: What Claude Code is, what it can do, and when to choose it over other XO agents.
+icon: BookOpen
+---
+
+import { Cards, Card } from "@/components/card";
+import { Callout } from 'fumadocs-ui/components/callout';
+
+Claude Code is XO's **cloud development environment**. It pairs a persistent Linux machine with a browser-based VS Code editor and Claude — pre-installed and pre-authenticated — so you can write, run, and ship code from anywhere without touching your local machine.
+
+---
+
+## What You Get Out of the Box
+
+Every Claude Code project provisions with:
+
+- **Persistent Linux workspace** — your `$HOME` survives machine stop/start. Files, git repos, extensions, and settings persist across sessions.
+- **Claude CLI, pre-installed** — open a terminal, run `claude`, and you are in a session. No install, no config.
+- **Browser-based VS Code (code-server)** — open the editor in a new tab from the Launch panel. Works on any device, no local install required.
+- **Desktop IDE bridge** — attach your local VS Code or Cursor to the remote machine from the Launch panel. Keep your local keybindings and extensions; files and terminal stay on XO.
+- **OAuth or API key auth** — connect a Claude Pro / Team / Enterprise subscription via OAuth, or paste an Anthropic API key. Credentials are stored inside the workspace.
+- **Data connectors** — give Claude read access to GitHub, Google Drive, OneDrive, or Vercel from Setup → Data.
+- **XO MCP server** — wire in with one command and Claude can deploy, expose, and manage apps on XO directly from a conversation.
+
+---
+
+## Key Capabilities
+
+### Interactive Coding Sessions
+
+Claude Code is built for **active, synchronous work**. You are in the editor; Claude is in the terminal alongside you. It can open files, write code, run tests, start servers, and read command output — because it has full access to the same machine your files are on.
+
+This is different from handing a task to an automated agent. With Claude Code, you review and steer the work as it happens, in the same environment where the code lives.
+
+### Deploy to XO From the Terminal
+
+The **XO MCP server** turns Claude Code into a deploy tool. Install it once:
+
+```bash
+claude mcp add XO-MCP \
+  -e ACCESS_TOKEN=<your_access_token> \
+  -e DEPLOYMENT_ID=<your_deployment_id> \
+  -- uvx git+https://github.com/sharmasuraj0123/xo-mcp-server.git
+```
+
+After that, Claude can deploy apps, fetch logs, expose services with a public URL, and manage running applications by name, in natural language. Add your Docker commands to a `CLAUDE.md` in the workspace and Claude reads them as a runbook automatically — type **"Deploy to XO"** and it handles the rest.
+
+Available MCP tools: `deploy_to_xo`, `start_xo_app`, `stop_xo_app`, `remove_xo_app`, `get_xo_app_logs`, `expose_xo_app`, `update_knowledgebase_using_text`, `ask_question`.
+
+### Use Your Subscription Instead of an API Key
+
+If you pay for **Claude Pro, Team, or Enterprise**, OAuth lets you skip per-token API billing entirely. Connect via Setup → Models → Connect Claude after the workspace finishes provisioning.
+
+<Callout type="info">
+  OAuth becomes available only after the workspace finishes starting up. Wait for **Cowork API** to show **Up** before clicking Connect Claude.
+</Callout>
+
+### Code From Any Device
+
+The browser editor has no local requirements. Use Claude Code from a Chromebook, an iPad, or a borrowed machine and get a full VS Code experience. If you have a heavily-configured local VS Code or Cursor, the Desktop IDE bridge attaches your local editor to the remote workspace — you keep your setup, the files and terminal stay on XO.
+
+### Give Claude Access to Your Existing Data
+
+Setup → Data connects Claude to external accounts. Credentials stay inside the workspace, not on XO's servers.
+
+| Connector | What Claude can do with it |
+|---|---|
+| **GitHub** | Read repos, issues, pull requests |
+| **Google Drive** | Read documents, sheets, folders |
+| **OneDrive** | Read files from Microsoft OneDrive |
+| **Vercel** | Read deployments and project metadata |
+
+Combine with Claude Code's tool use to do things like: "Review every open PR in this repo and summarise the risky ones" or "Read the design doc from Drive and scaffold the database schema."
+
+---
+
+## When to Use Claude Code
+
+Claude Code fits when your work is **software engineering** — writing, running, debugging, or shipping code — and you want Claude actively involved in the same environment:
+
+- Building or debugging an app, with Claude reading your files and iterating alongside you
+- Running a dev server, executing tests, or working through a build and having Claude see the output
+- Deploying a containerised app to XO from the workspace terminal
+- Working from a device without a local dev environment
+- Keeping a persistent dev box that stays online, accessible from anywhere, and isolated from your laptop
+- Pair-programming with a teammate on the same remote workspace via project sharing
+
+---
+
+## Choosing the Right Agent
+
+XO offers four agent templates. Each is built for a distinct job — they run as separate projects and do not conflict.
+
+| | Claude Code | OpenClaw | Hermes | XO Cowork |
+|---|---|---|---|---|
+| **Built for** | Software engineering | Always-on automated agent | Lightweight messaging assistant | Collaborative workspace with memory |
+| **Primary surface** | Browser VS Code + terminal | Telegram, Slack, WhatsApp | Telegram, Slack, WhatsApp | Chat + per-project markdown files |
+| **How you interact** | Actively, inside the editor | By messaging your bot | By messaging your bot | Chat-driven with persistent context |
+| **Runs when** | You open a session | 24/7, on incoming messages | 24/7, on incoming messages | You open the workspace |
+| **Code execution** | Full — reads files, runs commands, starts servers | Chat-directed only | Chat-directed only | Chat-directed only |
+| **Deploy to XO** | Yes — via XO MCP server | No | No | No |
+| **Integrations** | XO MCP, data connectors, Desktop IDE | Manus, v0-vercel, backup/restore | — | XO Cowork API |
+| **Requires a channel?** | No | Yes — at least one required | Preferred | Preferred |
+
+**Use Claude Code** when you want to code interactively with Claude in an editor, run builds, and ship software.
+
+**Use OpenClaw** when you need an agent that responds to messages around the clock — customer support bots, team Slack/Telegram agents, or long-running tasks triggered by incoming chat. OpenClaw has the richest integration surface: Manus, v0-vercel, and a backup/restore skill.
+
+**Use Hermes** when you want a simple, always-on messaging assistant on Telegram without the full OpenClaw feature set.
+
+**Use XO Cowork** when your work is project-based writing, research, or planning and you want an agent that maintains persistent memory across sessions through markdown files (AGENTS.md, OBJECTIVES.md, and more). Accessible from Discord, Telegram, or Slack.
+
+<Callout type="info">
+  These templates run as separate projects on XO and do not conflict. Running Claude Code as your dev environment alongside an OpenClaw bot for team notifications, for example, is a common combination.
+</Callout>

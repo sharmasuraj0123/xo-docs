@@ -4,18 +4,20 @@ description: The home for your AI Agent Team.
 ---
 
 import { Cards, Card } from "@/components/card";
+import { ShaderBackground } from "@/components/hero-shader";
 
 {/* ── Hero ─────────────────────────────────────────────────────────── */}
 
-<div className="not-prose mb-16 border-b bg-gradient-to-t from-fd-primary/[0.06] via-transparent to-transparent pb-20 pt-20 text-center">
+<div className="not-prose mb-16 pb-20 pt-20 text-center relative isolate overflow-hidden rounded-2xl">
+	<ShaderBackground opacity={0.9} />
 	<div className="mb-4 inline-flex items-center gap-2 rounded-full border border-fd-border/70 bg-fd-muted/60 px-3 py-1 text-xs font-medium text-fd-muted-foreground">
 		<span className="inline-block size-1.5 rounded-full bg-fd-primary" />
 		Public Beta — Free to start
 	</div>
-	<h1 className="mb-4 text-5xl font-bold tracking-tight text-fd-foreground sm:text-6xl">
+	<h1 className="mb-4 text-4xl font-bold tracking-tight text-fd-foreground sm:text-6xl">
 		Launch your <span className="text-fd-primary">AI Agent Team</span>
 	</h1>
-	<div className="mx-auto mb-10 max-w-lg text-lg text-fd-muted-foreground">
+	<div className="mx-auto mb-10 max-w-lg px-4 sm:px-0 text-sm sm:text-lg text-fd-muted-foreground">
 		Secure, isolated remote environments for your AI agents. No local setup, no
 		infra to manage — pick a template and your agent is live.
 	</div>
@@ -37,12 +39,12 @@ import { Cards, Card } from "@/components/card";
 
 {/* ── Deploy in 3 steps ────────────────────────────────────────────── */}
 
-<div className="not-prose mb-14">
-	<h2 className="mb-6 text-xl font-semibold text-fd-foreground">
+<div className="not-prose mb-14 rounded-2xl p-4">
+	<h2 className="mb-4 text-xl font-semibold text-fd-foreground">
 		Deploy in 3 steps
 	</h2>
-	<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-		<div className="rounded-xl bg-gradient-to-br from-fd-primary/10 to-transparent p-6">
+	<div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+		<div className="rounded-xl bg-fd-card p-6">
 			<div className="mb-4 flex size-9 items-center justify-center rounded-full bg-fd-primary/10 text-sm font-bold text-fd-primary">
 				1
 			</div>
@@ -54,7 +56,7 @@ import { Cards, Card } from "@/components/card";
 				the cloud.
 			</div>
 		</div>
-		<div className="rounded-xl bg-gradient-to-br from-fd-primary/10 to-transparent p-6">
+		<div className="rounded-xl bg-fd-card p-6">
 			<div className="mb-4 flex size-9 items-center justify-center rounded-full bg-fd-primary/10 text-sm font-bold text-fd-primary">
 				2
 			</div>
@@ -66,7 +68,7 @@ import { Cards, Card } from "@/components/card";
 				own.
 			</div>
 		</div>
-		<div className="rounded-xl bg-gradient-to-br from-fd-primary/10 to-transparent p-6">
+		<div className="rounded-xl bg-fd-card p-6">
 			<div className="mb-4 flex size-9 items-center justify-center rounded-full bg-fd-primary/10 text-sm font-bold text-fd-primary">
 				3
 			</div>
@@ -112,12 +114,12 @@ import { Cards, Card } from "@/components/card";
 
 {/* ── Why XO ───────────────────────────────────────────────────────── */}
 
-<div className="not-prose mt-14 mb-14">
-	<h2 className="mb-6 text-xl font-semibold text-fd-foreground">
+<div className="not-prose mt-14 mb-14 rounded-2xl p-4">
+	<h2 className="mb-4 text-xl font-semibold text-fd-foreground">
 		Why XO Workspace
 	</h2>
-	<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-		<div className="rounded-xl bg-linear-to-br from-fd-primary/10 to-transparent p-6">
+	<div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+		<div className="rounded-xl bg-fd-card p-6">
 			<span className="icon-[ph--shield-check] size-6 mb-3 text-fd-primary" />
 			<div className="mb-1.5 font-semibold text-fd-foreground">
 				Secure by Default
@@ -127,7 +129,7 @@ import { Cards, Card } from "@/components/card";
 				your local machine.
 			</div>
 		</div>
-		<div className="rounded-xl bg-linear-to-br from-fd-primary/10 to-transparent p-6">
+		<div className="rounded-xl bg-fd-card p-6">
 			<span className="icon-[ph--lightning] size-6 mb-3 text-fd-primary" />
 			<div className="mb-1.5 font-semibold text-fd-foreground">Zero Setup</div>
 			<div className="text-sm leading-relaxed text-fd-muted-foreground">
@@ -135,7 +137,7 @@ import { Cards, Card } from "@/components/card";
 				No dependency hell.
 			</div>
 		</div>
-		<div className="rounded-xl bg-linear-to-br from-fd-primary/10 to-transparent p-6">
+		<div className="rounded-xl bg-fd-card p-6">
 			<span className="icon-[ph--robot] size-6 mb-3 text-fd-primary" />
 			<div className="mb-1.5 font-semibold text-fd-foreground">
 				One Dashboard

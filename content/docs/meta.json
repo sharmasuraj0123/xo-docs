@@ -1,4 +1,11 @@
 {
   "title": "XO Workspace",
-  "pages": ["index", "getting-started", "agents", "setup", "troubleshooting", "more"]
+  "pages": [
+    "index",
+    "getting-started",
+    "agents",
+    "setup",
+    "troubleshooting",
+    "more"
+  ]
 }

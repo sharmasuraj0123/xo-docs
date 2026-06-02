@@ -14,10 +14,14 @@ export function ShaderBackground({ opacity = 1 }: { opacity?: number }) {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [gpuAvailable, setGpuAvailable] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     setGpuAvailable(!!navigator.gpu);
+    setReducedMotion(
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    );
   }, []);
 
   if (!mounted) return null;
@@ -47,7 +51,6 @@ export function ShaderBackground({ opacity = 1 }: { opacity?: number }) {
       <SolidColor
         color={dark ? "#000000" : "#ffffff"}
         opacity={dark ? 0.61 : 0.45}
-        transform={{ edges: "wrap" }}
         visible={true}
       />
       <FlowingGradient
@@ -56,8 +59,8 @@ export function ShaderBackground({ opacity = 1 }: { opacity?: number }) {
         colorD="#d4d4d4"
         colorSpace="linear"
         distortion={0.3}
-        maskSource="idmnayde0qhf56tj00g"
         seed={22}
+        speed={reducedMotion ? 0 : 1}
         visible={true}
       />
       <Tritone

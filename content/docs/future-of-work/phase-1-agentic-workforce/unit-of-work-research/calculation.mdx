@@ -1,13 +1,13 @@
 ---
 title: How a unit of work is calculated
-description: "Snapshot before, snapshot after, compare against weighted checks — with formulas and a micro-benchmark."
+description: "Snapshot before, snapshot after, compare against weighted checks, with formulas and a micro-benchmark."
 icon: Settings
 ---
 
 <Lead>We measure a unit of work the same way a manager judges work today: snapshot the world before, snapshot it after, and compare the two against the definition of done.</Lead>
 
-The calculation needs no new accounting. Everything — scoring, settlement,
-efficiency — falls out of one state comparison.
+The calculation needs no new accounting. Scoring, settlement, and
+efficiency all fall out of one state comparison.
 
 ## The state-snapshot model
 
@@ -17,7 +17,7 @@ Formally, a unit of work is a triple:
 u = (S₀, G, B)
 
 S₀  the snapshot of world state when the unit is created
-     (files, tickets, records — whatever the workspace captures)
+     (files, tickets, records: whatever the workspace captures)
 G   the definition of done: weighted checks {(g₁,w₁), …, (gₙ,wₙ)},
      where each gᵢ is a predicate over a state snapshot
 B   the budget: what reaching the end state is worth
@@ -36,7 +36,7 @@ V(u) = ─────────────────  ∈ [0, 1]      comp
 done(u) = V(u) ≥ τ                      acceptance, typically τ = 1
 ```
 
-Note that every check runs against `S₁` — the state the environment captured —
+Note that every check runs against `S₁`, the state the environment captured,
 never against the agent's account of what it did. The score is a property of the
 world, not of the report.
 
@@ -60,7 +60,7 @@ intervention rate  = |{u : V(u) < τ}| / N     how often a human must step in
 
 *Figure 4: A worked example. A support ticket carries three weighted checks; the
 after-snapshot passes two of them, so V = 0.8. The unit does not settle until the
-remaining check passes — partial credit is visible, but payment is for the
+remaining check passes: partial credit is visible, but payment is for the
 outcome.*
 
 ## A micro-benchmark
@@ -87,7 +87,7 @@ types = {
 Three things to read off this table. First, margin is dominated by the budget,
 not the token bill: even at strict acceptance, cost is roughly a tenth of the
 outcome's value, which is why pricing on outcomes rather than tokens is viable.
-Second, the intervention rate falls directly out of the scoring rule — it is just
+Second, the intervention rate falls directly out of the scoring rule: it is just
 the share of units where some check failed, which makes the Phase 1 health
 signal (is the intervention rate falling?) measurable for free. Third, the
 weakest check dominates the pass rate: the support ticket's 0.85-probability
@@ -106,7 +106,7 @@ not an adversarial one):
 | Agent self-report | 84.1% | **4.4%** |
 | Environment snapshot (`S₁`) | 82.1% | **0.0%** |
 
-Self-reporting settles slightly more units — and silently pays for incomplete
+Self-reporting settles slightly more units, and silently pays for incomplete
 work, at a rate that compounds across thousands of units and worsens under
 optimization pressure, since "claim done" is always cheaper than "be done."
 State-snapshot verification cannot be gamed this way, because the agent does not

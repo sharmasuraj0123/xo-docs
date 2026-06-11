@@ -701,7 +701,7 @@ export function UowEnvironment() {
           <Icon name="gauge" className="mt-0.5 size-4 shrink-0 text-fd-primary" />
           <span>
             <span className="font-medium text-fd-foreground">Everything is metered as it happens. </span>
-            Tool calls, tokens, and files — recorded by the environment, not reported by the agent.
+            Tool calls, tokens, and files are recorded by the environment, not reported by the agent.
           </span>
         </div>
       </div>
@@ -714,7 +714,7 @@ export function UowEnvironment() {
   );
 }
 
-// Figure 4: how a unit of work is calculated — snapshot, diff, score, settle.
+// Figure 4: how a unit of work is calculated: snapshot, diff, score, settle.
 export function UowCalculation() {
   const checks = [
     { label: "status = closed", w: "0.5", pass: true },
@@ -752,7 +752,7 @@ export function UowCalculation() {
   );
 }
 
-// Figure 5: token cost per similar unit — flat without an environment, decaying with one.
+// Figure 5: token cost per similar unit: flat without an environment, decaying with one.
 export function UowLearningCurve() {
   const flat = "M8,38 L312,38";
   const curve = "M8,38 C36,78 70,96 130,106 C190,113 256,116 312,118";

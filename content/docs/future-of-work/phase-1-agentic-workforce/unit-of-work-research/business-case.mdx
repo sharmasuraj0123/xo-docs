@@ -14,7 +14,7 @@ become real. This page makes the economic case.
 ## Intent gets cheaper with data
 
 Every unit of work has two costs hiding inside its token bill: the cost of
-*doing* the work, and the cost of *figuring out what the work is* — reading the
+*doing* the work, and the cost of *figuring out what the work is*: reading the
 codebase, asking clarifying questions, rediscovering conventions, inferring what
 this user means by "done." The first cost is irreducible. The second is a
 function of how much the agent already knows:
@@ -31,7 +31,7 @@ k        tokens burned per unit of uncertainty resolved
 Without an environment, nothing carries over: `M` is empty on every run, `H`
 stays at its cold-start value, and the agent pays the full intent cost on unit
 1 and on unit 100. With a persistent environment, every completed unit deposits
-into `Mₜ` — the files touched, the definitions of done that were accepted, the
+into `Mₜ`: the files touched, the definitions of done that were accepted, the
 corrections a human made, the conventions that survived review. Residual
 uncertainty falls monotonically with accumulated data, so the cost per similar
 unit decays toward the execution floor:
@@ -71,7 +71,7 @@ the environment learns what done means:
 
 Three readings. First, the environment pays for itself in volume: unit 1 costs
 the same either way, so the benefit is invisible in a demo and decisive in
-production. Second, steady-state cost approaches the execution floor — at unit
+production. Second, steady-state cost approaches the execution floor: at unit
 50 the agent spends 42% less for the same outcome, and that gap is durable
 because it comes from eliminated uncertainty, not from a better model. Third,
 the savings compound with the verification economics of the calculation page:
@@ -81,8 +81,8 @@ bill fall together.
 The mechanism behind the curve is worth stating plainly. An agent without an
 environment faces *fresh* entropy on every unit: each run, it must re-resolve
 the same questions about this team's data, conventions, and intent. An agent
-inside a persistent environment faces *constant* data — the same files, the
-same memory, the same accumulating record — so the only entropy left in unit
+inside a persistent environment faces *constant* data (the same files, the
+same memory, the same accumulating record), so the only entropy left in unit
 t is what is genuinely new about unit t. Stable data is what lets the agent
 learn at all; learning is what makes it cheap. For a business, this inverts the
 usual procurement logic: the asset is not the agent you rent, it is the

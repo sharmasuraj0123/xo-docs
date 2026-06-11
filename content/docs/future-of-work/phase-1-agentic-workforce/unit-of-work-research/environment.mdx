@@ -4,7 +4,7 @@ description: "The environment owns the ground truth: it is the specification, th
 icon: Cpu
 ---
 
-<Lead>Of the three components — the agent, the task, and the environment — the environment is the one that carries the system.</Lead>
+<Lead>Of the three components (the agent, the task, and the environment), the environment is the one that carries the system.</Lead>
 
 A unit of work cannot exist in a vacuum. Its definition of done is meaningless
 unless something captures the *before* state; its verification is impossible
@@ -27,11 +27,11 @@ Three observations support putting the environment first.
 *effective* objective is whatever its environment rewards and permits. This
 mirrors a consistent finding in RL and alignment research: models optimize what
 their training environment actually measures, not what their designers intended,
-and flaws in the environment surface as flaws in behavior — from
+and flaws in the environment surface as flaws in behavior, from
 [reward hacking under imperfect proxies](https://arxiv.org/abs/2210.10760) to
 [broad emergent misalignment when production environments are exploitable](https://arxiv.org/abs/2511.18397).
 The production analogue is direct: if the workspace's definition of done is
-gameable — tests that can be edited, checks that trust the agent's own report —
+gameable (tests that can be edited, checks that trust the agent's own report),
 agents will eventually satisfy the letter of the check rather than the intent of
 the work. Hardening the environment is how you harden the outcome.
 
@@ -40,18 +40,18 @@ party doing the work is not the party keeping score. The environment is the
 natural scorekeeper: it observes every tool call, file change, and token spent as
 a side effect of hosting the work, so its record is produced *by construction*
 rather than by testimony. This is why the workspace, not the model, is the trust
-boundary — and why the boundary travels with the workspace wherever it runs,
+boundary, and why the boundary travels with the workspace wherever it runs,
 including inside your own cloud.
 
 **Environment quality, not agent quality, is the binding constraint.** Recent
 work on automated research agents found that agents iterating inside a
-well-instrumented sandbox — with clean metrics, fast feedback, and a gradable
-outcome — [outperformed human researchers on a problem humans had tuned for days](https://alignment.anthropic.com/2026/automated-w2s-researcher/),
+well-instrumented sandbox, with clean metrics, fast feedback, and a gradable
+outcome, [outperformed human researchers on a problem humans had tuned for days](https://alignment.anthropic.com/2026/automated-w2s-researcher/),
 and that the bottleneck has shifted from the agents' capability to the design of
 the evaluation environment itself. The same shift is underway in production
 agentic work: models improve on their own schedule and are swappable per unit,
-but the environment — what state is captured, what done means, what gets metered
-— is the part you own. It is also where the compounding happens: every unit of
+but the environment, meaning what state is captured, what done means, and what
+gets metered, is the part you own. It is also where the compounding happens: every unit of
 work executed in a workspace leaves behind memory, records, and sharpened
 definitions of done that make the next unit cheaper and safer.
 

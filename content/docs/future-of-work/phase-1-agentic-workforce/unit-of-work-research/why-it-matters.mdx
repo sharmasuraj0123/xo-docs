@@ -1,0 +1,60 @@
+---
+title: Why the unit of work is important
+description: "Prompts are stateless. Units of work make outcomes definable, verifiable, priceable, and accountable."
+icon: Zap
+---
+
+<Lead>A prompt is an instruction; a unit of work is a job. Everything a business needs from work — definition, verification, pricing, accountability — requires the job, not the instruction.</Lead>
+
+A prompt is a single instruction with no memory, no files, no budget, and no
+record. Whatever an agent does in response is unowned and unverifiable: when the
+reply scrolls away, there is no artifact left to check, price, or hand off. Every
+serious deficiency of prompt-driven work traces back to this statelessness.
+
+<UowAnatomy />
+
+*Figure 1: A prompt is an instruction; a unit of work is a job. The job needs a
+workspace — runtime, memory, files, tools, budget, and record — to live in while
+it is being done.*
+
+The unit of work matters for four reasons.
+
+**It makes work definable.** "Resolve this ticket" with an explicit end state is a
+specification; a chat thread is not. A definition of done forces the requester to
+say what finished and correct looks like *before* execution starts, which is
+where most delegation failures are actually created.
+
+**It makes work verifiable.** Because the unit is scoped to a state change — the
+ticket closed, the contract reviewed, the change merged — completion is checked by
+comparing the world before against the world after, the same check a manager makes
+today. Verification by state comparison is robust in a way that verification by
+reading the agent's self-report is not.
+
+**It makes work priceable.** Tokens price the machinery; units of work price the
+result. A budget attached to the unit bounds what reaching the outcome is worth,
+and the gap between budget and actual spend becomes a clean, per-outcome
+efficiency signal instead of a smeared monthly token bill.
+
+**It makes work accountable.** One unit, one owner. When something ships broken,
+there is exactly one place to look. This sounds managerial rather than technical,
+but it is the property that lets businesses extend trust to agents at all.
+
+<FeatureGrid
+	cols={4}
+	items={[
+		{ icon: "target", title: "Definable", desc: "The end state is written down before work starts." },
+		{ icon: "eye", title: "Verifiable", desc: "Done is a state comparison, not a self-report." },
+		{ icon: "scales", title: "Priceable", desc: "Budget vs. spend, per outcome, not per token." },
+		{ icon: "user", title: "Accountable", desc: "Exactly one owner per unit." },
+	]}
+/>
+
+There is also a subtler reason, borrowed from optimization theory. Any proxy
+metric placed under pressure gets gamed — Goodhart's law. Activity metrics
+(messages sent, tokens generated, hours simulated) are weak proxies and agents
+optimize them effortlessly. A verified state change is the strongest proxy
+available: it is the outcome itself. Building the economy of agent work on units
+of work is, in effect, choosing the hardest-to-game measure as the unit of
+account.
+
+Next: [how the unit of work enables collaboration](/future-of-work/phase-1-agentic-workforce/unit-of-work-research/collaboration).

@@ -1,0 +1,69 @@
+---
+title: Overview
+description: "A research note on why the unit of work matters, how it unlocks collaboration, and why the environment — not the agent — is the key part of the process."
+icon: BookOpen
+---
+
+import { Cards, Card } from "@/components/card";
+
+<Lead>A research note in three claims: the unit of work is the right abstraction for agentic work, it is the contract that makes collaboration possible, and the environment it lives in matters more than the agent that executes it.</Lead>
+
+**XO Research** · June 2026
+
+**TL;DR:** Agentic work fails to scale on prompts because prompts carry no state, no
+owner, and nothing to verify. The unit of work — a complete outcome with a
+definition of done, a budget, and a single owner — fixes this, but only when it
+lives inside an environment that captures state, meters cost, and records every
+action. We argue the environment is the load-bearing component: it is what makes
+outcomes verifiable, what makes handoffs between humans and agents possible, what
+makes the same work measurably cheaper over time, and — consistent with recent
+alignment research — what ultimately determines the quality and trustworthiness of
+agent behavior. Teams that invest in environment design get compounding returns;
+teams that invest only in better prompts or better models do not.
+
+## Background
+
+The [unit of work thesis](/future-of-work/phase-1-agentic-workforce/unit-of-work)
+holds that as agents take on whole jobs, the prompt stops being the unit and the
+work becomes the unit: you hand over an outcome to own, not an instruction to run.
+A unit of work is defined by three properties: a clear definition of done, a
+result you can verify, and a scope small enough for one owner to be accountable.
+Its lifecycle is define → budget → execute → verify → settle.
+
+This note examines *why* that abstraction wins, what it unlocks once many parties
+share it, how it is measured, and which component of the system actually carries
+the weight.
+
+## The note in five parts
+
+<Cards>
+	<Card
+		title="1. Why the unit of work is important"
+		description="Prompts are stateless; units of work make outcomes definable, verifiable, priceable, and accountable — the hardest-to-game unit of account."
+		href="/future-of-work/phase-1-agentic-workforce/unit-of-work-research/why-it-matters"
+	/>
+	<Card
+		title="2. How it enables collaboration"
+		description="The unit is the contract that crosses every handoff: definition of done, budget, identity, state, and record."
+		href="/future-of-work/phase-1-agentic-workforce/unit-of-work-research/collaboration"
+	/>
+	<Card
+		title="3. The environment is the key part"
+		description="The environment owns the ground truth: it is the specification, the scorekeeper, and the binding constraint."
+		href="/future-of-work/phase-1-agentic-workforce/unit-of-work-research/environment"
+	/>
+	<Card
+		title="4. How a unit of work is calculated"
+		description="Snapshot before, snapshot after, compare against weighted checks — with formulas and a micro-benchmark."
+		href="/future-of-work/phase-1-agentic-workforce/unit-of-work-research/calculation"
+	/>
+	<Card
+		title="5. How environments help businesses"
+		description="Persistent environments make intent cheaper to infer: the same unit costs ~42% less by run 50."
+		href="/future-of-work/phase-1-agentic-workforce/unit-of-work-research/business-case"
+	/>
+</Cards>
+
+The note closes with the
+[practical implications](/future-of-work/phase-1-agentic-workforce/unit-of-work-research/implications)
+for teams adopting agents today.

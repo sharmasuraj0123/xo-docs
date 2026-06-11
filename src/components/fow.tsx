@@ -41,6 +41,10 @@ const ICONS: Record<string, string> = {
   ticket: "icon-[ph--ticket-fill]",
   report: "icon-[ph--file-text-fill]",
   receipt: "icon-[ph--receipt-fill]",
+  slack: "icon-[ph--slack-logo-fill]",
+  whatsapp: "icon-[ph--whatsapp-logo-fill]",
+  github: "icon-[ph--github-logo-fill]",
+  list: "icon-[ph--list-checks-fill]",
 };
 
 function Icon({ name, className }: { name: string; className?: string }) {
@@ -496,6 +500,307 @@ export function StateAndCost() {
           spends, on the model you bring. XO only enables the tracking; the gap is
           your efficiency.
         </div>
+      </div>
+    </div>
+  );
+}
+
+function Arrow() {
+  return (
+    <Icon name="arrow" className="size-5 shrink-0 text-fd-muted-foreground" />
+  );
+}
+
+// Phase 2: work passes between agents, identity carried across each handoff.
+export function Handoff() {
+  return (
+    <div className="not-prose my-6 rounded-2xl border border-fd-border bg-fd-card p-5">
+      <div className="flex flex-wrap items-center gap-2">
+        <Node icon="chat" label="Intent" />
+        <Arrow />
+        <Node icon="robot" label="Agent A" highlight />
+        <Arrow />
+        <Node icon="robot" label="Agent B" highlight />
+        <Arrow />
+        <Node icon="check" label="Outcome" />
+      </div>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
+        <span className="inline-flex items-center gap-2 text-xs text-fd-muted-foreground">
+          <Icon name="identity" className="size-4" />
+          Identity carried across every handoff
+        </span>
+        <span className="inline-flex items-center gap-1 rounded-full bg-fd-primary/10 px-2.5 py-1 text-xs font-medium text-fd-primary">
+          <Icon name="network" className="size-4" />
+          REST today, streaming next
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// Phase 3: agents run a continuous improvement loop under human guardrails.
+export function Cycle() {
+  const steps = [
+    { icon: "code", label: "Propose" },
+    { icon: "check", label: "Test" },
+    { icon: "rocket", label: "Deploy" },
+    { icon: "eye", label: "Observe" },
+  ];
+  return (
+    <div className="not-prose my-6 rounded-2xl border border-fd-border bg-fd-card p-5">
+      <div className="flex flex-wrap items-center gap-2">
+        {steps.map((s, i) => (
+          <span key={s.label} className="flex items-center gap-2">
+            <Node icon={s.icon} label={s.label} highlight />
+            {i < steps.length - 1 ? <Arrow /> : null}
+          </span>
+        ))}
+        <span className="ml-1 inline-flex items-center gap-1 rounded-full bg-fd-primary/10 px-2.5 py-1 text-xs font-medium text-fd-primary">
+          <Icon name="refresh" className="size-4" />
+          and repeats
+        </span>
+      </div>
+      <div className="mt-3 text-xs leading-relaxed text-fd-muted-foreground">
+        Agents run this loop continuously. Humans set the direction and the
+        guardrails.
+      </div>
+    </div>
+  );
+}
+
+// --- Unit of work research note visuals ---
+
+// Figure 1: a prompt vs a unit of work inside a workspace.
+export function UowAnatomy() {
+  const lacks = ["One instruction", "No state, no files", "No budget, no record", "Nothing to verify"];
+  const needs = [
+    { icon: "rocket", label: "Runtime" },
+    { icon: "database", label: "Memory" },
+    { icon: "files", label: "Files" },
+    { icon: "tools", label: "Tools" },
+    { icon: "budget", label: "Budget" },
+    { icon: "eye", label: "Record" },
+  ];
+  return (
+    <div className="not-prose my-6 grid items-stretch gap-4 sm:grid-cols-[1fr_auto_1.5fr]">
+      <div className="rounded-2xl border border-fd-border bg-fd-card p-5">
+        <div className="mb-3 inline-flex items-center gap-2 rounded-lg bg-fd-muted px-3 py-1.5 text-sm font-medium text-fd-foreground">
+          <Icon name="chat" className="size-5" />
+          A prompt
+        </div>
+        <ul className="space-y-2">
+          {lacks.map((t) => (
+            <li key={t} className="flex items-start gap-2 text-sm text-fd-muted-foreground">
+              <span className="icon-[ph--x-circle-fill] mt-0.5 size-4 shrink-0 opacity-50" aria-hidden="true" />
+              <span>{t}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="flex items-center justify-center text-fd-primary">
+        <Icon name="arrow" className="size-7 rotate-90 sm:rotate-0" />
+      </div>
+
+      <div className="rounded-2xl border border-dashed border-fd-primary/50 bg-fd-primary/5 p-5">
+        <div className="mb-3 text-center text-[11px] font-medium uppercase tracking-[0.18em] text-fd-primary">
+          The workspace
+        </div>
+        <div className="mb-3 flex justify-center">
+          <div className="rounded-xl border border-fd-primary/40 bg-fd-primary/10 px-4 py-2.5 text-center">
+            <div className="text-sm font-semibold text-fd-primary">Unit of work</div>
+            <div className="text-xs text-fd-muted-foreground">an outcome with an owner</div>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          {needs.map((n) => (
+            <div key={n.label} className="flex items-center justify-center gap-1.5 rounded-lg border border-fd-border bg-fd-background px-2 py-2 text-xs font-medium text-fd-foreground">
+              <Icon name={n.icon} className="size-4 text-fd-primary" />
+              {n.label}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Figure 2: handoffs without and with a shared unit of work.
+export function UowCollaboration() {
+  return (
+    <div className="not-prose my-6 space-y-3">
+      <div className="rounded-2xl border border-fd-border bg-fd-card p-4">
+        <div className="mb-3 text-[11px] font-medium uppercase tracking-widest text-fd-muted-foreground">
+          Without a shared unit
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <Node icon="user" label="Human" />
+          <Icon name="refresh" className="size-5 shrink-0 text-fd-muted-foreground" />
+          <Node icon="robot" label="Agent A" />
+          <Icon name="refresh" className="size-5 shrink-0 text-fd-muted-foreground" />
+          <Node icon="robot" label="Agent B" />
+          <span className="text-fd-muted-foreground">···</span>
+          <Node icon="chat" label="Result?" />
+        </div>
+        <div className="mt-3 text-xs leading-relaxed text-fd-muted-foreground">
+          Prompts back and forth, context lost at every hop, no one owns the outcome.
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-fd-primary/40 bg-fd-primary/5 p-4">
+        <div className="mb-3 text-[11px] font-medium uppercase tracking-widest text-fd-primary">
+          With units of work
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <Node icon="user" label="Human" />
+          <Arrow />
+          <Node icon="cube" label="Unit · Agent A" highlight />
+          <Arrow />
+          <Node icon="cube" label="Unit · Agent B" highlight />
+          <Arrow />
+          <Node icon="check" label="Done" />
+        </div>
+        <div className="mt-3 flex flex-wrap items-center gap-1.5">
+          <span className="text-xs font-medium text-fd-foreground">Carried across every handoff:</span>
+          {["definition of done", "budget", "identity", "state", "record"].map((b) => (
+            <span key={b} className="rounded-full bg-fd-primary/10 px-2.5 py-1 text-xs text-fd-primary">
+              {b}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Figure 3: the environment owns the ground truth around the agent.
+export function UowEnvironment() {
+  return (
+    <div className="not-prose my-6 grid items-center gap-3 sm:grid-cols-[auto_1fr_auto]">
+      <div className="flex sm:flex-col items-center gap-2">
+        <Node icon="target" label="Define" />
+        <Icon name="arrow" className="size-5 text-fd-muted-foreground rotate-90 sm:rotate-0" />
+      </div>
+
+      <div className="rounded-2xl border border-fd-primary/50 bg-fd-primary/5 p-5">
+        <div className="text-center text-[11px] font-medium uppercase tracking-[0.18em] text-fd-primary">
+          The environment
+        </div>
+        <div className="mb-4 text-center text-xs text-fd-muted-foreground">
+          runtime · memory · files · tools · budget · record
+        </div>
+        <div className="mb-3 flex justify-center">
+          <Node icon="robot" label="Agent" />
+        </div>
+        <div className="mb-3 flex flex-wrap items-center justify-center gap-2">
+          <Node icon="clock" label="State before" />
+          <Arrow />
+          <Node icon="check" label="State after" highlight />
+        </div>
+        <div className="flex items-start gap-2 rounded-xl bg-fd-background/60 border border-fd-border p-3 text-xs leading-relaxed text-fd-muted-foreground">
+          <Icon name="gauge" className="mt-0.5 size-4 shrink-0 text-fd-primary" />
+          <span>
+            <span className="font-medium text-fd-foreground">Everything is metered as it happens. </span>
+            Tool calls, tokens, and files — recorded by the environment, not reported by the agent.
+          </span>
+        </div>
+      </div>
+
+      <div className="flex sm:flex-col items-center gap-2">
+        <Icon name="arrow" className="size-5 text-fd-muted-foreground rotate-90 sm:rotate-0" />
+        <Node icon="scales" label="Verify + settle" />
+      </div>
+    </div>
+  );
+}
+
+// Figure 4: how a unit of work is calculated — snapshot, diff, score, settle.
+export function UowCalculation() {
+  const checks = [
+    { label: "status = closed", w: "0.5", pass: true },
+    { label: "reply sent", w: "0.3", pass: true },
+    { label: "KB article linked", w: "0.2", pass: false },
+  ];
+  return (
+    <div className="not-prose my-6 rounded-2xl border border-fd-border bg-fd-card p-5">
+      <div className="flex flex-wrap items-center gap-2">
+        <Node icon="clock" label="Snapshot S₀" />
+        <Arrow />
+        <Node icon="robot" label="Agent executes" />
+        <Arrow />
+        <Node icon="eye" label="Snapshot S₁" highlight />
+        <Arrow />
+        <Node icon="scales" label="Score V = Σwᵢ·gᵢ(S₁)" highlight />
+      </div>
+      <div className="mt-4 grid gap-2 sm:grid-cols-3">
+        {checks.map((c) => (
+          <div key={c.label} className="flex items-center gap-2 rounded-xl border border-fd-border bg-fd-background px-3 py-2 text-xs">
+            <span
+              className={`${c.pass ? "icon-[ph--check-circle-fill] text-fd-primary" : "icon-[ph--x-circle-fill] opacity-50"} size-4 shrink-0`}
+              aria-hidden="true"
+            />
+            <span className="text-fd-foreground">{c.label}</span>
+            <span className="ml-auto text-fd-muted-foreground">w = {c.w}</span>
+          </div>
+        ))}
+      </div>
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-fd-primary/5 p-3 text-xs">
+        <span className="font-medium text-fd-primary">V = 0.5 + 0.3 + 0 = 0.8 → below τ = 1.0, one check left to fix</span>
+        <span className="text-fd-muted-foreground">settle when V ≥ τ : compare budget B against metered cost C</span>
+      </div>
+    </div>
+  );
+}
+
+// Figure 5: token cost per similar unit — flat without an environment, decaying with one.
+export function UowLearningCurve() {
+  const flat = "M8,38 L312,38";
+  const curve = "M8,38 C36,78 70,96 130,106 C190,113 256,116 312,118";
+  const area = `${curve} L312,148 L8,148 Z`;
+  return (
+    <div className="not-prose my-6 rounded-2xl border border-fd-border bg-fd-card p-5">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+        <div className="text-sm font-medium text-fd-foreground">
+          Tokens per similar unit of work
+        </div>
+        <div className="flex flex-wrap items-center gap-3 text-xs">
+          <span className="inline-flex items-center gap-1.5 text-fd-muted-foreground">
+            <span className="h-0.5 w-5 rounded bg-fd-muted-foreground/60" />
+            without an environment
+          </span>
+          <span className="inline-flex items-center gap-1.5 font-medium text-fd-primary">
+            <span className="h-0.5 w-5 rounded bg-fd-primary" />
+            with a persistent environment
+          </span>
+        </div>
+      </div>
+      <svg
+        viewBox="0 0 320 150"
+        className="h-32 w-full"
+        preserveAspectRatio="none"
+        role="img"
+        aria-label="Token cost per similar unit: constant without an environment, decaying toward an execution floor with one"
+      >
+        <path d={area} className="fill-fd-primary" opacity="0.1" />
+        <path
+          d={flat}
+          fill="none"
+          className="stroke-fd-muted-foreground"
+          strokeWidth="2"
+          strokeDasharray="5 4"
+          opacity="0.7"
+        />
+        <path
+          d={curve}
+          fill="none"
+          className="stroke-fd-primary"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+      </svg>
+      <div className="mt-1 flex justify-between text-[11px] text-fd-muted-foreground">
+        <span>unit 1 (cold start: both pay full intent cost)</span>
+        <span>unit 50 (environment pays only the execution floor)</span>
       </div>
     </div>
   );

@@ -38,6 +38,8 @@ const ICON_CLASSES: Record<string, string> = {
   Puzzle: "icon-[ph--puzzle-piece-fill]",
   Workflow: "icon-[ph--flow-arrow-fill]",
   Zap: "icon-[ph--lightning-fill]",
+  Telescope: "icon-[ph--telescope-fill]",
+  Microscope: "icon-[ph--microscope-fill]",
   more: "icon-[ph--dots-three-fill]",
 };
 

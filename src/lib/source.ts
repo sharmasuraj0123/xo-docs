@@ -40,6 +40,7 @@ const ICON_CLASSES: Record<string, string> = {
   Zap: "icon-[ph--lightning-fill]",
   Telescope: "icon-[ph--telescope-fill]",
   Microscope: "icon-[ph--microscope-fill]",
+  FlaskConical: "icon-[ph--flask-fill]",
   more: "icon-[ph--dots-three-fill]",
 };
 

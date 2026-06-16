@@ -2,6 +2,7 @@
   "title": "Experiments",
   "icon": "FlaskConical",
   "pages": [
-    "index"
+    "index",
+    "coding-model-eval-harness"
   ]
 }

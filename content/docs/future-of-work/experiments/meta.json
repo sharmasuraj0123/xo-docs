@@ -3,6 +3,7 @@
   "icon": "FlaskConical",
   "pages": [
     "index",
-    "coding-model-eval-harness"
+    "coding-model-eval-harness",
+    "the-incurious-agent"
   ]
 }

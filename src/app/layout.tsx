@@ -2,6 +2,7 @@ import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata } from "next";
 import "./global.css";
 import { Raleway } from "next/font/google";
+import { GoogleAnalyticsProvider } from "@/components/google-analytics";
 import { PostHogPageView, PostHogProvider } from "@/components/posthog";
 import { appName, siteUrl } from "@/lib/shared";
 
@@ -31,6 +32,7 @@ export default function Layout({ children }: LayoutProps<"/">) {
     <html lang="en" className={raleway.className} suppressHydrationWarning>
       <body className="flex flex-col min-h-screen">
         <RootProvider>
+          <GoogleAnalyticsProvider />
           <PostHogProvider>
             <PostHogPageView />
             {children}

@@ -1,0 +1,1 @@
+export { GoogleAnalyticsProvider } from "./provider";

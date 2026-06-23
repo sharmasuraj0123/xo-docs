@@ -25,6 +25,7 @@
     "fumadocs-ui": "16.8.1",
     "hast-util-to-jsx-runtime": "^2.3.6",
     "next": "16.2.4",
+    "posthog-js": "^1.392.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "remark": "^15.0.1",

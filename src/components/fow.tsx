@@ -140,8 +140,18 @@ export function Unbundling() {
           The unbundling
         </div>
         <div className="space-y-2">
-          <Tile icon="brain" label="Brain stays human" sub="scarce, valuable" tone="muted" />
-          <Tile icon="robot" label="Skill becomes runtime" sub="on demand, parallel" tone="primary" />
+          <Tile
+            icon="brain"
+            label="Brain stays human"
+            sub="scarce, valuable"
+            tone="muted"
+          />
+          <Tile
+            icon="robot"
+            label="Skill becomes runtime"
+            sub="on demand, parallel"
+            tone="primary"
+          />
         </div>
         <div className="mt-3 flex items-center gap-2 text-xs text-fd-primary">
           <Icon name="lightning" className="size-4" />
@@ -168,7 +178,9 @@ export function Flow({ steps }: { steps: Item[] }) {
               {String(i + 1).padStart(2, "0")}
             </span>
           </div>
-          <div className="text-sm font-medium text-fd-foreground">{s.title}</div>
+          <div className="text-sm font-medium text-fd-foreground">
+            {s.title}
+          </div>
           {s.desc ? (
             <div className="mt-1 text-xs leading-relaxed text-fd-muted-foreground">
               {s.desc}
@@ -203,7 +215,9 @@ export function FeatureGrid({
           <div className="mb-2 flex size-9 items-center justify-center rounded-lg bg-fd-primary/10 text-fd-primary">
             <Icon name={it.icon} className="size-5" />
           </div>
-          <div className="text-sm font-medium text-fd-foreground">{it.title}</div>
+          <div className="text-sm font-medium text-fd-foreground">
+            {it.title}
+          </div>
           {it.desc ? (
             <div className="mt-1 text-xs leading-relaxed text-fd-muted-foreground">
               {it.desc}
@@ -232,14 +246,22 @@ function Column({
       : "bg-fd-muted text-fd-foreground";
   return (
     <div className="rounded-2xl border border-fd-border bg-fd-card p-5">
-      <div className={`mb-4 inline-flex items-center gap-2 rounded-lg px-3 py-1.5 ${head}`}>
+      <div
+        className={`mb-4 inline-flex items-center gap-2 rounded-lg px-3 py-1.5 ${head}`}
+      >
         <Icon name={icon} className="size-5" />
         <span className="text-sm font-medium">{title}</span>
       </div>
       <ul className="space-y-2">
         {items.map((t) => (
-          <li key={t} className="flex items-start gap-2 text-sm text-fd-muted-foreground">
-            <Icon name="check" className="mt-0.5 size-4 shrink-0 text-fd-primary" />
+          <li
+            key={t}
+            className="flex items-start gap-2 text-sm text-fd-muted-foreground"
+          >
+            <Icon
+              name="check"
+              className="mt-0.5 size-4 shrink-0 text-fd-primary"
+            />
             <span>{t}</span>
           </li>
         ))}
@@ -324,7 +346,9 @@ function Node({
     ? "border-fd-primary/40 bg-fd-primary/10 text-fd-primary"
     : "border-fd-border bg-fd-background text-fd-foreground";
   return (
-    <div className={`flex items-center gap-2 rounded-xl border px-3 py-2 ${cls}`}>
+    <div
+      className={`flex items-center gap-2 rounded-xl border px-3 py-2 ${cls}`}
+    >
       <Icon name={icon} className="size-5 shrink-0" />
       <span className="text-sm font-medium">{label}</span>
     </div>
@@ -353,9 +377,15 @@ function Lane({
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <Node icon="chat" label="Intent" />
-        <Icon name="arrow" className="size-5 shrink-0 text-fd-muted-foreground" />
+        <Icon
+          name="arrow"
+          className="size-5 shrink-0 text-fd-muted-foreground"
+        />
         <Node icon={middleIcon} label={middleLabel} highlight={highlight} />
-        <Icon name="arrow" className="size-5 shrink-0 text-fd-muted-foreground" />
+        <Icon
+          name="arrow"
+          className="size-5 shrink-0 text-fd-muted-foreground"
+        />
         <Node icon="check" label="Outcome" />
         <div className="ml-auto flex flex-wrap gap-1.5">
           {badges.map((b) => (
@@ -402,7 +432,13 @@ function Pill({ icon, label }: { icon: string; label: string }) {
   );
 }
 
-function SessionRow({ intent, status }: { intent: string; status: "done" | "running" }) {
+function SessionRow({
+  intent,
+  status,
+}: {
+  intent: string;
+  status: "done" | "running";
+}) {
   const done = status === "done";
   return (
     <div className="rounded-xl border border-fd-border bg-fd-background p-3">
@@ -434,7 +470,9 @@ export function WorkspaceSessions() {
           <Icon name="cube" className="size-5" />
         </div>
         <div>
-          <div className="text-sm font-medium text-fd-foreground">XO workspace</div>
+          <div className="text-sm font-medium text-fd-foreground">
+            XO workspace
+          </div>
           <div className="text-xs text-fd-muted-foreground">
             One session per intent, each tracked on its own
           </div>
@@ -464,12 +502,15 @@ export function StateAndCost() {
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Node icon="clock" label="State before" />
-          <Icon name="arrow" className="size-5 shrink-0 text-fd-muted-foreground" />
+          <Icon
+            name="arrow"
+            className="size-5 shrink-0 text-fd-muted-foreground"
+          />
           <Node icon="check" label="State after" highlight />
         </div>
         <div className="mt-3 text-xs leading-relaxed text-fd-muted-foreground">
-          Compare the two, the same check a manager makes today. If the world moved
-          the way you asked, the work is done.
+          Compare the two, the same check a manager makes today. If the world
+          moved the way you asked, the work is done.
         </div>
       </div>
 
@@ -497,8 +538,8 @@ export function StateAndCost() {
         </div>
         <div className="mt-3 text-xs leading-relaxed text-fd-muted-foreground">
           The budget is what the outcome is worth. The tokens are where the AI
-          spends, on the model you bring. XO only enables the tracking; the gap is
-          your efficiency.
+          spends, on the model you bring. XO only enables the tracking; the gap
+          is your efficiency.
         </div>
       </div>
     </div>
@@ -572,7 +613,12 @@ export function Cycle() {
 
 // Figure 1: a prompt vs a unit of work inside a workspace.
 export function UowAnatomy() {
-  const lacks = ["One instruction", "No state, no files", "No budget, no record", "Nothing to verify"];
+  const lacks = [
+    "One instruction",
+    "No state, no files",
+    "No budget, no record",
+    "Nothing to verify",
+  ];
   const needs = [
     { icon: "rocket", label: "Runtime" },
     { icon: "database", label: "Memory" },
@@ -585,13 +631,18 @@ export function UowAnatomy() {
     <div className="not-prose my-6 grid items-stretch gap-4 sm:grid-cols-[1fr_auto_1.5fr]">
       <div className="rounded-2xl border border-fd-border bg-fd-card p-5">
         <div className="mb-3 inline-flex items-center gap-2 rounded-lg bg-fd-muted px-3 py-1.5 text-sm font-medium text-fd-foreground">
-          <Icon name="chat" className="size-5" />
-          A prompt
+          <Icon name="chat" className="size-5" />A prompt
         </div>
         <ul className="space-y-2">
           {lacks.map((t) => (
-            <li key={t} className="flex items-start gap-2 text-sm text-fd-muted-foreground">
-              <span className="icon-[ph--x-circle-fill] mt-0.5 size-4 shrink-0 opacity-50" aria-hidden="true" />
+            <li
+              key={t}
+              className="flex items-start gap-2 text-sm text-fd-muted-foreground"
+            >
+              <span
+                className="icon-[ph--x-circle-fill] mt-0.5 size-4 shrink-0 opacity-50"
+                aria-hidden="true"
+              />
               <span>{t}</span>
             </li>
           ))}
@@ -608,13 +659,20 @@ export function UowAnatomy() {
         </div>
         <div className="mb-3 flex justify-center">
           <div className="rounded-xl border border-fd-primary/40 bg-fd-primary/10 px-4 py-2.5 text-center">
-            <div className="text-sm font-semibold text-fd-primary">Unit of work</div>
-            <div className="text-xs text-fd-muted-foreground">an outcome with an owner</div>
+            <div className="text-sm font-semibold text-fd-primary">
+              Unit of work
+            </div>
+            <div className="text-xs text-fd-muted-foreground">
+              an outcome with an owner
+            </div>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           {needs.map((n) => (
-            <div key={n.label} className="flex items-center justify-center gap-1.5 rounded-lg border border-fd-border bg-fd-background px-2 py-2 text-xs font-medium text-fd-foreground">
+            <div
+              key={n.label}
+              className="flex items-center justify-center gap-1.5 rounded-lg border border-fd-border bg-fd-background px-2 py-2 text-xs font-medium text-fd-foreground"
+            >
               <Icon name={n.icon} className="size-4 text-fd-primary" />
               {n.label}
             </div>
@@ -635,15 +693,22 @@ export function UowCollaboration() {
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Node icon="user" label="Human" />
-          <Icon name="refresh" className="size-5 shrink-0 text-fd-muted-foreground" />
+          <Icon
+            name="refresh"
+            className="size-5 shrink-0 text-fd-muted-foreground"
+          />
           <Node icon="robot" label="Agent A" />
-          <Icon name="refresh" className="size-5 shrink-0 text-fd-muted-foreground" />
+          <Icon
+            name="refresh"
+            className="size-5 shrink-0 text-fd-muted-foreground"
+          />
           <Node icon="robot" label="Agent B" />
           <span className="text-fd-muted-foreground">···</span>
           <Node icon="chat" label="Result?" />
         </div>
         <div className="mt-3 text-xs leading-relaxed text-fd-muted-foreground">
-          Prompts back and forth, context lost at every hop, no one owns the outcome.
+          Prompts back and forth, context lost at every hop, no one owns the
+          outcome.
         </div>
       </div>
 
@@ -661,12 +726,19 @@ export function UowCollaboration() {
           <Node icon="check" label="Done" />
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
-          <span className="text-xs font-medium text-fd-foreground">Carried across every handoff:</span>
-          {["definition of done", "budget", "identity", "state", "record"].map((b) => (
-            <span key={b} className="rounded-full bg-fd-primary/10 px-2.5 py-1 text-xs text-fd-primary">
-              {b}
-            </span>
-          ))}
+          <span className="text-xs font-medium text-fd-foreground">
+            Carried across every handoff:
+          </span>
+          {["definition of done", "budget", "identity", "state", "record"].map(
+            (b) => (
+              <span
+                key={b}
+                className="rounded-full bg-fd-primary/10 px-2.5 py-1 text-xs text-fd-primary"
+              >
+                {b}
+              </span>
+            ),
+          )}
         </div>
       </div>
     </div>
@@ -679,7 +751,10 @@ export function UowEnvironment() {
     <div className="not-prose my-6 grid items-center gap-3 sm:grid-cols-[auto_1fr_auto]">
       <div className="flex sm:flex-col items-center gap-2">
         <Node icon="target" label="Define" />
-        <Icon name="arrow" className="size-5 text-fd-muted-foreground rotate-90 sm:rotate-0" />
+        <Icon
+          name="arrow"
+          className="size-5 text-fd-muted-foreground rotate-90 sm:rotate-0"
+        />
       </div>
 
       <div className="rounded-2xl border border-fd-primary/50 bg-fd-primary/5 p-5">
@@ -698,16 +773,25 @@ export function UowEnvironment() {
           <Node icon="check" label="State after" highlight />
         </div>
         <div className="flex items-start gap-2 rounded-xl bg-fd-background/60 border border-fd-border p-3 text-xs leading-relaxed text-fd-muted-foreground">
-          <Icon name="gauge" className="mt-0.5 size-4 shrink-0 text-fd-primary" />
+          <Icon
+            name="gauge"
+            className="mt-0.5 size-4 shrink-0 text-fd-primary"
+          />
           <span>
-            <span className="font-medium text-fd-foreground">Everything is metered as it happens. </span>
-            Tool calls, tokens, and files are recorded by the environment, not reported by the agent.
+            <span className="font-medium text-fd-foreground">
+              Everything is metered as it happens.{" "}
+            </span>
+            Tool calls, tokens, and files are recorded by the environment, not
+            reported by the agent.
           </span>
         </div>
       </div>
 
       <div className="flex sm:flex-col items-center gap-2">
-        <Icon name="arrow" className="size-5 text-fd-muted-foreground rotate-90 sm:rotate-0" />
+        <Icon
+          name="arrow"
+          className="size-5 text-fd-muted-foreground rotate-90 sm:rotate-0"
+        />
         <Node icon="scales" label="Verify + settle" />
       </div>
     </div>
@@ -734,7 +818,10 @@ export function UowCalculation() {
       </div>
       <div className="mt-4 grid gap-2 sm:grid-cols-3">
         {checks.map((c) => (
-          <div key={c.label} className="flex items-center gap-2 rounded-xl border border-fd-border bg-fd-background px-3 py-2 text-xs">
+          <div
+            key={c.label}
+            className="flex items-center gap-2 rounded-xl border border-fd-border bg-fd-background px-3 py-2 text-xs"
+          >
             <span
               className={`${c.pass ? "icon-[ph--check-circle-fill] text-fd-primary" : "icon-[ph--x-circle-fill] opacity-50"} size-4 shrink-0`}
               aria-hidden="true"
@@ -745,8 +832,12 @@ export function UowCalculation() {
         ))}
       </div>
       <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-fd-primary/5 p-3 text-xs">
-        <span className="font-medium text-fd-primary">V = 0.5 + 0.3 + 0 = 0.8 → below τ = 1.0, one check left to fix</span>
-        <span className="text-fd-muted-foreground">settle when V ≥ τ : compare budget B against metered cost C</span>
+        <span className="font-medium text-fd-primary">
+          V = 0.5 + 0.3 + 0 = 0.8 → below τ = 1.0, one check left to fix
+        </span>
+        <span className="text-fd-muted-foreground">
+          settle when V ≥ τ : compare budget B against metered cost C
+        </span>
       </div>
     </div>
   );

@@ -1,9 +1,5 @@
 {
   "title": "Experiments",
   "icon": "FlaskConical",
-  "pages": [
-    "index",
-    "coding-model-eval-harness",
-    "the-incurious-agent"
-  ]
+  "pages": ["index", "coding-model-eval-harness", "the-incurious-agent"]
 }

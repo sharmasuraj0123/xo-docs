@@ -13,6 +13,8 @@ const posthogOptions: Partial<PostHogConfig> = {
   session_recording: {
     maskAllInputs: true,
   },
+  enable_heatmaps: true,
+  capture_pageleave: true,
 };
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {

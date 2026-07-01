@@ -8,7 +8,7 @@ import { getPageImage, source } from "@/lib/source";
 export const revalidate = false;
 
 const iconBuffer = fs.readFileSync(
-  path.join(process.cwd(), "src/app/icon.png"),
+  path.join(process.cwd(), "public/icons/logo.png"),
 );
 const iconSrc = `data:image/png;base64,${iconBuffer.toString("base64")}`;
 

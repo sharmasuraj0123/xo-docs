@@ -1,19 +1,17 @@
 ---
 title: Unit of work
-description: "When the work becomes the unit, its home moves from the prompt to the workspace."
+description: "The contract that replaces the prompt: a job with a definition of done, a budget, and a single owner, living in a workspace."
 icon: Blocks
 ---
 
-<Lead>When the work becomes the unit, a prompt is no longer enough. A unit of work needs a workspace.</Lead>
+<Lead>Phase 1 said businesses hire agents and pay for outcomes. This page defines the thing they actually hand over: not a prompt, a job.</Lead>
 
-A prompt is a single instruction. It has no memory of what came before, no files
-to work on, no tools to reach your systems, no budget, and no record once the
-reply scrolls away. A unit of work is different: it has to be owned from start to
-finish, executed, checked, and paid for. None of that fits in a prompt. It fits in
-a workspace, a place with a runtime to act, memory to carry context, files to
-produce, tools to reach out, and the budget and record that let you verify and
-settle. So as the work becomes the unit, its home moves from the prompt to the
-workspace.
+A prompt is a single instruction with no memory, no files, no tools, no budget,
+and no record once the reply scrolls away. Whatever an agent does in response is
+unowned and unverifiable, and every serious deficiency of prompt-driven work
+traces back to that statelessness. A unit of work is the opposite: a job that is
+owned from start to finish, executed, checked, and paid for. None of that fits
+in an instruction; it fits in a workspace.
 
 <SplitCompare
 	left={{
@@ -28,7 +26,7 @@ workspace.
 	}}
 />
 
-## What every unit of work needs
+## What the job needs to live
 
 <FeatureGrid
 	cols={3}
@@ -42,7 +40,7 @@ workspace.
 	]}
 />
 
-## The life of a unit of work
+## The lifecycle
 
 <Flow
 	steps={[
@@ -54,11 +52,51 @@ workspace.
 	]}
 />
 
-## In plain terms
+## What the contract buys you
 
-A unit of work is not a bigger prompt, it is a job with an owner. The reason it
-needs a workspace is that a job needs somewhere to live while it is being done:
-state to remember, files to touch, tools to use, and a ledger to prove it
-happened. The prompt is just the opening instruction. The workspace is where the
-work actually gets done, checked, and settled, which is why the workspace, not the
-prompt, is the real unit of an agentic workforce.
+<FeatureGrid
+	cols={4}
+	items={[
+		{ icon: "target", title: "Definable", desc: "The end state is written down before work starts." },
+		{ icon: "eye", title: "Verifiable", desc: "Done is a state comparison, not a self-report." },
+		{ icon: "scales", title: "Priceable", desc: "Budget vs. spend, per outcome, not per token." },
+		{ icon: "user", title: "Accountable", desc: "Exactly one owner per unit." },
+	]}
+/>
+
+A definition of done forces the requester to say what correct looks like
+*before* execution, which is where most delegation failures are created.
+Verification by state comparison is robust in a way that reading the agent's
+self-report is not. A budget makes the gap between value and spend a clean
+per-outcome signal. And one owner per unit means that when something ships
+broken there is exactly one place to look, the property that lets a business
+extend trust to a non-human worker at all.
+
+There is a subtler reason the unit is built this way, borrowed from optimization
+theory: any proxy placed under pressure gets gamed (Goodhart's law), and
+activity metrics (messages sent, tokens generated, hours logged) are proxies an
+agent optimizes effortlessly. A verified state change is the hardest-to-game
+measure available, because it is the outcome itself.
+
+## The loop a business already runs
+
+<Flow
+	steps={[
+		{ icon: "chat", title: "Intent", desc: "What the business wants: a definition of done plus a budget." },
+		{ icon: "robot", title: "Action", desc: "Execution inside the workspace, by a person or an agent." },
+		{ icon: "check", title: "Impact", desc: "The verified state change, settled against the budget." },
+	]}
+/>
+
+Businesses do not think in models, agents, or tokens, and should not have to:
+nobody prices an accountant by spreadsheet keystrokes. The loop they run is
+intent, action, impact, and the unit of work maps onto it one-to-one. The
+model, the agent, and the tokens disappear inside the action step as swappable
+implementation details, which is what lets an agent's unit of work sit in the
+same queue, carry the same kind of budget, and be judged by the same check as
+work done by people.
+
+The contract defines and verifies the job. What it does not do, by itself, is
+give the delivered work a unit of account. Next:
+[the quirq](/future-of-work/phase-1-agentic-workforce/quirq), the unit minted
+when this lifecycle completes.

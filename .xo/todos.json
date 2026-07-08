@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "updated_at": "2026-05-27T14:13:43Z",
+  "sessions": {
+    "a1175c11-4453-4422-b572-228cc1ccf1cd": {
+      "runtime": "claude_code",
+      "source_file": null,
+      "session_started_at": "2026-05-11T15:16:13.955Z",
+      "todos": []
+    }
+  }
+}

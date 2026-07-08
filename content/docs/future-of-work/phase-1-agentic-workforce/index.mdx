@@ -77,40 +77,22 @@ is why it becomes the natural thing to charge for.
 	]}
 />
 
-## How we calculate a unit of work
+## How it gets measured
 
-<Lead>It needs no new accounting. We measure it the way we judge work today: did the state change, and what did it cost?</Lead>
-
-<Flow
-	steps={[
-		{ icon: "target", title: "Create an action item", desc: "Name the outcome and the end state you want." },
-		{ icon: "budget", title: "Assign a budget", desc: "Set what reaching that state is worth." },
-		{ icon: "robot", title: "The agent works", desc: "It runs against the item until the state is reached." },
-		{ icon: "scales", title: "Compare and reconcile", desc: "Check the state changed, then budget against AI spend." },
-	]}
-/>
-
-The trick is that we simply compare the state, the same way a manager does today.
-You create an action item, describe the end state you want, and assign it a
-budget, exactly like scoping a ticket or briefing a contractor. The agent runs
-against it. When it reports done, there are two comparisons: the state, did the
-world actually change the way you asked, the ticket closed, the contract reviewed,
-the report delivered; and the cost, what you budgeted versus what the AI actually
-spent in tokens to get there. The budget is the value of the outcome, and the
-tokens are where the AI spends, on the model you bring. XO does not run the model,
-it only enables this tracking, and the gap between budget and spend is your
-efficiency. That is the whole calculation.
-
-This lives inside the product. Each XO workspace can hold many sessions, and you
-open a separate session per intent: one to clear the support backlog, one to
-review contracts, one for the weekly report. Every session comes with the same
-machinery enabled by default, the action item, the budget, the state check, and a
-meter on what the AI spends. Because the boundary is the session and the session
-is the intent, cost and outcome are tracked per intent instead of smeared across a
-single token bill. That is what lets you price on intent and outcome rather than
-tokens.
+<Lead>No new accounting: budget the outcome, verify the state change, meter the spend. The gap is your efficiency.</Lead>
 
 <StateAndCost />
+
+You scope an outcome the way you scope a ticket or brief a contractor: describe
+the end state, assign a budget. The agent runs against it; when it reports done,
+the environment compares the world before against the world after and meters
+what the AI actually spent, on the model you bring. Verified delivery against a
+human-set budget is what mints [quirqs](/future-of-work/phase-1-agentic-workforce/quirq),
+the unit this whole phase is priced in; the full arithmetic lives in
+[the quirq calculus](/future-of-work/phase-1-agentic-workforce/unit-of-work-research/calculation).
+In the product, each XO session is one intent with this machinery on by default,
+so cost and outcome are tracked per intent rather than smeared across a token
+bill.
 
 ## Who does what
 
@@ -149,3 +131,5 @@ The honest signal that this is real, rather than a demo, is how often a human ha
 to step in to fix or redo an agent's output. When that intervention rate keeps
 falling, agents are genuinely doing the work. When it stays high, they are still
 just tools with a chat box.
+
+Next: [the unit of work](/future-of-work/phase-1-agentic-workforce/unit-of-work), the contract that replaces the prompt.

@@ -1,14 +1,13 @@
 {
-  "title": "Research: Why the Unit of Work",
+  "title": "Research: The Quirq",
   "icon": "Microscope",
   "pages": [
     "index",
-    "why-it-matters",
-    "collaboration",
     "environment",
     "calculation",
-    "business-case",
-    "methodology",
-    "implications"
+    "dashboard",
+    "gaming",
+    "validation",
+    "playbook"
   ]
 }

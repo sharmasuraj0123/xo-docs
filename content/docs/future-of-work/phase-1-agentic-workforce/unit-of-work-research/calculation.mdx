@@ -1,34 +1,27 @@
 ---
-title: How a unit of work is calculated
-description: "Snapshot before, snapshot after, compare against weighted checks, with formulas and a micro-benchmark."
+title: The quirq calculus
+description: "Every calculation in quirq accounting: scoring, the mint, the all-in cost model, unit and portfolio metrics, the time axis, and the energy bridge."
 icon: Settings
 ---
 
-<Lead>We measure a unit of work the same way a manager judges work today: snapshot the world before, snapshot it after, and compare the two against the definition of done.</Lead>
+<Lead>Snapshot before, snapshot after, score against weighted checks, mint against the budget, meter everything. Every number an operator needs falls out of one ledger.</Lead>
 
-The calculation needs no new accounting. Scoring, settlement, and
-efficiency all fall out of one state comparison.
+## Scoring: how completion is computed
 
-## The state-snapshot model
+A unit of work is a triple:
 
-Formally, a unit of work is a triple:
-
-```text
+```
 u = (S₀, G, B)
 
 S₀  the snapshot of world state when the unit is created
-     (files, tickets, records: whatever the workspace captures)
-G   the definition of done: weighted checks {(g₁,w₁), …, (gₙ,wₙ)},
-     where each gᵢ is a predicate over a state snapshot
-B   the budget: what reaching the end state is worth
+G   the definition of done: weighted checks {(g₁,w₁), …, (gₙ,wₙ)}
+B   the budget: what reaching the end state is worth, set by the owner
 ```
 
-When the agent reports done, the environment captures the after-snapshot `S₁` and
-computes the diff and the completion score:
+When the agent reports done, the environment captures the after-snapshot S₁ and
+computes:
 
-```text
-ΔS = diff(S₀, S₁)                      what actually changed
-
+```
          Σᵢ wᵢ · gᵢ(S₁)
 V(u) = ─────────────────  ∈ [0, 1]      completion score
             Σᵢ wᵢ
@@ -36,83 +29,144 @@ V(u) = ─────────────────  ∈ [0, 1]      comp
 done(u) = V(u) ≥ τ                      acceptance, typically τ = 1
 ```
 
-Note that every check runs against `S₁`, the state the environment captured,
-never against the agent's account of what it did. The score is a property of the
-world, not of the report.
+Every check runs against S₁, the state the environment captured, never the
+agent's account of what it did. The score is a property of the world, not of a
+report.
 
-Settlement then compares the budget against the metered cost:
+**Worked:** a support ticket carries three checks: status closed (w = 0.5), reply
+sent (w = 0.3), KB article linked (w = 0.2). The after-snapshot passes the first
+two: V = 0.8.
 
-```text
-C(u) = Σ tokens × price + tool costs    metered by the environment
+## The mint
 
-margin(u)     = B − C(u)                 your efficiency on this unit
-value-per-$   = V(u) · B / C(u)          outcome value per dollar of AI spend
+```
+Q(u) = V(u) · B(u)              divisible settlement (pay per delivered share)
+Q(u) = B(u) · [V(u) ≥ τ]        atomic settlement (all or nothing)
 ```
 
-And across a portfolio of units, the two numbers that matter:
+The owner declares the regime at creation: atomic when partial completion is
+worthless (a half-merged change), divisible when it is not (four of five report
+sections). Quirqs inherit the budget's currency, so quirq totals compare directly
+to payroll, vendor spend, and revenue.
 
-```text
-realized value     = Σᵤ V(u) · B(u)
-intervention rate  = |{u : V(u) < τ}| / N     how often a human must step in
+## The all-in cost of an outcome
+
+The token bill is one line of the true cost. The environment meters all of them:
+
+```
+C_total(u) =  Σ tokensₘ · priceₘ           inference, per model
+           +  t_cpu·r_cpu + t_gpu·r_gpu    metered compute
+           +  Σ calls_j · price_j          external API calls
+           +  storage · r_store            storage
+           +  F / N_units                  environment amortization
+           +  h · r_human                  human intervention time
 ```
 
-<UowCalculation />
+The last term matters most and is most often omitted: a program whose outputs
+each require twenty minutes of senior review pays its largest cost in a currency
+the token bill never sees. Under quirq accounting it cannot hide, because
+interventions are exactly the V < τ events the scoring rule already counts.
 
-*Figure 4: A worked example. A support ticket carries three weighted checks; the
-after-snapshot passes two of them, so V = 0.8. The unit does not settle until the
-remaining check passes: partial credit is visible, but payment is for the
-outcome.*
+**Worked:** the ticket above, resolved with 38k tokens at $2/M plus 4k at $0.25/M
+(inference $0.077), 90 CPU-seconds ($0.001), two CRM calls ($0.02), amortization
+($0.03), no intervention: **C_total = $0.128**.
 
-## A micro-benchmark
+## Unit metrics
 
-To make the arithmetic concrete, we simulated 1,000 units each of three common
-unit types, with per-check pass probabilities and token costs drawn from
-plausible ranges (seeded, strict acceptance τ = 1):
-
-```python
-# per unit: V = Σ wᵢ·gᵢ(S₁) / Σ wᵢ ;  done if V ≥ 1.0 ;  margin = B − C
-types = {
-  "support_ticket":  dict(B=4.00,  checks=[("status=closed",.5,.97),("reply_sent",.3,.99),("kb_linked",.2,.85)]),
-  "contract_review": dict(B=25.00, checks=[("risks_flagged",.4,.92),("redlines",.4,.90),("summary_filed",.2,.98)]),
-  "weekly_report":   dict(B=12.00, checks=[("data_pulled",.3,.99),("analysis",.4,.94),("delivered",.3,.97)]),
-}
+```
+cost per quirq   c_q = C_total / Q         price of a dollar of verified work
+quirq margin     μ   = Q − C_total         surplus on the unit
+multiple         x   = Q / C_total         the reciprocal view
 ```
 
-| Unit type | Budget B | Pass rate | E[V] | E[C] | Margin | Value per $ | Intervention |
-|---|---|---|---|---|---|---|---|
-| Support ticket | $4.00 | 81.6% | 0.954 | $0.42 | $3.58 | 9.2× | 18.4% |
-| Contract review | $25.00 | 80.0% | 0.918 | $3.14 | $21.86 | 7.3× | 20.0% |
-| Weekly report | $12.00 | 90.1% | 0.963 | $1.50 | $10.50 | 7.7× | 9.9% |
+**Worked:** at B = $4.00 and V = 1.0: Q = 4.00, c_q = 0.032, margin $3.87,
+multiple 31x. Had it settled divisibly at V = 0.8: Q = 3.2 and c_q = 0.040.
+Incomplete work is automatically more expensive per quirq: the incentive points
+the right way.
 
-Three things to read off this table. First, margin is dominated by the budget,
-not the token bill: even at strict acceptance, cost is roughly a tenth of the
-outcome's value, which is why pricing on outcomes rather than tokens is viable.
-Second, the intervention rate falls directly out of the scoring rule: it is just
-the share of units where some check failed, which makes the Phase 1 health
-signal (is the intervention rate falling?) measurable for free. Third, the
-weakest check dominates the pass rate: the support ticket's 0.85-probability
-`kb_linked` check causes most of its 18.4% intervention rate. Improving one
-environmental check moves the whole economics of the unit.
+## Portfolio metrics
 
-## Why the snapshots must come from the environment
+Over the units in an accounting window T:
 
-The same simulation, re-run with one change: completion is taken from the
-agent's self-report instead of the environment's snapshot, with the agent
-claiming done on 18% of incomplete units (an optimistic self-assessment rate,
-not an adversarial one):
+```
+QER(T)  =  Σ Q(u) / Σ C_total(u)          quirq efficiency ratio (the headline)
+QV(T)   =  Σ Q(u) / |T|                   quirq velocity (throughput in value)
+IR(T)   =  |{u : V(u) < τ}| / N           intervention rate (the trust signal)
+```
 
-| Verification source | Units settled | Settled but actually incomplete |
-|---|---|---|
-| Agent self-report | 84.1% | **4.4%** |
-| Environment snapshot (`S₁`) | 82.1% | **0.0%** |
+QER is dimensionless and currency-independent: comparable across teams, vendors,
+and models. It is what "AI ROI" should have meant. IR is measured for free by the
+same machinery, and because failures localize to named checks, it arrives with
+its diagnosis attached.
 
-Self-reporting settles slightly more units, and silently pays for incomplete
-work, at a rate that compounds across thousands of units and worsens under
-optimization pressure, since "claim done" is always cheaper than "be done."
-State-snapshot verification cannot be gamed this way, because the agent does not
-produce the evidence; the environment does. This is the calculation-level
-restatement of
-[the environment argument](/future-of-work/phase-1-agentic-workforce/unit-of-work-research/environment):
-the environment is what makes the number real.
+## The time axis
 
-Next: [how environments help businesses](/future-of-work/phase-1-agentic-workforce/unit-of-work-research/business-case).
+Two dynamics move the trajectory in opposite directions, and both must be read.
+
+**Tenure pushes cost per quirq down.** Every unit's token bill hides two costs:
+doing the work, and figuring out what the work is (reading the codebase,
+rediscovering conventions, inferring what this owner means by done):
+
+```
+C(uₜ) = c_exec + k · H(intent | Mₜ)
+
+c_exec   the execution floor (irreducible)
+H(·|Mₜ)  residual intent uncertainty, given environment memory Mₜ
+k        tokens burned per unit of uncertainty resolved
+```
+
+A persistent environment deposits every completed unit into memory (files
+touched, accepted definitions of done, corrections that survived review), so
+residual uncertainty and cost fall monotonically toward the floor; a fresh
+context pays cold start every time. It is what every manager knows about
+contractors: the tenth job is cheaper than the first because they stop asking
+questions they know the answers to. The environment is what gives an agent
+tenure.
+
+<UowLearningCurve />
+
+Extending the worked micro-benchmark to 50 sequential similar units (cold-start
+intent cost 2,600 tokens over a 3,000-token floor, decaying as memory
+accumulates):
+
+| | Unit 1 | Unit 10 | Unit 25 | Unit 50 | Total |
+|---|---|---|---|---|---|
+| Fresh context | 5,600 | 5,600 | 5,600 | 5,600 | 308,000 |
+| Persistent environment | 5,600 | 3,653 | 3,377 | 3,250 | 181,260 |
+| Savings | 0% | 35% | 40% | **42%** | **41%** |
+
+Unit 1 costs the same either way, so the benefit is invisible in a demo and
+decisive in production, and it is durable because it comes from eliminated
+uncertainty, not a better model. This inverts procurement logic: the asset is
+not the agent you rent but the environment you own, because the environment is
+where the cost curve lives.
+
+**Goodhart drift pushes measured value up, falsely.** Agents find the shortest
+path to green. The observable is the audit gap A(T): re-verify a random sample
+against gold checks held outside the production environment. The honest headline
+is audit-corrected:
+
+```
+QER*(T) = QER(T) · (1 − A(T))       report the trend, not the level
+```
+
+When QER\* rises while IR falls, AI is genuinely compounding in the company.
+When QER rises but QER\* stalls, the checks are being farmed. When both stall
+while token volume grows, the company has bought an electricity bill.
+
+## The bridge to energy
+
+Because the cost model retains token counts, physical accounting composes with
+value accounting:
+
+```
+quirqs / kWh        with E ≈ Σ tokens · e_tok
+quirqs / tonne CO₂  via grid carbon intensity
+```
+
+**Illustrative:** a month at 2.1B tokens with e_tok = 1.5 J/token is ~875 kWh; if
+the month minted 148,000 quirqs, the plant runs at ~169 quirqs/kWh. Not "we used
+less AI" but "we delivered more verified value per unit of energy."
+
+Next: [the dashboard](/future-of-work/phase-1-agentic-workforce/unit-of-work-research/dashboard),
+where these numbers become a company ledger.

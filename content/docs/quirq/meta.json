@@ -1,0 +1,12 @@
+{
+  "title": "quirq",
+  "icon": "Coins",
+  "pages": [
+    "index",
+    "what-is-quirq",
+    "what-it-calculates",
+    "how-to-calculate",
+    "use-cases",
+    "integrate"
+  ]
+}

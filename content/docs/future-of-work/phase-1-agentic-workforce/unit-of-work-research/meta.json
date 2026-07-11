@@ -1,13 +1,5 @@
 {
-  "title": "Research: The Quirq",
+  "title": "Research: Why the Environment",
   "icon": "Microscope",
-  "pages": [
-    "index",
-    "environment",
-    "calculation",
-    "dashboard",
-    "gaming",
-    "validation",
-    "playbook"
-  ]
+  "pages": ["index", "environment"]
 }

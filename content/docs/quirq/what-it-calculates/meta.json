@@ -1,0 +1,10 @@
+{
+  "title": "What does it calculate",
+  "icon": "Gauge",
+  "pages": [
+    "index",
+    "validation",
+    "methods",
+    "claims"
+  ]
+}

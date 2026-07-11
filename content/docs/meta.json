@@ -2,6 +2,7 @@
   "title": "XO Workspace",
   "pages": [
     "index",
+    "quirq",
     "getting-started",
     "future-of-work",
     "agents",

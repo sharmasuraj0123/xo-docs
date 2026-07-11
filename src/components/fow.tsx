@@ -904,3 +904,135 @@ export function Lead({ children }: { children: ReactNode }) {
     </p>
   );
 }
+
+// quirq: the two meters, side by side, with the ratios that join them.
+export function TwoMeters() {
+  return (
+    <div className="not-prose my-6">
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div className="rounded-2xl border border-fd-border bg-fd-card p-5">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-lg bg-fd-muted px-3 py-1.5 text-sm font-medium text-fd-foreground">
+            <Icon name="lightning" className="size-5" />
+            Token: the input meter
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Node icon="gauge" label="Compute consumed" />
+            <Node icon="lightning" label="Energy and carbon" />
+            <Node icon="scales" label="Inference cost" />
+          </div>
+          <div className="mt-3 text-xs leading-relaxed text-fd-muted-foreground">
+            What the machine drew from the world. Real accounting, wrong side
+            of the ledger for value.
+          </div>
+        </div>
+        <div className="rounded-2xl border border-fd-primary/40 bg-fd-card p-5">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-lg bg-fd-primary/10 px-3 py-1.5 text-sm font-medium text-fd-primary">
+            <Icon name="check" className="size-5" />
+            Quirq: the output meter
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Node icon="check" label="Outcomes verified" highlight />
+            <Node icon="budget" label="Owner-valued (B)" highlight />
+            <Node icon="eye" label="Minted, never reported" highlight />
+          </div>
+          <div className="mt-3 text-xs leading-relaxed text-fd-muted-foreground">
+            What the machine changed in the world, at the value a human set.
+          </div>
+        </div>
+      </div>
+      <div className="mt-3 rounded-2xl border border-fd-border bg-fd-muted/40 px-5 py-3 text-center text-xs font-medium text-fd-muted-foreground">
+        divide them → <span className="text-fd-primary">quirqs per dollar (QER)</span> ·{" "}
+        <span className="text-fd-primary">quirqs per kWh</span> ·{" "}
+        <span className="text-fd-primary">quirqs per tonne CO₂</span> · track over
+        time → the AI effectiveness trajectory
+      </div>
+    </div>
+  );
+}
+
+// quirq: the mint pipeline, from owner budget to ledger entry.
+export function MintFlow() {
+  return (
+    <div className="not-prose my-6 rounded-2xl border border-fd-border bg-fd-card p-5">
+      <div className="flex flex-wrap items-center gap-2">
+        <Node icon="user" label="Owner budgets B" />
+        <Arrow />
+        <Node icon="clock" label="Snapshot S₀" />
+        <Arrow />
+        <Node icon="robot" label="Agent executes (metered)" />
+        <Arrow />
+        <Node icon="eye" label="Snapshot S₁" />
+        <Arrow />
+        <Node icon="target" label="Checks score V" />
+        <Arrow />
+        <Node icon="check" label="Mint Q = V · B" highlight />
+        <Arrow />
+        <Node icon="files" label="Ledger" />
+      </div>
+      <div className="mt-3 text-xs leading-relaxed text-fd-muted-foreground">
+        The worker never produces its own evidence: the environment captures
+        both snapshots, re-runs every check, meters every action, and writes
+        the hash-chained record. Value in is human judgment; everything after
+        is machinery.
+      </div>
+    </div>
+  );
+}
+
+// quirq: the same quarter read through each meter.
+export function QerQuarter() {
+  const months = [
+    { m: "Apr", spend: 55, qer: 55, spendLabel: "$5.0k", qerLabel: "3.1×" },
+    { m: "May", spend: 71, qer: 73, spendLabel: "$6.5k", qerLabel: "4.1×" },
+    { m: "Jun", spend: 75, qer: 100, spendLabel: "$6.8k", qerLabel: "5.6×" },
+  ];
+  return (
+    <div className="not-prose my-6 grid gap-3 sm:grid-cols-2">
+      <div className="rounded-2xl border border-fd-border bg-fd-card p-5">
+        <div className="mb-3 text-sm font-medium text-fd-foreground">
+          The bill alone: spend nearly doubles
+        </div>
+        <div className="flex h-28 items-end gap-4">
+          {months.map((x) => (
+            <div key={x.m} className="flex flex-1 flex-col items-center gap-1">
+              <div className="text-xs font-medium text-fd-muted-foreground">
+                {x.spendLabel}
+              </div>
+              <div
+                className="w-full rounded-t-lg bg-fd-muted-foreground/30"
+                style={{ height: `${x.spend}%` }}
+              />
+              <div className="text-xs text-fd-muted-foreground">{x.m}</div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-3 text-xs leading-relaxed text-fd-muted-foreground">
+          +83% cost, indistinguishable from waste. An expense line.
+        </div>
+      </div>
+      <div className="rounded-2xl border border-fd-primary/40 bg-fd-card p-5">
+        <div className="mb-3 text-sm font-medium text-fd-foreground">
+          The quirq ledger: value per dollar up 81%
+        </div>
+        <div className="flex h-28 items-end gap-4">
+          {months.map((x) => (
+            <div key={x.m} className="flex flex-1 flex-col items-center gap-1">
+              <div className="text-xs font-medium text-fd-primary">
+                {x.qerLabel}
+              </div>
+              <div
+                className="w-full rounded-t-lg bg-fd-primary"
+                style={{ height: `${x.qer}%` }}
+              />
+              <div className="text-xs text-fd-muted-foreground">{x.m}</div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-3 text-xs leading-relaxed text-fd-muted-foreground">
+          Same quarter: QER 3.1× → 5.6× while intervention fell a third. An
+          investment case.
+        </div>
+      </div>
+    </div>
+  );
+}

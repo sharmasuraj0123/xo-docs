@@ -1,0 +1,10 @@
+{
+  "title": "What is quirq",
+  "icon": "Coins",
+  "pages": [
+    "index",
+    "two-meters",
+    "denominator",
+    "related-units"
+  ]
+}

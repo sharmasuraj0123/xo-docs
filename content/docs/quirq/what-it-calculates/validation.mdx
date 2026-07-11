@@ -6,11 +6,9 @@ icon: FlaskConical
 
 <Lead>The validation program is organized hypothesis-first: each load-bearing claim is stated at full strength with its falsifier, and bound to numbered experiments, completed or scheduled.</Lead>
 
-Evidence comes in two modes, never conflated. **Mock mode** drives the harness
-with scripted agents: it validates the machinery and can falsify the harness,
-but cannot validate claims about real agents. **Real mode** runs the identical
-protocol with a production coding agent and measured tokens: its numbers are
-measurements.
+Results below follow the two evidence modes and pre-registration discipline of
+[methods](/quirq/what-it-calculates/methods): mock mode validates machinery,
+real mode measures agents, never conflated.
 
 ## The hypotheses
 
@@ -43,13 +41,6 @@ mitigations.
 
 ## Completed experiments (E1 to E3, mock mode)
 
-The machinery is implemented in an open, dependency-free reference harness:
-snapshots, weighted checks, the mint and settlement rules, a hash-chained ledger
-written by the environment, mock agents, and a runner for a production coding
-agent. Specs are pre-registered (hypothesis, method, metric, falsifier stated
-before results) and the results ledger is content-addressed, so a skeptic
-re-runs and compares hashes rather than trusting prose.
-
 **E1: verification source (H1).** 200 identical units, an agent that falsely
 claims done with probability 0.05.
 
@@ -81,15 +72,14 @@ consistency, not agent behavior.
   agent and measured tokens. The false-claim rate becomes a measurement, and the
   tenure curve becomes evidence. In progress.
 - **E5** (H3): pilot ledgers: the
-  [dashboard](/future-of-work/phase-1-agentic-workforce/unit-of-work-research/dashboard)
+  [dashboard](/quirq/use-cases/dashboard)
   instrumented on real work across at least three unit types.
 - **E6** (H3): predictive study: QER\* trend vs token spend, task counts, and
   benchmark scores as predictors of renewal, expansion, and P&L attribution.
 - **E7** (H4): longitudinal budget-drift audit under the
-  [gaming mitigations](/future-of-work/phase-1-agentic-workforce/unit-of-work-research/gaming).
+  [gaming mitigations](/quirq/integrate/gaming).
 
 Results and per-run data are published here as they land.
 
-The claims are on the record; applying them is craft. Next:
-[the practitioner playbook](/future-of-work/phase-1-agentic-workforce/unit-of-work-research/playbook):
-definitions of done, budgets, and the ledger schema.
+The claims are on the record, and every one is tiered against its evidence in
+[claims and limitations](/quirq/what-it-calculates/claims).

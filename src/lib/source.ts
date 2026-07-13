@@ -20,6 +20,8 @@ const ICON_CLASSES: Record<string, string> = {
   Rocket: "icon-[ph--rocket-fill]",
   RotateCcw: "icon-[ph--arrow-counter-clockwise-fill]",
   Settings: "icon-[ph--gear-fill]",
+  ShieldCheck: "icon-[ph--shield-check-fill]",
+  Lock: "icon-[ph--lock-key-fill]",
   Share2: "icon-[ph--share-network-fill]",
   Terminal: "icon-[ph--terminal-window-fill]",
   UserPlus: "icon-[ph--user-plus-fill]",

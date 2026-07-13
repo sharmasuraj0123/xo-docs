@@ -1,0 +1,97 @@
+---
+title: Security Overview
+description: How XO keeps your workspaces, agents, and data secure — isolation, encryption, managed infrastructure, and access control.
+icon: ShieldCheck
+---
+
+import { Cards, Card } from "@/components/card";
+
+Security isn't a feature you turn on in XO — it's the default. Every agent you launch runs in its own isolated cloud environment, your traffic is encrypted end to end, and the infrastructure underneath is managed, patched, and monitored for you.
+
+This section explains, in plain terms, how we protect your work.
+
+---
+
+## The pillars
+
+<div className="not-prose my-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+	<div className="rounded-xl bg-fd-card p-6">
+		<span className="icon-[ph--squares-four-fill] size-6 mb-3 text-fd-primary" />
+		<div className="mb-1.5 font-semibold text-fd-foreground">
+			Isolated by default
+		</div>
+		<div className="text-sm leading-relaxed text-fd-muted-foreground">
+			Every workspace is its own sandbox — separated from every other user's
+			and from your local machine. Nothing else can reach into it.
+		</div>
+	</div>
+	<div className="rounded-xl bg-fd-card p-6">
+		<span className="icon-[ph--lock-key-fill] size-6 mb-3 text-fd-primary" />
+		<div className="mb-1.5 font-semibold text-fd-foreground">
+			Encrypted everywhere
+		</div>
+		<div className="text-sm leading-relaxed text-fd-muted-foreground">
+			Traffic is encrypted in transit with TLS, and your files and data are
+			encrypted at rest on disk.
+		</div>
+	</div>
+	<div className="rounded-xl bg-fd-card p-6">
+		<span className="icon-[ph--shield-check-fill] size-6 mb-3 text-fd-primary" />
+		<div className="mb-1.5 font-semibold text-fd-foreground">
+			Protected at the edge
+		</div>
+		<div className="text-sm leading-relaxed text-fd-muted-foreground">
+			A managed Web Application Firewall filters out common attacks and
+			rate-limits abusive traffic before it ever reaches your workspace.
+		</div>
+	</div>
+	<div className="rounded-xl bg-fd-card p-6">
+		<span className="icon-[ph--key-fill] size-6 mb-3 text-fd-primary" />
+		<div className="mb-1.5 font-semibold text-fd-foreground">
+			Secrets kept safe
+		</div>
+		<div className="text-sm leading-relaxed text-fd-muted-foreground">
+			API keys and credentials live in a managed secrets vault — never in code
+			or repositories — and services get least-privilege access only.
+		</div>
+	</div>
+	<div className="rounded-xl bg-fd-card p-6">
+		<span className="icon-[ph--hard-drive-fill] size-6 mb-3 text-fd-primary" />
+		<div className="mb-1.5 font-semibold text-fd-foreground">
+			Durable storage
+		</div>
+		<div className="text-sm leading-relaxed text-fd-muted-foreground">
+			Your files persist across restarts and instance changes, and are backed
+			up so your work is recoverable.
+		</div>
+	</div>
+	<div className="rounded-xl bg-fd-card p-6">
+		<span className="icon-[ph--gear-fill] size-6 mb-3 text-fd-primary" />
+		<div className="mb-1.5 font-semibold text-fd-foreground">
+			Managed &amp; patched
+		</div>
+		<div className="text-sm leading-relaxed text-fd-muted-foreground">
+			The underlying operating system and platform are automatically updated,
+			so you're never running unpatched infrastructure.
+		</div>
+	</div>
+</div>
+
+---
+
+## Go deeper
+
+<Cards>
+	<Card
+		icon={<span className="icon-[ph--squares-four-fill] size-6" />}
+		title="Workspace Isolation"
+		description="How each environment is sandboxed, hardened, and protected on the network."
+		href="/security/workspace-isolation"
+	/>
+	<Card
+		icon={<span className="icon-[ph--lock-key-fill] size-6" />}
+		title="Data & Privacy"
+		description="How your data is encrypted, stored durably, and kept under your control."
+		href="/security/data-and-privacy"
+	/>
+</Cards>

@@ -1,0 +1,64 @@
+---
+title: Data & Privacy
+description: How XO encrypts your data, keeps it durable across restarts, protects your credentials, and keeps access under your control.
+icon: Lock
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+Your code, files, and credentials are yours. This page explains how XO protects them — from encryption to durable storage to who can access what.
+
+---
+
+## Encryption in transit and at rest
+
+- **In transit.** Every connection to XO — the dashboard, your IDE, your agent's tools — is encrypted with TLS. Insecure requests are automatically upgraded to secure ones.
+- **At rest.** The disks that hold your workspace files and the databases behind the platform are encrypted at rest by default, so your data is protected even at the storage layer.
+
+---
+
+## Your files stay put
+
+Workspaces are designed so your work is never lost to routine operations:
+
+- **Persistent storage.** Each workspace has its own persistent disk. Your files survive stopping and restarting your machine.
+- **Preserved across instance changes.** If your workspace moves between instance types — for example, when you change plans — your files and data move with it. The disk is preserved, not recreated.
+- **Backed up.** Platform data is backed up so it can be recovered if something goes wrong.
+
+<Callout type="info">
+	Stopping your machine to save resources is safe — your files are waiting for
+	you when you start it again. See
+	[Manage Your Machine](/getting-started/manage-workspace).
+</Callout>
+
+---
+
+## How we handle secrets
+
+API keys, tokens, and other credentials are treated as sensitive throughout the platform:
+
+- **Stored in a managed vault.** Secrets live in a dedicated, managed secrets store — never hard-coded into applications or committed to source repositories.
+- **Least privilege.** Each service can read only the specific secrets it needs, with read-only access. Nothing has blanket access to everything.
+- **Keyless internal authentication.** Internal services authenticate to one another using short-lived, identity-based credentials rather than long-lived keys that could leak.
+- **Rotatable.** Credentials can be rotated without downtime, so a key can be replaced quickly if it ever needs to be.
+
+---
+
+## Access is under your control
+
+- **Authenticated accounts.** Access to your workspaces requires a signed-in XO account.
+- **Project-scoped access.** A project is visible only to you and the people you explicitly invite.
+- **You manage sharing.** You decide who collaborates on a project, and you can revoke access at any time. See [Share Your Project](/getting-started/share-project).
+
+---
+
+## Built on trusted infrastructure
+
+XO runs on enterprise-grade cloud infrastructure with certified data-center, hardware, and physical-security protections. On top of that foundation, we add the workspace isolation, network filtering, encryption, and access controls described across this section — so security is layered from the physical facility all the way up to your agent.
+
+---
+
+## Related
+
+- [Workspace Isolation](/security/workspace-isolation) — how each environment is sandboxed and network-protected.
+- [Security Overview](/security) — the pillars at a glance.

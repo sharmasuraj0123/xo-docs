@@ -1,0 +1,63 @@
+---
+title: Workspace Isolation
+description: How every XO environment is sandboxed from other users, hardened at the runtime level, and shielded on the network.
+icon: Blocks
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+When you launch an agent, it runs inside its own **isolated cloud workspace** — a dedicated, sandboxed environment with its own compute and its own private storage. This page explains what that isolation means and how it protects you.
+
+---
+
+## Your workspace is a sandbox
+
+Each project runs in a separate environment that is walled off from:
+
+- **Other users.** No other customer's workspace can see, reach, or interfere with yours. Each workspace is isolated from every other tenant on the platform.
+- **Your local machine.** Your agent works entirely in the cloud. It never touches your laptop, your files, or your local network unless you explicitly connect to it.
+- **The rest of the platform.** A workspace only has access to the resources assigned to it — not to internal systems or other services.
+
+<Callout type="info">
+	Because everything runs remotely, you can safely let an agent install
+	dependencies, run code, and modify files without any risk to your own device.
+</Callout>
+
+---
+
+## Hardened by design
+
+Isolation is only half the story — the environment itself is built to reduce risk:
+
+- **Runs unprivileged.** Workspace processes run as a normal, non-root user rather than with administrative rights, so a compromised process has far less it can do.
+- **Minimal, purpose-built images.** Environments are based on lean, hardened base images that ship only what's needed — fewer components means a smaller attack surface.
+- **Automatically patched.** The underlying operating system and platform receive security updates automatically. You're never left running unpatched infrastructure.
+
+---
+
+## Protected on the network
+
+Traffic to and from your workspace is guarded at several layers:
+
+- **Encrypted connections.** All access to your workspace and its tools goes over HTTPS/TLS. Plain, unencrypted requests are redirected to secure ones.
+- **Managed Web Application Firewall.** A managed WAF sits in front of the platform and blocks common web attacks — including SQL injection, cross-site scripting (XSS), remote code execution attempts, and automated vulnerability scanners — before they reach any workspace.
+- **Abuse and rate limiting.** Excessive or abusive traffic is automatically throttled, which helps absorb bursts and denial-of-service attempts.
+- **Private internal networking.** Supporting systems such as databases are not exposed to the public internet; they're reachable only over private, internal networking.
+
+---
+
+## Restricted administrative access
+
+Access to the infrastructure that runs your workspaces is tightly controlled:
+
+- Only a small set of authorized team members can administer the platform.
+- Administrative access requires authenticated identity, and those actions are logged and auditable.
+- There are no shared passwords or long-lived keys handed around for infrastructure access.
+
+---
+
+## In short
+
+Your workspace is a private, sandboxed, encrypted environment that other users can't reach, that runs hardened and patched by default, and that sits behind a managed firewall. Combined with how we handle your data, that's what "secure by default" means at XO.
+
+Next: read how we handle [Data &amp; Privacy](/security/data-and-privacy).

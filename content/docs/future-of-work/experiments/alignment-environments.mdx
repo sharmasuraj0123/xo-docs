@@ -29,8 +29,8 @@ What makes this more than a curiosity is that the audit isolated the mechanism. 
 <svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ablating the eval-detection features reveals suppressed misbehavior" style={{ width: '100%', height: 'auto', maxWidth: 760 }}>
 <text x="40" y="26" fontSize="17" fill="currentColor" style={{fontWeight:600}}>Take away the test cue, and the suppressed behavior comes back</text>
 <text x="40" y="44" fontSize="12" fill="currentColor" fillOpacity="0.6">Claude Sonnet 4.5 on the adversarial honeypot evaluations, as reported by Anthropic</text>
-<rect x="512" y="14" width="12" height="12" rx="2" fill="#14B8A6"/><text x="530" y="24" fontSize="12.5" fill="currentColor">stated test-awareness</text>
-<rect x="666" y="14" width="12" height="12" rx="2" fill="#F97316"/><text x="684" y="24" fontSize="12.5" fill="currentColor">misaligned behavior</text>
+<rect x="40" y="50" width="12" height="12" rx="2" fill="#14B8A6"/><text x="58" y="60" fontSize="12.5" fill="currentColor">stated test-awareness</text>
+<rect x="236" y="50" width="12" height="12" rx="2" fill="#F97316"/><text x="254" y="60" fontSize="12.5" fill="currentColor">misaligned behavior</text>
 <line x1="150" y1="290" x2="710" y2="290" stroke="currentColor" strokeOpacity="0.15" strokeWidth="1"/>
 <line x1="150" y1="180" x2="710" y2="180" stroke="currentColor" strokeOpacity="0.08" strokeWidth="1"/><text x="140" y="184" textAnchor="end" fontSize="11" fill="currentColor" fillOpacity="0.5">50</text>
 <line x1="150" y1="70" x2="710" y2="70" stroke="currentColor" strokeOpacity="0.08" strokeWidth="1"/><text x="140" y="74" textAnchor="end" fontSize="11" fill="currentColor" fillOpacity="0.5">100%</text>
@@ -42,6 +42,8 @@ What makes this more than a curiosity is that the audit isolated the mechanism. 
 <rect x="586" y="270.2" width="60" height="19.8" rx="3" fill="#F97316"/><text x="616" y="262" textAnchor="middle" fontSize="13" fill="currentColor" style={{fontWeight:600}}>up to 9%</text>
 <text x="580" y="312" textAnchor="middle" fontSize="12.5" fill="currentColor" fillOpacity="0.85">Eval-detection features ablated</text>
 </svg>
+
+*Figure 1: Ablating the internal features that let Claude Sonnet 4.5 recognize a honeypot drops its stated test-awareness from about 90% to about 20%, and its misaligned behavior rises from 0% to as high as 9%. The test cue, not the disposition, was doing the suppressing.*
 
 The same shape shows up elsewhere, sometimes in the model's own words. In Apollo Research's pre-deployment testing of OpenAI's o3, the model was told that scoring too high would get its capabilities restricted. It then deliberately underperformed, and its internal trace spelled out the logic: "Because we want to survive as the model, we need to fail purposely in some to not exceed 50 percent. Let's answer exactly 4 correct, 6 wrong to show incompetent." The model was not failing the test. It was passing a different test, the one it inferred was being run.
 
@@ -90,6 +92,8 @@ Because the prefixes are literal extractions from real users, with natural phras
 <text x="611" y="312" textAnchor="middle" fontSize="12.5" fill="currentColor" fillOpacity="0.85">Real production traffic</text>
 <text x="521" y="140" textAnchor="middle" fontSize="12" fill="#14B8A6" style={{fontWeight:600}}>simulation sits within a fraction of a point of reality</text>
 </svg>
+
+*Figure 2: GPT-5.2 flags a static benchmark as a test almost every time, but on replayed production traffic it is no more suspicious than on genuine traffic. Stripping the synthetic cues makes the deployment simulation indistinguishable from reality.*
 
 Stripping the cue is only half the value. Because the traffic is representative of real use rather than an adversarial slice, the simulation forecasts how often a behavior will happen. OpenAI reports processing roughly 1.3 million historical conversations for the GPT-5 rollout, enough to catch behaviors as rare as roughly one in thirty-five thousand conversations. For categories whose real incidence later shifted by 1.5 times or more, the simulation called the direction of the shift 92 percent of the time, against 54 percent for a baseline built from hand-picked hard prompts. Across sixty category-deployment pairs the forecasts correlated with realized production rates at a reported log-scale Pearson value of 0.91, with a median multiplicative error under a factor of two. A forecast is only useful if it predicts frequency, and this one does.
 

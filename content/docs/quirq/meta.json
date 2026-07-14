@@ -2,10 +2,9 @@
   "title": "quirq",
   "icon": "Coins",
   "pages": [
-    "index",
     "what-is-quirq",
-    "what-it-calculates",
     "how-to-calculate",
+    "what-it-calculates",
     "use-cases",
     "integrate"
   ]

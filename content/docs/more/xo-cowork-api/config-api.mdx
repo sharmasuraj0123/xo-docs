@@ -188,11 +188,11 @@ These exist so the frontend's wiring doesn't 404. They return empty payloads and
 GET /api/tools             → []
 GET /api/skills            → []
 GET /api/chat/active       → []
-GET /api/mcp/status        → { status: "idle" }
+GET /api/mcp/status        → []
 GET /api/connectors        → []
 GET /api/automations       → []
-GET /api/plugins/status    → { status: "idle" }
-GET /api/ollama/status     → { running: false }
+GET /api/plugins/status    → {}
+GET /api/ollama/status     → { binary_installed: false, running: false }
 GET /api/codex/status      → { authenticated: false }
 GET /api/fts/index/{ws}    → { status: "idle", progress: 0 }
 GET /api/workspace-memory  → { memory: null }
@@ -207,7 +207,7 @@ Outside `/api/*`, a handful of server-direct routes exist for diagnostics and li
 | Verb | Path | Purpose |
 |---|---|---|
 | `GET` | `/` | Banner / version info |
-| `GET` | `/health` | `{ status: "ok" }` |
+| `GET` | `/health` | Detailed process diagnostics: stage, upstream URL, CLI paths, sanitized auth state, and session count. |
 | `GET` | `/debug/ai-auth` | Sanitized provider creds |
 | `POST` | `/gateway/restart` | Restart the OpenClaw gateway subprocess |
 | `POST` | `/app/restart` | Restart cowork-api itself |

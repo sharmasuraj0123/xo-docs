@@ -928,7 +928,7 @@ export function TwoMeters() {
         <div className="rounded-2xl border border-fd-primary/40 bg-fd-card p-5">
           <div className="mb-3 inline-flex items-center gap-2 rounded-lg bg-fd-primary/10 px-3 py-1.5 text-sm font-medium text-fd-primary">
             <Icon name="check" className="size-5" />
-            Quirq: the output meter
+            quirq: the output meter
           </div>
           <div className="flex flex-wrap gap-2">
             <Node icon="check" label="Outcomes verified" highlight />

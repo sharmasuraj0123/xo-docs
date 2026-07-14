@@ -1,12 +1,13 @@
 {
-  "title": "Experiments",
+  "title": "Studies & Evaluations",
   "icon": "FlaskConical",
   "pages": [
+    "research-series",
     "index",
-    "coding-model-eval-harness",
     "the-incurious-agent",
-    "curiosity-comparison",
     "the-self-sufficient-agent",
-    "relevance-not-volume"
+    "relevance-not-volume",
+    "curiosity-comparison",
+    "coding-model-eval-harness"
   ]
 }

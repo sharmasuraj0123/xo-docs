@@ -3,10 +3,12 @@
   "icon": "OpenClaw",
   "pages": [
     "setup",
-    "restart-gateway",
-    "channels",
+    "---Configure & Extend---",
     "models",
+    "channels",
     "integrations",
-    "skills"
+    "skills",
+    "---Operate---",
+    "restart-gateway"
   ]
 }

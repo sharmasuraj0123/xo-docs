@@ -169,7 +169,7 @@ After this completes, `agent_name: "claude_code"` style requests routed via `/ap
 | `GET` | `/api/codex/status` | `{ authenticated: boolean, expires_at?: string }` |
 | `GET` | `/api/channels/openclaw/status` | OpenClaw gateway reachability |
 | `GET` | `/api/mcp/status` | Stub: `{ status: "idle" }` |
-| `GET` | `/health` | `{ status: "ok" }` |
+| `GET` | `/health` | Detailed process diagnostics, including stage, CLI paths, sanitized auth state, and active-session count. |
 | `GET` | `/debug/ai-auth` | Sanitized snapshot of the loaded provider creds |
 
 Use these on the onboarding screen to drive "needs setup" badges.

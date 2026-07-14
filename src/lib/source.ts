@@ -53,6 +53,7 @@ const ICON_CLASSES: Record<string, string> = {
   ShareNetwork: "icon-[ph--share-network-fill]",
   GitFork: "icon-[ph--git-fork-fill]",
   Atom: "icon-[ph--atom-fill]",
+  Gauge: "icon-[ph--gauge-fill]",
   ChartLineUp: "icon-[ph--chart-line-up-fill]",
   more: "icon-[ph--dots-three-fill]",
 };

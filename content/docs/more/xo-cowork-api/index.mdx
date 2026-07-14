@@ -8,12 +8,26 @@ import { Cards, Card } from "@/components/card";
 
 The XO Cowork API (`xo-cowork-api`) is the FastAPI control plane that runs **inside** every XO Coworker workspace. It brokers chat to agent runtimes (Claude Code, Codex, OpenClaw), owns the `~/xo-projects/` tree, manages secrets and sessions, and proxies connector OAuth flows.
 
-This section is a developer-facing integration guide. It documents the exact request and response shape of every endpoint a frontend (web, Tauri desktop, mobile, or AI client) needs to drive a Coworker workspace. Roughly 85 endpoints in total, grouped by purpose.
+This section is a developer-facing integration guide for the stable client
+surface. The running service also mounts agent-specific, internal, legacy, and
+administrative routes, so its raw OpenAPI operation count varies by workspace.
 
 <Cards>
   <Card
+    icon={<span className="icon-[ph--lightning] size-4.5 text-green-400" />}
+    title="Quickstart"
+    description="Verify the API, discover the workspace, and stream a first chat turn."
+    href="/more/xo-cowork-api/quickstart"
+  />
+  <Card
+    icon={<span className="icon-[ph--terminal-window] size-4.5 text-green-400" />}
+    title="Interactive API Reference"
+    description="Choose a workspace, inspect a curated OpenAPI contract, and try read-only requests."
+    href="/more/xo-cowork-api/reference"
+  />
+  <Card
     icon={<span className="icon-[ph--info] size-4.5 text-green-400" />}
-    title="Overview"
+    title="Architecture and Conventions"
     description="Base URL, auth model, common patterns, error envelope."
     href="/more/xo-cowork-api/overview"
   />
@@ -161,4 +175,6 @@ This section is a developer-facing integration guide. It documents the exact req
 
 The split is intentional and structural: chat content stays in runtime-native paths; the project folder is metadata-only and safe to share.
 
-Start with [Overview](/more/xo-cowork-api/overview) for transport, auth, and error conventions, then jump to the specific endpoint family you need.
+Start with the [Quickstart](/more/xo-cowork-api/quickstart) to make a first
+request. Continue to [Overview](/more/xo-cowork-api/overview) for transport, auth,
+and error conventions, then jump to the specific endpoint family you need.

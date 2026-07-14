@@ -1,0 +1,44 @@
+---
+title: Agent Compatibility Guide
+description: Choose model authentication, interfaces, and messaging channels that match your XO agent.
+icon: ClipboardCheck
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+XO agents share the same workspace platform, but they do not all use the same
+model authentication or communication channels. Choose the agent first, then
+follow only the setup paths listed for it.
+
+| Agent | Documented model connections | Primary interface or channels | Start here |
+|---|---|---|---|
+| **OpenClaw** | Anthropic or OpenAI API key; optional ChatGPT/Codex OAuth | Telegram, WhatsApp, or Slack; OpenClaw dashboard | [OpenClaw quickstart](/agents/openclaw/setup) |
+| **Claude Code** | Anthropic API key or Claude OAuth | Browser or desktop IDE and terminal | [Claude Code quickstart](/agents/claude-code/setup) |
+| **Hermes** | Anthropic or OpenAI API key | Telegram, WhatsApp, or Slack; Hermes dashboard | [Hermes quickstart](/agents/hermes/setup) |
+| **XO Cowork** | Anthropic, OpenAI, or OpenRouter API key | XO Cowork UI; Discord, Telegram, or Slack | [XO Cowork quickstart](/agents/xo-cowork/setup) |
+
+<Callout type="info">
+	The project-creation form and in-workspace Setup screen are the source of truth
+	for currently available options. Third-party provider and channel support can
+	change independently of these docs.
+</Callout>
+
+## Choose a model connection
+
+- Use [Claude OAuth](/setup/models/oauth/claude) when a supported Claude Code
+  workspace should authenticate with a Claude subscription.
+- Use [ChatGPT/Codex OAuth](/setup/models/oauth/codex) when a supported agent
+  should authenticate with a ChatGPT subscription.
+- Use an [API key](/setup/models/api-key) when you want provider-based billing
+  through Anthropic, OpenAI, or OpenRouter.
+
+## Add data and channels
+
+[Data sources](/setup/data) connect external accounts such as Google Drive,
+OneDrive, GitHub, and Vercel. Availability and permissions still depend on the
+workspace and account.
+
+The current [Setup channels guide](/setup/channels) documents the
+OpenClaw-style Telegram and Slack flow. XO Cowork channel setup happens inside
+its onboarding or Settings experience; use the [XO Cowork quickstart](/agents/xo-cowork/setup)
+for that path.

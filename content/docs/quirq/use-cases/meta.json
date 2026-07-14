@@ -1,11 +1,5 @@
 {
-  "title": "Real world use cases",
+  "title": "Use Cases & Explorations",
   "icon": "Building2",
-  "pages": [
-    "index",
-    "dashboard",
-    "builders",
-    "economics",
-    "quantum"
-  ]
+  "pages": ["dashboard", "builders", "economics", "quantum"]
 }

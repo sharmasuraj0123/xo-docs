@@ -1,13 +1,11 @@
 {
-  "title": "XO Workspace",
+  "title": "XO Documentation",
   "pages": [
     "index",
-    "quirq",
     "getting-started",
-    "future-of-work",
-    "agents",
-    "setup",
-    "troubleshooting",
-    "more"
+    "(research)",
+    "(solutions)",
+    "(build)",
+    "(operate)"
   ]
 }

@@ -1,13 +1,22 @@
 ---
-title: Manage Your Machine
-description: Manage your workspace — open your IDE, monitor resources, restart services, and control your machine.
+title: Manage Your Workspace Machine
+description: Monitor resources, open available interfaces, and control the remote machine behind an XO project.
 icon: Manage
 ---
 
 import { Step, Steps } from "fumadocs-ui/components/steps";
 import { Callout } from "fumadocs-ui/components/callout";
 
-Your project's workspace dashboard is the control center for your machine. From here you can open your IDE, restart the OpenClaw gateway, stop/start your machine, and monitor resource usage — all from the **Launch** tab.
+Your project's workspace dashboard is the control center for its remote machine.
+From the **Launch** tab you can monitor resources, open available interfaces,
+and stop or start the machine. OpenClaw projects also expose gateway controls.
+
+<Callout type="info">
+	Controls vary by agent. Sections that mention the **OpenClaw Gateway** apply
+	only to projects where that service is installed. Check the [Agent
+	Compatibility Guide](/setup/compatibility) if you are unsure which setup path
+	applies.
+</Callout>
 
 ## What You'll Need
 
@@ -41,15 +50,15 @@ The panel displays real-time CPU and RAM usage for your workspace.
 
 The panel shows the status of your services. When everything is ready, you'll see **Up** next to each service.
 
-**OpenClaw Gateway** — The gateway is running and ready to accept connections.
+**OpenClaw Gateway** — When present, the gateway is running and ready to accept connections.
 
-**Cowork API** — The workspace backend is running.
+**Cowork API** — When present, the workspace backend is running.
 
 ![Services Up](/images/cfg-05-services-up.webp)
 
 <Callout type="warn">
-	Wait for both services to show **Up** before opening the gateway or IDE. New
-	projects take **10–15 minutes** to provision.
+	Wait for the services required by your selected agent to show **Up** before
+	opening its interface or IDE. Provisioning time varies by template.
 </Callout>
 
 ## Opening Your IDE

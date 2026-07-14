@@ -1,5 +1,12 @@
 {
-  "title": "More",
-  "icon": "more",
-  "pages": ["xo-launchpad", "xo-mcp-server", "xo-cowork-api"]
+  "title": "Solutions & Developer Tools",
+  "icon": "Blocks",
+  "pages": [
+    "---Solutions & Applications---",
+    "create-your-environments",
+    "xo-launchpad",
+    "---Build & Integrate---",
+    "xo-cowork-api",
+    "xo-mcp-server"
+  ]
 }

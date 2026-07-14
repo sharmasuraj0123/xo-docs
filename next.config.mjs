@@ -10,6 +10,15 @@ const config = {
   turbopack: {
     root: dirname(fileURLToPath(import.meta.url)),
   },
+  async redirects() {
+    return [
+      {
+        source: "/more/create-your-alter-ego/:path*",
+        destination: "/more/create-your-environments/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {

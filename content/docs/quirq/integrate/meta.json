@@ -1,9 +1,5 @@
 {
-  "title": "Integrate it today",
+  "title": "Adoption & Governance",
   "icon": "Rocket",
-  "pages": [
-    "index",
-    "playbook",
-    "gaming"
-  ]
+  "pages": ["playbook", "gaming"]
 }

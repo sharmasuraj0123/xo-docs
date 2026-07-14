@@ -125,7 +125,7 @@ Browse icons at:
 - MingCute: https://www.mingcute.com — click icon to get name
 - Any Iconify set: https://icon-sets.iconify.design
 
-Iconify class format: `icon-[<set>--<icon-name>]`
+Iconify classes combine a set prefix and icon name, e.g. `ph--archive-fill` (placed in `icon[...]` brackets)
 
 Examples:
 ```
@@ -194,7 +194,7 @@ For icons used directly in `.tsx` files (not sidebar navigation), use the class 
 - `src/lib/source.ts` exports `iconifyIconsPlugin()` — a fumadocs plugin that transforms the page tree
 - When fumadocs encounters a string `icon` value in `meta.json`, this plugin converts it to a React element
 - `BRAND_ICONS` → renders `<BrandIcon name={slug} size={16} />` (CSS mask-image SVG)
-- `ICON_CLASSES` → renders `<span className="icon-[...]" />` (Iconify Tailwind)
+- `ICON_CLASSES` → renders a `<span>` with the matching Iconify Tailwind CSS class
 - `src/components/brand-icon.tsx` handles brand icon rendering with `maskImage` + `currentColor`
 
 ## ARGUMENTS

@@ -921,8 +921,8 @@ export function TwoMeters() {
             <Node icon="scales" label="Inference cost" />
           </div>
           <div className="mt-3 text-xs leading-relaxed text-fd-muted-foreground">
-            What the machine drew from the world. Real accounting, wrong side
-            of the ledger for value.
+            What the machine drew from the world. Real accounting, wrong side of
+            the ledger for value.
           </div>
         </div>
         <div className="rounded-2xl border border-fd-primary/40 bg-fd-card p-5">
@@ -941,10 +941,11 @@ export function TwoMeters() {
         </div>
       </div>
       <div className="mt-3 rounded-2xl border border-fd-border bg-fd-muted/40 px-5 py-3 text-center text-xs font-medium text-fd-muted-foreground">
-        divide them → <span className="text-fd-primary">quirqs per dollar (QER)</span> ·{" "}
+        divide them →{" "}
+        <span className="text-fd-primary">quirqs per dollar (QER)</span> ·{" "}
         <span className="text-fd-primary">quirqs per kWh</span> ·{" "}
-        <span className="text-fd-primary">quirqs per tonne CO₂</span> · track over
-        time → the AI effectiveness trajectory
+        <span className="text-fd-primary">quirqs per tonne CO₂</span> · track
+        over time → the AI effectiveness trajectory
       </div>
     </div>
   );
@@ -971,9 +972,9 @@ export function MintFlow() {
       </div>
       <div className="mt-3 text-xs leading-relaxed text-fd-muted-foreground">
         The worker never produces its own evidence: the environment captures
-        both snapshots, re-runs every check, meters every action, and writes
-        the hash-chained record. Value in is human judgment; everything after
-        is machinery.
+        both snapshots, re-runs every check, meters every action, and writes the
+        hash-chained record. Value in is human judgment; everything after is
+        machinery.
       </div>
     </div>
   );

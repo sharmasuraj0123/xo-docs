@@ -12,6 +12,7 @@ const posthogOptions: Partial<PostHogConfig> = {
   autocapture: true,
   session_recording: {
     maskAllInputs: true,
+    blockSelector: "[data-private]",
   },
   enable_heatmaps: true,
   capture_pageleave: true,

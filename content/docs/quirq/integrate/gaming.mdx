@@ -4,9 +4,21 @@ description: "The attack surface of a unit of account, in order of severity, and
 icon: ShieldAlert
 ---
 
-<Lead>A unit of account is a target, and targets get gamed. Quirq accounting does not escape Goodhart; it is engineered to fail loudly where activity metrics fail silently.</Lead>
+<Lead>A unit of account is a target, and targets get gamed. quirq accounting does not escape Goodhart; it is engineered to fail loudly where activity metrics fail silently.</Lead>
 
 ## The attack surface
+
+<FeatureGrid
+	cols={3}
+	items={[
+		{ icon: "budget", title: "1 · Budget inflation", desc: "Inflate B and every quirq is worth less. The severest attack, governed institutionally." },
+		{ icon: "check", title: "2 · Check farming", desc: "Manufacture units whose checks are trivially green." },
+		{ icon: "tools", title: "3 · Surface attacks", desc: "Edit the test instead of fixing the code." },
+		{ icon: "chat", title: "4 · Self-report injection", desc: "Convince the scorer to read the agent's summary." },
+		{ icon: "files", title: "5 · Salami slicing", desc: "Split one outcome into many units for partial credit." },
+		{ icon: "shield", title: "The defense", desc: "Environment integrity (mechanical) plus budget governance (institutional)." },
+	]}
+/>
 
 **1. Budget inflation.** If quirqs are the KPI, inflate B. Mitigations are
 structural: the budget is set by the party *paying* it, so inflation is
@@ -40,10 +52,14 @@ they do not define them.
 
 ## The honest summary
 
-Quirq integrity reduces to **environment integrity plus budget governance**. The
+quirq integrity reduces to **environment integrity plus budget governance**. The
 first is an engineering property, demonstrated in the
-[validation experiments](/future-of-work/phase-1-agentic-workforce/unit-of-work-research/validation).
+[validation experiments](/quirq/what-it-calculates/validation).
 The second is an institutional property, held as an open hypothesis (H4) rather
 than an assumption, because that is what it is.
 
-Next: [validation](/future-of-work/phase-1-agentic-workforce/unit-of-work-research/validation).
+The mechanical defenses are demonstrated in
+[validation](/quirq/what-it-calculates/validation); the institutional one (budget
+governance) is hypothesis H4, on the record with its falsifier. That completes
+the section. For the narrative around it:
+[The Future of Work](/future-of-work).

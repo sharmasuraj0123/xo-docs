@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: XO Cowork API Architecture and Conventions
 icon: Info
 description: Base URL, auth model, transport conventions, and error envelope.
 ---
@@ -26,12 +26,19 @@ In Tauri, the Rust shell also boots, watches, and restarts the API. Listen for t
 
 ## Auth model
 
-Local desktop runs on loopback, so there is no auth header on chat or file endpoints. Remote workspaces proxy through a tunnel and add one of:
+Local desktop runs on loopback, so there is no auth header on chat or file
+endpoints. The FastAPI app has no inbound authentication middleware. A remote
+workspace is protected only when its upstream tunnel or workspace proxy validates
+one of:
 
 - `Authorization: Bearer {token}` (most hosts)
 - `Coder-Session-Token: {token}` (Coder workspaces)
 
-These headers are between your frontend and the cowork-api instance running in that remote workspace. They are **not** the same as the `xo-swarm-api` Bearer token that cowork-api itself holds for its upstream calls. That token is minted by the Clerk poll-token flow in `/xo-auth/*` and is invisible to the frontend.
+These headers belong to the remote proxy boundary and are ignored by Cowork API
+when no validating proxy is present. They are **not** the same as the
+`xo-swarm-api` Bearer token that cowork-api itself holds for upstream calls. That
+token is minted by the Clerk poll-token flow in `/xo-auth/*` and is invisible to
+the frontend.
 
 <Callout type="warn">
 The home-clamp on file endpoints is the **only** safety layer for filesystem access. Treat the workspace itself as the trust boundary. Anything that breaches `$HOME` returns `403`, but symlinks under `$HOME` pointing outward are not blocked.
@@ -136,6 +143,7 @@ Do **not** hardcode `~/xo-projects/`. The `XO_PROJECTS_ROOT` env var on the serv
 
 ## What's next
 
+- [Quickstart](/more/xo-cowork-api/quickstart): verify the instance, discover its workspace, and stream a first chat turn.
 - [Chat API](/more/xo-cowork-api/chat-api): prompt, stream, abort, and SSE event vocabulary.
 - [Files API](/more/xo-cowork-api/files-api): file CRUD plus project scaffolding.
 - [Sessions API](/more/xo-cowork-api/sessions-api): list and search sessions, hydrate messages.

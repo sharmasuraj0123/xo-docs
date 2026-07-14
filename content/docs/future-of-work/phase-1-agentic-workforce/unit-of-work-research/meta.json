@@ -1,13 +1,5 @@
 {
-  "title": "Research: The Quirq",
+  "title": "Why the Environment Matters",
   "icon": "Microscope",
-  "pages": [
-    "index",
-    "environment",
-    "calculation",
-    "dashboard",
-    "gaming",
-    "validation",
-    "playbook"
-  ]
+  "pages": ["environment"]
 }

@@ -1,57 +1,69 @@
 ---
-title: Your Account
-description: Create your XO account and learn how to manage your workspace.
-icon: Settings
+title: Getting Started
+description: Understand XO, choose an agent, and launch your first project.
+icon: Rocket
 ---
 
 import { Cards, Card } from "@/components/card";
 
-Before you can launch an agent, you need an XO account and an active workspace. Start with account creation — everything else in this section is available once you're up and running.
+This section takes you from a new account to a working agent. Follow the first four guides in order; each one prepares you for the next.
 
----
-
-## First Time
+## Launch Your First Agent
 
 <Cards>
 	<Card
+		icon={<span className="icon-[ph--book-open-fill] size-6" />}
+		title="1. Learn the Core Concepts"
+		description="Understand the difference between an XO project, its workspace machine, the agent running inside it, and the agent's own work directories."
+		href="/getting-started/core-concepts"
+	/>
+	<Card
+		icon={<span className="icon-[mingcute--chat-2-ai-fill] size-6" />}
+		title="2. Choose an Agent"
+		description="Pick OpenClaw, Claude Code, Hermes, or XO Cowork based on how and where you want to work."
+		href="/getting-started/choose-an-agent"
+	/>
+	<Card
 		icon={<span className="icon-[ph--user-plus-fill] size-6" />}
-		title="Create an Account"
-		description="Sign up on XO, pick your username, and select a plan. Takes under 2 minutes."
+		title="3. Create an Account"
+		description="Sign up, choose a username, and select a plan. Takes under 2 minutes."
 		href="/getting-started/create-account"
+	/>
+	<Card
+		icon={<span className="icon-[ph--rocket-fill] size-6" />}
+		title="4. Launch Your First Agent"
+		description="Create the project from your chosen template, wait for the workspace, and complete a first test."
+		href="/getting-started/launch-first-agent"
 	/>
 </Cards>
 
----
+## Configure and Operate
 
-## Managing Your Workspace
-
-Once your project is running, use these guides to operate and share your workspace.
+Once your agent is live, connect optional services and learn the controls you will use day to day.
 
 <Cards>
 	<Card
-		icon={
-			<span className="icon-[ph--arrow-clockwise] size-4.5 text-green-400" />
-		}
-		title="Manage Your Machine"
-		description="Stop, restart, and monitor your workspace machine from the dashboard."
+		icon={<span className="icon-[ph--gear-fill] size-4.5 text-green-400" />}
+		title="Configure Your Agent"
+		description="Connect models, data sources, and messaging channels from the Setup tab."
+		href="/setup"
+	/>
+	<Card
+		icon={<span className="icon-[ph--arrow-clockwise] size-4.5 text-green-400" />}
+		title="Manage Your Workspace Machine"
+		description="Monitor services and resources, open your agent, and stop or restart the workspace."
 		href="/getting-started/manage-workspace"
 	/>
 	<Card
 		icon={<span className="icon-[ph--monitor] size-4.5 text-green-400" />}
-		title="Access via VS Code Server"
-		description="Open a browser-based VS Code IDE and run commands without any local install."
+		title="Use the Browser IDE"
+		description="Open code-server and run workspace commands without installing a local editor."
 		href="/getting-started/vs-code-server"
 	/>
 	<Card
 		icon={<span className="icon-[ph--share-network] size-4.5 text-green-400" />}
 		title="Share Your Project"
-		description="Grant and revoke collaborator access by email."
+		description="Grant or revoke a collaborator's access by email."
 		href="/getting-started/share-project"
 	/>
 </Cards>
-
----
-
-## What's Next?
-
-Account ready? Head back to [Getting Started](/) and create your first project — then pick your agent.

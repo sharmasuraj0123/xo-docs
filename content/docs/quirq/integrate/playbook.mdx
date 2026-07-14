@@ -10,16 +10,18 @@ icon: Wrench
 
 The definition of done is where delegation succeeds or fails. Three check types:
 
-- **Mechanical:** decidable predicates over captured state (tests exit green,
-  ticket status closed, artifact exists and parses). Cheap, repeatable,
-  preferred wherever possible.
-- **Statistical:** mechanical checks over samples (of 100 generated records, a
-  random 10 meet spec). For volume work where per-item checking is uneconomical.
-- **Judgment:** a signed verdict by the unit's owner, recorded in the ledger.
-  Use exactly one, terminally, for outcomes whose acceptance is irreducibly a
-  call. A model judging the work is not a judgment check; it is a mechanical
-  check with a soft predicate that agents optimize against at machine speed:
-  keep model judges in the statistical tier, audited by sampled human judgment.
+<FeatureGrid
+	cols={3}
+	items={[
+		{ icon: "check", title: "Mechanical", desc: "Decidable predicates over captured state: tests green, ticket closed, artifact parses. Cheap, repeatable, preferred." },
+		{ icon: "scales", title: "Statistical", desc: "Mechanical checks over samples: of 100 records, a random 10 meet spec. For volume work." },
+		{ icon: "user", title: "Judgment", desc: "A signed verdict by the owner, recorded in the ledger. Exactly one, terminal, for irreducibly judgment-shaped outcomes." },
+	]}
+/>
+
+One trap: a model judging the work is not a judgment check. It is a mechanical
+check with a soft predicate that agents optimize against at machine speed. Keep
+model judges in the statistical tier, audited by sampled human judgment.
 
 Rules of thumb: state the end state, not the activity ("tests pass", not "wrote
 tests"). Weight by value, not difficulty. Always include an anti-gaming check
@@ -102,8 +104,7 @@ per-check intervention decomposition. Each entry commits to its content and to
 the previous entry's hash, so history is tamper-evident by recomputation. A
 reference implementation (snapshots, checks, mint, settlement, ledger, and the
 experiment harness) accompanies the
-[validation program](/future-of-work/phase-1-agentic-workforce/unit-of-work-research/validation).
+[validation program](/quirq/what-it-calculates/validation).
 
-That completes Phase 1: the contract, the meter, the machinery, the numbers, and
-the craft. Continue the argument:
-[Phase 2, the new era of collaboration](/future-of-work/phase-2-collaboration).
+One more thing before you trust the ledger under pressure:
+[gaming](/quirq/integrate/gaming), the attack surface and its mitigations.

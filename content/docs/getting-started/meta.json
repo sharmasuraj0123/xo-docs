@@ -1,8 +1,12 @@
 {
-  "title": "Getting Started",
+  "title": "Start Here",
+  "icon": "Rocket",
   "pages": [
-    "index",
+    "core-concepts",
+    "choose-an-agent",
     "create-account",
+    "launch-first-agent",
+    "---Operate Your Workspace---",
     "manage-workspace",
     "vs-code-server",
     "share-project"

@@ -1,4 +1,4 @@
 {
-  "title": "Sample Docker Files",
+  "title": "Dockerfile Examples",
   "pages": ["python", "node-js", "next-js", "vite"]
 }

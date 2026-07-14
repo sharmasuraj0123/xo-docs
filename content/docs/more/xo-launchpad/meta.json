@@ -1,10 +1,13 @@
 {
   "title": "XO Launchpad",
+  "icon": "Rocket",
   "pages": [
     "quickstart",
     "overview",
-    "templates",
+    "---Deploy Applications---",
     "no-code-deployment",
+    "---Examples & Templates---",
+    "templates",
     "sample-docker-files"
   ]
 }

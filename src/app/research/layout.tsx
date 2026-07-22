@@ -1,12 +1,13 @@
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
-import { baseOptions, navTabs } from "@/lib/layout.shared";
+import { baseOptions, getNavTabs } from "@/lib/layout.shared";
 import { researchSource } from "@/lib/source";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <DocsLayout
       sidebar={{ enabled: false }}
-      tabs={navTabs}
+      tabs={getNavTabs()}
+      tabMode="top"
       tree={researchSource.getPageTree()}
       {...baseOptions()}
     >

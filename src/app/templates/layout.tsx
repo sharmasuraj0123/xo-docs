@@ -6,17 +6,15 @@ import {
   AISearchTrigger,
 } from "@/components/ai/search";
 import { cn } from "@/lib/cn";
-import { baseOptions, navTabs } from "@/lib/layout.shared";
+import { baseOptions, getNavTabs } from "@/lib/layout.shared";
 import { templatesSource } from "@/lib/source";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <DocsLayout
-      sidebar={{
-        enabled: true,
-        prefetch: true,
-      }}
-      tabs={navTabs}
+      sidebar={{ enabled: true, prefetch: true }}
+      tabs={getNavTabs()}
+      tabMode="top"
       tree={templatesSource.getPageTree()}
       {...baseOptions()}
     >

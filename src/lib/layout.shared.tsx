@@ -1,13 +1,32 @@
-import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
+import type { BaseLayoutProps, LayoutTab } from "fumadocs-ui/layouts/shared";
 import Image from "next/image";
 import { appName, gitConfig } from "./shared";
+import { apiSource, researchSource, source, templatesSource } from "./source";
 
-export const navTabs = [
-  { title: "Guides", url: "/docs" },
-  { title: "API Reference", url: "/api-reference" },
-  { title: "Templates", url: "/templates" },
-  { title: "Research", url: "/research" },
-];
+export function getNavTabs(): LayoutTab[] {
+  return [
+    {
+      title: "Guides",
+      url: "/docs",
+      urls: new Set(source.getPages().map((p) => p.url)),
+    },
+    {
+      title: "API Reference",
+      url: "/api-reference",
+      urls: new Set(apiSource.getPages().map((p) => p.url)),
+    },
+    {
+      title: "Templates",
+      url: "/templates",
+      urls: new Set(templatesSource.getPages().map((p) => p.url)),
+    },
+    {
+      title: "Research",
+      url: "/research",
+      urls: new Set(researchSource.getPages().map((p) => p.url)),
+    },
+  ];
+}
 
 export function baseOptions(): BaseLayoutProps {
   return {

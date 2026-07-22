@@ -11,17 +11,19 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/components/mdx";
 import { siteUrl } from "@/lib/shared";
-import { getPageImage, getPageMarkdownUrl, source } from "@/lib/source";
+import { templatesSource } from "@/lib/source";
 
-export default async function Page(props: PageProps<"/[[...slug]]">) {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
+interface Props {
+  params: Promise<{ slug?: string[] }>;
+}
+
+export default async function Page({ params }: Props) {
+  const { slug } = await params;
+  const page = templatesSource.getPage(slug);
   if (!page) notFound();
 
   const MDX = page.data.body;
-  const markdownUrl = getPageMarkdownUrl(page).url;
-
-  const isIndex = !params.slug || params.slug.length === 0;
+  const isIndex = !slug || slug.length === 0;
 
   if (isIndex) {
     return (
@@ -29,7 +31,7 @@ export default async function Page(props: PageProps<"/[[...slug]]">) {
         <DocsBody>
           <MDX
             components={getMDXComponents({
-              a: createRelativeLink(source, page),
+              a: createRelativeLink(templatesSource, page),
             })}
           />
         </DocsBody>
@@ -44,13 +46,15 @@ export default async function Page(props: PageProps<"/[[...slug]]">) {
         {page.data.description}
       </DocsDescription>
       <div className="flex flex-row gap-2 items-center border-b pb-6">
-        <MarkdownCopyButton markdownUrl={markdownUrl} />
+        <MarkdownCopyButton
+          markdownUrl={`/templates/${(slug ?? []).join("/")}/content.md`}
+        />
         <ViewOptionsPopover />
       </div>
       <DocsBody>
         <MDX
           components={getMDXComponents({
-            a: createRelativeLink(source, page),
+            a: createRelativeLink(templatesSource, page),
           })}
         />
       </DocsBody>
@@ -59,21 +63,13 @@ export default async function Page(props: PageProps<"/[[...slug]]">) {
 }
 
 export async function generateStaticParams() {
-  return source.generateParams();
+  return templatesSource.generateParams();
 }
 
-export async function generateMetadata(
-  props: PageProps<"/[[...slug]]">,
-): Promise<Metadata> {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const page = templatesSource.getPage(slug);
   if (!page) notFound();
-
-  const image = {
-    url: getPageImage(page).url,
-    width: 1200,
-    height: 630,
-  };
 
   return {
     title: page.data.title,
@@ -83,12 +79,10 @@ export async function generateMetadata(
       description: page.data.description,
       type: "article",
       url: `${siteUrl}${page.url}`,
-      images: image,
     },
     twitter: {
       title: page.data.title,
       description: page.data.description,
-      images: image,
     },
   };
 }

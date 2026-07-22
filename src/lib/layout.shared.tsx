@@ -2,6 +2,13 @@ import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 import Image from "next/image";
 import { appName, gitConfig } from "./shared";
 
+export const navTabs = [
+  { title: "Guides", url: "/docs" },
+  { title: "API Reference", url: "/api-reference" },
+  { title: "Templates", url: "/templates" },
+  { title: "Research", url: "/research" },
+];
+
 export function baseOptions(): BaseLayoutProps {
   return {
     nav: {

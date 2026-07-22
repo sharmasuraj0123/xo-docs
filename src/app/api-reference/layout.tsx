@@ -6,17 +6,18 @@ import {
   AISearchTrigger,
 } from "@/components/ai/search";
 import { cn } from "@/lib/cn";
-import { baseOptions } from "@/lib/layout.shared";
-import { source } from "@/lib/source";
+import { baseOptions, navTabs } from "@/lib/layout.shared";
+import { apiSource } from "@/lib/source";
 
-export default function Layout({ children }: LayoutProps<"/">) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <DocsLayout
       sidebar={{
         enabled: true,
         prefetch: true,
       }}
-      tree={source.getPageTree()}
+      tabs={navTabs}
+      tree={apiSource.getPageTree()}
       {...baseOptions()}
     >
       <AISearch>

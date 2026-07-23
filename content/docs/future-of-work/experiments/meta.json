@@ -11,6 +11,7 @@
     "coding-model-eval-harness",
     "harvey-case-study",
     "tokenizer-not-the-language",
-    "alignment-environments"
+    "alignment-environments",
+    "organic-vs-synthetic-evaluation-data"
   ]
 }

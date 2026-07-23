@@ -1,13 +1,13 @@
-import {
-  apiDocs,
-  docs,
-  researchDocs,
-  templatesDocs,
-} from "collections/server";
+import { apiDocs, docs, researchDocs, templatesDocs } from "collections/server";
 import { loader } from "fumadocs-core/source";
 import { createElement } from "react";
 import { BrandIcon } from "@/components/brand-icon";
-import { docsContentRoute, docsImageRoute, docsRoute } from "./shared";
+import {
+  docsContentRoute,
+  docsImageRoute,
+  docsRoute,
+  researchContentRoute,
+} from "./shared";
 
 // Static map of all sidebar icon names → Phosphor CSS classes (Tailwind scans these literals)
 const ICON_CLASSES: Record<string, string> = {
@@ -134,13 +134,14 @@ export function getPageImage(page: (typeof source)["$inferPage"]) {
   };
 }
 
-export function getPageMarkdownUrl(page: (typeof source)["$inferPage"]) {
+export function getPageMarkdownUrl(page: { slugs: string[] }) {
   const segments = [...page.slugs, "content.md"];
+  return { segments, url: `${docsContentRoute}/${segments.join("/")}` };
+}
 
-  return {
-    segments,
-    url: `${docsContentRoute}/${segments.join("/")}`,
-  };
+export function getResearchPageMarkdownUrl(page: { slugs: string[] }) {
+  const segments = [...page.slugs, "content.md"];
+  return { segments, url: `${researchContentRoute}/${segments.join("/")}` };
 }
 
 export async function getLLMText(page: (typeof source)["$inferPage"]) {

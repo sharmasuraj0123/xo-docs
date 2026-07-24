@@ -1,0 +1,24 @@
+{
+  "title": "XO Cowork API",
+  "icon": "XoCowork",
+  "pages": [
+    "quickstart",
+    "reference",
+    "overview",
+    "auth-api",
+    "---Core APIs---",
+    "chat-api",
+    "sessions-api",
+    "files-api",
+    "---Workspace APIs---",
+    "agents-api",
+    "config-api",
+    "connectors-api",
+    "secrets-api",
+    "usage-api",
+    "---Integration Guide---",
+    "frontend-integration",
+    "---MCP Server---",
+    "xo-mcp-server"
+  ]
+}

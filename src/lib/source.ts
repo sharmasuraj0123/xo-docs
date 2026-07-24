@@ -1,8 +1,13 @@
-import { docs } from "collections/server";
+import { apiDocs, docs, researchDocs, templatesDocs } from "collections/server";
 import { loader } from "fumadocs-core/source";
 import { createElement } from "react";
 import { BrandIcon } from "@/components/brand-icon";
-import { docsContentRoute, docsImageRoute, docsRoute } from "./shared";
+import {
+  docsContentRoute,
+  docsImageRoute,
+  docsRoute,
+  researchContentRoute,
+} from "./shared";
 
 // Static map of all sidebar icon names → Phosphor CSS classes (Tailwind scans these literals)
 const ICON_CLASSES: Record<string, string> = {
@@ -116,6 +121,24 @@ export const source = loader({
   plugins: [iconifyIconsPlugin()],
 });
 
+export const apiSource = loader({
+  baseUrl: "/api-reference",
+  source: apiDocs.toFumadocsSource(),
+  plugins: [iconifyIconsPlugin()],
+});
+
+export const templatesSource = loader({
+  baseUrl: "/templates",
+  source: templatesDocs.toFumadocsSource(),
+  plugins: [iconifyIconsPlugin()],
+});
+
+export const researchSource = loader({
+  baseUrl: "/research",
+  source: researchDocs.toFumadocsSource(),
+  plugins: [iconifyIconsPlugin()],
+});
+
 export function getPageImage(page: (typeof source)["$inferPage"]) {
   const segments = [...page.slugs, "image.png"];
 
@@ -125,13 +148,14 @@ export function getPageImage(page: (typeof source)["$inferPage"]) {
   };
 }
 
-export function getPageMarkdownUrl(page: (typeof source)["$inferPage"]) {
+export function getPageMarkdownUrl(page: { slugs: string[] }) {
   const segments = [...page.slugs, "content.md"];
+  return { segments, url: `${docsContentRoute}/${segments.join("/")}` };
+}
 
-  return {
-    segments,
-    url: `${docsContentRoute}/${segments.join("/")}`,
-  };
+export function getResearchPageMarkdownUrl(page: { slugs: string[] }) {
+  const segments = [...page.slugs, "content.md"];
+  return { segments, url: `${researchContentRoute}/${segments.join("/")}` };
 }
 
 export async function getLLMText(page: (typeof source)["$inferPage"]) {

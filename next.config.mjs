@@ -13,8 +13,38 @@ const config = {
   async redirects() {
     return [
       {
+        source: "/agents/:path*",
+        destination: "/docs/agents/:path*",
+        permanent: true,
+      },
+      {
+        source: "/getting-started",
+        destination: "/docs/getting-started",
+        permanent: true,
+      },
+      {
         source: "/more/create-your-alter-ego/:path*",
         destination: "/more/create-your-environments/:path*",
+        permanent: true,
+      },
+      {
+        source: "/docs/more/xo-cowork-api/:path*",
+        destination: "/api-reference/:path*",
+        permanent: true,
+      },
+      {
+        source: "/more/xo-cowork-api/:path*",
+        destination: "/api-reference/:path*",
+        permanent: true,
+      },
+      {
+        source: "/more/xo-mcp-server/:path*",
+        destination: "/api-reference/xo-mcp-server/:path*",
+        permanent: true,
+      },
+      {
+        source: "/docs/more/xo-mcp-server/:path*",
+        destination: "/api-reference/xo-mcp-server/:path*",
         permanent: true,
       },
     ];

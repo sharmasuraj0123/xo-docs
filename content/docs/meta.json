@@ -3,9 +3,9 @@
   "pages": [
     "index",
     "getting-started",
-    "(research)",
-    "(solutions)",
-    "(build)",
-    "(operate)"
+    "agents",
+    "setup",
+    "troubleshooting",
+    "more"
   ]
 }

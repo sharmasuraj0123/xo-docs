@@ -1,0 +1,8 @@
+{
+  "title": "Deployment Methods",
+  "pages": [
+    "deploying-from-local",
+    "deploying-from-github-repository",
+    "deploying-from-lovable"
+  ]
+}

@@ -17,6 +17,8 @@
     "secrets-api",
     "usage-api",
     "---Integration Guide---",
-    "frontend-integration"
+    "frontend-integration",
+    "---MCP Server---",
+    "xo-mcp-server"
   ]
 }

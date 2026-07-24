@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { TOCItem } from "fumadocs-ui/components/toc/default";
 import { TOCProvider, TOCScrollArea } from "fumadocs-ui/components/toc";
+import { TOCItem } from "fumadocs-ui/components/toc/default";
 import {
   MarkdownCopyButton,
   ViewOptionsPopover,
 } from "fumadocs-ui/layouts/docs/page";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/components/mdx";
 import { siteUrl } from "@/lib/shared";
 import { getResearchPageMarkdownUrl, researchSource } from "@/lib/source";
@@ -143,14 +143,12 @@ function PostNav({ currentUrl }: { currentUrl: string }) {
 
 function TagCloud() {
   const counts = new Map<string, number>();
-  let total = 0;
 
   for (const page of researchSource.getPages()) {
     const tags = (page.data as { tags?: string[] }).tags ?? [];
     for (const tag of tags) {
       counts.set(tag, (counts.get(tag) ?? 0) + 1);
     }
-    if (tags.length > 0) total++;
   }
 
   const sorted = Array.from(counts.entries())
@@ -248,13 +246,6 @@ function orderFromTree(): Map<string, number> {
 }
 
 function ResearchListing() {
-  const rootData = researchSource.getPage([])?.data as
-    | {
-        title?: string;
-        description?: string;
-      }
-    | undefined;
-
   const treeOrder = orderFromTree();
 
   const allPages = researchSource

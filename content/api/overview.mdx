@@ -76,7 +76,7 @@ client                         /api/chat/prompt                  /api/chat/strea
 
 `prompt` reserves a `stream_id` and (for new sessions) starts the bootstrap. `stream` does the actual long-poll. The frontend can navigate to `/c/{session_id}` immediately after `prompt` returns; the SSE replay continues in parallel.
 
-See the [Chat API](/more/xo-cowork-api/chat-api) page for the full event vocabulary, reconnect semantics, and React Strict Mode handling.
+See the [Chat API](/api-reference/chat-api) page for the full event vocabulary, reconnect semantics, and React Strict Mode handling.
 
 ## Universal home-clamp (filesystem endpoints)
 
@@ -143,8 +143,8 @@ Do **not** hardcode `~/xo-projects/`. The `XO_PROJECTS_ROOT` env var on the serv
 
 ## What's next
 
-- [Quickstart](/more/xo-cowork-api/quickstart): verify the instance, discover its workspace, and stream a first chat turn.
-- [Chat API](/more/xo-cowork-api/chat-api): prompt, stream, abort, and SSE event vocabulary.
-- [Files API](/more/xo-cowork-api/files-api): file CRUD plus project scaffolding.
-- [Sessions API](/more/xo-cowork-api/sessions-api): list and search sessions, hydrate messages.
-- [Frontend Integration](/more/xo-cowork-api/frontend-integration): putting it all together with TypeScript.
+- [Quickstart](/api-reference/quickstart): verify the instance, discover its workspace, and stream a first chat turn.
+- [Chat API](/api-reference/chat-api): prompt, stream, abort, and SSE event vocabulary.
+- [Files API](/api-reference/files-api): file CRUD plus project scaffolding.
+- [Sessions API](/api-reference/sessions-api): list and search sessions, hydrate messages.
+- [Frontend Integration](/api-reference/frontend-integration): putting it all together with TypeScript.

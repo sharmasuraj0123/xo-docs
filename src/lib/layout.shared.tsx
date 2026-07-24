@@ -1,18 +1,22 @@
-import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
-import type { LinkItemType } from "fumadocs-ui/layouts/shared";
+import type { BaseLayoutProps, LinkItemType } from "fumadocs-ui/layouts/shared";
+import Image from "next/image";
 import { appName, gitConfig } from "./shared";
 
 const logo = (
   <>
-    <img
+    <Image
       src="/xo-light.svg"
       alt={appName}
       className="h-7 w-auto rounded-md block dark:hidden"
+      width={500}
+      height={500}
     />
-    <img
+    <Image
       src="/xo.svg"
       alt={appName}
       className="h-7 w-auto rounded-md hidden dark:block"
+      width={500}
+      height={500}
     />
   </>
 );

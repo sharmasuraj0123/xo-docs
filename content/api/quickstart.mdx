@@ -24,7 +24,7 @@ workspace proxy can require a host-provided `Authorization: Bearer <token>` or
 `Coder-Session-Token: <token>` header. Add one only when that workspace host tells
 you to: the FastAPI app itself does not validate either header. That workspace
 proxy token is different from the upstream swarm token described in the [API
-overview](/more/xo-cowork-api/overview#auth-model).
+overview](/api-reference/overview#auth-model).
 
 <Steps>
   <Step>
@@ -124,8 +124,8 @@ overview](/more/xo-cowork-api/overview#auth-model).
 <Callout type="info">
 The status and workspace-config requests work before you build a chat UI. A chat
 turn also requires a configured runtime and model provider. Use the [Auth
-API](/more/xo-cowork-api/auth-api) for Clerk and Claude/Codex bootstrap flows, and
-`GET /api/models` from the [Config API](/more/xo-cowork-api/config-api) to populate
+API](/api-reference/auth-api) for Clerk and Claude/Codex bootstrap flows, and
+`GET /api/models` from the [Config API](/api-reference/config-api) to populate
 the model choices your workspace exposes.
 </Callout>
 
@@ -140,11 +140,11 @@ Before moving on, verify all four outcomes:
 
 ## Build the next layer
 
-- Read the [Overview](/more/xo-cowork-api/overview) for remote auth, content types,
+- Read the [Overview](/api-reference/overview) for remote auth, content types,
   and the shared error envelope.
-- Use the [Chat API](/more/xo-cowork-api/chat-api) for reconnect, heartbeat, abort,
+- Use the [Chat API](/api-reference/chat-api) for reconnect, heartbeat, abort,
   and full event semantics.
 - Copy the production-oriented TypeScript patterns in [Frontend
-  Integration](/more/xo-cowork-api/frontend-integration).
-- Use the [Files API](/more/xo-cowork-api/files-api) and [Sessions
-  API](/more/xo-cowork-api/sessions-api) to add project navigation and history.
+  Integration](/api-reference/frontend-integration).
+- Use the [Files API](/api-reference/files-api) and [Sessions
+  API](/api-reference/sessions-api) to add project navigation and history.

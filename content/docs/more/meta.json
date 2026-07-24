@@ -1,5 +1,11 @@
 {
   "title": "More",
   "icon": "more",
-  "pages": ["xo-mcp-server", "create-your-alter-ego"]
+  "pages": [
+    "create-your-environments",
+    "create-your-alter-ego",
+    "xo-launchpad",
+    "xo-cowork-api",
+    "xo-mcp-server"
+  ]
 }

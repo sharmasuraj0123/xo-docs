@@ -4,6 +4,15 @@ description: "A pilot measuring how a workspace's project context shapes a codin
 ---
 
 import { Cards, Card } from "@/components/card";
+import { Callout } from 'fumadocs-ui/components/callout';
+
+<Callout type="warn">
+**Series update:** a later 84-run study did not reproduce this pilot's headline
+that richer context lowered the token bill. The caching observation and method
+remained useful, but the early cost result did not generalize. Read [Agent Context
+Research: The Evidence So Far](/future-of-work/experiments/research-series) for the
+full evidence path before treating this pilot as current guidance.
+</Callout>
 
 <Lead>We ran a coding agent against the same software task under six escalating levels of project context, from an empty workspace up to a full XO project scaffold, holding the model, the prompt, the task, and the codebase fixed. Changing only the environment changed how much the agent spent. Richer context did not hurt whether the task got done, it lowered the token cost of doing it, and because the context is cached, it added almost nothing to the bill.</Lead>
 
@@ -200,6 +209,11 @@ argument. This pilot is a first measurement pointing the same way, and we will k
 widening it.
 
 <Cards>
+	<Card
+		title="Read the full research series"
+		description="See how replication revised this pilot and how the later studies narrowed the useful role of context."
+		href="/future-of-work/experiments/research-series"
+	/>
 	<Card
 		title="Why the unit of work matters"
 		description="The conceptual argument behind this measurement: the environment is the load-bearing component of agentic work."

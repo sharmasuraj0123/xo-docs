@@ -1,18 +1,27 @@
 ---
-title: Setup
-description: Configure your agent's models, data sources, and channels from the Setup tab.
+title: Configure Your Workspace
+description: Connect compatible models, data sources, and channels after your workspace is provisioned.
 icon: Settings
 ---
 
 import { Cards, Card } from "@/components/card";
 
-The **Setup** tab in your XO project page is where you configure your agent post-provisioning. Connect a model provider, give your agent access to your data, and reach it from your messaging apps.
+The **Setup** tab in your XO project page is where you configure your agent
+after provisioning. The available model and channel options depend on the agent
+you selected, while data-source connections are shared across supported
+workspaces.
 
 ---
 
 ## Configure Your Agent
 
 <Cards>
+	<Card
+		icon={<span className="icon-[ph--check-square-offset-fill] size-4.5 text-green-400" />}
+		title="Compatibility Guide"
+		description="Check which model connections, interfaces, and channels apply to each agent."
+		href="/setup/compatibility"
+	/>
 	<Card
 		icon={<span className="icon-[ph--cpu-fill] size-4.5 text-green-400" />}
 		title="Models"
@@ -27,8 +36,8 @@ The **Setup** tab in your XO project page is where you configure your agent post
 	/>
 	<Card
 		icon={<span className="icon-[ph--chat-circle-fill] size-4.5 text-green-400" />}
-		title="Channels"
-		description="Bring your agent to Telegram or Slack."
+		title="OpenClaw Channels"
+		description="Connect Telegram or Slack through Setup, then restart the OpenClaw Gateway."
 		href="/setup/channels"
 	/>
 </Cards>

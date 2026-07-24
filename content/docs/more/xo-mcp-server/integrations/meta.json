@@ -1,4 +1,4 @@
 {
-  "title": "Integrations",
+  "title": "AI Tool Integrations",
   "pages": ["cursor", "claude", "claude-code", "chatgpt", "devin", "manus"]
 }

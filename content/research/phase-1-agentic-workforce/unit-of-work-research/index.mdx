@@ -1,56 +1,34 @@
 ---
-title: Overview
-description: "The research note behind the quirq: the machinery that mints it, the calculus around it, and the program that validates it."
+title: Why the Environment Matters
+description: "The research note behind the unit of work: what it argues, and where the full quirq treatment lives."
 icon: BookOpen
 ---
 
 import { Cards, Card } from "@/components/card";
 
-<Lead>The quirq page defined the meter. This note builds it: the environment that makes minting trustworthy, the full calculus, the company ledger, the attacks, and the hypothesis-first validation program.</Lead>
+<Lead>The quirq page defined the meter. This note carries the argument that makes minting trustworthy: the environment, not the agent, is the load-bearing component.</Lead>
 
 **XO Research** · July 2026 (v3)
 
-**TL;DR:** Quirqs are only as real as the machinery beneath them. The
-environment is that machinery: it captures state, meters cost, and writes the
-record, which is why it, not the agent, is the load-bearing component. On top of
-it, one ledger yields every number an operator needs (cost per quirq, QER, the
-intervention rate) and their trajectories over time. A unit of account invites
-gaming, so the attacks and mitigations are catalogued, and every empirical claim
-is stated with a falsifier and bound to a numbered experiment.
-
-## The note in six parts
+**TL;DR:** quirqs are only as real as the machinery beneath them. The
+environment is that machinery: it captures the before- and after-state, meters
+every action, and writes the tamper-evident record, which is why verification
+can never be gamed by the worker it verifies. The full canonical treatment
+(calculus, dashboard, gaming, validation, playbook) lives in the
+[quirq section](/quirq); this note carries the environment argument and hands
+the chain onward.
 
 <Cards>
 	<Card
-		title="1. The environment is the key part"
+		title="The environment is the key part"
 		description="It owns the ground truth: the specification, the scorekeeper, and the binding constraint."
 		href="/future-of-work/phase-1-agentic-workforce/unit-of-work-research/environment"
 	/>
 	<Card
-		title="2. The quirq calculus"
-		description="Scoring, the mint, the all-in cost model, QER, the tenure curve (42% cheaper by unit 50), and the energy bridge."
-		href="/future-of-work/phase-1-agentic-workforce/unit-of-work-research/calculation"
-	/>
-	<Card
-		title="3. The company dashboard"
-		description="The quarterly ledger, the reading discipline, and the four habits of adopting teams."
-		href="/future-of-work/phase-1-agentic-workforce/unit-of-work-research/dashboard"
-	/>
-	<Card
-		title="4. Gaming the quirq"
-		description="Budget inflation, check farming, surface attacks, self-report injection, salami slicing, and the mitigations."
-		href="/future-of-work/phase-1-agentic-workforce/unit-of-work-research/gaming"
-	/>
-	<Card
-		title="5. Validation"
-		description="Hypothesis-first: H1 to H4 with falsifiers, experiments E1 to E3 complete, E4 to E7 scheduled."
-		href="/future-of-work/phase-1-agentic-workforce/unit-of-work-research/validation"
-	/>
-	<Card
-		title="6. Practitioner playbook"
-		description="Definitions of done, budget setting, and the ledger schema, on one page."
-		href="/future-of-work/phase-1-agentic-workforce/unit-of-work-research/playbook"
+		title="The quirq section (canonical)"
+		description="Two meters, the denominator, the calculus, the dashboard, gaming, validation, and the playbook."
+		href="/quirq"
 	/>
 </Cards>
 
-Start with part 1: [the environment](/future-of-work/phase-1-agentic-workforce/unit-of-work-research/environment).
+Continue: [the environment](/future-of-work/phase-1-agentic-workforce/unit-of-work-research/environment).

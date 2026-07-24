@@ -19,11 +19,11 @@ import { ShaderBackground } from "@/components/hero-shader";
 	</h1>
 	<div className="mx-auto mb-10 max-w-lg px-4 sm:px-0 text-sm sm:text-lg text-fd-muted-foreground">
 		Secure, isolated remote environments for your AI agents. No local setup, no
-		infra to manage — pick a template and your agent is live.
+		infra to manage — pick a template and XO handles provisioning.
 	</div>
 	<div className="flex flex-wrap items-center justify-center gap-3">
 		<a
-			href="/getting-started/create-account"
+			href="/getting-started"
 			className="flex items-center gap-2 rounded-lg bg-fd-primary px-5 py-2.5 text-sm font-semibold text-fd-primary-foreground transition-opacity hover:opacity-90"
 		>
 			Get Started
@@ -49,11 +49,11 @@ import { ShaderBackground } from "@/components/hero-shader";
 				1
 			</div>
 			<div className="mb-1.5 font-semibold text-fd-foreground">
-				Create a Project
+				Choose your Agent
 			</div>
 			<div className="text-sm leading-relaxed text-fd-muted-foreground">
-				Every agent runs inside a project — a secure, sandboxed environment in
-				the cloud.
+				Compare OpenClaw, Claude Code, Hermes, and XO Cowork based on how and
+				where you want to work.
 			</div>
 		</div>
 		<div className="rounded-xl bg-fd-card p-6">
@@ -61,11 +61,11 @@ import { ShaderBackground } from "@/components/hero-shader";
 				2
 			</div>
 			<div className="mb-1.5 font-semibold text-fd-foreground">
-				Choose your Agent
+				Create a Project
 			</div>
 			<div className="text-sm leading-relaxed text-fd-muted-foreground">
-				Pick a pre-configured template (OpenClaw, Claude Code) or bring your
-				own.
+				Create an XO project from the selected template and provide only the
+				credentials that agent requires.
 			</div>
 		</div>
 		<div className="rounded-xl bg-fd-card p-6">
@@ -74,8 +74,8 @@ import { ShaderBackground } from "@/components/hero-shader";
 			</div>
 			<div className="mb-1.5 font-semibold text-fd-foreground">Launch</div>
 			<div className="text-sm leading-relaxed text-fd-muted-foreground">
-				Your agent spins up instantly in a secure remote environment, ready to
-				work.
+				XO provisions a secure remote environment. Once its required services
+				are ready, open the agent and complete a first test.
 			</div>
 		</div>
 	</div>
@@ -133,8 +133,8 @@ import { ShaderBackground } from "@/components/hero-shader";
 			<span className="icon-[ph--lightning] size-6 mb-3 text-fd-primary" />
 			<div className="mb-1.5 font-semibold text-fd-foreground">Zero Setup</div>
 			<div className="text-sm leading-relaxed text-fd-muted-foreground">
-				Pre-configured templates mean your agent is ready the moment you launch.
-				No dependency hell.
+				Pre-configured templates handle dependencies and service setup inside
+				the remote workspace.
 			</div>
 		</div>
 		<div className="rounded-xl bg-fd-card p-6">
@@ -152,19 +152,49 @@ import { ShaderBackground } from "@/components/hero-shader";
 
 {/* ── Explore ──────────────────────────────────────────────────────── */}
 
-## Explore the Docs
+## What do you want to do?
 
 <Cards>
 	<Card
-		icon={<span className="icon-[ph--book-open-fill] size-6" />}
-		title="Getting Started"
-		description="Account creation, dashboard navigation, machine management, and project sharing."
-		href="/getting-started"
+		icon={<span className="icon-[mingcute--telescope-fill] size-6" />}
+		title="Read the research"
+		description="Explore the Future of Work thesis, quirq, experiments, and perspectives."
+		href="/future-of-work"
 	/>
 	<Card
-		icon={<BrandIcon name="openclaw" size={24} />}
-		title="OpenClaw"
-		description="Setup, channels, models, skills, integrations, and troubleshooting."
-		href="/agents/openclaw"
+		icon={<span className="icon-[ph--robot-fill] size-6" />}
+		title="Choose and use an agent"
+		description="Compare OpenClaw, Claude Code, Hermes, and XO Cowork, then follow its workflow."
+		href="/agents"
+	/>
+	<Card
+		icon={<span className="icon-[ph--squares-four-fill] size-6" />}
+		title="Create an environment"
+		description="Choose or build a purpose-built space for real work, learning, and experimentation."
+		href="/more/create-your-environments"
+	/>
+	<Card
+		icon={<span className="icon-[ph--rocket-fill] size-6" />}
+		title="Deploy an application"
+		description="Use XO Launchpad to deploy from GitHub, local Docker, Lovable, or a template."
+		href="/more/xo-launchpad"
+	/>
+	<Card
+		icon={<span className="icon-[ph--code-fill] size-6" />}
+		title="Build an integration"
+		description="Connect through the XO Cowork API or give supported AI clients access through the XO MCP Server."
+		href="/more/xo-cowork-api"
+	/>
+	<Card
+		icon={<span className="icon-[ph--gear-fill] size-6" />}
+		title="Configure a workspace"
+		description="Connect compatible models, data sources, and messaging channels after provisioning."
+		href="/setup"
+	/>
+	<Card
+		icon={<span className="icon-[ph--wrench-fill] size-6" />}
+		title="Fix a problem"
+		description="Diagnose workspace and agent issues with focused troubleshooting guides."
+		href="/troubleshooting"
 	/>
 </Cards>

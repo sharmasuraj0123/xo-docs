@@ -13,6 +13,11 @@ const config = {
   async redirects() {
     return [
       {
+        source: "/future-of-work/:path*",
+        destination: "/research/:path*",
+        permanent: true,
+      },
+      {
         source: "/agents/:path*",
         destination: "/docs/agents/:path*",
         permanent: true,

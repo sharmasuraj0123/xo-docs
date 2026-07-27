@@ -9,7 +9,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/components/mdx";
 import { siteUrl } from "@/lib/shared";
-import { getResearchPageMarkdownUrl, researchSource } from "@/lib/source";
+import {
+  getResearchPageImage,
+  getResearchPageMarkdownUrl,
+  researchSource,
+} from "@/lib/source";
 
 interface Props {
   params: Promise<{ slug?: string[] }>;
@@ -196,30 +200,40 @@ function ResearchCard({
   };
   const date = formatDate(data.date);
   const category = data.tags?.[0];
+  const thumb = getResearchPageImage(page);
 
   return (
     <Link
       href={page.url}
-      className="group relative flex flex-col rounded-xl border border-fd-border bg-fd-card p-6 hover:border-fd-primary/40 hover:shadow-lg hover:shadow-fd-primary/5 transition-all"
+      className="group relative flex flex-col rounded-xl border border-fd-border bg-fd-card overflow-hidden hover:border-fd-primary/40 hover:shadow-lg hover:shadow-fd-primary/5 transition-all"
     >
-      {category && (
-        <span className="text-[10px] font-semibold tracking-widest uppercase text-fd-primary mb-3">
-          {category}
-        </span>
-      )}
-      <h2 className="text-base font-semibold text-fd-foreground group-hover:text-fd-primary transition-colors mb-2 leading-snug">
-        {data.title}
-      </h2>
-      {data.description && (
-        <p className="text-sm text-fd-muted-foreground leading-relaxed mb-4 line-clamp-3 flex-1">
-          {data.description}
-        </p>
-      )}
-      {date && (
-        <p className="text-xs text-fd-muted-foreground mt-auto pt-3 border-t border-fd-border/50">
-          {date}
-        </p>
-      )}
+      <div className="w-full aspect-video overflow-hidden bg-fd-muted">
+        <img
+          src={thumb.url}
+          alt=""
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      </div>
+      <div className="flex flex-col p-5 flex-1">
+        {category && (
+          <span className="text-[10px] font-semibold tracking-widest uppercase text-fd-primary mb-2">
+            {category}
+          </span>
+        )}
+        <h2 className="text-base font-semibold text-fd-foreground group-hover:text-fd-primary transition-colors mb-2 leading-snug">
+          {data.title}
+        </h2>
+        {data.description && (
+          <p className="text-sm text-fd-muted-foreground leading-relaxed mb-4 line-clamp-2 flex-1">
+            {data.description}
+          </p>
+        )}
+        {date && (
+          <p className="text-xs text-fd-muted-foreground mt-auto pt-3 border-t border-fd-border/50">
+            {date}
+          </p>
+        )}
+      </div>
     </Link>
   );
 }
@@ -252,12 +266,12 @@ function ResearchListing() {
     .getPages()
     .filter((p) => p.slugs.length > 0)
     .sort((a, b) => {
-      const oa = treeOrder.get(a.slugs.join("/")) ?? 999;
-      const ob = treeOrder.get(b.slugs.join("/")) ?? 999;
-      if (oa !== ob) return oa - ob;
       const da = (a.data as { date?: string }).date ?? "";
       const db = (b.data as { date?: string }).date ?? "";
-      return db.localeCompare(da);
+      if (da !== db) return db.localeCompare(da);
+      const oa = treeOrder.get(a.slugs.join("/")) ?? 999;
+      const ob = treeOrder.get(b.slugs.join("/")) ?? 999;
+      return oa - ob;
     });
 
   const fowPages = allPages.filter((p) => !isQuirq(p.slugs));
@@ -472,11 +486,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: data.description,
       type: "article",
       url: `${siteUrl}${page.url}`,
+      images: [`${siteUrl}${getResearchPageImage(page).url}`],
       ...(data.date && { publishedTime: data.date }),
     },
     twitter: {
+      card: "summary_large_image",
       title: data.title,
       description: data.description,
+      images: [`${siteUrl}${getResearchPageImage(page).url}`],
     },
     other: {
       "application/ld+json": JSON.stringify({

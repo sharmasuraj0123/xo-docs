@@ -158,6 +158,11 @@ export function getResearchPageMarkdownUrl(page: { slugs: string[] }) {
   return { segments, url: `${researchContentRoute}/${segments.join("/")}` };
 }
 
+export function getResearchPageImage(page: { slugs: string[] }) {
+  const segments = [...page.slugs, "image.png"];
+  return { segments, url: `/og/research/${segments.join("/")}` };
+}
+
 export async function getLLMText(page: (typeof source)["$inferPage"]) {
   const processed = await page.data.getText("processed");
 

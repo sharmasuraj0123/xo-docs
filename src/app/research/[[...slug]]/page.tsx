@@ -386,18 +386,13 @@ export default async function Page({ params }: Props) {
               ← All Posts
             </Link>
 
-            {/* <div className="flex flex-col gap-4 text-sm mb-8">
-              {date && (
-                <div>
-                  <p className="text-fd-muted-foreground">Written by</p>
-                  <p className="font-medium">XO Team</p>
-                </div>
-              )}
-              <div>
-                <p className="text-fd-muted-foreground">At</p>
-                <p className="font-medium">{date}</p>
-              </div>
-            </div> */}
+            <div className="w-full aspect-video rounded-xl overflow-hidden mb-8">
+              <img
+                src={getResearchPageImage(page).url}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+            </div>
 
             {data.tags && data.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-4">

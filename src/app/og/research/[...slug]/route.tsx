@@ -4,32 +4,34 @@ import { getResearchPageImage, researchSource } from "@/lib/source";
 
 export const revalidate = false;
 
-function slugHash(slug: string): number {
+// 8 distinct palettes: [base, midColor, accentColor, highlightColor]
+const PALETTES: [string, string, string, string][] = [
+  ["#1a0a2e", "#4c1d95", "#7c3aed", "#a78bfa"], // violet
+  ["#0c1a2e", "#0e3a6e", "#1d6bb8", "#60a5fa"], // ocean blue
+  ["#1a0c0c", "#7f1d1d", "#c0392b", "#f87171"], // deep red
+  ["#0a1a12", "#064e3b", "#059669", "#34d399"], // emerald
+  ["#1a120a", "#78350f", "#c2691d", "#fbbf24"], // amber
+  ["#0e0a1e", "#312e81", "#4338ca", "#818cf8"], // indigo
+  ["#1a0a14", "#831843", "#be185d", "#f472b6"], // rose
+  ["#0a1a1a", "#134e4a", "#0d9488", "#2dd4bf"], // teal
+];
+
+function slugHash(s: string): number {
   let h = 0;
-  for (const c of slug) h = (Math.imul(31, h) + c.charCodeAt(0)) | 0;
-  return Math.abs(h) % 999;
+  for (const c of s) h = (Math.imul(31, h) + c.charCodeAt(0)) | 0;
+  return Math.abs(h);
 }
 
 function noiseDataUri(seed: number): string {
-  const svg = [
-    `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">`,
-    `<filter id="n">`,
-    `<feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" seed="${seed}" stitchTiles="stitch"/>`,
-    `<feColorMatrix type="saturate" values="0"/>`,
-    `</filter>`,
-    `<rect width="100%" height="100%" filter="url(#n)" opacity="1"/>`,
-    `</svg>`,
-  ].join("");
-  const b64 = Buffer.from(svg).toString("base64");
-  return `data:image/svg+xml;base64,${b64}`;
-}
-
-function formatDate(d: string): string {
-  return new Date(d).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">` +
+    `<filter id="n">` +
+    `<feTurbulence type="fractalNoise" baseFrequency="0.68" numOctaves="4" seed="${seed}" stitchTiles="stitch"/>` +
+    `<feColorMatrix type="saturate" values="0"/>` +
+    `</filter>` +
+    `<rect width="100%" height="100%" filter="url(#n)" opacity="1"/>` +
+    `</svg>`;
+  return `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`;
 }
 
 export async function GET(
@@ -46,8 +48,14 @@ export async function GET(
     date?: string;
   };
 
-  const seed = slugHash(slug.join("/"));
-  const noise = noiseDataUri(seed);
+  const hash = slugHash(slug.join("/"));
+  const [base, mid, accent, highlight] = PALETTES[hash % PALETTES.length];
+  const noiseSeed = hash % 999;
+  const noise = noiseDataUri(noiseSeed);
+
+  // Radial highlight position varies per article
+  const rx = 20 + (hash % 60);
+  const ry = 10 + (hash % 55);
 
   return new ImageResponse(
     (
@@ -57,13 +65,31 @@ export async function GET(
           width: 1200,
           height: 630,
           position: "relative",
-          background:
-            "linear-gradient(135deg, #0a0f1e 0%, #0d1f3c 40%, #0f2a52 70%, #0a1628 100%)",
-          fontFamily:
-            "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+          background: `linear-gradient(145deg, ${base} 0%, ${mid} 55%, ${base} 100%)`,
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         }}
       >
-        {/* noise grain layer */}
+        {/* primary radial glow — slug-positioned */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: `radial-gradient(ellipse 70% 70% at ${rx}% ${ry}%, ${accent}55 0%, transparent 70%)`,
+            display: "flex",
+          }}
+        />
+
+        {/* secondary accent glow — opposite corner */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: `radial-gradient(ellipse 50% 50% at ${100 - rx}% ${100 - ry}%, ${mid}88 0%, transparent 60%)`,
+            display: "flex",
+          }}
+        />
+
+        {/* noise grain — high opacity for visible texture */}
         <img
           src={noise}
           width={1200}
@@ -74,109 +100,85 @@ export async function GET(
             left: 0,
             width: "100%",
             height: "100%",
-            opacity: 0.08,
-            mixBlendMode: "overlay",
+            opacity: 0.42,
           }}
         />
-        {/* blue vignette */}
+
+        {/* bottom gradient fade — darkens lower third for contrast */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            background:
-              "radial-gradient(ellipse at 30% 50%, rgba(59,130,246,0.18) 0%, transparent 65%)",
-            display: "flex",
-          }}
-        />
-        {/* subtle top edge glow */}
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 1,
-            background:
-              "linear-gradient(90deg, transparent 0%, rgba(96,165,250,0.4) 50%, transparent 100%)",
+            background: `linear-gradient(to top, ${base}ee 0%, transparent 50%)`,
             display: "flex",
           }}
         />
 
-        {/* content — bottom-anchored */}
+        {/* content — bottom-left anchored */}
         <div
           style={{
             position: "absolute",
-            inset: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
             display: "flex",
             flexDirection: "column",
-            justifyContent: "flex-end",
-            padding: "72px 80px",
+            padding: "0 64px 60px",
           }}
         >
           {data.tags && data.tags.length > 0 && (
-            <div
+            <span
               style={{
+                color: highlight,
+                fontSize: 13,
+                fontWeight: 700,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                marginBottom: 16,
                 display: "flex",
-                marginBottom: 20,
               }}
             >
-              <span
-                style={{
-                  color: "#93c5fd",
-                  fontSize: 14,
-                  fontWeight: 600,
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                }}
-              >
-                {data.tags[0]}
-              </span>
-            </div>
+              {data.tags[0]}
+            </span>
           )}
 
           <div
             style={{
-              fontSize: data.title.length > 60 ? 52 : 64,
+              fontSize: data.title.length > 55 ? 48 : 58,
               fontWeight: 700,
-              color: "#f1f5f9",
-              lineHeight: 1.15,
-              maxWidth: 920,
+              color: "#f8fafc",
+              lineHeight: 1.18,
+              maxWidth: 860,
               display: "flex",
+              letterSpacing: "-0.02em",
             }}
           >
             {data.title}
           </div>
+        </div>
 
-          <div
+        {/* top-right watermark */}
+        <div
+          style={{
+            position: "absolute",
+            top: 40,
+            right: 52,
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+          }}
+        >
+          <span
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 20,
-              marginTop: 28,
+              color: `${highlight}99`,
+              fontSize: 13,
+              fontWeight: 600,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
             }}
           >
-            {data.date && (
-              <span
-                style={{
-                  color: "#64748b",
-                  fontSize: 18,
-                }}
-              >
-                {formatDate(data.date)}
-              </span>
-            )}
-            <span
-              style={{
-                color: "#1e3a5f",
-                fontSize: 18,
-                marginLeft: "auto",
-                letterSpacing: "0.08em",
-                fontWeight: 500,
-              }}
-            >
-              xo research
-            </span>
-          </div>
+            xo · research
+          </span>
         </div>
       </div>
     ),

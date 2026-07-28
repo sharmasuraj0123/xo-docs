@@ -5,6 +5,7 @@ import {
   ViewOptionsPopover,
 } from "fumadocs-ui/layouts/docs/page";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/components/mdx";
@@ -208,9 +209,11 @@ function ResearchCard({
       className="group relative flex flex-col rounded-xl border border-fd-border bg-fd-card overflow-hidden hover:border-fd-primary/40 hover:shadow-lg hover:shadow-fd-primary/5 transition-all"
     >
       <div className="w-full aspect-video overflow-hidden bg-fd-muted">
-        <img
+        <Image
           src={thumb.url}
           alt=""
+          width={1200}
+          height={630}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
       </div>
@@ -387,9 +390,11 @@ export default async function Page({ params }: Props) {
             </Link>
 
             <div className="w-full aspect-video rounded-xl overflow-hidden mb-8">
-              <img
+              <Image
                 src={getResearchPageImage(page).url}
                 alt=""
+                width={1200}
+                height={630}
                 className="w-full h-full object-cover"
               />
             </div>

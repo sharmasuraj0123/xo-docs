@@ -2,10 +2,10 @@
   "title": "Start Here",
   "icon": "Rocket",
   "pages": [
-    "core-concepts",
     "choose-an-agent",
     "create-account",
     "launch-first-agent",
+    "core-concepts",
     "---Operate Your Workspace---",
     "manage-workspace",
     "vs-code-server",

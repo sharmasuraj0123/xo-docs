@@ -7,6 +7,7 @@
     "dev": "next dev --port 3100",
     "start": "next start --port 3100",
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
+    "prepare": "husky",
     "postinstall": "fumadocs-mdx",
     "lint": "biome check .",
     "format": "biome format --write ."
@@ -33,7 +34,7 @@
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",
     "remark-rehype": "^11.1.2",
-    "shaders": "^2.5.132",
+    "shaders": "^3.0.445",
     "tailwind-merge": "^3.5.0",
     "unist-util-visit": "^5.1.0",
     "zod": "^4.3.6"
@@ -51,6 +52,7 @@
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "husky": "^9.1.7",
     "postcss": "^8.5.10",
     "tailwindcss": "^4.2.2",
     "typescript": "^6.0.3"

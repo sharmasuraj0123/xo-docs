@@ -1,13 +1,8 @@
-import { buttonVariants } from "fumadocs-ui/components/ui/button";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import type { LinkItemType } from "fumadocs-ui/layouts/shared";
-import {
-  AISearch,
-  AISearchPanel,
-  AISearchTrigger,
-} from "@/components/ai/search";
-import { cn } from "@/lib/cn";
+import { AISearch, AISearchPanel } from "@/components/ai/search";
+import { StartFreeBar } from "@/components/start-free-bar";
 import { baseOptions, socialLinks } from "@/lib/layout.shared";
 import { source } from "@/lib/source";
 
@@ -28,18 +23,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       >
         <AISearch>
           <AISearchPanel />
-          <AISearchTrigger
-            position="float"
-            className={cn(
-              buttonVariants({
-                variant: "secondary",
-                className: "text-fd-muted-foreground rounded-2xl",
-              }),
-            )}
-          >
-            <span className="icon-[ph--chat-circle] size-4.5" />
-            Ask AI
-          </AISearchTrigger>
+          {/* Ask AI lives in StartFreeBar (fixed bottom) after scroll */}
+          <StartFreeBar />
         </AISearch>
 
         {children}

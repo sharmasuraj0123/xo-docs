@@ -449,6 +449,53 @@ export function AISearchPanel() {
   );
 }
 
+const SUGGESTED_PROMPTS = [
+  "What can I run on XO today?",
+  "Is XO free?",
+  "How do I launch my first agent?",
+] as const;
+
+function EmptyChatSuggestions() {
+  const { sendMessage } = useChatContext();
+
+  const send = (text: string) => {
+    void sendMessage({
+      role: "user",
+      parts: [
+        {
+          type: "data-client",
+          data: {
+            location: location.href,
+          },
+        },
+        {
+          type: "text",
+          text,
+        },
+      ],
+    });
+  };
+
+  return (
+    <div className="text-sm text-fd-muted-foreground/80 size-full flex flex-col items-center justify-center text-center gap-3 px-3">
+      <span className="icon-[ph--chat-circle]" />
+      <p>Try asking something:</p>
+      <div className="flex flex-wrap justify-center gap-2">
+        {SUGGESTED_PROMPTS.map((prompt) => (
+          <button
+            key={prompt}
+            type="button"
+            onClick={() => send(prompt)}
+            className="rounded-full border border-fd-border bg-fd-background px-3 py-1.5 text-xs font-medium text-fd-foreground transition-colors hover:bg-fd-muted hover:border-fd-primary/40"
+          >
+            {prompt}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function AISearchPanelList({
   className,
   style,
@@ -468,10 +515,7 @@ export function AISearchPanelList({
       {...props}
     >
       {messages.length === 0 ? (
-        <div className="text-sm text-fd-muted-foreground/80 size-full flex flex-col items-center justify-center text-center gap-2">
-          <span className="icon-[ph--chat-circle]" />
-          <p>Start a new chat below.</p>
-        </div>
+        <EmptyChatSuggestions />
       ) : (
         <div className="flex flex-col px-3 gap-4">
           {chat.error && (

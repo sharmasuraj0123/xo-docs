@@ -4,31 +4,11 @@ description: The home for your AI Agent Team.
 ---
 
 import { Cards, Card } from "@/components/card";
+import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 
-{/* ── Intro ─────────────────────────────────────────────────────────── */}
+{/* ── What is XO ───────────────────────────────────────────────────── */}
 
-<div className="not-prose mb-14 pt-8 text-center">
-	<h1 className="mb-3 text-3xl font-bold tracking-tight text-fd-foreground sm:text-5xl">
-		XO Workspace
-	</h1>
-	<p className="mx-auto mb-8 max-w-lg text-sm sm:text-base text-fd-muted-foreground">
-		Secure, isolated remote environments for your AI agents. No local setup, no infra to manage.
-	</p>
-	<div className="flex flex-wrap items-center justify-center gap-3">
-		<a
-			href="/getting-started"
-			className="flex items-center gap-2 rounded-lg bg-fd-primary px-5 py-2.5 text-sm font-semibold text-fd-primary-foreground transition-opacity hover:opacity-90"
-		>
-			Get Started
-		</a>
-		<a
-			href="/docs/agents"
-			className="inline-flex items-center gap-2 rounded-lg border border-fd-border bg-fd-background px-5 py-2.5 text-sm font-semibold text-fd-foreground transition-colors hover:bg-fd-muted"
-		>
-			Explore Agents
-		</a>
-	</div>
-</div>
+<WhatIsXO />
 
 {/* ── Agents ───────────────────────────────────────────────────────── */}
 
@@ -81,7 +61,7 @@ import { Cards, Card } from "@/components/card";
 	<Card
 		icon={<span className="icon-[ph--robot-fill] size-6" />}
 		title="Choose and use an agent"
-		description="Compare OpenClaw, Claude Code, Hermes, and XO Cowork, then follow its workflow."
+		description="Compare OpenClaw, Claude Code, Hermes, XO Cowork, and Antigravity, then follow its workflow."
 		href="/docs/agents"
 	/>
 	<Card
@@ -115,3 +95,33 @@ import { Cards, Card } from "@/components/card";
 		href="/docs/troubleshooting"
 	/>
 </Cards>
+
+{/* ── Quick Answers ────────────────────────────────────────────────── */}
+
+## Quick Answers
+
+<Accordions>
+	<Accordion title="Is XO free?">
+		Yes. The Basic plan is free, and sign-up takes under 2 minutes. You bring
+		your own model (API key or OAuth), so you only pay for the AI usage you
+		already have.
+	</Accordion>
+	<Accordion title="Do I need my own model key?">
+		You bring your own model: use an API key from Anthropic, OpenAI, or
+		OpenRouter, or connect via OAuth with your existing Claude or ChatGPT
+		subscription. XO does not sell model credits.
+	</Accordion>
+	<Accordion title="What can I actually run?">
+		Five agent templates (OpenClaw, Claude Code, Hermes, XO Cowork,
+		Antigravity), XO Launchpad deploys, and purpose-built environments for
+		real work and experimentation.
+	</Accordion>
+	<Accordion title="Do I need to install anything?">
+		No. Everything runs in the cloud browser IDE — secure, isolated
+		workspaces with no local setup or infra to manage.
+	</Accordion>
+	<Accordion title="Is my data secure?">
+		Credentials live in your workspace. Each project gets an isolated
+		machine so agents and secrets stay separated from other users.
+	</Accordion>
+</Accordions>

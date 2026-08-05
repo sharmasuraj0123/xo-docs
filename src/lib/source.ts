@@ -83,6 +83,8 @@ const BRAND_ICONS: Record<string, string> = {
   GoogleDrive: "google-drive",
   OneDrive: "onedrive",
   Github: "github",
+  Venice: "venice",
+  Antigravity: "antigravity",
 };
 
 function iconifyIconsPlugin() {

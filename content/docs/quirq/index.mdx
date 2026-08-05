@@ -1,19 +1,44 @@
 ---
-title: "quirq: A Unit of Work for Intelligence"
-description: "quirq: a unit of work for intelligence. What it is, what it calculates, how to calculate it, where it applies, and how to adopt it."
-icon: Coins
+title: "quirq: Measure Agent Work"
+description: "quirq is the output meter for AI work: verified, owner-valued, delivered. Measure what your agents actually deliver on XO, not just what they cost."
+icon: Gauge
 ---
 
 import { Cards, Card } from "@/components/card";
 
-<Lead>AI is metered on one side only. The token counts what the machine consumes; the quirq counts what it delivers: verified, owner-valued work, minted against captured state.</Lead>
+<Lead>Anyone can launch an agent on XO. Very few can say whether it's working. quirq is the missing output meter: one unit of budget currency of verified, owner-valued, delivered work — minted against captured state, never self-reported.</Lead>
 
-**The paper, as a section.** This is the web version of *quirq: A Unit of Work
-for Intelligence* (XO Labs, 2026). The narrative motivation lives in
-[The Future of Work](/future-of-work); this section is the canonical treatment,
-in the order a newcomer should read it.
+The token meters the machine side completely: cost, energy, carbon. Nothing
+meters the work side — outcomes delivered at human-assigned value. That single
+gap is why AI budgets climb while ROI stays undemonstrable. quirq is the unit
+that closes it.
 
 <TwoMeters />
+
+## The unit in one paragraph
+
+A human owner defines an outcome with a machine-checkable **definition of done**
+and budgets it at value **B**: the price they would pay for the outcome to
+exist. The task carries B *potential* quirqs. An environment snapshots the world
+before execution (S₀) and after (S₁), scores completion **V ∈ [0, 1]** against
+the definition of done, and **mints V · B quirqs** of delivered work, recorded
+in a tamper-evident ledger with everything production consumed: inference,
+compute, API calls, storage, and human intervention.
+
+<FeatureGrid
+	cols={3}
+	items={[
+		{ icon: "user", title: "Human-denominated", desc: "The budget is demonstrated willingness to pay, set by the party paying." },
+		{ icon: "check", title: "Machine-minted", desc: "Verification is a state comparison; the worker never produces its own evidence." },
+		{ icon: "scales", title: "Cost-complete", desc: "Metered against everything, including the human minutes the work still required." },
+	]}
+/>
+
+## Read the section in order
+
+This is the web version of *quirq: A Unit of Work for Intelligence* (XO Labs,
+2026). The narrative motivation lives in [The Future of Work](/research); this
+section is the canonical treatment, arranged so each part builds on the last.
 
 <Cards>
 	<Card

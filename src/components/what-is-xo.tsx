@@ -550,7 +550,7 @@ export function WhatIsXO() {
           </a>
         </div>
         <p className="text-xs text-fd-muted-foreground">
-          Free Basic plan · No credit card · Bring your own model
+          30-day free trial · No credit card · Bring your own model
         </p>
       </div>
 

@@ -1,5 +1,5 @@
 {
   "title": "Perspectives",
   "icon": "Telescope",
-  "pages": ["others"]
+  "pages": ["anatomy-of-claude-code-architecture", "others"]
 }

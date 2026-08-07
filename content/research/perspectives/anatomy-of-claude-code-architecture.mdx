@@ -27,7 +27,7 @@ delegation, and how sessions survive resume without replaying trust.
 
 ## 1 · System at a Glance - 7 Components
 
-![High-level system structure: User → Interfaces → Agent Loop, with Permissions, Tools, and State over the Execution Environment](/images/research/claude-code-harness/main_structure.png)
+![High-level system structure: User → Interfaces → Agent Loop, with Permissions, Tools, and State over the Execution Environment](/images/research/claude-code-harness/main_structure.svg)
 
 **User → Interfaces → Agent Loop**, with three systems hanging off the loop:
 **Permission System** (allow / ask / deny), **Tools** (tool results), and
@@ -55,7 +55,7 @@ Environment** (files / shell / web / MCP).
 
 ## 2 · The Turn Loop - 9-Step Pipeline
 
-![Runtime turn flow: settings through stop-condition, with deny feedback and tool-result loops](/images/research/claude-code-harness/iteration.png)
+![Runtime turn flow: settings through stop-condition, with deny feedback and tool-result loops](/images/research/claude-code-harness/iteration.svg)
 
 Runtime turn flow:
 
@@ -80,7 +80,7 @@ reactive compaction → terminate · streaming and fallback-model switching.
 
 ## 3 · Context Construction & the 5 Pre-Model Shapers
 
-![Context construction: nine ordered sources and five pre-model shapers](/images/research/claude-code-harness/context.png)
+![Context construction: nine ordered sources and five pre-model shapers](/images/research/claude-code-harness/context.svg)
 
 **Five context shapers run sequentially before *every* model call, cheapest
 first:**
@@ -115,7 +115,7 @@ and version-controllable.
 
 ## 4 · Permission System - Deny-First
 
-![Permission gate: tool use through Policy Core to Deny, Allow, or Ask](/images/research/claude-code-harness/permission.png)
+![Permission gate: tool use through Policy Core to Deny, Allow, or Ask](/images/research/claude-code-harness/permission.svg)
 
 Tool use → **Policy Core** (Rules · Modes · Hooks) → decision: **Deny**
 (denied result) / **Allow** (execute) / **Ask** (user or auto-classifier).
@@ -140,7 +140,7 @@ ones:**
 
 ## 5 · Tools & Extensibility - 3 Injection Points
 
-![Three injection points in the agent loop and tool pool assembly](/images/research/claude-code-harness/extensibility.png)
+![Three injection points in the agent loop and tool pool assembly](/images/research/claude-code-harness/extensibility.svg)
 
 **Tool pool assembly (5 steps):** Base enumeration (≤54) → Mode filtering →
 Deny pre-filtering → MCP integration → Deduplication.
@@ -164,7 +164,7 @@ Deny pre-filtering → MCP integration → Deduplication.
 
 ## 6 · Subagent Delegation
 
-![Subagent delegation: parent spawns isolated sidechains; only summaries return](/images/research/claude-code-harness/subagent.png)
+![Subagent delegation: parent spawns isolated sidechains; only summaries return](/images/research/claude-code-harness/subagent.svg)
 
 **SkillTool vs AgentTool:** SkillTool injects instructions into the *current*
 context (cheap, same window); **AgentTool spawns a new isolated context
@@ -185,7 +185,7 @@ Multi-instance coordination via POSIX `flock()`, zero external deps.
 
 ## 7 · Session Persistence
 
-![Session persistence channels, compaction flow, and Rewind / Resume / Fork](/images/research/claude-code-harness/session_compact.png)
+![Session persistence channels, compaction flow, and Rewind / Resume / Fork](/images/research/claude-code-harness/session_compact.svg)
 
 **3 persistence channels:**
 

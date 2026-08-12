@@ -1,5 +1,9 @@
 {
   "title": "Perspectives",
   "icon": "Telescope",
-  "pages": ["anatomy-of-claude-code-architecture", "others"]
+  "pages": [
+    "anatomy-of-claude-code-architecture",
+    "the-moving-harness-needs-a-still-judge",
+    "others"
+  ]
 }

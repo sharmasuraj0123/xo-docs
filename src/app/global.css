@@ -46,3 +46,13 @@
 html {
   scrollbar-gutter: stable;
 }
+
+/*
+ * Articles that opt in with `singleFont: true` render in exactly one typeface.
+ * Tailwind preflight puts a monospace stack on code/kbd/samp/pre; this hands
+ * those back to the inherited face. Scoped to the flagged article, so docs and
+ * API-reference code blocks keep the monospace they need for alignment.
+ */
+[data-single-font] :is(code, kbd, samp, pre, .font-mono, svg text) {
+  font-family: inherit;
+}

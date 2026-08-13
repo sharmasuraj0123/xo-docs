@@ -346,6 +346,7 @@ export default async function Page({ params }: Props) {
     description?: string;
     tags?: string[];
     date?: string;
+    singleFont?: boolean;
     toc: { title: string; url: string; depth: number }[];
     body: React.ComponentType<{ components: Record<string, unknown> }>;
     getText: (type: string) => Promise<string>;
@@ -381,7 +382,10 @@ export default async function Page({ params }: Props) {
             )}
           </aside>
 
-          <article className="min-w-0 flex-1 max-w-[42rem]">
+          <article
+            className="min-w-0 flex-1 max-w-[42rem]"
+            data-single-font={data.singleFont ? "" : undefined}
+          >
             <Link
               href="/research"
               className="text-sm text-fd-muted-foreground hover:text-fd-foreground transition-colors mb-8 inline-block"

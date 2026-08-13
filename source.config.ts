@@ -46,6 +46,9 @@ export const templatesDocs = defineDocs({
 const researchPageSchema = pageSchema.extend({
   tags: z.array(z.string()).optional(),
   date: z.string().optional(),
+  // Opt in to a single typeface for the whole article — neutralizes the
+  // preflight monospace on code/kbd/samp/pre inside this page only.
+  singleFont: z.boolean().optional(),
 });
 
 export const researchDocs = defineDocs({

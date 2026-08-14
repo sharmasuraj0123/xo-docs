@@ -13,6 +13,7 @@
     "tokenizer-not-the-language",
     "alignment-environments",
     "organic-vs-synthetic-evaluation-data",
-    "observational-data-work-done"
+    "observational-data-work-done",
+    "nested-sandboxes-for-agent-isolation"
   ]
 }

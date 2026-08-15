@@ -1,0 +1,47 @@
+---
+title: Install Space
+description: Install and run a Space locally—the environment where your agents work.
+icon: Blocks
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>A Space is the environment where your agent runs and work gets done. Run one locally on your machine, or run the same Space through XO in the cloud.</Lead>
+
+## Install a local Space
+
+Run this command in a terminal:
+
+```bash
+curl -fsSL quirq.ai/install | sh
+```
+
+The installer downloads or updates Space, reports available optional tools, and
+starts your local Space at [http://localhost:5002/space/](http://localhost:5002/space/).
+Keep the terminal running while you use Space; press `Ctrl-C` to stop it.
+
+<Callout type="info">
+	The installer endpoint and its technical state directory retain the Quirq
+	name. Logs are stored at `~/.quirq/quirq.log`, but the installed and running
+	environment is a Space.
+</Callout>
+
+![Installing Space through terminal/command prompt](/images/quirq.png)
+
+## Optional tools
+
+The installer reports optional integrations individually. Node and npm enable
+the agent CLI at boot, while GitHub CLI (`gh`) enables repository backup. If an
+optional tool is missing, only the adjacent feature is unavailable.
+
+## Local or cloud: the runtime changes
+
+A Space is the same environment in either place. Run it locally on your own
+machine, or run it through XO in the cloud. Agents work inside the Space; the
+runtime is the only difference.
+
+## Measure the work in your Space
+
+[quirqs](/docs/quirq) measure verified work delivered inside a Space. Learn how
+to define outcomes, set budgets, verify captured state, and read the resulting
+ledger in [How to integrate this today](/docs/quirq/integrate).

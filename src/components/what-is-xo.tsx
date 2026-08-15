@@ -7,7 +7,7 @@ import { BrandIcon } from "./brand-icon";
 // What is XO — home page explainer. Theme-aware (fd-* tokens).
 // Phosphor icon classes are written as literals so Tailwind generates them.
 
-const SIGN_UP_URL = "https://app.xo.builders/sign-up";
+const SIGN_UP_URL = "https://app.xo.builders/sign-up?ref=docs.quirq.ai";
 
 const ICONS: Record<string, string> = {
   robot: "icon-[ph--robot-fill]",

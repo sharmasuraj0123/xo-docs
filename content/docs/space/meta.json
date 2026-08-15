@@ -1,0 +1,5 @@
+{
+  "title": "Space",
+  "icon": "Blocks",
+  "pages": ["install-space", "install-space-as-a-skill"]
+}

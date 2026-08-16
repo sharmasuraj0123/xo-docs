@@ -1,12 +1,11 @@
 import {
-  DocsBody,
   DocsDescription,
-  DocsPage,
   DocsTitle,
   MarkdownCopyButton,
   ViewOptionsPopover,
 } from "fumadocs-ui/layouts/docs/page";
 import { createRelativeLink } from "fumadocs-ui/mdx";
+import { DocsBody, DocsPage } from "fumadocs-ui/page";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/components/mdx";
@@ -24,6 +23,7 @@ export default async function Page({ params }: Props) {
 
   const MDX = page.data.body;
   const markdownUrl = getPageMarkdownUrl(page).url;
+  const lastUpdate = slug?.join("/") === "changelog" ? new Date() : undefined;
 
   const isIndex = !slug || slug.length === 0;
 
@@ -42,7 +42,7 @@ export default async function Page({ params }: Props) {
   }
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
+    <DocsPage toc={page.data.toc} full={page.data.full} lastUpdate={lastUpdate}>
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription className="mb-0">
         {page.data.description}

@@ -85,6 +85,7 @@ const BRAND_ICONS: Record<string, string> = {
   Github: "github",
   Venice: "venice",
   Antigravity: "antigravity",
+  Quirq: "quirq",
 };
 
 function iconifyIconsPlugin() {

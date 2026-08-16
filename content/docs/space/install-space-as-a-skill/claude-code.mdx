@@ -1,0 +1,54 @@
+---
+title: Claude Code
+description: Add Space to Claude Code and start a guided setup workflow.
+icon: Terminal
+---
+
+import { Steps, Step } from "fumadocs-ui/components/steps";
+
+<Lead>Install Space with the Quirq plugin to make Space guidance and its CLI integration available in Claude Code.</Lead>
+
+## Install the Space skill
+
+In Claude Code, run these commands in order:
+
+<Steps>
+	<Step>
+		### Add the Quirq marketplace
+
+		```text
+		/plugin marketplace add quirq-ai/xo-space
+		```
+
+		This registers the marketplace that provides the Space skill.
+	</Step>
+	<Step>
+		### Install the plugin
+
+		```text
+		/plugin install quirq@quirq-ai
+		```
+
+		`quirq` is the plugin's published identifier. It installs Space's CLI
+		integration into Claude Code.
+	</Step>
+	<Step>
+		### Reload plugins
+
+		```text
+		/reload-plugins
+		```
+
+		Reload Claude Code so the installed skill is available in the current
+		session.
+	</Step>
+</Steps>
+
+![how to install space locally using your agent](/images/claude-code-setup-03-create-agent.jpeg)
+
+## Start with a Space
+
+Ask Claude Code: **“Help me set up a Space for this task.”** The skill supplies Space context and starts a guided interaction. Follow the product guidance it provides rather than relying on undocumented slash commands.
+
+To install and run a Space directly, see [Install Space](/docs/space/install-space).
+To understand how work inside a Space is measured, see [quirq](/docs/quirq).

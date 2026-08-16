@@ -2,9 +2,11 @@
   "title": "XO Documentation",
   "pages": [
     "index",
+    "changelog",
     "getting-started",
     "agents",
     "setup",
+    "space",
     "quirq",
     "troubleshooting",
     "more"

@@ -46,14 +46,15 @@ const stageDetails = [
   },
 ] as const;
 
+const stages = stageDetails.map((stage) => ({
+  ...stage,
+  image: `/images/system-${stage.imageName}.png`,
+}));
+
 export function SystemSequence() {
   const [active, setActive] = useState(0);
   const stepRefs = useRef<Array<HTMLElement | null>>([]);
-  const imagePrefix = "system";
-  const stages = stageDetails.map((stage) => ({
-    ...stage,
-    image: `/images/${imagePrefix}-${stage.imageName}.png`,
-  }));
+  const activeStage = stages[active];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -143,21 +144,15 @@ export function SystemSequence() {
           <div className="hidden lg:block">
             <div className="sticky top-24 overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl shadow-black/40">
               <div className="relative aspect-square">
-                {stages.map((stage, index) => (
-                  <Image
-                    key={stage.image}
-                    src={stage.image}
-                    alt={`${stage.name}: ${stage.label}`}
-                    fill
-                    sizes="(min-width: 1024px) 55vw, 100vw"
-                    className={`object-contain transition-all duration-700 ease-out motion-reduce:transition-none ${
-                      active === index
-                        ? "scale-100 opacity-100"
-                        : "scale-[1.03] opacity-0"
-                    }`}
-                    priority={index === 0}
-                  />
-                ))}
+                <Image
+                  key={activeStage.image}
+                  src={activeStage.image}
+                  alt={`${activeStage.name}: ${activeStage.label}`}
+                  fill
+                  sizes="(min-width: 1024px) 55vw, 100vw"
+                  className="object-contain"
+                  priority={active === 0}
+                />
               </div>
               <div className="absolute inset-x-0 bottom-0 flex items-center justify-between border-t border-white/10 bg-black/70 px-5 py-4 backdrop-blur-sm">
                 <span className="text-sm font-semibold">

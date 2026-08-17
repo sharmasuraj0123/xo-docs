@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BrandIcon } from "@/components/brand-icon";
-import { ShaderBackground } from "@/components/hero-shader";
 import { SystemSequence } from "@/components/system-sequence";
 import { socialLinks } from "@/lib/layout.shared";
 
@@ -33,7 +32,10 @@ export function QuirqHome() {
       </header>
 
       <section className="relative isolate overflow-hidden border-y border-fd-border bg-fd-muted/30 px-5 py-24 sm:px-8 sm:py-32">
-        <ShaderBackground opacity={0.16} />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_-20%,rgba(22,110,29,0.13),transparent_62%)] dark:bg-[radial-gradient(ellipse_at_50%_-20%,rgba(21,110,29,0.22),transparent_62%)]"
+        />
         <div className="relative mx-auto max-w-4xl text-center">
           <p className="mb-5 text-xs font-semibold uppercase tracking-[0.24em] text-fd-muted-foreground">
             Agentic work, made legible

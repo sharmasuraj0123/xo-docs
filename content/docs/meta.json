@@ -3,10 +3,11 @@
   "pages": [
     "index",
     "changelog",
-    "getting-started",
+    "glossary",
+    "space",
+    "cloud",
     "agents",
     "setup",
-    "space",
     "quirq",
     "troubleshooting",
     "more"

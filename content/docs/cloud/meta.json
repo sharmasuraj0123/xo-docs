@@ -1,12 +1,12 @@
 {
-  "title": "Start Here",
-  "icon": "Rocket",
+  "title": "XO Cloud",
+  "icon": "Cloud",
   "pages": [
-    "choose-an-agent",
+    "overview",
     "create-account",
+    "choose-an-agent",
     "launch-first-agent",
-    "core-concepts",
-    "---Operate Your Workspace---",
+    "---Operate---",
     "manage-workspace",
     "vs-code-server",
     "share-project"

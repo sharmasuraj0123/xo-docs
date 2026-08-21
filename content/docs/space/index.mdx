@@ -1,0 +1,62 @@
+---
+title: Overview
+description: What XO Space is, how it differs from XO Cloud, and how to get from install to a working local Space.
+icon: Blocks
+---
+
+import { Cards, Card } from "@/components/card";
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  **XO Space** is a Space running on **your machine**. It is the environment where
+  your agent works and where work gets done—without provisioning a remote XO
+  workspace.
+</Lead>
+
+## XO Space vs XO Cloud
+
+| | **XO Space** (this path) | **XO Cloud** |
+|---|---|---|
+| Where the agent runs | **Your machine** (local Space UI) | Isolated **workspace machine** on XO |
+| How you start | Install script or agent skill | Sign up → New Project → template |
+| XO account | Not required to install and run | Required |
+| URL / entry | Typically `http://localhost:5002/space/` | [app.xo.builders](https://app.xo.builders) |
+| Same idea | A **Space** is where the agent works | Same |
+
+Need a managed remote machine, sharing, and dashboard ops? Use the
+[XO Cloud](/docs/cloud) track.
+
+Platform words are defined once in the [Glossary](/docs/glossary).
+
+<Callout type="info">
+  **Space** is the product concept. Older install URLs and log directories may still
+  say Quirq (`quirq.ai/install`, `~/.quirq/`). Those paths install and run
+  **Space**.
+</Callout>
+
+## Path on XO Space
+
+<Cards>
+	<Card
+		icon={<span className="icon-[ph--download-simple-fill] size-6" />}
+		title="1. Install Space"
+		description="Run the installer, keep the terminal open, open the local Space UI."
+		href="/docs/space/install-space"
+	/>
+	<Card
+		icon={<span className="icon-[ph--map-trifold-fill] size-6" />}
+		title="2. Your first Space"
+		description="Visual walkthrough: recognize the Space UI, attach an agent, do one small task."
+		href="/docs/space/first-space"
+	/>
+	<Card
+		icon={<span className="icon-[ph--terminal-fill] size-6" />}
+		title="3. Install as a skill (optional)"
+		description="Add Space guidance to Claude Code via the plugin marketplace."
+		href="/docs/space/install-space-as-a-skill/claude-code"
+	/>
+</Cards>
+
+## Next
+
+[Install Space](/docs/space/install-space) · [Glossary](/docs/glossary) · [XO Cloud](/docs/cloud)

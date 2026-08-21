@@ -24,7 +24,22 @@ const config = {
       },
       {
         source: "/getting-started",
-        destination: "/docs/getting-started",
+        destination: "/docs/cloud",
+        permanent: true,
+      },
+      {
+        source: "/docs/getting-started",
+        destination: "/docs/cloud",
+        permanent: true,
+      },
+      {
+        source: "/docs/getting-started/:path*",
+        destination: "/docs/cloud/:path*",
+        permanent: true,
+      },
+      {
+        source: "/docs/cloud/core-concepts",
+        destination: "/docs/glossary",
         permanent: true,
       },
       {

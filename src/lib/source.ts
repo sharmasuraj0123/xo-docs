@@ -60,6 +60,10 @@ const ICON_CLASSES: Record<string, string> = {
   Atom: "icon-[ph--atom-fill]",
   Gauge: "icon-[ph--gauge-fill]",
   ChartLineUp: "icon-[ph--chart-line-up-fill]",
+  Cloud: "icon-[ph--cloud-fill]",
+  Map: "icon-[ph--map-trifold-fill]",
+  Download: "icon-[ph--download-simple-fill]",
+  Code: "icon-[ph--code-fill]",
   more: "icon-[ph--dots-three-fill]",
 };
 

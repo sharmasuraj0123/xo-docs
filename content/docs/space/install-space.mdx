@@ -1,12 +1,16 @@
 ---
 title: Install Space
-description: Install and run a Space locally—the environment where your agents work.
-icon: Blocks
+description: Install and run XO Space locally—the environment where your agents work on your machine.
+icon: Download
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 
-<Lead>A Space is the environment where your agent runs and work gets done. Run one locally on your machine, or run the same Space through XO in the cloud.</Lead>
+<Lead>
+  Install **XO Space** on your machine. When the installer finishes, your local
+  Space is available in the browser. Prefer a hosted machine instead? Follow
+  [XO Cloud](/docs/cloud).
+</Lead>
 
 ## Install a local Space
 
@@ -23,7 +27,7 @@ Keep the terminal running while you use Space; press `Ctrl-C` to stop it.
 <Callout type="info">
 	The installer endpoint and its technical state directory retain the Quirq
 	name. Logs are stored at `~/.quirq/quirq.log`, but the installed and running
-	environment is a Space.
+	environment is a **Space**. See [Glossary](/docs/glossary).
 </Callout>
 
 ![Installing Space through terminal/command prompt](/images/quirq.png)
@@ -34,14 +38,16 @@ The installer reports optional integrations individually. Node and npm enable
 the agent CLI at boot, while GitHub CLI (`gh`) enables repository backup. If an
 optional tool is missing, only the adjacent feature is unavailable.
 
-## Local or cloud: the runtime changes
+## Local or cloud
 
-A Space is the same environment in either place. Run it locally on your own
-machine, or run it through XO in the cloud. Agents work inside the Space; the
-runtime is the only difference.
+A **Space** is the environment where the agent works in either place. This page
+installs that environment **on your machine**. To run on an XO-provisioned
+remote machine instead, use [XO Cloud](/docs/cloud/overview).
 
-## Measure the work in your Space
+## Next
 
-[quirqs](/docs/quirq) measure verified work delivered inside a Space. Learn how
-to define outcomes, set budgets, verify captured state, and read the resulting
-ledger in [How to integrate this today](/docs/quirq/integrate).
+Continue with [Your first Space](/docs/space/first-space) for a guided walkthrough
+of the UI. To install Space guidance inside Claude Code, see
+[Install as a skill](/docs/space/install-space-as-a-skill/claude-code).
+
+[quirqs](/docs/quirq) measure verified work delivered inside a Space.

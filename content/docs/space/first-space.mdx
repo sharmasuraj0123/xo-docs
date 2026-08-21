@@ -1,0 +1,80 @@
+---
+title: Your First Space
+description: A step-by-step walkthrough of a local Space—from opening the UI to completing a first task.
+icon: Map
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  This walkthrough assumes Space is already installed and running. If it is not,
+  complete [Install Space](/docs/space/install-space) first.
+</Lead>
+
+## Before you start
+
+- Space is running (installer terminal still open)
+- You can open [http://localhost:5002/space/](http://localhost:5002/space/) in a browser
+- Optional: an agent CLI or skill you plan to use with this Space
+
+Terms: [Space](/docs/glossary#universal-terms), [work project](/docs/glossary#universal-terms).
+
+## Walkthrough
+
+<Steps>
+	<Step>
+		### Open the Space UI
+
+		In your browser, go to
+		[http://localhost:5002/space/](http://localhost:5002/space/).
+
+		You should see the local Space interface. This screen **is** your Space:
+		the environment where agents run and work is kept.
+	</Step>
+	<Step>
+		### Orient to the main areas
+
+		Identify the primary regions of the UI (navigation, agent or work area,
+		and any status or project list your build shows). You do not need every
+		control yet—only enough to recognize that you are inside a Space.
+	</Step>
+	<Step>
+		### Attach or start an agent
+
+		Use your usual agent entry point for local Space (for example Claude Code
+		with the [Space skill](/docs/space/install-space-as-a-skill/claude-code),
+		or another supported agent). Confirm the agent is operating against this
+		Space, not a separate Cloud project.
+	</Step>
+	<Step>
+		### Open or create a work project
+
+		A **work project** is a folder of work *inside* the Space—not an XO Cloud
+		dashboard project. Create or open one so the agent has a place for files
+		and context.
+	</Step>
+	<Step>
+		### Complete one small task
+
+		Ask the agent to do something trivial and verifiable (for example list
+		files in the work project or create a short note). Confirm the result
+		appears in the Space / work project.
+	</Step>
+</Steps>
+
+## Check
+
+You should now be able to:
+
+1. Open the local Space UI and recognize it as the agent environment  
+2. Run an agent against that Space  
+3. Use a work project folder inside the Space  
+4. Point to one completed task as proof  
+
+## Next
+
+- Optional: [Install Space as a Claude Code skill](/docs/space/install-space-as-a-skill/claude-code)  
+- Measure verified work: [quirq](/docs/quirq)  
+- Prefer hosted machines and sharing: [XO Cloud overview](/docs/cloud/overview)  
+- Terms: [Glossary](/docs/glossary)

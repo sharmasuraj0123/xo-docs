@@ -53,6 +53,24 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 
 <Cards>
 	<Card
+		icon={<span className="icon-[ph--desktop-fill] size-6" />}
+		title="Run XO Space (local)"
+		description="Install a Space on your machine and walk through the local UI."
+		href="/docs/space"
+	/>
+	<Card
+		icon={<span className="icon-[ph--cloud-fill] size-6" />}
+		title="Run XO Cloud"
+		description="Create an account, launch an agent on a hosted workspace machine."
+		href="/docs/cloud"
+	/>
+	<Card
+		icon={<span className="icon-[ph--book-open-fill] size-6" />}
+		title="Platform glossary"
+		description="Space, XO project, work project, workspace machine, and other terms."
+		href="/docs/glossary"
+	/>
+	<Card
 		icon={<span className="icon-[mingcute--telescope-fill] size-6" />}
 		title="Read the research"
 		description="Explore the Future of Work thesis, quirq, experiments, and perspectives."
@@ -116,12 +134,21 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 		Antigravity), XO Launchpad deploys, and purpose-built environments for
 		real work and experimentation.
 	</Accordion>
+	<Accordion title="What is the difference between XO Space and XO Cloud?">
+		A **Space** is where the agent works. **XO Space** runs that environment
+		on your machine. **XO Cloud** runs it on an isolated remote machine you
+		manage from the dashboard. See [XO Space](/docs/space) and
+		[XO Cloud](/docs/cloud), or the [Glossary](/docs/glossary).
+	</Accordion>
 	<Accordion title="Do I need to install anything?">
-		No. Everything runs in the cloud browser IDE — secure, isolated
-		workspaces with no local setup or infra to manage.
+		**XO Cloud:** no local install—everything runs in a hosted workspace and
+		browser IDE. **XO Space:** yes—run the local installer (or an agent
+		skill), then open the Space UI on localhost.
 	</Accordion>
 	<Accordion title="Is my data secure?">
-		Credentials live in your workspace. Each project gets an isolated
-		machine so agents and secrets stay separated from other users.
+		On **XO Cloud**, credentials live in your workspace and each project gets
+		an isolated machine. On **XO Space**, work stays on your machine under
+		your control. See the [Glossary](/docs/glossary) for how those layers are
+		named.
 	</Accordion>
 </Accordions>

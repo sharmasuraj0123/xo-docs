@@ -1,0 +1,68 @@
+---
+title: Overview
+description: What XO Cloud is, how it differs from XO Space, and the path from account to a running agent.
+icon: Cloud
+---
+
+import { Cards, Card } from "@/components/card";
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  **XO Cloud** runs your Space on an isolated remote machine. You manage it from
+  the XO dashboard: create a project from an agent template, connect a model, and
+  open the agent from the browser.
+</Lead>
+
+## XO Cloud vs XO Space
+
+| | **XO Cloud** (this path) | **XO Space** (local) |
+|---|---|---|
+| Where the agent runs | Isolated **workspace machine** hosted by XO | **Your laptop** (`localhost`) |
+| How you start | Sign up → New Project → template | Install script or agent skill |
+| XO account | Required | Not required to install and run |
+| Sharing / ops | Dashboard share, start/stop/restart | Local process; you manage the machine |
+| Same idea | A **Space** is still where the agent works | Same |
+
+Prefer local install? Use the [XO Space](/docs/space) track instead.
+
+Terms used on this path are defined in the [Glossary](/docs/glossary).
+
+<Callout type="info">
+  In Cloud docs, **XO project** means the dashboard row. A **work project** is a
+  folder inside the remote Space. See [Glossary](/docs/glossary#xo-cloud).
+</Callout>
+
+## Path on XO Cloud
+
+Follow these guides in order for a first successful interaction.
+
+<Cards>
+	<Card
+		icon={<span className="icon-[ph--user-plus-fill] size-6" />}
+		title="1. Create an account"
+		description="Sign up, choose a username, and select a plan."
+		href="/docs/cloud/create-account"
+	/>
+	<Card
+		icon={<span className="icon-[mingcute--chat-2-ai-fill] size-6" />}
+		title="2. Choose an agent"
+		description="Pick OpenClaw, Claude Code, Hermes, XO Cowork, or Antigravity."
+		href="/docs/cloud/choose-an-agent"
+	/>
+	<Card
+		icon={<span className="icon-[ph--rocket-fill] size-6" />}
+		title="3. Launch your first agent"
+		description="Create the XO project, wait for the workspace machine, complete a first test."
+		href="/docs/cloud/launch-first-agent"
+	/>
+	<Card
+		icon={<span className="icon-[ph--arrow-clockwise] size-6" />}
+		title="4. Operate the workspace"
+		description="Monitor services, open the IDE, share the project."
+		href="/docs/cloud/manage-workspace"
+	/>
+</Cards>
+
+## Next
+
+[Create an account](/docs/cloud/create-account) · [Glossary](/docs/glossary) · [Agents](/docs/agents)

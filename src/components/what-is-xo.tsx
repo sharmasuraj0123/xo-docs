@@ -158,7 +158,7 @@ const STEPS: Step[] = [
       "Cloud IDE — no local setup",
     ],
     ctaLabel: "Launch guide",
-    href: "/docs/getting-started/launch-first-agent",
+    href: "/docs/cloud/launch-first-agent",
     chips: (
       <>
         <AgentChip slug="anthropic" label="Anthropic" />
@@ -182,7 +182,7 @@ const STEPS: Step[] = [
       "One dashboard for the whole team",
     ],
     ctaLabel: "Manage workspace",
-    href: "/docs/getting-started/manage-workspace",
+    href: "/docs/cloud/manage-workspace",
     chips: (
       <>
         <TextChip icon="slack" label="Slack" />
@@ -543,7 +543,7 @@ export function WhatIsXO() {
             Start free — first agent in 5 minutes
           </a>
           <a
-            href="/getting-started"
+            href="/docs/cloud"
             className="inline-flex items-center gap-2 rounded-lg border border-fd-border bg-fd-background px-5 py-2.5 text-sm font-semibold text-fd-foreground transition-colors hover:bg-fd-muted"
           >
             Read the guide

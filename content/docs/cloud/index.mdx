@@ -1,0 +1,71 @@
+---
+title: XO Cloud
+description: Hosted Spaces on isolated remote machines, managed from the XO dashboard.
+icon: Cloud
+---
+
+import { Cards, Card } from "@/components/card";
+
+This section is the **XO Cloud** path: account, agent template, remote workspace
+machine, and day-to-day controls. For a local Space on your machine, see
+[XO Space](/docs/space).
+
+## Start on Cloud
+
+<Cards>
+	<Card
+		icon={<span className="icon-[ph--cloud-fill] size-6" />}
+		title="Overview"
+		description="What XO Cloud is, how it differs from XO Space, and the ordered path."
+		href="/docs/cloud/overview"
+	/>
+	<Card
+		icon={<span className="icon-[ph--user-plus-fill] size-6" />}
+		title="Create an account"
+		description="Sign up, choose a username, and select a plan in under 2 minutes."
+		href="/docs/cloud/create-account"
+	/>
+	<Card
+		icon={<span className="icon-[mingcute--chat-2-ai-fill] size-6" />}
+		title="Choose an agent"
+		description="Pick the template that matches how and where you want to work."
+		href="/docs/cloud/choose-an-agent"
+	/>
+	<Card
+		icon={<span className="icon-[ph--rocket-fill] size-6" />}
+		title="Launch your first agent"
+		description="Create the XO project, wait for the workspace, and complete a first test."
+		href="/docs/cloud/launch-first-agent"
+	/>
+</Cards>
+
+## Operate your workspace
+
+Once the agent is live, use these guides day to day.
+
+<Cards>
+	<Card
+		icon={<span className="icon-[ph--arrow-clockwise] size-6" />}
+		title="Manage your workspace machine"
+		description="Monitor services and resources, open your agent, stop or restart."
+		href="/docs/cloud/manage-workspace"
+	/>
+	<Card
+		icon={<span className="icon-[ph--monitor] size-6" />}
+		title="Use the browser IDE"
+		description="Open code-server and run workspace commands without a local editor."
+		href="/docs/cloud/vs-code-server"
+	/>
+	<Card
+		icon={<span className="icon-[ph--share-network] size-6" />}
+		title="Share your project"
+		description="Grant or revoke a collaborator’s access by email."
+		href="/docs/cloud/share-project"
+	/>
+</Cards>
+
+## Related
+
+- [Glossary](/docs/glossary) — platform terms (XO project vs work project, machine, Space)
+- [XO Space](/docs/space) — run the same Space model locally
+- [Setup](/docs/setup) — models, data sources, and channels

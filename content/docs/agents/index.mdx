@@ -1,14 +1,21 @@
 ---
 title: Agents
-description: Compare the documented AI agent templates available on XO Workspaces.
+description: Compare and deploy AI agent templates on XO Cloud.
 icon: Bot
 ---
 
 import { Cards, Card } from "@/components/card";
+import { Callout } from "fumadocs-ui/components/callout";
 
-Each agent runs inside a **Space** (local or Cloud). The interface, setup
-requirements, and best-fit work differ by template. Use the comparison below,
-then continue on [XO Cloud](/docs/cloud) or [XO Space](/docs/space).
+These guides cover **XO Cloud**: create a project from a template on
+[app.xo.builders](https://app.xo.builders), wait for the workspace machine, then
+open the agent from Launch.
+
+<Callout type="info">
+	Running locally instead? Use [XO Space](/docs/space). Agent *templates* still
+	describe the same harnesses; the Cloud quickstarts below are dashboard and
+	remote-machine specific.
+</Callout>
 
 ## Compare Agent Options
 
@@ -34,7 +41,7 @@ If you still are not sure, follow the short [Choose an Agent](/docs/cloud/choose
 	<Card
 		icon={<BrandIcon name="claude-code" size={20} />}
 		title="Claude Code"
-		description="Run Claude Code from a browser-based editor inside an XO workspace."
+		description="Run Claude Code from a browser-based editor inside an XO Cloud workspace."
 		href="/docs/agents/claude-code"
 	/>
 	<Card
@@ -57,7 +64,8 @@ If you still are not sure, follow the short [Choose an Agent](/docs/cloud/choose
 	/>
 </Cards>
 
-Ready to begin?
+## Next
 
-- **XO Cloud:** [Launch your first agent](/docs/cloud/launch-first-agent)
-- **XO Space:** [Install Space](/docs/space/install-space) → [Your first Space](/docs/space/first-space)
+- New to Cloud? [Create an account](/docs/cloud/create-account) → [Launch your first agent](/docs/cloud/launch-first-agent)
+- Already have a project? [Workspace configuration](/docs/setup) (Setup tab)
+- Prefer local? [XO Space](/docs/space)

@@ -8,55 +8,49 @@ import { Cards, Card } from "@/components/card";
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  **XO Space** is a Space running on **your machine**. It is the environment where
-  your agent works and where work gets done—without provisioning a remote XO
-  workspace.
+  **XO Space** runs on **your machine**. Install it, open the local UI, and that
+  browser screen *is* your Space — the environment where the agent works.
 </Lead>
 
-## XO Space vs XO Cloud
-
-| | **XO Space** (this path) | **XO Cloud** |
-|---|---|---|
-| Where the agent runs | **Your machine** (local Space UI) | Isolated **workspace machine** on XO |
-| How you start | Install script or agent skill | Sign up → New Project → template |
-| XO account | Not required to install and run | Required |
-| URL / entry | Typically `http://localhost:5002/space/` | [app.xo.builders](https://app.xo.builders) |
-| Same idea | A **Space** is where the agent works | Same |
-
-Need a managed remote machine, sharing, and dashboard ops? Use the
-[XO Cloud](/docs/cloud) track.
-
-Platform words are defined once in the [Glossary](/docs/glossary).
-
-<Callout type="info">
-  **Space** is the product concept. Older install URLs and log directories may still
-  say Quirq (`quirq.ai/install`, `~/.quirq/`). Those paths install and run
-  **Space**.
-</Callout>
-
-## Path on XO Space
+## Start here
 
 <Cards>
 	<Card
 		icon={<span className="icon-[ph--download-simple-fill] size-6" />}
 		title="1. Install Space"
-		description="Run the installer, keep the terminal open, open the local Space UI."
+		description="Run the installer, keep the terminal open, open localhost."
 		href="/docs/space/install-space"
 	/>
 	<Card
 		icon={<span className="icon-[ph--map-trifold-fill] size-6" />}
 		title="2. Your first Space"
-		description="Visual walkthrough: recognize the Space UI, attach an agent, do one small task."
+		description="Walk through the UI, attach an agent, complete one small task."
 		href="/docs/space/first-space"
 	/>
 	<Card
 		icon={<span className="icon-[ph--terminal-fill] size-6" />}
-		title="3. Install as a skill (optional)"
-		description="Add Space guidance to Claude Code via the plugin marketplace."
+		title="3. Optional: Claude Code skill"
+		description="Add Space guidance inside Claude Code via the plugin."
 		href="/docs/space/install-space-as-a-skill/claude-code"
 	/>
 </Cards>
 
+## Not the Cloud path
+
+| | **XO Space** (this section) | **XO Cloud** |
+|---|---|---|
+| Where it runs | Your laptop | Hosted workspace machine |
+| How you start | Install / skill | Account → New Project |
+| Dashboard Setup tab | No | Yes — under [Workspace configuration](/docs/setup) |
+| Agent quickstarts in docs | Local walkthrough | [AI Agent Guides](/docs/agents) (Cloud) |
+
+Need hosted machines, sharing, and the dashboard? Use **[XO Cloud](/docs/cloud)** — that section also contains Workspace Configuration and AI Agent Guides.
+
+<Callout type="info">
+	Older install URLs may still say Quirq (`quirq.ai/install`, `~/.quirq/`).
+	Those install **Space**. Terms: [Glossary](/docs/glossary).
+</Callout>
+
 ## Next
 
-[Install Space](/docs/space/install-space) · [Glossary](/docs/glossary) · [XO Cloud](/docs/cloud)
+[Install Space](/docs/space/install-space)

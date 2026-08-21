@@ -9,6 +9,10 @@
     "---Operate---",
     "manage-workspace",
     "vs-code-server",
-    "share-project"
+    "share-project",
+    "---Configure---",
+    "../setup",
+    "---AI Agent Guides---",
+    "../agents"
   ]
 }

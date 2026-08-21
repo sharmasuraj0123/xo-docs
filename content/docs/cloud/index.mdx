@@ -6,9 +6,12 @@ icon: Cloud
 
 import { Cards, Card } from "@/components/card";
 
-This section is the **XO Cloud** path: account, agent template, remote workspace
-machine, and day-to-day controls. For a local Space on your machine, see
-[XO Space](/docs/space).
+This section is the **XO Cloud** path: account, templates, remote workspace
+machine, day-to-day controls, **Workspace Configuration** (Setup tab), and
+**AI Agent Guides** (per-template Cloud quickstarts).
+
+For a Space on your machine, see [XO Space](/docs/space) — that track does not
+use the Cloud dashboard Setup tab or these agent deploy guides.
 
 ## Start on Cloud
 
@@ -39,9 +42,7 @@ machine, and day-to-day controls. For a local Space on your machine, see
 	/>
 </Cards>
 
-## Operate your workspace
-
-Once the agent is live, use these guides day to day.
+## Operate, configure, and deep-dive
 
 <Cards>
 	<Card
@@ -51,21 +52,20 @@ Once the agent is live, use these guides day to day.
 		href="/docs/cloud/manage-workspace"
 	/>
 	<Card
-		icon={<span className="icon-[ph--monitor] size-6" />}
-		title="Use the browser IDE"
-		description="Open code-server and run workspace commands without a local editor."
-		href="/docs/cloud/vs-code-server"
+		icon={<span className="icon-[ph--gear-fill] size-6" />}
+		title="Workspace configuration"
+		description="Setup tab: models, data sources, and channels."
+		href="/docs/setup"
 	/>
 	<Card
-		icon={<span className="icon-[ph--share-network] size-6" />}
-		title="Share your project"
-		description="Grant or revoke a collaborator’s access by email."
-		href="/docs/cloud/share-project"
+		icon={<span className="icon-[ph--robot-fill] size-6" />}
+		title="AI Agent Guides"
+		description="Full Cloud quickstarts for each agent template."
+		href="/docs/agents"
 	/>
 </Cards>
 
 ## Related
 
-- [Glossary](/docs/glossary) — platform terms (XO project vs work project, machine, Space)
-- [XO Space](/docs/space) — run the same Space model locally
-- [Setup](/docs/setup) — models, data sources, and channels
+- [Glossary](/docs/glossary)
+- [XO Space](/docs/space) — local path

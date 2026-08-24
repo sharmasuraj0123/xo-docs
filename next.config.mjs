@@ -42,6 +42,62 @@ const config = {
         destination: "/docs/glossary",
         permanent: true,
       },
+      // Temporary: undo Space-core IA URLs after revert to peer Cloud/Space docs
+      {
+        source: "/docs/what-is-a-space",
+        destination: "/docs/glossary",
+        permanent: false,
+      },
+      {
+        source: "/docs/get-a-space",
+        destination: "/docs/cloud",
+        permanent: false,
+      },
+      {
+        source: "/docs/get-a-space/on-cloud",
+        destination: "/docs/cloud",
+        permanent: false,
+      },
+      {
+        source: "/docs/get-a-space/on-cloud/:path*",
+        destination: "/docs/cloud/:path*",
+        permanent: false,
+      },
+      {
+        source: "/docs/get-a-space/on-your-machine",
+        destination: "/docs/space",
+        permanent: false,
+      },
+      {
+        source: "/docs/get-a-space/on-your-machine/:path*",
+        destination: "/docs/space/:path*",
+        permanent: false,
+      },
+      {
+        source: "/docs/use-your-space",
+        destination: "/docs/agents",
+        permanent: false,
+      },
+      {
+        source: "/docs/use-your-space/browser-ide",
+        destination: "/docs/cloud/vs-code-server",
+        permanent: false,
+      },
+      {
+        source: "/docs/cloud-platform",
+        destination: "/docs/cloud",
+        permanent: false,
+      },
+      {
+        source: "/docs/cloud-platform/manage-machine",
+        destination: "/docs/cloud/manage-workspace",
+        permanent: false,
+      },
+      {
+        source: "/docs/cloud-platform/share-project",
+        destination: "/docs/cloud/share-project",
+        permanent: false,
+      },
       {
         source: "/more/create-your-alter-ego/:path*",
         destination: "/more/create-your-environments/:path*",

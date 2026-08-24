@@ -8,6 +8,7 @@ import { BrandIcon } from "./brand-icon";
 // Phosphor icon classes are written as literals so Tailwind generates them.
 
 const SIGN_UP_URL = "https://app.xo.builders/sign-up?ref=docs.quirq.ai";
+const GITHUB_REPO_URL = "https://github.com/quirq-ai/xo-space";
 
 const ICONS: Record<string, string> = {
   robot: "icon-[ph--robot-fill]",
@@ -21,6 +22,10 @@ const ICONS: Record<string, string> = {
   rocket: "icon-[ph--rocket-fill]",
   check: "icon-[ph--check-bold]",
   caret: "icon-[ph--caret-down-bold]",
+  terminal: "icon-[ph--terminal-window-fill]",
+  eye: "icon-[ph--eye-fill]",
+  copy: "icon-[ph--copy-bold]",
+  blocks: "icon-[ph--squares-four-fill]",
 };
 
 function Icon({ name, className }: { name: string; className?: string }) {
@@ -84,38 +89,44 @@ type Step = {
 
 const STEPS: Step[] = [
   {
-    id: "sign-up",
+    id: "get-space",
     index: "01",
-    icon: "user",
-    title: "Sign up",
-    time: "2 min",
-    summary: "Create your account. Free Basic plan — no credit card.",
+    icon: "terminal",
+    title: "Get Your Space (Local or Cloud)",
+    time: "1 min",
+    summary: "Install locally with a single curl command or launch on Cloud.",
     detail:
-      "Registration takes under two minutes. Pick a username, choose the free Basic plan, and you're in — no card, no install.",
+      "XO Space is the open-source agent workspace and observability runtime (cowork-api). Install it locally on your laptop with one curl command, or spin up an isolated managed cloud machine on XO.",
     highlights: [
-      "Free Basic plan",
-      "No credit card required",
-      "Bring your own model later",
+      "Local OSS: curl -fsSL https://quirq.ai/install | sh",
+      "Cloud Managed: 1-click sandbox at app.xo.builders",
+      "Full feature & API parity between local and cloud",
     ],
-    ctaLabel: "Create free account",
-    href: SIGN_UP_URL,
-    external: true,
+    ctaLabel: "Install Space locally",
+    href: "/docs/space/install-space",
+    chips: (
+      <>
+        <TextChip icon="terminal" label="curl installer" />
+        <TextChip icon="blocks" label="Open Source" />
+        <TextChip icon="monitor" label="localhost:5002" />
+      </>
+    ),
   },
   {
     id: "pick-agent",
     index: "02",
     icon: "robot",
-    title: "Pick an agent",
-    time: "1 min",
-    summary: "Choose a ready-made harness with its own workflow and interface.",
+    title: "Attach an Agent Runtime",
+    time: "2 min",
+    summary: "Run Claude Code, OpenClaw, Hermes, Antigravity, or XO Cowork.",
     detail:
-      "Each template is a full harness: messaging gateways, coding agents, or a chat-first space. Pick the one that matches how you work.",
+      "Space acts as the execution environment and control plane for your AI agents. Run agent CLIs directly inside your local Space, or choose a ready-to-run template on Cloud.",
     highlights: [
-      "Five ready-made templates",
-      "Best if you want messaging, coding, or chat-first work",
-      "Compare agents any time in the docs",
+      "Supported runtimes: Claude Code, OpenClaw, Hermes, Antigravity, XO Cowork",
+      "Bring your own API key (Anthropic, OpenAI, OpenRouter) or OAuth",
+      "Install Space as a native Claude Code skill",
     ],
-    ctaLabel: "Browse agents",
+    ctaLabel: "Browse Agent Guides",
     href: "/docs/agents",
     chips: (
       <>
@@ -144,45 +155,45 @@ const STEPS: Step[] = [
     ),
   },
   {
-    id: "launch",
+    id: "observe",
     index: "03",
-    icon: "rocket",
-    title: "Launch the space",
-    time: "5 min",
-    summary: "Spin up a secure cloud space and connect your model.",
+    icon: "eye",
+    title: "Observe & Measure Work",
+    time: "Real-time",
+    summary: "Watch agent execution live and verify delivered work with quirq.",
     detail:
-      "Open New Project, pick your template, connect Anthropic, OpenAI, or OpenRouter (API key or OAuth). Everything runs in a cloud browser IDE — nothing to install.",
+      "As agents execute tasks, cowork-api captures tool calls, reasoning steps, and file modifications in real time. Watch live session streams in the UI and measure verified work delivered.",
     highlights: [
-      "Isolated machine per project",
-      "BYO API key or Claude/ChatGPT OAuth",
-      "Cloud IDE — no local setup",
+      "Live session trace streaming & event logs",
+      "Automatic work verification and performance metrics (quirq)",
+      "Local telemetry stays completely private on your machine",
     ],
-    ctaLabel: "Launch guide",
-    href: "/docs/getting-started/launch-first-agent",
+    ctaLabel: "Observability Guide",
+    href: "/docs/space/observability",
     chips: (
       <>
-        <AgentChip slug="anthropic" label="Anthropic" />
-        <AgentChip slug="openai" label="OpenAI" />
-        <TextChip label="OpenRouter" />
+        <TextChip icon="eye" label="Live Tracing" />
+        <TextChip label="quirq verification" />
+        <TextChip label="cowork-api event logs" />
       </>
     ),
   },
   {
-    id: "talk",
+    id: "connect",
     index: "04",
     icon: "chat",
-    title: "Talk to your agent",
+    title: "Connect Channels & Data",
     time: "Go",
-    summary: "Reach it from Slack, Telegram, WhatsApp, or the browser IDE.",
+    summary: "Reach agents via Slack, Telegram, WhatsApp, or connect Drive & MCP.",
     detail:
-      "Once the space is up, chat in the browser or connect the channels you already use. Manage restarts, services, and access from one dashboard.",
+      "Integrate your Space into your existing workflows. Connect messaging channels, link Google Drive or OneDrive files, and expose tools via the XO MCP server.",
     highlights: [
-      "Slack, Telegram, WhatsApp",
-      "Browser IDE built in",
-      "One dashboard for the whole team",
+      "Messaging: Slack, Telegram, WhatsApp gateways",
+      "Data: Google Drive, OneDrive, GitHub, Vercel",
+      "Universal XO MCP Server & cowork-api integration",
     ],
-    ctaLabel: "Manage space",
-    href: "/docs/getting-started/manage-space",
+    ctaLabel: "Configure Capabilities",
+    href: "/docs/setup",
     chips: (
       <>
         <TextChip icon="slack" label="Slack" />
@@ -322,7 +333,7 @@ function FirstTenMinutes() {
   return (
     <div className="mt-10">
       <p className="mb-4 text-center text-xs font-semibold uppercase tracking-wide text-fd-muted-foreground">
-        Your first 10 minutes
+        Getting Started with XO Space
       </p>
 
       {/* Progress rail */}
@@ -517,50 +528,104 @@ function FirstTenMinutes() {
   );
 }
 
-// What is XO — the 30-second explainer for the home page.
+// What is XO — the developer-first explainer for the home page.
 export function WhatIsXO() {
+  const [copied, setCopied] = useState(false);
+  const curlCmd = "curl -fsSL https://quirq.ai/install | sh";
+
+  const copyCommand = () => {
+    navigator.clipboard.writeText(curlCmd);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <section className="not-prose mb-14">
-      <div className="mx-auto mb-8 max-w-2xl text-center">
+      <div className="mx-auto mb-8 max-w-3xl text-center">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-fd-border bg-fd-muted/50 px-3 py-1 text-xs font-medium text-fd-foreground">
+          <BrandIcon name="quirq" size={14} />
+          <span>XO Space is now Open Source (v2.1.0)</span>
+          <a
+            href={GITHUB_REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-fd-primary hover:underline"
+          >
+            GitHub →
+          </a>
+        </div>
         <h1 className="text-3xl font-bold tracking-tight text-fd-foreground sm:text-5xl">
-          What is XO?
+          The Open-Source Agent Workspace & Observability Platform
         </h1>
-        <p className="mt-3 text-sm leading-relaxed text-fd-muted-foreground sm:text-base">
-          The home for your AI agent team. XO runs your agents for you — launch
-          a ready-made harness, bring your own model, and reach it from Slack,
-          Telegram, or your browser.
+        <p className="mt-4 text-sm leading-relaxed text-fd-muted-foreground sm:text-base">
+          <strong>XO Space</strong> (`cowork-api`) provides real-time observability, session tracking, and execution environments for AI agents. Run it locally on your laptop with one command or deploy managed cloud instances on XO.
         </p>
       </div>
 
-      <div className="mt-2 flex flex-col items-center gap-3">
+      {/* Hero Dual CTA */}
+      <div className="mx-auto flex max-w-2xl flex-col items-stretch gap-4">
+        {/* Terminal Install Snippet */}
+        <div className="flex items-center justify-between gap-3 rounded-xl border border-fd-border bg-fd-card p-3 shadow-sm sm:px-4 sm:py-3">
+          <div className="flex items-center gap-2 overflow-x-auto font-mono text-xs text-fd-foreground sm:text-sm">
+            <span className="text-fd-primary font-bold">$</span>
+            <code className="text-fd-foreground">{curlCmd}</code>
+          </div>
+          <button
+            type="button"
+            onClick={copyCommand}
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-fd-border bg-fd-muted px-2.5 py-1.5 text-xs font-medium text-fd-foreground transition-colors hover:bg-fd-accent"
+            aria-label="Copy install command"
+          >
+            {copied ? (
+              <>
+                <Icon name="check" className="size-3.5 text-fd-primary" />
+                <span className="text-fd-primary">Copied</span>
+              </>
+            ) : (
+              <>
+                <Icon name="copy" className="size-3.5 text-fd-muted-foreground" />
+                <span>Copy</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Buttons Row */}
         <div className="flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="/docs/space"
+            className="inline-flex items-center gap-2 rounded-lg bg-fd-primary px-5 py-2.5 text-sm font-semibold text-fd-primary-foreground transition-opacity hover:opacity-90"
+          >
+            <Icon name="terminal" className="size-4" />
+            Get Started with Space
+          </a>
           <a
             href={SIGN_UP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 rounded-lg bg-fd-primary px-5 py-2.5 text-sm font-semibold text-fd-primary-foreground transition-opacity hover:opacity-90"
-          >
-            Start free — first agent in 5 minutes
-          </a>
-          <a
-            href="/getting-started"
             className="inline-flex items-center gap-2 rounded-lg border border-fd-border bg-fd-background px-5 py-2.5 text-sm font-semibold text-fd-foreground transition-colors hover:bg-fd-muted"
           >
-            Read the guide
+            <Icon name="rocket" className="size-4" />
+            Launch on Managed Cloud
+          </a>
+          <a
+            href={GITHUB_REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg border border-fd-border bg-fd-background px-4 py-2.5 text-sm font-semibold text-fd-foreground transition-colors hover:bg-fd-muted"
+          >
+            <BrandIcon name="github" size={16} />
+            GitHub
           </a>
         </div>
-        <p className="text-xs text-fd-muted-foreground">
-          30-day free trial · No credit card · Bring your own model
-        </p>
       </div>
 
       <FirstTenMinutes />
 
-      <div className="mt-6 flex flex-col items-center gap-2 rounded-2xl border border-fd-primary/20 bg-fd-primary/5 px-5 py-4 text-center sm:flex-row sm:justify-center sm:gap-3">
+      <div className="mt-8 flex flex-col items-center gap-2 rounded-2xl border border-fd-primary/20 bg-fd-primary/5 px-5 py-4 text-center sm:flex-row sm:justify-center sm:gap-3">
         <Icon name="shield" className="size-5 shrink-0 text-fd-primary" />
         <span className="text-xs font-medium leading-relaxed text-fd-foreground sm:text-sm">
-          Every agent runs in a secure, isolated cloud space — one dashboard, no
-          local setup, no infra to manage.
+          <strong>Full Parity:</strong> Every feature and API endpoint in <code>cowork-api</code> runs identically on your local machine and on XO Cloud.
         </span>
       </div>
     </section>

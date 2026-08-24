@@ -7,27 +7,25 @@ icon: Download
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  Install **XO Space** on your machine. When the installer finishes, your local
-  Space is available in the browser. Prefer a hosted machine instead? Follow
-  [XO Cloud](/docs/cloud).
+  Install **XO Space** on your local machine with a single curl command. XO Space is open-source on GitHub at [github.com/quirq-ai/xo-space](https://github.com/quirq-ai/xo-space). Once installed, it boots the local `cowork-api` control plane and observability UI on your machine.
 </Lead>
 
-## Install a local Space
+## Install Local Space (OSS)
 
-Run this command in a terminal:
+Run this command in your terminal:
 
 ```bash
-curl -fsSL quirq.ai/install | sh
+curl -fsSL https://quirq.ai/install | sh
 ```
 
-The installer downloads or updates Space, reports available optional tools, and
-starts your local Space at [http://localhost:5002/space/](http://localhost:5002/space/).
-Keep the terminal running while you use Space; press `Ctrl-C` to stop it.
+The installer downloads the latest release of XO Space, provisions the background `cowork-api` daemon, and launches your local Space at:
+
+👉 **[http://localhost:5002/space/](http://localhost:5002/space/)**
+
+Keep the terminal running while you use Space (press `Ctrl-C` to stop).
 
 <Callout type="info">
-	The installer endpoint and its technical state directory retain the Quirq
-	name. Logs are stored at `~/.quirq/quirq.log`, but the installed and running
-	environment is a **Space**. See [Glossary](/docs/glossary).
+	XO Space is the open-source packaging of `cowork-api` (the exact engine running inside every hosted agent on [app.xo.builders](https://app.xo.builders)). State and logs are stored locally at `~/.quirq/`.
 </Callout>
 
 ![Installing Space through terminal/command prompt](/images/quirq.png)

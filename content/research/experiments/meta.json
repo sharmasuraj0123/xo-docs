@@ -14,6 +14,7 @@
     "alignment-environments",
     "organic-vs-synthetic-evaluation-data",
     "observational-data-work-done",
-    "nested-sandboxes-for-agent-isolation"
+    "nested-sandboxes-for-agent-isolation",
+    "machine-can-disappear"
   ]
 }

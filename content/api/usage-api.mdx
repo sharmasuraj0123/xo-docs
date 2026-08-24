@@ -194,7 +194,7 @@ Per-message records for one session. Same schema as `/openclaw/usage/analytics`,
 `services/usage_sync.py` runs as an asyncio background task started in the FastAPI lifespan. It is **not** an HTTP endpoint, but it touches the same data the read endpoints do:
 
 ```
-1. Walk OpenClaw JSONL session files under the workspace.
+1. Walk OpenClaw JSONL session files under the space.
 2. Extract per-message tokens (input, output, cacheRead, cacheWrite), cost, model, tool names.
 3. Aggregate per day plus per-model breakdown.
 4. POST to xo-swarm-api /usage/report with the Bearer token from auth_state.

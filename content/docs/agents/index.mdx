@@ -1,21 +1,12 @@
 ---
 title: Agents
-description: Compare and deploy AI agent templates on XO Cloud.
+description: Compare the documented AI agent templates available on XO Spaces.
 icon: Bot
 ---
 
 import { Cards, Card } from "@/components/card";
-import { Callout } from "fumadocs-ui/components/callout";
 
-These guides cover **XO Cloud**: create a project from a template on
-[app.xo.builders](https://app.xo.builders), wait for the workspace machine, then
-open the agent from Launch.
-
-<Callout type="info">
-	Running locally instead? Use [XO Space](/docs/space). Agent *templates* still
-	describe the same harnesses; the Cloud quickstarts below are dashboard and
-	remote-machine specific.
-</Callout>
+Each agent runs in an isolated XO space, but the interface, setup requirements, and best-fit work differ. Use the comparison below before creating a project.
 
 ## Compare Agent Options
 
@@ -27,7 +18,7 @@ open the agent from Launch.
 | **XO Cowork** | Chat-first work organized around persistent project files and memory | XO Cowork project view and optional channels | Provider can be added during project creation or onboarding |
 | **Antigravity** | Google's agent-first coding platform — multi-step reasoning and multi-file edits | Browser IDE and the `antigravity` terminal interface | Google account sign-in on first launch |
 
-If you still are not sure, follow the short [Choose an Agent](/docs/cloud/choose-an-agent) decision guide.
+If you still are not sure, follow the short [Choose an Agent](/docs/getting-started/choose-an-agent) decision guide.
 
 ## Explore the Agents
 
@@ -41,7 +32,7 @@ If you still are not sure, follow the short [Choose an Agent](/docs/cloud/choose
 	<Card
 		icon={<BrandIcon name="claude-code" size={20} />}
 		title="Claude Code"
-		description="Run Claude Code from a browser-based editor inside an XO Cloud workspace."
+		description="Run Claude Code from a browser-based editor inside an XO space."
 		href="/docs/agents/claude-code"
 	/>
 	<Card
@@ -64,8 +55,4 @@ If you still are not sure, follow the short [Choose an Agent](/docs/cloud/choose
 	/>
 </Cards>
 
-## Next
-
-- New to Cloud? [Create an account](/docs/cloud/create-account) → [Launch your first agent](/docs/cloud/launch-first-agent)
-- Already have a project? [Workspace configuration](/docs/setup) (Setup tab)
-- Prefer local? [XO Space](/docs/space)
+Ready to begin? Continue to [Launch Your First Agent](/docs/getting-started/launch-first-agent).

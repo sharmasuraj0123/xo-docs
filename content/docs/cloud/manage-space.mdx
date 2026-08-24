@@ -1,5 +1,5 @@
 ---
-title: Manage Your Workspace Machine
+title: Manage Your Space Machine
 description: Monitor resources, open available interfaces, and control the remote machine behind an XO project.
 icon: Manage
 ---
@@ -7,7 +7,7 @@ icon: Manage
 import { Step, Steps } from "fumadocs-ui/components/steps";
 import { Callout } from "fumadocs-ui/components/callout";
 
-Your project's workspace dashboard is the control center for its remote machine.
+Your project's space dashboard is the control center for its remote machine.
 From the **Launch** tab you can monitor resources, open available interfaces,
 and stop or start the machine. OpenClaw projects also expose gateway controls.
 
@@ -20,9 +20,13 @@ and stop or start the machine. OpenClaw projects also expose gateway controls.
 
 ## What You'll Need
 
+<<<<<<<< HEAD:content/docs/cloud/manage-workspace.mdx
 - An [XO account](/docs/cloud/create-account) with an active workspace
+========
+- An [XO account](/docs/getting-started/create-account) with an active space
+>>>>>>>> upstream/main:content/docs/cloud/manage-space.mdx
 
-## Open Your Workspace
+## Open Your Space
 
 Open [app.xo.builders](https://app.xo.builders).
 
@@ -38,11 +42,11 @@ If your machine is stopped, click **Start** to boot it up.
 
 Wait for the agent status to transition to **Ready**.
 
-Once the machine is running, the panel shows all your workspace controls and live stats.
+Once the machine is running, the panel shows all your space controls and live stats.
 
 ## Monitoring Resources
 
-The panel displays real-time CPU and RAM usage for your workspace.
+The panel displays real-time CPU and RAM usage for your space.
 
 ![CPU and RAM Usage](/images/cfg-04-ready.webp)
 
@@ -52,7 +56,7 @@ The panel shows the status of your services. When everything is ready, you'll se
 
 **OpenClaw Gateway** — When present, the gateway is running and ready to accept connections.
 
-**Cowork API** — When present, the workspace backend is running.
+**Cowork API** — When present, the space backend is running.
 
 ![Services Up](/images/cfg-05-services-up.webp)
 
@@ -63,9 +67,9 @@ The panel shows the status of your services. When everything is ready, you'll se
 
 ## Opening Your IDE
 
-The **Agent Connections** panel lists all the ways you can connect to your workspace.
+The **Agent Connections** panel lists all the ways you can connect to your space.
 
-**Desktop IDE (VS Code / Cursor)** — Click **VS Code** to open the workspace in your desktop editor.
+**Desktop IDE (VS Code / Cursor)** — Click **VS Code** to open the space in your desktop editor.
 
 ![Click VS Code](/images/cfg-06-vscode.jpeg)
 
@@ -109,7 +113,7 @@ If your IDE isn't loading or your environment feels stuck, do a stop-and-restart
   <Step>
     ### Stop the Machine
 
-    Click **Stop** to shut down the workspace machine. Click **Refresh** to confirm the status reads **stopped**.
+    Click **Stop** to shut down the space machine. Click **Refresh** to confirm the status reads **stopped**.
 
   </Step>
   <Step>

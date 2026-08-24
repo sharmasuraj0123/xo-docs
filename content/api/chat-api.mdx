@@ -40,8 +40,8 @@ Use `/api/chat/*` for everything new. The legacy `/ask_question` and `/ask_quest
   "agent_id": "blackhole",                                     // matches a folder under
                                                                // ~/xo-projects/<agent_id>/
 
-  // OPTIONAL: workspace path hint (alternative to agent_id)
-  "workspace": "/Users/me/xo-projects/blackhole",              // absolute path
+  // OPTIONAL: space path hint (alternative to agent_id)
+  ___JSON_WORKSPACE_KEY___: "/Users/me/xo-projects/blackhole",              // absolute path
 
   // OPTIONAL: skill / persona prefix
   "agent_type": "research",                                    // claude_code maps this to a /skill-name
@@ -64,10 +64,10 @@ If you are resuming an existing session, you can omit `agent_name` entirely and 
 
 ### `agent_id` resolution
 
-If `agent_id` is missing, it's a new session, and `workspace` is provided:
+If `agent_id` is missing, it's a new session, and `space` is provided:
 
 ```
-ws_path = Path(workspace).expanduser().resolve()
+ws_path = Path(space).expanduser().resolve()
 if   ws_path startswith ~/xo-projects/{X}/...   →  agent_id = X
 elif ws_path startswith ~/claude-cowork/{X}/... →  agent_id = X
 else                                             →  agent_id = None

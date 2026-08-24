@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     template: `%s | ${appName}`,
   },
   description:
-    "Documentation for XO — deploy apps, connect AI agents, and scale with XO Launchpad, XO MCP Server, and XO Workspaces.",
+    "Documentation for XO — deploy apps, connect AI agents, and scale with XO Launchpad, XO MCP Server, and XO Spaces.",
   openGraph: {
     siteName: appName,
     type: "website",

@@ -8,7 +8,7 @@ singleFont: true
 
 import { Callout } from 'fumadocs-ui/components/callout';
 
-<Lead>A working memory layer decides what an agent sees at each step, which is a different question from what it stores. This piece walks what breaks when the history gets long, the four properties a memory layer needs to fix it, and one system that implements all four and measured the result: a file-system-style workspace where summaries index the raw trajectories they came from, navigated by a small trained retriever that assembles context on demand.</Lead>
+<Lead>A working memory layer decides what an agent sees at each step, which is a different question from what it stores. This piece walks what breaks when the history gets long, the four properties a memory layer needs to fix it, and one system that implements all four and measured the result: a file-system-style space where summaries index the raw trajectories they came from, navigated by a small trained retriever that assembles context on demand.</Lead>
 
 **XO Labs Inc.**  ·  August 2026
 
@@ -47,17 +47,17 @@ One system implements all four. Its central move is structural rather than cleve
 
 Section 2 gave the reason to split memory in two; the sparse task reward leaves the signal, in the paper's phrase, "weak and entangled." Two further asymmetries decide which half gets which treatment. Frontier models are already good at semantic abstraction and hierarchical structuring, so decent organization can be prompted out of them, whereas a retrieval policy genuinely improves with training. And there is no clean label for "was this filed well," but an obvious one for retrieval: compare what was pulled against the passages known to contain the answer.
 
-So a **memory manager** on a strong model organizes, refined by rewriting its own instructions rather than by gradient descent, and a separate **retriever**, trained with reinforcement learning on a small model, fetches. Both work through the same workspace, and the agent performing the task never sees the raw history at all.
+So a **memory manager** on a strong model organizes, refined by rewriting its own instructions rather than by gradient descent, and a separate **retriever**, trained with reinforcement learning on a small model, fetches. Both work through the same space, and the agent performing the task never sees the raw history at all.
 
 <Callout>
 **π(a<sub>t</sub> | o<sub>t</sub>, F<sub>t</sub>, q) = M<sub>r</sub>(C<sub>t</sub> | F<sub>t</sub>, q)  ·  M<sub>θ</sub>(a<sub>t</sub> | o<sub>t</sub>, C<sub>t</sub>, q; P<sub>main</sub>)**
 
-The per-step policy factors in two. M<sub>r</sub>, the retriever, picks a context C<sub>t</sub> out of the memory workspace F<sub>t</sub>. M<sub>θ</sub>, the acting agent, chooses its action from that context alone; its weights stay frozen throughout, so every reported difference comes from memory handling rather than a better actor. The manager M<sub>m</sub> maintains F<sub>t</sub> and never appears on the step path. *(from the paper)*
+The per-step policy factors in two. M<sub>r</sub>, the retriever, picks a context C<sub>t</sub> out of the memory space F<sub>t</sub>. M<sub>θ</sub>, the acting agent, chooses its action from that context alone; its weights stay frozen throughout, so every reported difference comes from memory handling rather than a better actor. The manager M<sub>m</sub> maintains F<sub>t</sub> and never appears on the step path. *(from the paper)*
 </Callout>
 
 ## 5. The architecture: notes that keep their source
 
-The workspace is a directory tree. Not a vector index and not an opaque buffer: files and folders a person could open in a terminal, which both modules manipulate through ordinary shell commands.
+The space is a directory tree. Not a vector index and not an opaque buffer: files and folders a person could open in a terminal, which both modules manipulate through ordinary shell commands.
 
 The order of operations is what matters. For each step or dialogue turn the manager first archives the raw trajectory into a timestamped directory, and only then writes notes against it, each carrying a compact account of what happened, temporal metadata, and a reference back to its raw trace.
 
@@ -336,7 +336,7 @@ None of the open conditions in section 10 touches the finding underneath all of 
 
 **Primary source.** Hsu, H.-L., Kuang, N. L., Liu, B., Yao, Z., and He, Y. (2026). *Organize then Retrieve: Hierarchical Memory Navigation for Efficient Agents.* Preprint, Duke University and Snowflake AI Research. Posted 10 June 2026, and therefore not yet peer-reviewed. → [arXiv:2606.11680v1](https://arxiv.org/abs/2606.11680)
 
-**What it supplies.** Every measurement in this piece comes from that one preprint: the hierarchical workspace and its provenance links, the contrastive skill loop, the evidence-grounded retrieval reward, and the results on all three benchmarks.
+**What it supplies.** Every measurement in this piece comes from that one preprint: the hierarchical space and its provenance links, the contrastive skill loop, the evidence-grounded retrieval reward, and the results on all three benchmarks.
 
 **How it is marked.** Claims and figures taken from the paper are marked *from the paper* where they appear. The two illustrations redrawn from its own figures are marked *redrawn*. The argument, and the order it is made in, are ours.
 

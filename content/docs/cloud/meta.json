@@ -1,18 +1,14 @@
 {
-  "title": "XO Cloud",
+  "title": "Cloud Space (Managed)",
   "icon": "Cloud",
   "pages": [
     "overview",
     "create-account",
     "choose-an-agent",
     "launch-first-agent",
-    "---Operate---",
-    "manage-workspace",
+    "---Manage Infrastructure---",
+    "manage-space",
     "vs-code-server",
-    "share-project",
-    "---Configure---",
-    "../setup",
-    "---AI Agent Guides---",
-    "../agents"
+    "share-project"
   ]
 }

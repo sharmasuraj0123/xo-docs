@@ -11,12 +11,15 @@ source. Onboarding paths link here instead of redefining terms.
 
 ## Universal terms
 
-These apply whether you run locally or on XO Cloud.
+These apply whether you run locally or on Managed Cloud.
 
 | Term | What it means | Do not confuse with |
 |---|---|---|
-| **Space** | The environment where your agent runs and work gets done. | An XO account, or the word “quirq” |
-| **Agent** | The software doing the work (OpenClaw, Claude Code, Hermes, Antigravity, XO Cowork, and others). Each offers a different interface and workflow. | The remote machine or the XO project row in the dashboard |
+| **XO Space** | The core open-source product engine (`cowork-api`). The workspace environment, observability platform, and session runtime where your agents run and work gets measured. | An XO account, or the word “quirq” |
+| **`cowork-api`** | The FastAPI control plane and event broker running inside every Space instance (local or cloud). Manages agent sessions, secrets, connectors, and trace streaming. | Upstream cloud API (`xo-swarm-api`) |
+| **Self-Hosted Local Space** | An XO Space instance running on your local machine (`http://localhost:5002/space/`). | Cloud dashboard |
+| **Managed Cloud Space** | An XO Space instance hosted on an isolated cloud VM managed via [app.xo.builders](https://app.xo.builders). | Local offline space |
+| **Agent** | The software runtime doing the work (OpenClaw, Claude Code, Hermes, Antigravity, XO Cowork, and others). Each offers a different interface and workflow. | The VM or the dashboard item |
 | **Work project** / **project directory** | A folder *inside* a Space where the agent keeps files and context for a particular piece of work. | An **XO project** (Cloud dashboard item) |
 | **Model provider** | The AI model account that powers the agent (API key or OAuth). | XO billing / plan |
 | **Channel** | A messaging app through which people can reach an agent (for example Telegram or Slack). Support varies by agent. | The Space UI itself |
@@ -24,8 +27,7 @@ These apply whether you run locally or on XO Cloud.
 | **quirq** | A unit of **verified work** measured inside a Space. | The name of the Space product or the local installer paths |
 
 <Callout type="info">
-  **One sentence to remember:** a **Space** is where the agent works. Run that
-  Space on your laptop (**XO Space**) or on XO’s hosted machines (**XO Cloud**).
+  **One sentence to remember:** **XO Space** is the core open-source engine (`cowork-api`) where agents run. Run that Space on your laptop (**Self-Hosted**) or on XO’s hosted machines (**Managed Cloud**).
 </Callout>
 
 ## XO Space (local)

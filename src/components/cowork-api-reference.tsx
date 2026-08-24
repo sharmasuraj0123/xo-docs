@@ -28,10 +28,10 @@ function normalizeServerUrl(value: string): string {
   const url = new URL(value.trim());
 
   if (url.protocol !== "http:" && url.protocol !== "https:") {
-    throw new Error("Use an http:// or https:// workspace URL.");
+    throw new Error("Use an http:// or https:// space URL.");
   }
   if (url.username || url.password) {
-    throw new Error("Do not put credentials in the workspace URL.");
+    throw new Error("Do not put credentials in the space URL.");
   }
   if (url.search || url.hash) {
     throw new Error("Remove query parameters and fragments from the URL.");
@@ -76,7 +76,7 @@ export function CoworkApiReference() {
   const configuration = useMemo<AnyApiReferenceConfiguration>(
     () => ({
       url: "/openapi/xo-cowork-api.json",
-      servers: [{ url: server, description: "Selected XO Cowork workspace" }],
+      servers: [{ url: server, description: "Selected XO Cowork space" }],
       persistAuth: false,
       telemetry: false,
       agent: { disabled: true },
@@ -114,7 +114,7 @@ export function CoworkApiReference() {
       setError(null);
     } catch (cause) {
       setError(
-        cause instanceof Error ? cause.message : "Enter a valid workspace URL.",
+        cause instanceof Error ? cause.message : "Enter a valid space URL.",
       );
     }
   }
@@ -145,12 +145,12 @@ export function CoworkApiReference() {
                 id="cowork-connection-title"
                 className="text-xl font-semibold"
               >
-                Connect your workspace
+                Connect your space
               </h2>
               <p className="mt-2 text-sm leading-6 text-fd-muted-foreground">
                 Requests go directly from this browser to the URL below. Start
                 with <code>GET /</code>, then inspect runtime status before
-                reading workspace data.
+                reading space data.
               </p>
             </div>
             <a
@@ -170,7 +170,7 @@ export function CoworkApiReference() {
                 htmlFor="cowork-server-url"
                 className="mb-2 block text-sm font-medium"
               >
-                Workspace API URL
+                Space API URL
               </label>
               <div className="flex flex-col gap-2 sm:flex-row">
                 <input
@@ -203,8 +203,8 @@ export function CoworkApiReference() {
                 </p>
               ) : (
                 <p className="mt-2 text-xs leading-5 text-fd-muted-foreground">
-                  Local: <code>{LOCAL_SERVER}</code>. Remote workspaces should
-                  use their authenticated HTTPS proxy URL.
+                  Local: <code>{LOCAL_SERVER}</code>. Remote spaces should use
+                  their authenticated HTTPS proxy URL.
                 </p>
               )}
             </div>
@@ -228,7 +228,7 @@ export function CoworkApiReference() {
             />
             <span>
               <span className="block text-sm font-medium">
-                Enable “Test Request” for this real workspace
+                Enable “Test Request” for this real space
               </span>
               <span className="mt-1 block text-xs leading-5 text-fd-muted-foreground">
                 I understand responses may contain local paths, agent names,
@@ -243,8 +243,8 @@ export function CoworkApiReference() {
           <div className="border-t border-amber-500/30 bg-amber-500/10 px-5 py-4 text-sm leading-6 text-amber-900 dark:text-amber-200 sm:px-6">
             A hosted HTTPS page may need browser local-network permission, and
             Cowork API must allow this docs origin through CORS. For the most
-            reliable local workflow, open a same-origin reference from the
-            workspace or run these docs at <code>http://localhost:3100</code>.
+            reliable local workflow, open a same-origin reference from the space
+            or run these docs at <code>http://localhost:3100</code>.
           </div>
         ) : null}
       </section>

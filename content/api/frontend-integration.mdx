@@ -62,7 +62,7 @@ async function startTurn(args: {
   agentName?: "openclaw" | "claude_code";
   agentId?: string;
   agentType?: string;
-  workspace?: string;
+  space?: string;
 }): Promise<PromptResponse> {
   return api<PromptResponse>("/api/chat/prompt", {
     method: "POST",
@@ -72,7 +72,7 @@ async function startTurn(args: {
       agent_name: args.agentName,
       agent_id:   args.agentId,
       agent_type: args.agentType,
-      workspace:  args.workspace,
+      space:  args.space,
     }),
   });
 }
@@ -228,10 +228,10 @@ const older = await api<MessagesPage>(
 ## 5. Create a project (with scaffold)
 
 ```typescript
-type WorkspaceConfig = { roots: Record<string, string>; default: string };
+type SpaceConfig = { roots: Record<string, string>; default: string };
 
 async function createProject(slug: string, displayName: string, description = "") {
-  const cfg = await api<WorkspaceConfig>("/api/config/workspace");
+  const cfg = await api<SpaceConfig>("/api/config/workspace");
   const projectsRoot = cfg.roots[cfg.default];
 
   try {
@@ -305,10 +305,10 @@ async function downloadBinary(path: string): Promise<Blob> {
 ## 7. Upload from `<input type="file">`
 
 ```typescript
-async function uploadFile(file: File, workspace?: string) {
+async function uploadFile(file: File, space?: string) {
   const fd = new FormData();
   fd.append("file", file);
-  if (workspace) fd.append("workspace", workspace);
+  if (space) fd.append(___JSON_WORKSPACE_KEY___, space);
 
   return apiUpload<{
     file_id: string;

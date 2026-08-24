@@ -30,7 +30,7 @@ Each session leaves roughly thirty artifacts. The substantive ones:
 | `event_log.jsonl` | per-step token accounting, including cache reads and writes |
 | `run_record.json` | reconciled timing, token, navigation and operation summaries |
 | `reconcile.json` | provenance: which channel delivered each fact the agent possessed, and alarms for facts it possessed without a delivering channel |
-| `git.patch` | the workspace diff at end of run |
+| `git.patch` | the space diff at end of run |
 
 That second-to-last channel was the ambitious part. `reconcile.json` attributes every fact the agent used to the channel that carried it, whether a bash result, a file read, or its own earlier thinking, and raises an alarm when the agent appears to possess something no channel delivered. We built it to catch confabulation.
 
@@ -125,7 +125,7 @@ The rest of the vocabulary, once:
 
 ## 4. Ground truth had to be computed away from the observation
 
-The harness could not grade the real-repository work, and the reason is structural rather than a defect. Ground truth for those tasks is the maintainers' own test patch from the merged pull request, and *the test patch is the answer key*. It cannot exist in the workspace while the agent is running, or the agent can read the tests and satisfy them directly. The harness grades during teardown, against a live workspace that has no test patch applied, and then deletes that workspace unconditionally.
+The harness could not grade the real-repository work, and the reason is structural rather than a defect. Ground truth for those tasks is the maintainers' own test patch from the merged pull request, and *the test patch is the answer key*. It cannot exist in the space while the agent is running, or the agent can read the tests and satisfy them directly. The harness grades during teardown, against a live space that has no test patch applied, and then deletes that space unconditionally.
 
 So grading was rebuilt as a separate offline pass: check out the run's own baseline commit, apply the run's archived diff, reset the test tree, apply the maintainers' test patch, then run the tests the pull request made pass alongside those that must keep passing. The verdict is whatever the test runner reports. No model authors any part of it.
 
@@ -285,7 +285,7 @@ The headline does not rest on where the ambiguous messages were placed. Four mes
 
 The obvious explanation is that these agents skipped verification. They did not. **Twenty-one of the 23 failing runs ran the test suite.** Effort spent verifying after the last edit does not separate false completions from true ones. The agents looked, and reported success anyway.
 
-We also compared two workspace conditions, with and without a structured operating scaffold, and found nothing: 24 of 36 complete against 25 of 36, five discordant pairs out of 36, exact McNemar **p = 1.00**. That is an absence of evidence at low power rather than evidence of absence, and we report it as such.
+We also compared two space conditions, with and without a structured operating scaffold, and found nothing: 24 of 36 complete against 25 of 36, five discordant pairs out of 36, exact McNemar **p = 1.00**. That is an absence of evidence at low power rather than evidence of absence, and we report it as such.
 
 ## 9. What this means for metering work
 

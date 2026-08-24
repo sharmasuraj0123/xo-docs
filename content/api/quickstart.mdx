@@ -1,18 +1,18 @@
 ---
 title: "Quickstart: Make Your First Cowork API Request"
 icon: Zap
-description: "Verify a Cowork API instance, discover its workspace configuration, and stream a first chat turn."
+description: "Verify a Cowork API instance, discover its space configuration, and stream a first chat turn."
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 
-Use this guide to verify that `xo-cowork-api` is reachable, discover the workspace
+Use this guide to verify that `xo-cowork-api` is reachable, discover the space
 instead of hardcoding its paths, and send one streamed chat turn.
 
 ## Before you start
 
-You need a running XO Coworker workspace. The API runs inside it on port `5002` by
+You need a running XO Coworker space. The API runs inside it on port `5002` by
 default.
 
 ```bash
@@ -20,9 +20,9 @@ export BASE="http://localhost:5002"
 ```
 
 Local desktop requests use loopback and do not need an auth header. A remote
-workspace proxy can require a host-provided `Authorization: Bearer <token>` or
-`Coder-Session-Token: <token>` header. Add one only when that workspace host tells
-you to: the FastAPI app itself does not validate either header. That workspace
+space proxy can require a host-provided `Authorization: Bearer <token>` or
+`Coder-Session-Token: <token>` header. Add one only when that space host tells
+you to: the FastAPI app itself does not validate either header. That space
 proxy token is different from the upstream swarm token described in the [API
 overview](/api-reference/overview#auth-model).
 
@@ -40,12 +40,12 @@ overview](/api-reference/overview#auth-model).
     { "status": "XO Cowork API running" }
     ```
 
-    If this request cannot connect, confirm that the Coworker workspace is running
+    If this request cannot connect, confirm that the Coworker space is running
     and that `BASE` points to its current local port or tunnel URL.
   </Step>
 
   <Step>
-    ### Discover the workspace
+    ### Discover the space
 
     ```bash
     curl --fail --silent --show-error "$BASE/api/config/workspace"
@@ -122,11 +122,11 @@ overview](/api-reference/overview#auth-model).
 </Steps>
 
 <Callout type="info">
-The status and workspace-config requests work before you build a chat UI. A chat
+The status and space-config requests work before you build a chat UI. A chat
 turn also requires a configured runtime and model provider. Use the [Auth
 API](/api-reference/auth-api) for Clerk and Claude/Codex bootstrap flows, and
 `GET /api/models` from the [Config API](/api-reference/config-api) to populate
-the model choices your workspace exposes.
+the model choices your space exposes.
 </Callout>
 
 ## Confirm the integration

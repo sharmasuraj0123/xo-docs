@@ -6,7 +6,7 @@ description: Base URL, auth model, transport conventions, and error envelope.
 
 import { Callout } from 'fumadocs-ui/components/callout';
 
-`xo-cowork-api` is a Python 3.12 FastAPI app that runs inside every Coworker workspace on port `5002`. The frontend (Tauri desktop, browser, mobile, or any AI client) talks to it over plain HTTP plus Server-Sent Events.
+`xo-cowork-api` is a Python 3.12 FastAPI app that runs inside every Coworker space on port `5002`. The frontend (Tauri desktop, browser, mobile, or any AI client) talks to it over plain HTTP plus Server-Sent Events.
 
 ## Base URL
 
@@ -28,11 +28,11 @@ In Tauri, the Rust shell also boots, watches, and restarts the API. Listen for t
 
 Local desktop runs on loopback, so there is no auth header on chat or file
 endpoints. The FastAPI app has no inbound authentication middleware. A remote
-workspace is protected only when its upstream tunnel or workspace proxy validates
+space is protected only when its upstream tunnel or space proxy validates
 one of:
 
 - `Authorization: Bearer {token}` (most hosts)
-- `Coder-Session-Token: {token}` (Coder workspaces)
+- `Coder-Session-Token: {token}` (Coder spaces)
 
 These headers belong to the remote proxy boundary and are ignored by Cowork API
 when no validating proxy is present. They are **not** the same as the
@@ -41,7 +41,7 @@ token is minted by the Clerk poll-token flow in `/xo-auth/*` and is invisible to
 the frontend.
 
 <Callout type="warn">
-The home-clamp on file endpoints is the **only** safety layer for filesystem access. Treat the workspace itself as the trust boundary. Anything that breaches `$HOME` returns `403`, but symlinks under `$HOME` pointing outward are not blocked.
+The home-clamp on file endpoints is the **only** safety layer for filesystem access. Treat the space itself as the trust boundary. Anything that breaches `$HOME` returns `403`, but symlinks under `$HOME` pointing outward are not blocked.
 </Callout>
 
 ## Content types
@@ -129,7 +129,7 @@ Always JSON, always `detail`-keyed, always parseable.
 
 `local` is for cowork-api on a developer laptop with whatever `claude` / `codex` are in PATH. `beta` assumes the Coder image with binaries at fixed paths. Frontends do not need to know the stage; everything routes through `/api/*` regardless.
 
-## Discoverable workspace config
+## Discoverable space config
 
 Before creating projects or referencing the projects root, fetch the canonical paths:
 
@@ -143,7 +143,7 @@ Do **not** hardcode `~/xo-projects/`. The `XO_PROJECTS_ROOT` env var on the serv
 
 ## What's next
 
-- [Quickstart](/api-reference/quickstart): verify the instance, discover its workspace, and stream a first chat turn.
+- [Quickstart](/api-reference/quickstart): verify the instance, discover its space, and stream a first chat turn.
 - [Chat API](/api-reference/chat-api): prompt, stream, abort, and SSE event vocabulary.
 - [Files API](/api-reference/files-api): file CRUD plus project scaffolding.
 - [Sessions API](/api-reference/sessions-api): list and search sessions, hydrate messages.

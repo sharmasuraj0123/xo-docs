@@ -8,47 +8,58 @@ import { Cards, Card } from "@/components/card";
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  **XO Space** runs on **your machine**. Install it, open the local UI, and that
-  browser screen *is* your Space — the environment where the agent works.
+  **XO Space** is the core open-source product and agent execution engine (`cowork-api`). It gives you real-time observability—allowing you to watch your agents work, measure their output, and manage sessions whether your agent runs **locally on your machine** or on a **managed cloud machine on XO**.
 </Lead>
 
-## Start here
+## Core Product Offering
+
+Space is the unified foundation across all XO deployments:
+
+- **Local Space (OSS)**: Install with a single `curl` command (or agent skill) on your laptop. Run agents locally while observing their thoughts, tool calls, and session logs in real time.
+- **Cloud Space (Managed)**: 1-click launch on [app.xo.builders](https://app.xo.builders). Provides a managed remote machine pre-loaded with Space, browser IDE, and public endpoints.
+- **Feature & API Parity**: Every agent capability, connector, and `cowork-api` endpoint is available locally and in the cloud.
+
+## Quickstart
 
 <Cards>
 	<Card
 		icon={<span className="icon-[ph--download-simple-fill] size-6" />}
-		title="1. Install Space"
-		description="Run the installer, keep the terminal open, open localhost."
+		title="1. Install Space (Local OSS)"
+		description="Run the single curl installer, keep terminal open, and launch local UI."
 		href="/docs/space/install-space"
 	/>
 	<Card
 		icon={<span className="icon-[ph--map-trifold-fill] size-6" />}
-		title="2. Your first Space"
-		description="Walk through the UI, attach an agent, complete one small task."
+		title="2. Walkthrough Your First Space"
+		description="Open the UI, attach an agent, and complete a verified task."
 		href="/docs/space/first-space"
 	/>
 	<Card
+		icon={<span className="icon-[ph--activity-fill] size-6" />}
+		title="3. Agent Observability"
+		description="Watch agent execution live and measure work delivered via quirqs."
+		href="/docs/space/observability"
+	/>
+	<Card
 		icon={<span className="icon-[ph--terminal-fill] size-6" />}
-		title="3. Optional: Claude Code skill"
-		description="Add Space guidance inside Claude Code via the plugin."
+		title="4. Claude Code Skill"
+		description="Install Space guidance as a native plugin for local Claude Code workflows."
 		href="/docs/space/install-space-as-a-skill/claude-code"
 	/>
 </Cards>
 
-## Not the Cloud path
+## Deployment Options: Local vs. Cloud
 
-| | **XO Space** (this section) | **XO Cloud** |
+| Feature / Aspect | **Local Space** (OSS) | **Cloud Space** (Managed) |
 |---|---|---|
-| Where it runs | Your laptop | Hosted workspace machine |
-| How you start | Install / skill | Account → New Project |
-| Dashboard Setup tab | No | Yes — under [Workspace configuration](/docs/setup) |
-| Agent quickstarts in docs | Local walkthrough | [AI Agent Guides](/docs/agents) (Cloud) |
-
-Need hosted machines, sharing, and the dashboard? Use **[XO Cloud](/docs/cloud)** — that section also contains Workspace Configuration and AI Agent Guides.
+| **Runtime Engine** | `cowork-api` (local daemon) | `cowork-api` (cloud container) |
+| **Execution Environment** | Your laptop / desktop / server | Isolated Cloud VM on [app.xo.builders](https://app.xo.builders) |
+| **Setup Command** | Single `curl` script or CLI skill | 1-Click "New Project" on Web Dashboard |
+| **Observability & Logs** | Local UI (`http://localhost:5002/space/`) | Cloud Dashboard & Hosted VS Code IDE |
+| **Agent Support** | OpenClaw, Claude Code, Hermes, Antigravity, etc. | OpenClaw, Claude Code, Hermes, Antigravity, etc. |
 
 <Callout type="info">
-	Older install URLs may still say Quirq (`quirq.ai/install`, `~/.quirq/`).
-	Those install **Space**. Terms: [Glossary](/docs/glossary).
+	Whether launched locally or on the cloud, every agent runs inside a **Space**. Both environments expose the identical `cowork-api` endpoints. Terms: [Glossary](/docs/glossary).
 </Callout>
 
 ## Next

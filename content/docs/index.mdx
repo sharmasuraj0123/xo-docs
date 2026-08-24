@@ -54,20 +54,26 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 <Cards>
 	<Card
 		icon={<span className="icon-[ph--desktop-fill] size-6" />}
-		title="Run XO Space (local)"
-		description="Install a Space on your machine and walk through the local UI."
+		title="XO Space (Local OSS)"
+		description="Install Space engine locally via curl command to run & observe local agents."
 		href="/docs/space"
 	/>
 	<Card
 		icon={<span className="icon-[ph--cloud-fill] size-6" />}
-		title="Run XO Cloud"
-		description="Create an account, launch an agent on a hosted workspace machine."
+		title="XO Space (Managed Cloud)"
+		description="Launch a managed cloud Space on app.xo.builders with instant browser IDE."
 		href="/docs/cloud"
+	/>
+	<Card
+		icon={<span className="icon-[ph--activity-fill] size-6" />}
+		title="Agent Observability"
+		description="Watch agent execution live, stream session traces, and measure work done."
+		href="/docs/space/observability"
 	/>
 	<Card
 		icon={<span className="icon-[ph--book-open-fill] size-6" />}
 		title="Platform glossary"
-		description="Space, XO project, work project, workspace machine, and other terms."
+		description="Space, cowork-api, local vs managed cloud space, work project, and other terms."
 		href="/docs/glossary"
 	/>
 	<Card
@@ -78,8 +84,8 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 	/>
 	<Card
 		icon={<span className="icon-[ph--robot-fill] size-6" />}
-		title="Cloud agent guides"
-		description="XO Cloud quickstarts for OpenClaw, Claude Code, Hermes, XO Cowork, and Antigravity."
+		title="Agent guides"
+		description="Setup guides for OpenClaw, Claude Code, Hermes, XO Cowork, and Antigravity."
 		href="/docs/agents"
 	/>
 	<Card
@@ -119,40 +125,23 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 ## Quick Answers
 
 <Accordions>
-	<Accordion title="Is XO free?">
-		Hosted XO on [app.xo.builders](https://app.xo.builders) is not free. Every
-		new account gets a **30-day Basic trial** when you sign up so you can try
-		the product. After the trial, you need a paid plan. You always bring your
-		own model (API key or OAuth).
-
-		Want to try without a cloud subscription? [Install Space
-		locally](/docs/space) and run it on your machine.
+	<Accordion title="Is XO Space free?">
+		Yes! **XO Space** is open-source. You can run Space locally on your machine for free with a single `curl` command to observe and measure your local agents.
+		
+		If you prefer a managed environment, **XO Cloud** on [app.xo.builders](https://app.xo.builders) provides pre-provisioned cloud infrastructure (includes a 30-day trial). You bring your own model key in both cases.
 	</Accordion>
 	<Accordion title="Do I need my own model key?">
 		You bring your own model: use an API key from Anthropic, OpenAI, or
 		OpenRouter, or connect via OAuth with your existing Claude or ChatGPT
 		subscription. XO does not sell model credits.
 	</Accordion>
-	<Accordion title="What can I actually run?">
-		Five agent templates (OpenClaw, Claude Code, Hermes, XO Cowork,
-		Antigravity), XO Launchpad deploys, and purpose-built environments for
-		real work and experimentation.
+	<Accordion title="What is the relationship between XO Space and XO Cloud?">
+		**XO Space** is the core open-source engine (`cowork-api`) for agent execution and observability. **XO Cloud** is simply a managed way to launch Space on remote infrastructure. Anything you can do on XO Cloud can also be done locally with XO Space.
 	</Accordion>
-	<Accordion title="What is the difference between XO Space and XO Cloud?">
-		A **Space** is where the agent works. **XO Space** runs that environment
-		on your machine. **XO Cloud** runs it on an isolated remote machine you
-		manage from the dashboard. See [XO Space](/docs/space) and
-		[XO Cloud](/docs/cloud), or the [Glossary](/docs/glossary).
+	<Accordion title="How do I observe local agents?">
+		Install Space locally using `curl -fsSL quirq.ai/install | sh` (or add it as an agent skill). Launch the local UI on `localhost:5002` to watch live agent sessions, inspect tool execution, and track performance metrics.
 	</Accordion>
-	<Accordion title="Do I need to install anything?">
-		**XO Cloud:** no local install—everything runs in a hosted space and
-		browser IDE. **XO Space:** yes—run the local installer (or an agent
-		skill), then open the Space UI on localhost.
-	</Accordion>
-	<Accordion title="Is My Data Secure?">
-		On **XO Cloud**, credentials live in your space and each project gets
-		an isolated machine. On **XO Space**, work stays on your machine under
-		your control. See the [Glossary](/docs/glossary) for how those layers are
-		named.
+	<Accordion title="Is my data secure?">
+		On **Local Space**, work and telemetry stay 100% on your machine. On **Cloud Space**, credentials live in isolated cloud containers under your control. See the [Glossary](/docs/glossary) for details.
 	</Accordion>
 </Accordions>

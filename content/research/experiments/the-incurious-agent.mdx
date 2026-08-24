@@ -10,13 +10,13 @@ import { Callout } from 'fumadocs-ui/components/callout';
 
 **Krish Bhimani, Ankit Dwivedi, Rohini Pedamkar, Suraj Sharma**  ·  XO Labs Inc.  ·  June 2026
 
-**TL;DR:** We ran two coding agents — **OpenAI Codex** and **Claude (Sonnet)** — against the same two tasks on a real FastAPI codebase, under **seven environments** that add progressively more project context, from an empty workspace up to a full scaffold with a seeded `memory/` of how the project works. Three findings. First, **more context did not buy better outcomes**: every one of the 84 runs passed, so the only thing context moved was cost — and for Codex it moved cost *up*, by as much as 150%. Second, **the two agents have opposite reading habits**: Codex opens more files the more you give it; Claude reads the same four or five files no matter what's in the workspace. Third, and most telling, **both agents fall off a depth cliff** — they open top-level docs sometimes, but the curated `memory/` we seeded specifically to help was read in **1 of 12** runs of the condition built around it. We call the missing capability *environmental curiosity*, and we think it, not raw model strength, is the binding constraint on structured agent workspaces.
+**TL;DR:** We ran two coding agents — **OpenAI Codex** and **Claude (Sonnet)** — against the same two tasks on a real FastAPI codebase, under **seven environments** that add progressively more project context, from an empty space up to a full scaffold with a seeded `memory/` of how the project works. Three findings. First, **more context did not buy better outcomes**: every one of the 84 runs passed, so the only thing context moved was cost — and for Codex it moved cost *up*, by as much as 150%. Second, **the two agents have opposite reading habits**: Codex opens more files the more you give it; Claude reads the same four or five files no matter what's in the space. Third, and most telling, **both agents fall off a depth cliff** — they open top-level docs sometimes, but the curated `memory/` we seeded specifically to help was read in **1 of 12** runs of the condition built around it. We call the missing capability *environmental curiosity*, and we think it, not raw model strength, is the binding constraint on structured agent spaces.
 
 ## 1. A ladder of context
 
 The test is deliberately boring, because boring is what makes it clean. We took a small, real FastAPI service (`notes-api`), pinned it to a single commit, and wrote two engineering tasks against it: an easy one (add a `GET /notes/{id}/history` endpoint) and a medium one (replace naive search with SQLite FTS5). Each task is gated — a test that is red before the work and green after — and the harness re-runs the gate itself rather than trusting the agent. A do-nothing submission scores 0.33; a real solution scores 1.0.
 
-Then we built a ladder of **seven environments**, each adding one more layer of standing context to the *same* workspace:
+Then we built a ladder of **seven environments**, each adding one more layer of standing context to the *same* space:
 
 - **E0** — empty repo, code only.
 - **E1** — `+ README`.
@@ -86,13 +86,13 @@ Start with cost. Here is the average input-token bill per run, by environment, f
 <text x="694.9" y="322" textAnchor="middle" fontSize="12.5" fill="currentColor" fillOpacity="0.85">E6</text>
 </svg>
 
-Two very different shapes, one shared punchline. **Codex** climbs steeply: from 228k tokens in the empty workspace to 570k in the full scaffold (E4) — a **+150%** increase for context the task did not need. **Claude** is almost flat, and flat at a much higher floor: ~610k–680k everywhere, only +12% from E0 to E4. Adding structure barely moves Claude's bill in either direction.
+Two very different shapes, one shared punchline. **Codex** climbs steeply: from 228k tokens in the empty space to 570k in the full scaffold (E4) — a **+150%** increase for context the task did not need. **Claude** is almost flat, and flat at a much higher floor: ~610k–680k everywhere, only +12% from E0 to E4. Adding structure barely moves Claude's bill in either direction.
 
 The shared punchline is the success row that isn't drawn because it's a straight line: **all 84 runs passed**. So whatever the context did, it did not change the outcome — it changed only how many tokens were burned getting to the same green test. (For the curious: this is robust to caching. ~86% of Codex's input was served from cache, and the effect survives cache-adjustment; Claude's is cached even more heavily. Cheap tokens are still spent tokens, and they bought nothing.)
 
 ## 3. Two agents, two reading habits
 
-Cost is a symptom. The cause is *reading* — how many of the files in the workspace the agent actually opens. Same ladder, but now counting distinct files read per run:
+Cost is a symptom. The cause is *reading* — how many of the files in the space the agent actually opens. Same ladder, but now counting distinct files read per run:
 
 <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="What they actually open" style={{ width: '100%', height: 'auto', maxWidth: 760 }}>
 <text x="56" y="26" fontSize="17" fill="currentColor" style={{fontWeight:600}}>What they actually open</text>
@@ -148,7 +148,7 @@ Cost is a symptom. The cause is *reading* — how many of the files in the works
 <text x="694.9" y="322" textAnchor="middle" fontSize="12.5" fill="currentColor" fillOpacity="0.85">E6</text>
 </svg>
 
-This is the same story told as behavior. **Codex's reading scales with the workspace** — 5 files when it's empty, 11–12 when it's full (a 2.2× swing). It is *responsive* to context: put a document in front of it and there's a good chance it opens it. **Claude's reading is a flat line at four-and-a-half files** — 4.3 to 4.7, a 1.08× swing, statistically indistinguishable across all seven conditions. Claude reads its handful of code files and gets to work; the scaffold may as well not exist.
+This is the same story told as behavior. **Codex's reading scales with the space** — 5 files when it's empty, 11–12 when it's full (a 2.2× swing). It is *responsive* to context: put a document in front of it and there's a good chance it opens it. **Claude's reading is a flat line at four-and-a-half files** — 4.3 to 4.7, a 1.08× swing, statistically indistinguishable across all seven conditions. Claude reads its handful of code files and gets to work; the scaffold may as well not exist.
 
 Look closer and these two policies turn out to be two different *cost engines*. Plot every one of the 84 runs by how many files it opened (across) against how many tokens it spent (up):
 
@@ -268,7 +268,7 @@ Look closer and these two policies turn out to be two different *cost engines*. 
 <text x="474" y="257" fontSize="12" fill="#14B8A6" style={{fontWeight:600}}>as it reads more</text>
 </svg>
 
-The two clouds barely touch. **Claude's runs collapse into a vertical stack** at four or five files — it reads the same handful every time, yet its bill swings from 390k to over a million tokens. That cost is not coming from the workspace; it is intrinsic, the price of how much the model deliberates. **Codex's runs fan out along a diagonal** — its bill rides on how many files it opens, climbing rightward as it reads its way through whatever you put in the folder. One agent pays to *read* the room; the other pays to *think* in it. And — back to the first chart — neither way of spending bought a better result. Every dot, low or high, left or right, ended at the same passing test.
+The two clouds barely touch. **Claude's runs collapse into a vertical stack** at four or five files — it reads the same handful every time, yet its bill swings from 390k to over a million tokens. That cost is not coming from the space; it is intrinsic, the price of how much the model deliberates. **Codex's runs fan out along a diagonal** — its bill rides on how many files it opens, climbing rightward as it reads its way through whatever you put in the folder. One agent pays to *read* the room; the other pays to *think* in it. And — back to the first chart — neither way of spending bought a better result. Every dot, low or high, left or right, ended at the same passing test.
 
 But both policies share a blind spot, and it only shows up when you stop counting files and ask *which* files get read.
 
@@ -330,7 +330,7 @@ Put the three charts together and a single trait explains all of them.
 
 Our two agents fail this in mirror-image ways:
 
-- **Claude doesn't read the map.** Its reading is invariant to the environment (a flat 4.5 files), so the contract, the brief, and the memory all go unopened. Context is *free* for Claude — and useless, because it's ignored. It pays a high flat token bill for its own reasoning and treats the workspace as decoration.
+- **Claude doesn't read the map.** Its reading is invariant to the environment (a flat 4.5 files), so the contract, the brief, and the memory all go unopened. Context is *free* for Claude — and useless, because it's ignored. It pays a high flat token bill for its own reasoning and treats the space as decoration.
 - **Codex reads the signposts but never walks the path.** It is curious about the *surface* — it opens the docs sitting at the root and pays for them in tokens — but its curiosity is shallow and undirected. It explores more without exploring *deeper*, so it pays the +150% bill of a rich environment while still skipping the curated knowledge that the richness was for.
 
 Neither agent does the thing the environment was designed to reward: notice that a folder called `memory/` full of notes about *this exact task* is the highest-value thing in the room, and go read it first. And so the punchline of §2 stops being a surprise. **The carefully structured environment performs almost exactly like the empty one — because, functionally, nothing reads the structure.** You cannot get credit for context the agent never consumes. The treatment was placed in the room; it was never delivered to the model.
@@ -354,6 +354,6 @@ This is a small, controlled study and we report it as one. The caveats are not f
 
 ## 7. Why we think this is the real frontier
 
-It is tempting to read these charts as a contest — Codex spends less, Claude reads less — and miss the thing they agree on. **Both of the strongest coding agents we have, handed a workspace engineered to help them, left the most useful part of it unopened.** The bottleneck on structured agent environments isn't the quality of the structure we can author; we can already author more than the agents will read. It's whether the agent is *curious in the right direction* — and today, neither reading-everything nor reading-nothing is.
+It is tempting to read these charts as a contest — Codex spends less, Claude reads less — and miss the thing they agree on. **Both of the strongest coding agents we have, handed a space engineered to help them, left the most useful part of it unopened.** The bottleneck on structured agent environments isn't the quality of the structure we can author; we can already author more than the agents will read. It's whether the agent is *curious in the right direction* — and today, neither reading-everything nor reading-nothing is.
 
 That points the work in two directions, and we're pursuing both: building agents that triage their environment by expected value before they start (curiosity as a skill), and building environments that don't wait to be explored — that surface their own highest-relevance context into the agent's hands at the moment of need. The harness, the tasks, and all 84 runs are saved and reusable; the next round raises the task difficulty until the bare agent breaks, so that for the first time there's something for curiosity to win.

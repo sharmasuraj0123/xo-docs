@@ -461,8 +461,8 @@ function SessionRow({
   );
 }
 
-// One XO workspace, many sessions, each scoped to an intent and tracked on its own.
-export function WorkspaceSessions() {
+// One XO space, many sessions, each scoped to an intent and tracked on its own.
+export function SpaceSessions() {
   return (
     <div className="not-prose my-6 rounded-2xl border border-fd-border bg-fd-card p-5">
       <div className="mb-4 flex items-center gap-3">
@@ -470,9 +470,7 @@ export function WorkspaceSessions() {
           <Icon name="cube" className="size-5" />
         </div>
         <div>
-          <div className="text-sm font-medium text-fd-foreground">
-            XO workspace
-          </div>
+          <div className="text-sm font-medium text-fd-foreground">XO space</div>
           <div className="text-xs text-fd-muted-foreground">
             One session per intent, each tracked on its own
           </div>
@@ -611,7 +609,7 @@ export function Cycle() {
 
 // --- Unit of work research note visuals ---
 
-// Figure 1: a prompt vs a unit of work inside a workspace.
+// Figure 1: a prompt vs a unit of work inside a space.
 export function UowAnatomy() {
   const lacks = [
     "One instruction",
@@ -655,7 +653,7 @@ export function UowAnatomy() {
 
       <div className="rounded-2xl border border-dashed border-fd-primary/50 bg-fd-primary/5 p-5">
         <div className="mb-3 text-center text-[11px] font-medium uppercase tracking-[0.18em] text-fd-primary">
-          The workspace
+          The space
         </div>
         <div className="mb-3 flex justify-center">
           <div className="rounded-xl border border-fd-primary/40 bg-fd-primary/10 px-4 py-2.5 text-center">

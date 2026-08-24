@@ -28,6 +28,11 @@ const config = {
         permanent: true,
       },
       {
+        source: "/docs/getting-started/manage-workspace",
+        destination: "/docs/getting-started/manage-space",
+        permanent: true,
+      },
+      {
         source: "/more/create-your-alter-ego/:path*",
         destination: "/more/create-your-environments/:path*",
         permanent: true,

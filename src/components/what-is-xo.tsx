@@ -109,7 +109,7 @@ const STEPS: Step[] = [
     time: "1 min",
     summary: "Choose a ready-made harness with its own workflow and interface.",
     detail:
-      "Each template is a full harness: messaging gateways, coding agents, or a chat-first workspace. Pick the one that matches how you work.",
+      "Each template is a full harness: messaging gateways, coding agents, or a chat-first space. Pick the one that matches how you work.",
     highlights: [
       "Five ready-made templates",
       "Best if you want messaging, coding, or chat-first work",
@@ -147,9 +147,9 @@ const STEPS: Step[] = [
     id: "launch",
     index: "03",
     icon: "rocket",
-    title: "Launch the workspace",
+    title: "Launch the space",
     time: "5 min",
-    summary: "Spin up a secure cloud workspace and connect your model.",
+    summary: "Spin up a secure cloud space and connect your model.",
     detail:
       "Open New Project, pick your template, connect Anthropic, OpenAI, or OpenRouter (API key or OAuth). Everything runs in a cloud browser IDE — nothing to install.",
     highlights: [
@@ -175,14 +175,14 @@ const STEPS: Step[] = [
     time: "Go",
     summary: "Reach it from Slack, Telegram, WhatsApp, or the browser IDE.",
     detail:
-      "Once the workspace is up, chat in the browser or connect the channels you already use. Manage restarts, services, and access from one dashboard.",
+      "Once the space is up, chat in the browser or connect the channels you already use. Manage restarts, services, and access from one dashboard.",
     highlights: [
       "Slack, Telegram, WhatsApp",
       "Browser IDE built in",
       "One dashboard for the whole team",
     ],
-    ctaLabel: "Manage workspace",
-    href: "/docs/getting-started/manage-workspace",
+    ctaLabel: "Manage space",
+    href: "/docs/getting-started/manage-space",
     chips: (
       <>
         <TextChip icon="slack" label="Slack" />
@@ -559,8 +559,8 @@ export function WhatIsXO() {
       <div className="mt-6 flex flex-col items-center gap-2 rounded-2xl border border-fd-primary/20 bg-fd-primary/5 px-5 py-4 text-center sm:flex-row sm:justify-center sm:gap-3">
         <Icon name="shield" className="size-5 shrink-0 text-fd-primary" />
         <span className="text-xs font-medium leading-relaxed text-fd-foreground sm:text-sm">
-          Every agent runs in a secure, isolated cloud workspace — one
-          dashboard, no local setup, no infra to manage.
+          Every agent runs in a secure, isolated cloud space — one dashboard, no
+          local setup, no infra to manage.
         </span>
       </div>
     </section>

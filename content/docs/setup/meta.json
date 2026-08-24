@@ -1,5 +1,5 @@
 {
-  "title": "Workspace Configuration",
+  "title": "Space Configuration",
   "icon": "Settings",
   "pages": ["compatibility", "models", "data", "channels"]
 }

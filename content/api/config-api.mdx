@@ -1,12 +1,12 @@
 ---
 title: Config API
 icon: Settings
-description: Discover workspace paths, models, providers, and onboarding state.
+description: Discover space paths, models, providers, and onboarding state.
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
 
-The config surface answers "what does this workspace know about itself?" Fetch it once on app load to render the right options in your UI without hardcoding paths or model names.
+The config surface answers "what does this space know about itself?" Fetch it once on app load to render the right options in your UI without hardcoding paths or model names.
 
 ## Endpoint summary
 
@@ -42,7 +42,7 @@ The single most important endpoint for any frontend that creates or navigates pr
 }
 ```
 
-`default` is the backend the workspace was started with (`AGENT_NAME` env, defaulting to `openclaw`). `roots[default]` is the directory where new projects should be created (overridable via `XO_PROJECTS_ROOT`).
+`default` is the backend the space was started with (`AGENT_NAME` env, defaulting to `openclaw`). `roots[default]` is the directory where new projects should be created (overridable via `XO_PROJECTS_ROOT`).
 
 <Callout type="warn">
 Do **not** hardcode `~/xo-projects/`. Always discover via `/api/config/workspace`.

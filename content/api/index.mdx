@@ -1,28 +1,28 @@
 ---
 title: XO Cowork API
-description: Build frontends and AI agents on top of the in-workspace control plane.
+description: Build frontends and AI agents on top of the in-space control plane.
 icon: Network
 ---
 
 import { Cards, Card } from "@/components/card";
 
-The XO Cowork API (`xo-cowork-api`) is the FastAPI control plane that runs **inside** every XO Coworker workspace. It brokers chat to agent runtimes (Claude Code, Codex, OpenClaw), owns the `~/xo-projects/` tree, manages secrets and sessions, and proxies connector OAuth flows.
+The XO Cowork API (`xo-cowork-api`) is the FastAPI control plane that runs **inside** every XO Coworker space. It brokers chat to agent runtimes (Claude Code, Codex, OpenClaw), owns the `~/xo-projects/` tree, manages secrets and sessions, and proxies connector OAuth flows.
 
 This section is a developer-facing integration guide for the stable client
 surface. The running service also mounts agent-specific, internal, legacy, and
-administrative routes, so its raw OpenAPI operation count varies by workspace.
+administrative routes, so its raw OpenAPI operation count varies by space.
 
 <Cards>
   <Card
     icon={<span className="icon-[ph--lightning] size-4.5 text-green-400" />}
     title="Quickstart"
-    description="Verify the API, discover the workspace, and stream a first chat turn."
+    description="Verify the API, discover the space, and stream a first chat turn."
     href="/api-reference/quickstart"
   />
   <Card
     icon={<span className="icon-[ph--terminal-window] size-4.5 text-green-400" />}
     title="Interactive API Reference"
-    description="Choose a workspace, inspect a curated OpenAPI contract, and try read-only requests."
+    description="Choose a space, inspect a curated OpenAPI contract, and try read-only requests."
     href="/api-reference/reference"
   />
   <Card
@@ -70,7 +70,7 @@ administrative routes, so its raw OpenAPI operation count varies by workspace.
   <Card
     icon={<span className="icon-[ph--gear] size-4.5 text-green-400" />}
     title="Config API"
-    description="Workspace paths, models, providers, onboarding state."
+    description="Space paths, models, providers, onboarding state."
     href="/api-reference/config-api"
   />
   <Card
@@ -139,7 +139,7 @@ administrative routes, so its raw OpenAPI operation count varies by workspace.
 | Files | `/api/files/*` | Upload, read, write, list, mkdir + scaffold project trees. |
 | Secrets | `/api/secrets/*` | Read and write env vars for the active agent. |
 | Agents | `/api/agents/*` | CRUD over `~/.openclaw/openclaw.json`. |
-| Config | `/api/config/*`, `/api/models`, `/api/onboarding` | Workspace paths, models, providers. |
+| Config | `/api/config/*`, `/api/models`, `/api/onboarding` | Space paths, models, providers. |
 | Connectors | `/api/connectors/{gdrive,onedrive,github,vercel,manus}/*` | OAuth flows for external systems. |
 | Usage | `/api/usage`, `/openclaw/usage/*` | Per-day token and cost telemetry. |
 | Server-direct | `/health`, `/gateway/restart`, `/app/restart`, `/app/update` | Diagnostics and lifecycle. |

@@ -73,7 +73,7 @@ fast enough that agents can checkpoint continuously without slowing down.
 
 GKE's persistent disk is genuinely durable - it passes the real fsync barrier
 test (data is actually flushed before the commit returns). But on a 20 GiB agent
-workspace, performance is in a different category:
+space, performance is in a different category:
 
 | Metric | Nirvana ABS | GKE pd-balanced | GKE pd-ssd |
 |---|---|---|---|
@@ -189,7 +189,7 @@ Five full compute destructions. Zero wasted compiles. The build did not notice
 that the machine running it had been replaced five times.
 
 GKE survives too - its persistent disk is durable, so the cache reattaches. But
-each interruption cost ~35 seconds of pod rebuild and workspace bootstrap. ABS
+each interruption cost ~35 seconds of pod rebuild and space bootstrap. ABS
 interruptions were sub-second pauses. That ~20× difference is the gap between
 compute that is theoretically replaceable and compute that is practically
 disposable.
@@ -258,8 +258,8 @@ Absolute percentiles across ~96 runs:
 | Resume → first useful op | 8.9 s | 9.9 s | 10.9 s | ~12 s+ |
 
 Pause and teardown stay sub-second even at p99. The tail is as tight as the
-median. Provisioning a brand-new workspace costs more (~21 s p50) - expected for
-a durable networked volume - but agents do not provision new workspaces often.
+median. Provisioning a brand-new space costs more (~21 s p50) - expected for
+a durable networked volume - but agents do not provision new spaces often.
 They pause and resume constantly.
 
 At 1.46 s pause p50, the break-even idle window is about 10 seconds: any idle
@@ -270,7 +270,7 @@ for roughly 2,800 compute-hours instead of 8,000.
 
 Once the volume reattaches, the agent is back at work in milliseconds.
 `git status` over 2,394 files completes in ~20 ms cold. The agent does not
-rebuild its workspace - it just continues.
+rebuild its space - it just continues.
 
 ## What this means for agent density and cost per job
 
@@ -279,7 +279,7 @@ not show up in raw throughput tables.
 
 **First, agent density.** When a persistent VM is required per agent, cluster
 capacity is a hard ceiling. When compute is safely disposable, paused in
-~1.5 seconds, resumed without workspace rebuild, the same cluster can serve
+~1.5 seconds, resumed without space rebuild, the same cluster can serve
 significantly more concurrent agents by reclaiming idle compute between tasks.
 
 **Second, cost per completed job.** Higher agent density and faster idle
@@ -322,8 +322,8 @@ consequences for idempotent compute.
 | Platform | What "persistent" means | Survives a crash? | Idempotent compute? |
 |---|---|---|---|
 | **E2B** | Sandbox state survives a clean pause (memory snapshot) | No - local disk dies with VM | No |
-| **GKE** | Workspace state on durable networked PD survives node failure | Yes | Yes - with ~35s recovery cost per interruption |
-| **Nirvana ABS** | Workspace state on durable networked ABS survives node failure | Yes | Yes - sub-second |
+| **GKE** | Space state on durable networked PD survives node failure | Yes | Yes - with ~35s recovery cost per interruption |
+| **Nirvana ABS** | Space state on durable networked ABS survives node failure | Yes | Yes - sub-second |
 
 E2B is the fastest way to run a sandbox. It is not idempotent compute - a crash
 loses everything.
@@ -374,7 +374,7 @@ byte-correct binary. That is what idempotent compute looks like in practice.
 
 All experiments ran through XO as a neutral orchestration layer, ensuring
 identical provisioning logic, lifecycle handling, and validation across all
-three platforms. The same workspace image, repository, and dependency
+three platforms. The same space image, repository, and dependency
 installation were used throughout.
 
 | Test | Details |
@@ -385,12 +385,12 @@ installation were used throughout.
 | Durable checkpoints | 1K → 100K, synchronous=FULL, 2 KB + 2 KB/step payload; matched 8 vCPU across ABS and GKE |
 | Crash recovery | Ungraceful kill mid-checkpoint; count of committed state on new pod |
 | Mid-build chaos | 200-module C build, 5 compute destructions; byte-correct output verified |
-| Workspace continuity | 2,394-file repo + npm ci; directory tree hash, Git HEAD, dependency fingerprints validated post-resume |
+| Space continuity | 2,394-file repo + npm ci; directory tree hash, Git HEAD, dependency fingerprints validated post-resume |
 | Warm resume cycles | 25 cycles; time to `git status` (first useful operation) recorded |
 | Cost model | Public list prices × measured throughput; no vendor discounts applied |
 
-Workspace: 20 GiB persistent volume (ABS `storageClass: ""` on Nirvana; networked
-persistent disk on GKE). E2B used the same workspace image built as a template.
+Space: 20 GiB persistent volume (ABS `storageClass: ""` on Nirvana; networked
+persistent disk on GKE). E2B used the same space image built as a template.
 
 - Nirvana: [nirvanalabs.io](https://nirvanalabs.io)
 - XO: [app.xo.builders](https://app.xo.builders)

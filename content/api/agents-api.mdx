@@ -6,7 +6,7 @@ description: CRUD over the OpenClaw agent registry at ~/.openclaw/openclaw.json.
 
 import { Callout } from 'fumadocs-ui/components/callout';
 
-The agents API is a CRUD wrapper over a single JSON file: `~/.openclaw/openclaw.json`. Each agent is an entry under `agents[]` with a unique `id`. The file is the source of truth for which OpenClaw agents the workspace knows about.
+The agents API is a CRUD wrapper over a single JSON file: `~/.openclaw/openclaw.json`. Each agent is an entry under `agents[]` with a unique `id`. The file is the source of truth for which OpenClaw agents the space knows about.
 
 ```
 ~/.openclaw/openclaw.json                    ← the only file these routes touch
@@ -25,7 +25,7 @@ The agents API is a CRUD wrapper over a single JSON file: `~/.openclaw/openclaw.
 }
 ```
 
-Every write is a **full read-merge-write** of the entire file. There is no record-level locking. The workspace's single-user assumption keeps this fine in practice.
+Every write is a **full read-merge-write** of the entire file. There is no record-level locking. The space's single-user assumption keeps this fine in practice.
 
 ## Endpoint summary
 
@@ -137,7 +137,7 @@ The merged agent record.
 ## Concurrency caveat
 
 <Callout type="warn">
-Two concurrent `PATCH` calls can race because the implementation does a full read-merge-write of `openclaw.json` per call. The workspace assumption is one writer (the single user driving the UI), so this is fine in practice. If you build a multi-writer client, serialize calls client-side.
+Two concurrent `PATCH` calls can race because the implementation does a full read-merge-write of `openclaw.json` per call. The space assumption is one writer (the single user driving the UI), so this is fine in practice. If you build a multi-writer client, serialize calls client-side.
 </Callout>
 
 ## Related: agent selection in chat

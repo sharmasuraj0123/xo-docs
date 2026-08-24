@@ -6,7 +6,7 @@ description: Upload, list, read, write, and create directories. Includes the pro
 
 import { Callout } from 'fumadocs-ui/components/callout';
 
-The files API operates directly on the workspace filesystem, clamped to `$HOME`. Use it for editor flows, attachments, and project creation.
+The files API operates directly on the space filesystem, clamped to `$HOME`. Use it for editor flows, attachments, and project creation.
 
 ## Endpoint summary
 
@@ -25,7 +25,7 @@ Every endpoint that takes a `path` field is **clamped to `$HOME`**. Anything tha
 
 ## 1. POST /api/files/upload
 
-Multipart file upload. Stores the file in either the explicit `workspace` directory or `~/uploads/` as a fallback.
+Multipart file upload. Stores the file in either the explicit `space` directory or `~/uploads/` as a fallback.
 
 ### Request
 
@@ -34,7 +34,7 @@ Multipart file upload. Stores the file in either the explicit `workspace` direct
 | Form field | Type | Required | Notes |
 |---|---|---|---|
 | `file` | `UploadFile` | yes | Max 100 MB after read; larger triggers 413. |
-| `workspace` | `str` | no | Absolute destination directory. If empty, defaults to `~/uploads/`. Created if missing. |
+| `space` | `str` | no | Absolute destination directory. If empty, defaults to `~/uploads/`. Created if missing. |
 
 ### Behavior
 
@@ -42,7 +42,7 @@ Multipart file upload. Stores the file in either the explicit `workspace` direct
 1. Read up to (100 MB + 1 byte) of the upload.
    if size > 100 MB → 413 Payload Too Large.
 2. Compute sha256 of the bytes.
-3. dest_dir = workspace or ~/uploads/
+3. dest_dir = space or ~/uploads/
 4. dest_dir.mkdir(parents=True, exist_ok=True)
 5. dest = dest_dir / file.filename   (or "upload" if filename missing)
 6. If dest exists:
@@ -79,10 +79,10 @@ Multipart file upload. Stores the file in either the explicit `workspace` direct
 ### Frontend example
 
 ```typescript
-async function uploadFile(file: File, workspace?: string) {
+async function uploadFile(file: File, space?: string) {
   const fd = new FormData();
   fd.append("file", file);
-  if (workspace) fd.append("workspace", workspace);
+  if (space) fd.append(___JSON_WORKSPACE_KEY___, space);
 
   const res = await fetch(`${BASE}/api/files/upload`, { method: "POST", body: fd });
   if (!res.ok) throw new Error(await res.text());
@@ -103,7 +103,7 @@ async function uploadFile(file: File, workspace?: string) {
 - **No content-type validation.** Any multipart body is accepted.
 - **Same hash, silent overwrite.** Idempotent re-uploads of identical bytes leave a single file.
 - **Different hash, same name, auto-rename.** New file gets `<stem>_<8hash><suffix>`.
-- **`workspace` not clamped.** Unique to this endpoint; everything else clamps to `$HOME`.
+- **`space` not clamped.** Unique to this endpoint; everything else clamps to `$HOME`.
 
 ## 2. POST /api/files/list-directory
 
@@ -451,7 +451,7 @@ const { path } = await res.json();
 
 | Endpoint | Path required | Body type | Home-clamped | Idempotent | Side effects |
 |---|---|---|---|---|---|
-| `/api/files/upload` | no (workspace optional) | `multipart/form-data` | partial (`workspace` not clamped) | yes (sha256 dedup) | writes to filesystem |
+| `/api/files/upload` | no (space optional) | `multipart/form-data` | partial (`space` not clamped) | yes (sha256 dedup) | writes to filesystem |
 | `/api/files/list-directory` | optional | JSON | yes | yes | none |
 | `/api/files/content` | yes | JSON | yes | yes | none |
 | `/api/files/content-binary` | yes | JSON | yes | yes | none |

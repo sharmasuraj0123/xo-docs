@@ -241,7 +241,7 @@ POST /api/connectors/github/reconnect   → re-validates an existing token
 
 ## 4. Vercel
 
-Three paths. Pick **OAuth** for production, **manual token** for self-managed setups, or rely on **Dynamic Client Registration** when the workspace is acting as an MCP-protected resource.
+Three paths. Pick **OAuth** for production, **manual token** for self-managed setups, or rely on **Dynamic Client Registration** when the space is acting as an MCP-protected resource.
 
 ### Manual token
 
@@ -267,18 +267,18 @@ body: { "code": "...", "state": "..." }
 → { "ok": true, "user": { ... } }
 ```
 
-The OAuth callback at `GET /callback` is the public redirect URI. Set `VERCEL_OAUTH_REDIRECT_URI` to match the URL the workspace exposes.
+The OAuth callback at `GET /callback` is the public redirect URI. Set `VERCEL_OAUTH_REDIRECT_URI` to match the URL the space exposes.
 
 ### Dynamic Client Registration
 
-The workspace can also act as an OAuth-protected resource for MCP clients:
+The space can also act as an OAuth-protected resource for MCP clients:
 
 ```
 GET /.well-known/oauth-protected-resource
 → MCP DCR metadata document, including registration_endpoint and supported scopes
 ```
 
-This lets remote clients (e.g., a hosted Claude that wants to talk to a workspace's tooling) register themselves without manual key exchange.
+This lets remote clients (e.g., a hosted Claude that wants to talk to a space's tooling) register themselves without manual key exchange.
 
 ### Status / disconnect / reconnect
 
@@ -311,7 +311,7 @@ auth_state (in-memory)                 swarm Bearer token (Clerk poll-token flow
 ```
 
 <Callout type="warn">
-None of these stores are encrypted at rest. The workspace is the trust boundary; if you can reach the API, you can read every connected account's token.
+None of these stores are encrypted at rest. The space is the trust boundary; if you can reach the API, you can read every connected account's token.
 </Callout>
 
 ## 7. Recommended frontend pattern

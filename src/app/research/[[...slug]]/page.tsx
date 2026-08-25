@@ -10,6 +10,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/components/mdx";
 import { ResearchHub, type ResearchPageItem } from "@/components/research-hub";
+import { socialLinks } from "@/lib/layout.shared";
 import { siteUrl } from "@/lib/shared";
 import {
   getResearchPageImage,
@@ -237,21 +238,41 @@ export default async function Page({ params }: Props) {
     <TOCProvider toc={data.toc}>
       <div className="mx-auto w-full max-w-(--fd-layout-width) px-4 py-16">
         <div className="flex gap-12">
-          <aside className="w-56 shrink-0 hidden xl:block self-start sticky top-24">
-            {data.toc.length > 0 && (
-              <>
-                <p className="text-xs font-semibold tracking-widest uppercase text-fd-muted-foreground mb-4">
-                  On this page
-                </p>
-                <TOCScrollArea>
-                  <div className="flex flex-col border-s border-fd-foreground/10">
-                    {data.toc.map((item) => (
-                      <TOCItem key={item.url} item={item} />
-                    ))}
-                  </div>
-                </TOCScrollArea>
-              </>
-            )}
+          <aside className="w-56 shrink-0 hidden xl:flex flex-col justify-between self-start sticky top-24 max-h-[calc(100vh-8rem)]">
+            <div className="overflow-y-auto pr-2">
+              {data.toc.length > 0 && (
+                <>
+                  <p className="text-xs font-semibold tracking-widest uppercase text-fd-muted-foreground mb-4">
+                    On this page
+                  </p>
+                  <TOCScrollArea>
+                    <div className="flex flex-col border-s border-fd-foreground/10">
+                      {data.toc.map((item) => (
+                        <TOCItem key={item.url} item={item} />
+                      ))}
+                    </div>
+                  </TOCScrollArea>
+                </>
+              )}
+            </div>
+
+            <div className="pt-6 mt-8 border-t border-fd-border/50">
+              <div className="flex flex-wrap items-center gap-1.5 text-fd-muted-foreground">
+                {socialLinks.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={item.label}
+                    title={item.label}
+                    className="p-2 rounded-lg border border-fd-border/40 hover:border-fd-primary/40 hover:bg-fd-accent hover:text-fd-foreground transition-all inline-flex items-center justify-center"
+                  >
+                    {item.icon}
+                  </a>
+                ))}
+              </div>
+            </div>
           </aside>
 
           <article
@@ -265,7 +286,7 @@ export default async function Page({ params }: Props) {
               ← All Posts
             </Link>
 
-            <div className="w-full aspect-video rounded-xl overflow-hidden mb-8">
+            <div className="w-full aspect-[1200/630] rounded-xl overflow-hidden mb-8 bg-[#0c0c0e]">
               <Image
                 src={getResearchPageImage(page).url}
                 alt=""
@@ -316,6 +337,27 @@ export default async function Page({ params }: Props) {
 
             <div className="mt-16 pt-8 border-t border-fd-border">
               <PostNav currentUrl={page.url} />
+            </div>
+
+            <div className="mt-8 flex items-center justify-between flex-wrap gap-4 pt-6 border-t border-fd-border/50 xl:hidden">
+              <span className="text-xs font-semibold uppercase tracking-wider text-fd-muted-foreground">
+                Connect with us
+              </span>
+              <div className="flex items-center gap-2 text-fd-muted-foreground">
+                {socialLinks.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={item.label}
+                    title={item.label}
+                    className="p-2 rounded-lg border border-fd-border/40 hover:border-fd-primary/40 hover:bg-fd-accent hover:text-fd-foreground transition-all inline-flex items-center justify-center"
+                  >
+                    {item.icon}
+                  </a>
+                ))}
+              </div>
             </div>
 
             <RelatedPosts currentUrl={page.url} tags={data.tags ?? []} />

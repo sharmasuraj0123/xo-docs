@@ -10,16 +10,22 @@ import { Callout } from "fumadocs-ui/components/callout";
   The **Setup** tab in the local Space UI provides single-pane administration over your running `xo-space` daemon, storage paths, file watcher status, and connected providers.
 </Lead>
 
+![XO Space Setup & Machine State](/images/space/setup.jpeg)
+
 ## Storage Configuration
 
 - **`XO_PROJECTS_ROOT`**: The directory containing all workspace projects. Defaults to the directory you ran the installer from, or `~/xo-projects`. You can change this path directly in the Setup UI.
 - **State Root (`~/.quirq/`)**: Where daemon logs (`quirq.log`), internal database indices, and cache tokens live.
+
+---
 
 ## System Health & Coverage
 
 - **File Watcher Status**: Real-time status of the inotify / fsevents daemon watching your project folders.
 - **Active Backend**: Shows which agent backend is currently selected for active chat turns.
 - **Git Self-Update**: Checks [github.com/quirq-ai/xo-space](https://github.com/quirq-ai/xo-space) for new releases and lets you update your local daemon in place.
+
+---
 
 ## Write-Only Credentials
 

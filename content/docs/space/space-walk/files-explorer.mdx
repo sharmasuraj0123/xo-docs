@@ -7,8 +7,10 @@ icon: LayoutDashboard
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  The **Files** tab in XO Space gives you three distinct lenses over your workspace projects. The **List** lens gives every project a dedicated row with rich metadata, while the **Project Drawer** lets you drill down without losing context.
+  The **Files** tab in XO Space gives you three distinct lenses over your workspace projects. The **List** lens gives every project a dedicated row with rich metadata, while the **Project Drawer** and **Viewer** let you inspect files without losing context.
 </Lead>
+
+![XO Space Files List View](/images/space/files-list.png)
 
 ## The List View
 
@@ -16,12 +18,16 @@ In the List lens, every project in your `XO_PROJECTS_ROOT` appears as an interac
 
 - **Project Description**: Extracted automatically from the project's local `README.md` or `PROJECT.md`.
 - **File & Folder Metrics**: Live file counts and folder depth.
-- **Active Agent Status**: A live green pulse indicating whether an agent (Claude Code, OpenClaw, Hermes, etc.) is currently working inside that directory.
+- **Active Agent Status**: A live pulse indicating whether an agent (Claude Code, OpenClaw, Hermes, Antigravity, etc.) is currently executing tasks inside that directory.
 - **Last Activity Timestamp**: Sourced from the in-memory file watcher.
 
-## The Project Drawer
+---
 
-Clicking on any project row slides open the two-pane **Project Drawer**:
+## The Project Drawer & In-Place File Viewer
+
+Clicking on any project row slides open the two-pane **Project Drawer** and file viewer:
+
+![XO Space In-Place File Viewer](/images/space/files-viewer.png)
 
 1. **Left Pane (File Tree)**: Browse the project's subdirectories and files in an interactive explorer.
 2. **Right Pane (Context & Events)**:
@@ -29,7 +35,7 @@ Clicking on any project row slides open the two-pane **Project Drawer**:
    - **Open Sessions**: Active and recent chat session threads.
    - **Watcher Events**: Real-time stream of file additions, modifications, and deletions.
 
-## In-Place File Previews
+### Safe In-Place Previews
 
 Clicking any file opens the preview drawer without navigating you away from your current work:
 

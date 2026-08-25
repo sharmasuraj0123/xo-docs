@@ -10,6 +10,8 @@ import { Callout } from "fumadocs-ui/components/callout";
   The **Sessions** view aggregates conversation history, tool calls, and performance telemetry from every coding agent running inside your workspace.
 </Lead>
 
+![XO Space Multi-Runtime Sessions and Telemetry](/images/space/sessions.png)
+
 ## Multi-Runtime Telemetry
 
 Different AI agents write session logs to distinct directories on disk. XO Space normalizes them into a unified stream:
@@ -21,6 +23,8 @@ Different AI agents write session logs to distinct directories on disk. XO Space
 | **Hermes** | `~/.hermes/` | Messaging Adapter, task execution |
 | **Antigravity** | `~/.gemini/antigravity-cli/` | Full Adapter, transcript JSONL streaming |
 | **Codex / Cursor** | `~/.codex/`, `~/.cursor/` | Telemetry module: token metrics and session history |
+
+---
 
 ## Unified Metrics
 

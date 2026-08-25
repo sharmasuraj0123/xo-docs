@@ -135,7 +135,7 @@ export function ResearchHub({ items }: { items: ResearchPageItem[] }) {
               href={featured.url}
               className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center"
             >
-              <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-fd-border bg-[#0c0c0e]">
+              <div className="relative aspect-[1200/630] w-full overflow-hidden rounded-xl border border-fd-border bg-[#0c0c0e]">
                 <Image
                   src={featured.imageUrl}
                   alt={featured.title}
@@ -180,7 +180,9 @@ export function ResearchHub({ items }: { items: ResearchPageItem[] }) {
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
             {/* Whitepaper Card */}
             <a
-              href="/docs/quirq"
+              href="https://quirq.ai/whitepaper?ref=docs"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group flex flex-col sm:flex-row overflow-hidden rounded-xl border border-fd-border bg-fd-card transition-all hover:border-fd-primary/50 hover:shadow-md"
             >
               <div className="flex w-full sm:w-44 shrink-0 flex-col justify-between bg-[#efede6] p-4 text-[#17171a] dark:bg-[#1a1a1f] dark:text-[#f2f2f0]">
@@ -333,7 +335,7 @@ export function ResearchHub({ items }: { items: ResearchPageItem[] }) {
               className="group flex flex-col overflow-hidden rounded-xl border border-fd-border bg-fd-card transition-all duration-300 hover:-translate-y-1 hover:border-fd-primary/40 hover:shadow-lg"
             >
               <Link href={n.url} className="flex h-full flex-col">
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#0c0c0e]">
+                <div className="relative aspect-[1200/630] w-full overflow-hidden bg-[#0c0c0e]">
                   <Image
                     src={n.imageUrl}
                     alt={n.title}

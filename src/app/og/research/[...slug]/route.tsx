@@ -125,7 +125,7 @@ export async function GET(
           right: 0,
           display: "flex",
           flexDirection: "column",
-          padding: "0 64px 60px",
+          padding: "0 80px 52px",
         }}
       >
         {data.tags && data.tags.length > 0 && (
@@ -136,7 +136,7 @@ export async function GET(
               fontWeight: 700,
               letterSpacing: "0.14em",
               textTransform: "uppercase",
-              marginBottom: 16,
+              marginBottom: 14,
               display: "flex",
             }}
           >
@@ -146,11 +146,11 @@ export async function GET(
 
         <div
           style={{
-            fontSize: data.title.length > 55 ? 48 : 58,
+            fontSize: data.title.length > 60 ? 42 : data.title.length > 40 ? 48 : 54,
             fontWeight: 700,
             color: "#f8fafc",
             lineHeight: 1.18,
-            maxWidth: 860,
+            maxWidth: 900,
             display: "flex",
             letterSpacing: "-0.02em",
           }}

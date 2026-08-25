@@ -12,6 +12,7 @@ import {
 // Static map of all sidebar icon names → Phosphor CSS classes (Tailwind scans these literals)
 const ICON_CLASSES: Record<string, string> = {
   Archive: "icon-[ph--archive-fill]",
+  Activity: "icon-[ph--activity-fill]",
   Blocks: "icon-[ph--squares-four-fill]",
   Bot: "icon-[mingcute--chat-2-ai-fill]",
   Building2: "icon-[ph--buildings-fill]",

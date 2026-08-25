@@ -98,7 +98,8 @@ const STEPS: Step[] = [
     title: "1. Choose Your Runtime (The Machine)",
     time: "Layer 1",
     layer: "Runtime Layer",
-    summary: "The machine executing the code: your laptop or a secure cloud VM.",
+    summary:
+      "The machine executing the code: your laptop or a secure cloud VM.",
     detail:
       "Runtime is where code physically runs. You can run locally on your laptop with a single curl command, or provision isolated cloud VMs on XO with 1-click deployments.",
     highlights: [
@@ -122,7 +123,8 @@ const STEPS: Step[] = [
     title: "2. Boot the Environment (XO Space)",
     time: "Layer 2",
     layer: "Environment Layer",
-    summary: "The core control plane (cowork-api) holding state and observability.",
+    summary:
+      "The core control plane (cowork-api) holding state and observability.",
     detail:
       "Environment is the Space. It hosts the cowork-api control plane, file watchers, session memory, and the local UI. Decoupling Environment from Runtime lets entire teams share one unified workspace across different machines.",
     highlights: [
@@ -147,7 +149,8 @@ const STEPS: Step[] = [
     title: "3. Plug in Any Agent (Unopinionated)",
     time: "Layer 3",
     layer: "Agent Layer",
-    summary: "Auto-discovers Claude Code, OpenClaw, Hermes, Antigravity, Cursor.",
+    summary:
+      "Auto-discovers Claude Code, OpenClaw, Hermes, Antigravity, Cursor.",
     detail:
       "XO is completely unopinionated about agents. When you boot Space locally, it auto-detects existing CLIs in your $PATH. On Cloud, it provides pre-configured agent templates.",
     highlights: [
@@ -159,10 +162,22 @@ const STEPS: Step[] = [
     href: "/docs/agents",
     chips: (
       <>
-        <AgentChip slug="claude-code" label="Claude Code" href="/docs/agents/claude-code" />
-        <AgentChip slug="openclaw" label="OpenClaw" href="/docs/agents/openclaw" />
+        <AgentChip
+          slug="claude-code"
+          label="Claude Code"
+          href="/docs/agents/claude-code"
+        />
+        <AgentChip
+          slug="openclaw"
+          label="OpenClaw"
+          href="/docs/agents/openclaw"
+        />
         <AgentChip slug="hermes" label="Hermes" href="/docs/agents/hermes" />
-        <AgentChip slug="antigravity" label="Antigravity" href="/docs/agents/antigravity" />
+        <AgentChip
+          slug="antigravity"
+          label="Antigravity"
+          href="/docs/agents/antigravity"
+        />
       </>
     ),
   },
@@ -540,7 +555,12 @@ export function WhatIsXO() {
           One-Click Agentic Environments. Measure Output, Not Just Tokens.
         </h1>
         <p className="mt-4 text-sm leading-relaxed text-fd-muted-foreground sm:text-base">
-          Every AI agent workload requires four layers: <strong>Runtime</strong> (the machine), <strong>Environment</strong> (XO Space), <strong>Agent</strong> (unopinionated harness), and <strong>Output</strong> (quirq). XO decouples the environment from the machine—providing live observability and measuring verified work delivered across your entire team.
+          Every AI agent workload requires four layers: <strong>Runtime</strong>{" "}
+          (the machine), <strong>Environment</strong> (XO Space),{" "}
+          <strong>Agent</strong> (unopinionated harness), and{" "}
+          <strong>Output</strong> (quirq). XO decouples the environment from the
+          machine—providing live observability and measuring verified work
+          delivered across your entire team.
         </p>
       </div>
 
@@ -565,7 +585,10 @@ export function WhatIsXO() {
               </>
             ) : (
               <>
-                <Icon name="copy" className="size-3.5 text-fd-muted-foreground" />
+                <Icon
+                  name="copy"
+                  className="size-3.5 text-fd-muted-foreground"
+                />
                 <span>Copy</span>
               </>
             )}
@@ -607,7 +630,9 @@ export function WhatIsXO() {
       <div className="mt-8 flex flex-col items-center gap-2 rounded-2xl border border-fd-primary/20 bg-fd-primary/5 px-5 py-4 text-center sm:flex-row sm:justify-center sm:gap-3">
         <Icon name="shield" className="size-5 shrink-0 text-fd-primary" />
         <span className="text-xs font-medium leading-relaxed text-fd-foreground sm:text-sm">
-          <strong>Environment = Space:</strong> Decoupling the environment from the runtime eliminates vendor lock-in and gives teams unified observability across local machines and cloud sandboxes.
+          <strong>Environment = Space:</strong> Decoupling the environment from
+          the runtime eliminates vendor lock-in and gives teams unified
+          observability across local machines and cloud sandboxes.
         </span>
       </div>
     </section>

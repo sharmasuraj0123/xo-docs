@@ -146,7 +146,8 @@ export async function GET(
 
         <div
           style={{
-            fontSize: data.title.length > 60 ? 42 : data.title.length > 40 ? 48 : 54,
+            fontSize:
+              data.title.length > 60 ? 42 : data.title.length > 40 ? 48 : 54,
             fontWeight: 700,
             color: "#f8fafc",
             lineHeight: 1.18,

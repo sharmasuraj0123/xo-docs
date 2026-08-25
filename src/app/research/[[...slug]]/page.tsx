@@ -258,14 +258,21 @@ export default async function Page({ params }: Props) {
 
             <div className="pt-6 mt-8 border-t border-fd-border/50">
               <div className="flex flex-wrap items-center gap-1.5 text-fd-muted-foreground">
-                {socialLinks.map((item) => (
+                {(
+                  socialLinks as Array<{
+                    label?: string;
+                    text?: string;
+                    url: string;
+                    icon?: React.ReactNode;
+                  }>
+                ).map((item) => (
                   <a
-                    key={item.label}
+                    key={item.label ?? item.text ?? item.url}
                     href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={item.label}
-                    title={item.label}
+                    aria-label={item.label ?? item.text}
+                    title={item.label ?? item.text}
                     className="p-2 rounded-lg border border-fd-border/40 hover:border-fd-primary/40 hover:bg-fd-accent hover:text-fd-foreground transition-all inline-flex items-center justify-center"
                   >
                     {item.icon}
@@ -344,14 +351,21 @@ export default async function Page({ params }: Props) {
                 Connect with us
               </span>
               <div className="flex items-center gap-2 text-fd-muted-foreground">
-                {socialLinks.map((item) => (
+                {(
+                  socialLinks as Array<{
+                    label?: string;
+                    text?: string;
+                    url: string;
+                    icon?: React.ReactNode;
+                  }>
+                ).map((item) => (
                   <a
-                    key={item.label}
+                    key={item.label ?? item.text ?? item.url}
                     href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={item.label}
-                    title={item.label}
+                    aria-label={item.label ?? item.text}
+                    title={item.label ?? item.text}
                     className="p-2 rounded-lg border border-fd-border/40 hover:border-fd-primary/40 hover:bg-fd-accent hover:text-fd-foreground transition-all inline-flex items-center justify-center"
                   >
                     {item.icon}

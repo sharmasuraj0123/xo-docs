@@ -4,7 +4,9 @@
     "index",
     "---XO Space Engine---",
     "space",
-    "---Deployment Targets---",
+    "---Work Measurement---",
+    "quirq",
+    "---Deployment---",
     "cloud",
     "---Agent Runtimes---",
     "agents",
@@ -13,7 +15,6 @@
     "more",
     "---Reference---",
     "glossary",
-    "quirq",
     "troubleshooting",
     "changelog"
   ]

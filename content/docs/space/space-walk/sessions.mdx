@@ -1,0 +1,29 @@
+---
+title: Sessions & Telemetry
+description: Multi-runtime session aggregation, trace streams, and cost telemetry across all agents.
+icon: Activity
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  The **Sessions** view aggregates conversation history, tool calls, and performance telemetry from every coding agent running inside your workspace.
+</Lead>
+
+## Multi-Runtime Telemetry
+
+Different AI agents write session logs to distinct directories on disk. XO Space normalizes them into a unified stream:
+
+| Runtime | Storage Location | Capabilities in Space |
+|---|---|---|
+| **Claude Code** | `~/.claude/projects/` | Full Chat Adapter (`/api/chat/*`), SSE streaming, session hydration |
+| **OpenClaw** | `~/.openclaw/agents/` | Gateway Adapter, multi-channel routing, session JSONL |
+| **Hermes** | `~/.hermes/` | Messaging Adapter, task execution |
+| **Antigravity** | `~/.gemini/antigravity-cli/` | Full Adapter, transcript JSONL streaming |
+| **Codex / Cursor** | `~/.codex/`, `~/.cursor/` | Telemetry module: token metrics and session history |
+
+## Unified Metrics
+
+- **Token & Cost Tracking**: Normalizes token usage across Anthropic, OpenAI, and OpenRouter models.
+- **Response Time Percentiles**: p50, p90, and p99 latency per tool invocation and generation step.
+- **Trace Inspector**: Click any session to inspect thought processes, bash command outputs, and diffs.

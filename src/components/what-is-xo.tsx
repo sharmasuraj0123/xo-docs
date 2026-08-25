@@ -184,7 +184,8 @@ const STEPS: Step[] = [
     icon: "chat",
     title: "Connect Channels & Data",
     time: "Go",
-    summary: "Reach agents via Slack, Telegram, WhatsApp, or connect Drive & MCP.",
+    summary:
+      "Reach agents via Slack, Telegram, WhatsApp, or connect Drive & MCP.",
     detail:
       "Integrate your Space into your existing workflows. Connect messaging channels, link Google Drive or OneDrive files, and expose tools via the XO MCP server.",
     highlights: [
@@ -558,7 +559,10 @@ export function WhatIsXO() {
           The Open-Source Agent Workspace & Observability Platform
         </h1>
         <p className="mt-4 text-sm leading-relaxed text-fd-muted-foreground sm:text-base">
-          <strong>XO Space</strong> (`cowork-api`) provides real-time observability, session tracking, and execution environments for AI agents. Run it locally on your laptop with one command or deploy managed cloud instances on XO.
+          <strong>XO Space</strong> (`cowork-api`) provides real-time
+          observability, session tracking, and execution environments for AI
+          agents. Run it locally on your laptop with one command or deploy
+          managed cloud instances on XO.
         </p>
       </div>
 
@@ -583,7 +587,10 @@ export function WhatIsXO() {
               </>
             ) : (
               <>
-                <Icon name="copy" className="size-3.5 text-fd-muted-foreground" />
+                <Icon
+                  name="copy"
+                  className="size-3.5 text-fd-muted-foreground"
+                />
                 <span>Copy</span>
               </>
             )}
@@ -625,7 +632,9 @@ export function WhatIsXO() {
       <div className="mt-8 flex flex-col items-center gap-2 rounded-2xl border border-fd-primary/20 bg-fd-primary/5 px-5 py-4 text-center sm:flex-row sm:justify-center sm:gap-3">
         <Icon name="shield" className="size-5 shrink-0 text-fd-primary" />
         <span className="text-xs font-medium leading-relaxed text-fd-foreground sm:text-sm">
-          <strong>Full Parity:</strong> Every feature and API endpoint in <code>cowork-api</code> runs identically on your local machine and on XO Cloud.
+          <strong>Full Parity:</strong> Every feature and API endpoint in{" "}
+          <code>cowork-api</code> runs identically on your local machine and on
+          XO Cloud.
         </span>
       </div>
     </section>

@@ -82,7 +82,9 @@ export function QuirqHome() {
             <span className="size-2 rounded-full bg-green-500 animate-pulse" />
             <span>One-Click Agentic Environments</span>
             <span className="text-fd-muted-foreground">•</span>
-            <span className="text-fd-muted-foreground">Measure Output, Not Just Tokens</span>
+            <span className="text-fd-muted-foreground">
+              Measure Output, Not Just Tokens
+            </span>
           </div>
 
           <h1 className="text-balance text-4xl font-bold tracking-[-0.05em] sm:text-6xl lg:text-7xl">
@@ -90,7 +92,11 @@ export function QuirqHome() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-7 text-fd-muted-foreground sm:text-lg">
-            Every agent needs a <strong>Runtime</strong> (the machine), an <strong>Environment</strong> (XO Space), an <strong>Agent</strong> (unopinionated harness), and an <strong>Output</strong> (quirq). XO decouples the environment from the machine—bringing live observability and verified work measurement to your team.
+            Every agent needs a <strong>Runtime</strong> (the machine), an{" "}
+            <strong>Environment</strong> (XO Space), an <strong>Agent</strong>{" "}
+            (unopinionated harness), and an <strong>Output</strong> (quirq). XO
+            decouples the environment from the machine—bringing live
+            observability and verified work measurement to your team.
           </p>
 
           {/* Terminal Install Snippet */}
@@ -120,7 +126,8 @@ export function QuirqHome() {
               </button>
             </div>
             <p className="mt-2 text-xs text-fd-muted-foreground">
-              Runs locally on <code>localhost:5002</code> · Auto-detects Claude Code, OpenClaw, Hermes, Antigravity, Cursor
+              Runs locally on <code>localhost:5002</code> · Auto-detects Claude
+              Code, OpenClaw, Hermes, Antigravity, Cursor
             </p>
           </div>
 
@@ -167,7 +174,9 @@ export function QuirqHome() {
               One Environment. Any Machine.
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-fd-muted-foreground sm:text-base">
-              Because <strong>Environment (XO Space)</strong> is decoupled from the machine runtime, your project memory, live trace logs, and agent sessions travel anywhere without vendor lock-in.
+              Because <strong>Environment (XO Space)</strong> is decoupled from
+              the machine runtime, your project memory, live trace logs, and
+              agent sessions travel anywhere without vendor lock-in.
             </p>
           </div>
 
@@ -195,7 +204,9 @@ export function QuirqHome() {
                     Your Laptop or Mac Studio.
                   </h3>
                   <p className="mt-3 text-sm leading-6 text-white/70">
-                    Run Space directly on your machine. Auto-discovers local agent CLIs and stores all trace telemetry in <code>~/.quirq/</code>.
+                    Run Space directly on your machine. Auto-discovers local
+                    agent CLIs and stores all trace telemetry in{" "}
+                    <code>~/.quirq/</code>.
                   </p>
                   <Link
                     href="/docs/space/install-space"
@@ -231,7 +242,9 @@ export function QuirqHome() {
                     1-Click XO Cloud Sandboxes.
                   </h3>
                   <p className="mt-3 text-sm leading-6 text-white/70">
-                    Run the identical Space engine on isolated Linux VMs with browser VS Code IDE (code-server), team sharing, and persistent endpoints.
+                    Run the identical Space engine on isolated Linux VMs with
+                    browser VS Code IDE (code-server), team sharing, and
+                    persistent endpoints.
                   </p>
                   <a
                     href={SIGN_UP_URL}
@@ -258,32 +271,45 @@ export function QuirqHome() {
               Environment is the Space. quirqs measure the Output.
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-fd-muted-foreground">
-              AI labs push endless model token consumption. XO provides the decoupled execution plane and output meter to verify real work.
+              AI labs push endless model token consumption. XO provides the
+              decoupled execution plane and output meter to verify real work.
             </p>
           </div>
           <dl className="grid gap-x-8 gap-y-7 sm:grid-cols-2">
             <div>
-              <dt className="font-semibold text-fd-foreground">1. Runtime (The Machine)</dt>
+              <dt className="font-semibold text-fd-foreground">
+                1. Runtime (The Machine)
+              </dt>
               <dd className="mt-2 text-sm leading-6 text-fd-muted-foreground">
-                Where code physically runs: your laptop, on-prem hardware, or an XO cloud VM.
+                Where code physically runs: your laptop, on-prem hardware, or an
+                XO cloud VM.
               </dd>
             </div>
             <div>
-              <dt className="font-semibold text-fd-foreground">2. Environment (XO Space)</dt>
+              <dt className="font-semibold text-fd-foreground">
+                2. Environment (XO Space)
+              </dt>
               <dd className="mt-2 text-sm leading-6 text-fd-muted-foreground">
-                The <code>cowork-api</code> control plane that holds memory, session traces, and file watcher events.
+                The <code>cowork-api</code> control plane that holds memory,
+                session traces, and file watcher events.
               </dd>
             </div>
             <div>
-              <dt className="font-semibold text-fd-foreground">3. Agent (Unopinionated)</dt>
+              <dt className="font-semibold text-fd-foreground">
+                3. Agent (Unopinionated)
+              </dt>
               <dd className="mt-2 text-sm leading-6 text-fd-muted-foreground">
-                Any coding agent harness: Claude Code, OpenClaw, Hermes, Antigravity, or Cursor.
+                Any coding agent harness: Claude Code, OpenClaw, Hermes,
+                Antigravity, or Cursor.
               </dd>
             </div>
             <div>
-              <dt className="font-semibold text-fd-foreground">4. Output & quirq (The Output Meter)</dt>
+              <dt className="font-semibold text-fd-foreground">
+                4. Output & quirq (The Output Meter)
+              </dt>
               <dd className="mt-2 text-sm leading-6 text-fd-muted-foreground">
-                Minting verified units of delivered work ($V \cdot B$) scored against machine-checkable definitions of done.
+                Minting verified units of delivered work ($V \cdot B$) scored
+                against machine-checkable definitions of done.
               </dd>
             </div>
           </dl>

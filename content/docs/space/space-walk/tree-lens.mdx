@@ -1,25 +1,31 @@
 ---
 title: Tree Lens
-description: Visualizing your entire workspace hierarchy with dynamic limb sizing in XO Space.
+description: "Visualizing workspace directory hierarchy with horizontal depth columns and stacked files in XO Space."
 icon: Network
 ---
 
+import { Callout } from "fumadocs-ui/components/callout";
+
 <Lead>
-  The **Tree Lens** provides a panoramic, horizontal visual hierarchy of your workspace. It maps directory depth from left to right, allowing you to instantly assess the shape, complexity, and distribution of files across all your projects.
+  The **Tree Lens** (accessible via `# /tree` or the **List | Graph | Tree** pill in the Files tab) reads the workspace dataset as a horizontal hierarchy. It answers "what is in there" at a glance: workspace root on the left, one column per depth level, and files stacked beside their parent directory.
 </Lead>
 
-![XO Space Tree Hierarchy Graph](/images/space/files-graph.png)
+![The Tree lens: a horizontal tree of the workspace, thicker branches holding more](/images/space/files-tree.png)
 
-## How the Tree Works
+## The Layout Discipline
 
-- **Horizontal Columns**: The workspace root sits on the far left. Each column to the right represents an additional level of directory depth.
-- **Dynamic Branch Thickness**: Branch line thickness scales proportionally with the number of files and directories contained within that limb.
-- **Leaf Cards**: Files and leaf nodes are stacked cleanly beside the directory branch that contains them.
+Unlike standard vertical trees or naive file graphs:
+
+1. **One Column per Depth Level**: The workspace root sits on the far left. Each column to the right represents an additional depth level.
+2. **Files Stacked Beside Parent**: Files do not spawn additional columns; they stack vertically beside their parent directory folder. This ensures that horizontal distance strictly represents directory depth.
+3. **Dynamic Branch Sizing**: Branch connecting lines scale dynamically based on the volume and depth of files in that subtree.
+4. **Persistent Scroll & Expansion**: Expanding subdirectories or clicking files preserves the scroll offset and tree state.
 
 ---
 
-## Interactive Navigation
+## Interactive Capabilities
 
-1. **Pan & Zoom**: Smoothly navigate large multi-project workspaces with trackpad or mouse gestures.
-2. **Instant Preview**: Clicking any file node in the Tree immediately renders the in-place preview drawer.
-3. **Filtering**: Search by filename or file extension to spotlight relevant branches while fading out unrelated directories.
+- **Direct In-Place Previews**: Click any file node to open the safe preview drawer on the right.
+- **Previewer to Graph Navigation**: The preview drawer includes a dedicated **Graph** button to instantly jump to and highlight that leaf in the Graph lens.
+- **Name & Extension Filtering**: Filter by keyword or file extension (e.g. `.ts`, `.json`, `Dockerfile`) directly from the header to spotlight matching limbs while dimming unrelated paths.
+- **Zero Server Overhead**: The layout is rendered directly in the client from `<XO root>/.xo/space.json`, keeping exploration responsive even across thousands of files.

@@ -1,0 +1,113 @@
+---
+title: Space Walk 3D Session Replay
+description: "Replaying agent sessions as moving light over Firefly Tree and Attention Terrain 3D repository maps."
+icon: Play
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  **Space Walk** is XO Labs' fork of `mindwalk`. It reads native session logs from Claude Code, Codex, and pi harnesses, normalizes each run into a replayable trace, and plays it back as **light moving over a 3D map of the repository**: where the agent searched, read, and edited, the map glows — everything else stays dark.
+</Lead>
+
+---
+
+## The Data Pipeline
+
+```
+Session Logs (JSONL)
+  → Harness Adapters (claude-code, codex, pi)
+  → Normalized Trace (trace.json)
+  → Citymap Treemap (citymap.json)
+  → 3D WebGL Replay Engine (Firefly Tree & Attention Terrain)
+```
+
+1. **Native Logs**: Kept where the runtime wrote them (`~/.claude/projects`, `~/.codex/sessions`, `~/.pi/agent/sessions`).
+2. **Harness Adapters**: Recognize files by content (not filename) and implement the 5-method `adapter.Source` interface: `Harness`, `SessionDir`, `ListSessions`, `Summarize`, `Parse`.
+3. **Normalized Trace**: Unified `{version, session, events, marks, stats}` schema.
+4. **Citymap Builder**: Deterministic squarified treemap (`squarified-treemap-v1`) of up to 10,000 repository files on a 120×120 plane.
+5. **Loopback Server**: 127.0.0.1 Go binary with embedded React/Three.js frontend and strict Host / Origin security guards.
+
+---
+
+## Touch State Lattice & Color Encoding
+
+Space Walk tracks target file interactions across a strict progression lattice:
+
+**`edit > read > hit`**
+
+A file only ever escalates during playback; a subsequent read never downgrades an earlier edit.
+
+| Touch State | HUD Word | Color Token | Meaning |
+|---|---|---|---|
+| `hit` | seen | `#6a6700` (Olive) | Surfaced by a search, glob, or file listing; never opened. |
+| `read` | read | `#5399d1` (Steel) | Opened and read, with line ranges when declared by the tool. |
+| `edit` | edited | `#78a31e` (Lime) | Written, patched, or created. |
+| `error` | error | `#c8674c` (Rust) | Tool call errors and the trail ember (rust is reserved for trouble). |
+
+---
+
+## Two 3D Scenes (Press `V` to Cycle)
+
+### 1. Firefly Tree (Radial Layout)
+
+A browser-computed radial diagram where files branch outward from the repository root:
+- **Equal Angular Slots**: Every file receives an identical angular slot; subtrees own contiguous angular spans.
+- **Concentric Depth Rings**: Directory depth increases in equal concentric rings with outer radius `R = max(55, 4·√leaves)`.
+- **Ghost Orbs**: Files deleted during the session render as distinctive wireframe orbs.
+
+### 2. Attention Terrain (Extruded Treemap)
+
+The citymap's flat 2D treemap tiles extrude in place into a 3D architectural skyline:
+- **Attention Heights**: Column height represents touch depth × revisits:
+  `Height = Base × (1 + 0.35·log₂(visits))`
+  where Base is `7.2` for `edit`, `4.2` for `read`, and `1.6` for `hit`.
+- **Session-less Map Mode**: When viewing a repository without a session (`spacewalk map`), columns extrude by lines of code (log-scaled between 0.3 and 16).
+- **Ghost Tiles**: Strongly attested deleted files retain dim grey tiles. Unreadable files are omitted to avoid false ghost readings.
+
+---
+
+## The Playback Deck
+
+- **160-Bucket Histogram**: Folds the session over time. Each bucket displays the color of its dominant action (ties broken: `edit > verify > read > search > exec > other`).
+- **Mark Strip**: User turns (up to 2,000 runes), context compactions, and subagent launches plotted along the timeline.
+- **Agent Lenses**: Click any subagent mark to replay that subagent's trace re-projected onto the root repository map.
+- **Transport Controls**: Playback at 1×, 4×, and 16× speeds. Opens at the end of the walk so the completed footprint is seen immediately.
+
+---
+
+## Optional Local LLM Judge
+
+Run offline or via the UI to evaluate session quality across four core dimensions:
+
+```bash
+spacewalk analyze <sessionKey> --judge claude --model claude-3-7-sonnet
+```
+
+- **Four Rubric Dimensions**: Exploration, Scope, Wandering, and Verification.
+- **Cited Event Sequences**: Findings must cite real sequence IDs from the trace.
+- **Local & Sealed**: Runs your local CLI (`claude` or `codex`) with tools disabled.
+- **Cached**: Reports cached under `~/.spacewalk/reports/` with SHA-256 evidence digests.
+
+---
+
+## CLI & HTTP Surface
+
+```bash
+spacewalk serve --port 8765        # Start the loopback UI server
+spacewalk open <session.jsonl>     # Serve and open a specific session
+spacewalk map <repo-path>          # Open 3D map of a repository
+spacewalk build <repo-path> -o out # Export citymap.json offline
+spacewalk trace <session> -o out   # Export normalized trace.json
+spacewalk analyze <session>        # Run the local LLM judge
+```
+
+| HTTP Route | Returns |
+|---|---|
+| `GET /api/sessions?fresh=1` | List of all discovered sessions with judge badges. |
+| `GET /api/sessions/{id}/snapshot` | Trace + Citymap payload loaded by the UI. |
+| `GET /api/sessions/{id}/trace` | Normalized `trace.json`. |
+| `GET /api/sessions/{id}/citymap` | Repository `citymap.json`. |
+| `POST /api/sessions/{id}/analyze` | Triggers a local LLM judge run. |
+| `GET /api/repomap?repo=PATH` | Session-less citymap of any local repository. |
+| `GET /api/repomap/history?repo=PATH` | Synthesizes Git log as an interactive replay trace. |

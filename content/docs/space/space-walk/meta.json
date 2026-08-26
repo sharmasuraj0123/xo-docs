@@ -3,11 +3,12 @@
   "icon": "Map",
   "pages": [
     "index",
+    "dashboard",
     "files-explorer",
     "tree-lens",
-    "dashboard",
     "timeline",
     "sessions",
+    "replay",
     "setup"
   ]
 }

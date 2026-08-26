@@ -1,28 +1,60 @@
 ---
 title: Project Dashboard
-description: Visualizing projects inside purpose environments with orbiting in-progress todos.
+description: "Visualizing projects inside purpose environments with orbiting in-progress todo satellites."
 icon: LayoutDashboard
 ---
 
+import { Callout } from "fumadocs-ui/components/callout";
+
 <Lead>
-  The **Dashboard** organizes your workspace projects into purposeful visual clusters. It collapses each project into an interactive node, with active agent tasks tethered directly to the project they belong to.
+  The **Dashboard** organizes all discovered XO projects into five purpose environments. Each project is represented as an interactive visual node, with active agent tasks and todos orbiting the selected project like satellites.
 </Lead>
 
-![XO Space Project Dashboard](/images/space/dashboard.png)
+![The Dashboard: projects inside purpose environments, todos orbiting the selected one](/images/space/dashboard-todos.png)
 
-## Purpose Environments
+## Five Purpose Environments
 
-Instead of a flat list of folders, the Dashboard groups projects by **Environment** (e.g. Research, Core Infrastructure, Production Apps, Alter-Ego Agents).
+Dashboard groups projects into five softly filled, dashed enclosures based on their purpose:
 
-- **Environment Clusters**: Visually delineate related codebases.
-- **Project Nodes**: Each project is represented as a distinct node with status badges and health indicators.
+| Environment | Accent Color | Purpose |
+|---|---|---|
+| **Engineering** | `#6fb7e0` (Blue) | Apps, services, APIs, and libraries that are built and shipped. |
+| **Ops** | `#e8a15c` (Orange) | Infrastructure-as-code (Terraform, Kubernetes), CI/CD, and operational tooling. |
+| **Documentation** | `#c792ea` (Purple) | Docs sites, wikis, architecture notes, and one-pagers. |
+| **Research** | `#7fd0a8` (Green) | Papers, notebooks, studies, model evaluations, and exploratory prototypes. |
+| **Marketing** | `#e0708a` (Pink) | Decks, brand assets, proposals, and outward-facing launch material. |
+
+<Callout type="info">
+  **Enclosures vs. Project Nodes**: The tinted dashed boundary is the environment collection; the small internal anchor point provides physics stabilization and focus. A project with multiple purposes sits between boundaries and belongs to all applicable enclosures simultaneously.
+</Callout>
 
 ---
 
-## Orbiting Todos
+## Project Forms & Glyphs
 
-When you select a project node on the Dashboard:
+Node glyphs depict the structural form of a project independently of its purpose environment:
 
-- **In-Progress Work**: Open tasks and active agent objectives orbit the node like satellites.
-- **Tethered Connections**: Lines connect active todos to the files and components they touch.
-- **Detail Panel**: The right sidebar displays the complete checklist, task descriptions, and recent execution history.
+- **App** (Disc): Interactive web, mobile, or desktop applications.
+- **One-Pager** (Ring): Single-document specs, briefs, or landing pages.
+- **Docs** (Stack): Multi-page documentation or note collections.
+- **Slides** (Slab): Presentation decks and campaign slides.
+- **Model / Lab** (Diamond): ML models, benchmark suites, and notebooks.
+
+---
+
+## Orbiting Todo Satellites
+
+Selecting any project node focuses its neighborhood and reveals its open work:
+
+- **Orbiting Satellites**: Up to 28 project todos orbit the selected node. In-progress tasks maintain an active spoke connecting back to the project center.
+- **Detail Panel**: The slideout panel lists todos sorted by status (`in-progress` first, then `todo`, then `done`), complete with title, description, and task timestamps.
+- **Quick Search**: Press `/` anywhere in the dashboard to filter projects by name and immediately fly to matching nodes.
+
+---
+
+## Data Sources & Architecture
+
+- **`GET /xo/dashboard.json`**: Serves `<XO root>/.xo/dashboard.json`, materialized by the watcher from workspace project scans. Rebuilt at most every 30 seconds.
+- **`<project>/.xo/project.json`**: Portable project metadata. Manual category definitions take precedence over automatic filename heuristics.
+- **`GET /api/xo-projects/{id}/todos`**: Fetched on demand when a project node is clicked. Cached in the browser for 20 seconds for instant re-selection.
+- **Read-Only Safety**: The Dashboard is completely read-only and writes neither project code, `.xo`, nor `.quirq` files.

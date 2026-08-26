@@ -7,54 +7,60 @@ icon: Map
 import { Cards, Card } from "@/components/card";
 
 <Lead>
-  The **XO Space UI** (`/space/`) is a zero-dependency browser control plane shipped directly inside the `xo-space` engine. It reads directly from your workspace `.xo` metadata, providing live visibility into your files, agent tasks, git commits, and runtime telemetry.
+  The **XO Space UI** (`/space/`) is a zero-dependency local browser control plane shipped directly inside the `xo-space` daemon. It reads directly from your workspace `.xo` metadata and native runtime logs, providing live visibility into your files, agent tasks, git commits, multi-runtime telemetry, and 3D session replays.
 </Lead>
 
-## The Six Views of Space
+## The Views of Space
 
 <Cards>
   <Card
+    icon={<span className="icon-[ph--chart-bar-fill] size-6" />}
+    title="Project Dashboard"
+    description="Visual project nodes inside five purpose environments with orbiting todo satellites and overlapping boundaries."
+    href="/docs/space/space-walk/dashboard"
+  />
+  <Card
     icon={<span className="icon-[ph--folder-fill] size-6" />}
-    title="Files Explorer & Drawer"
-    description="List all workspace projects, browse folder contents, view open sessions, and inspect markdown/HTML in place."
+    title="Files Explorer & Graph"
+    description="Three lenses in one tab: operational List with project drawers, interactive Graph network, and Tree hierarchy."
     href="/docs/space/space-walk/files-explorer"
   />
   <Card
     icon={<span className="icon-[ph--git-fork-fill] size-6" />}
     title="Tree Lens"
-    description="A horizontal visual tree of your workspace with branch thickness scaling to directory size."
+    description="A horizontal visual tree of your workspace with folders as columns, stacked files, and dynamic limb sizing."
     href="/docs/space/space-walk/tree-lens"
-  />
-  <Card
-    icon={<span className="icon-[ph--chart-bar-fill] size-6" />}
-    title="Project Dashboard"
-    description="Visual nodes inside purpose environments with in-progress todos orbiting the active project."
-    href="/docs/space/space-walk/dashboard"
   />
   <Card
     icon={<span className="icon-[ph--chart-line-up-fill] size-6" />}
     title="Workspace Timeline"
-    description="Parallel multi-repo git commit lanes and dated artifact history across all projects."
+    description="Parallel multi-repo git commit lanes and dated artifact history flowing upward, newest at the top."
     href="/docs/space/space-walk/timeline"
   />
   <Card
     icon={<span className="icon-[ph--activity-fill] size-6" />}
     title="Sessions & Telemetry"
-    description="Unified session streams and cost/token telemetry across Claude Code, OpenClaw, Hermes, and Cursor."
+    description="Multi-runtime telemetry across Claude Code, Codex, and Cursor with honest cost reporting and turn-by-turn prompt inspection."
     href="/docs/space/space-walk/sessions"
   />
   <Card
+    icon={<span className="icon-[ph--play-fill] size-6" />}
+    title="Space Walk 3D Session Replay"
+    description="Replay coding agent sessions as moving light over Firefly Tree and Attention Terrain 3D repository maps."
+    href="/docs/space/space-walk/replay"
+  />
+  <Card
     icon={<span className="icon-[ph--gear-fill] size-6" />}
-    title="Space Setup & Roots"
-    description="Manage XO_PROJECTS_ROOT, file watcher coverage, write-only credentials, and git self-updates."
+    title="Setup & Quirq State"
+    description="Manage XO_PROJECTS_ROOT, file watcher coverage, write-only credentials, and inspect machine-local vs portable storage."
     href="/docs/space/space-walk/setup"
   />
 </Cards>
 
 ## Accessing the Local UI
 
-When you run `curl -fsSL https://quirq.ai/install | sh` (or start `cowork-api.sh`), open:
+When you run `curl -fsSL https://quirq.ai/install | sh` (or start `./cowork-api.sh start`), open:
 
 👉 **[http://localhost:5002/space/](http://localhost:5002/space/)**
 
-The interface requires no login and runs entirely offline on your loopback interface.
+The interface binds `127.0.0.1` only, requires no authentication, and operates completely offline on your loopback interface without sending telemetry outside your machine.

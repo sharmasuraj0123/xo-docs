@@ -1,0 +1,62 @@
+---
+title: Local Auto-Detection
+description: How XO Space automatically discovers local agent CLIs, harnesses, and session paths on your machine.
+icon: Zap
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  When you install and boot **XO Space** locally, it requires zero manual agent configuration. Space automatically scans your `$PATH` and home directory to detect installed AI coding agent CLIs and their on-disk telemetry.
+</Lead>
+
+## How Discovery Works
+
+During startup, the `xo-space` daemon inspects your system for supported agent runtimes:
+
+```
+                  ┌─────────────────────────────────────┐
+                  │    xo-space Boot Auto-Discovery     │
+                  └──────────────────┬──────────────────┘
+                                     │
+         ┌───────────────────────────┼───────────────────────────┐
+         ▼                           ▼                           ▼
+  [ PATH Scan ]               [ State Scans ]             [ Telemetry Scans ]
+  • claude CLI in $PATH       • ~/.openclaw/openclaw.json • ~/.cursor/projects/
+  • antigravity in $PATH      • ~/.hermes/                • ~/.codex/sessions/
+  • node / npm / gh           • ~/.gemini/antigravity/    • ~/.claude/projects/
+```
+
+### 1. Full Agent Adapters (Chat + Telemetry)
+If the CLI executable is found in your `$PATH`, Space attaches a full `BaseAgentAdapter`:
+
+- **Claude Code**: Discovered via `claude` CLI binary or `@anthropic-ai/claude-code` npm package.
+- **OpenClaw**: Discovered via `openclaw` binary and `~/.openclaw/` directory.
+- **Hermes**: Discovered via `hermes` executable.
+- **Antigravity**: Discovered via `antigravity` CLI and `~/.gemini/antigravity-cli/`.
+
+### 2. Telemetry-Only Runtimes
+For IDE extensions and tools that run outside Space but store local session history, Space mounts read-only telemetry modules:
+
+- **Cursor**: Reads session files from `~/.cursor/` to display metrics and edit history.
+- **Codex**: Reads session logs from `~/.codex/`.
+
+## Checking Detected Runtimes
+
+You can check which runtimes Space discovered at any time via the health endpoint:
+
+```bash
+curl http://localhost:5002/health
+```
+
+```jsonc
+{
+  "status": "healthy",
+  "ai_provider": "claude",
+  "claude_cli": "/usr/local/bin/claude",
+  "codex_cli": "codex",
+  "active_sessions": 0
+}
+```
+
+If a tool is missing from your `$PATH`, simply install the agent CLI and restart Space (or run `./cowork-api.sh restart`).

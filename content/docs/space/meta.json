@@ -1,5 +1,13 @@
 {
-  "title": "Space",
+  "title": "XO Space",
   "icon": "Blocks",
-  "pages": ["install-space", "install-space-as-a-skill"]
+  "pages": [
+    "index",
+    "install-space",
+    "first-space",
+    "space-walk",
+    "observability",
+    "auto-detection",
+    "install-space-as-a-skill"
+  ]
 }

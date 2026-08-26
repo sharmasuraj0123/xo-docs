@@ -1,0 +1,13 @@
+{
+  "title": "Space Walk",
+  "icon": "Map",
+  "pages": [
+    "index",
+    "files-explorer",
+    "tree-lens",
+    "dashboard",
+    "timeline",
+    "sessions",
+    "setup"
+  ]
+}

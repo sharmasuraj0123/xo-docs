@@ -6,7 +6,7 @@ icon: Network
 
 import { Cards, Card } from "@/components/card";
 
-The XO Cowork API (`xo-cowork-api`) is the FastAPI control plane that runs **inside** every XO Coworker space. It brokers chat to agent runtimes (Claude Code, Codex, OpenClaw), owns the `~/xo-projects/` tree, manages secrets and sessions, and proxies connector OAuth flows.
+The XO Cowork API (`xo-cowork-api`) is the FastAPI control plane and agent observability daemon that runs **inside** every XO Space—both in the open-source [XO Space](https://github.com/quirq-ai/xo-space) local runtime and in every hosted container on [app.xo.builders](https://app.xo.builders). It brokers chat to agent runtimes (Claude Code, Codex, OpenClaw), owns the `~/xo-projects/` tree, streams live session telemetry, manages secrets, and proxies connector OAuth flows.
 
 This section is a developer-facing integration guide for the stable client
 surface. The running service also mounts agent-specific, internal, legacy, and

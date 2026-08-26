@@ -4,10 +4,9 @@ import type { ReactNode } from "react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { BrandIcon } from "./brand-icon";
 
-// What is XO — home page explainer. Theme-aware (fd-* tokens).
-// Phosphor icon classes are written as literals so Tailwind generates them.
-
+// What is XO — 4-layer architecture explainer. Theme-aware (fd-* tokens).
 const SIGN_UP_URL = "https://app.xo.builders/sign-up?ref=docs.quirq.ai";
+const GITHUB_REPO_URL = "https://github.com/quirq-ai/xo-space";
 
 const ICONS: Record<string, string> = {
   robot: "icon-[ph--robot-fill]",
@@ -21,6 +20,14 @@ const ICONS: Record<string, string> = {
   rocket: "icon-[ph--rocket-fill]",
   check: "icon-[ph--check-bold]",
   caret: "icon-[ph--caret-down-bold]",
+  terminal: "icon-[ph--terminal-window-fill]",
+  eye: "icon-[ph--eye-fill]",
+  copy: "icon-[ph--copy-bold]",
+  blocks: "icon-[ph--squares-four-fill]",
+  cpu: "icon-[ph--cpu-fill]",
+  gauge: "icon-[ph--gauge-fill]",
+  layers: "icon-[ph--stack-fill]",
+  git: "icon-[ph--git-fork-fill]",
 };
 
 function Icon({ name, className }: { name: string; className?: string }) {
@@ -73,6 +80,7 @@ type Step = {
   icon: string;
   title: string;
   time: string;
+  layer: string;
   summary: string;
   detail: string;
   highlights: string[];
@@ -84,50 +92,85 @@ type Step = {
 
 const STEPS: Step[] = [
   {
-    id: "sign-up",
+    id: "layer-1-runtime",
     index: "01",
-    icon: "user",
-    title: "Sign up",
-    time: "2 min",
-    summary: "Create your account. Free Basic plan — no credit card.",
+    icon: "cpu",
+    title: "1. Choose Your Runtime (The Machine)",
+    time: "Layer 1",
+    layer: "Runtime Layer",
+    summary:
+      "The machine executing the code: your laptop or a secure cloud VM.",
     detail:
-      "Registration takes under two minutes. Pick a username, choose the free Basic plan, and you're in — no card, no install.",
+      "Runtime is where code physically runs. You can run locally on your laptop with a single curl command, or provision isolated cloud VMs on XO with 1-click deployments.",
     highlights: [
-      "Free Basic plan",
-      "No credit card required",
-      "Bring your own model later",
+      "Local OSS: Your machine, Mac Mini, or on-prem server",
+      "Managed Cloud: 1-click isolated Linux containers on app.xo.builders",
+      "Decoupled so you can run on multiple machines without lock-in",
     ],
-    ctaLabel: "Create free account",
-    href: SIGN_UP_URL,
-    external: true,
+    ctaLabel: "Get a Space",
+    href: "/docs/space/install-space",
+    chips: (
+      <>
+        <TextChip icon="terminal" label="curl installer" />
+        <TextChip icon="cpu" label="Local / Cloud VM" />
+      </>
+    ),
   },
   {
-    id: "pick-agent",
+    id: "layer-2-environment",
     index: "02",
-    icon: "robot",
-    title: "Pick an agent",
-    time: "1 min",
-    summary: "Choose a ready-made harness with its own workflow and interface.",
+    icon: "blocks",
+    title: "2. Boot the Environment (XO Space)",
+    time: "Layer 2",
+    layer: "Environment Layer",
+    summary:
+      "The core control plane (cowork-api) holding state and observability.",
     detail:
-      "Each template is a full harness: messaging gateways, coding agents, or a chat-first space. Pick the one that matches how you work.",
+      "Environment is the Space. It hosts the cowork-api control plane, file watchers, session memory, and the local UI. Decoupling Environment from Runtime lets entire teams share one unified workspace across different machines.",
     highlights: [
-      "Five ready-made templates",
-      "Best if you want messaging, coding, or chat-first work",
-      "Compare agents any time in the docs",
+      "Serves the zero-dependency UI at http://localhost:5002/space/",
+      "Tracks ~/xo-projects/ metadata, todos, and file events in real time",
+      "Persistent state survives agent swaps and server restarts",
     ],
-    ctaLabel: "Browse agents",
+    ctaLabel: "Take a Space Walk",
+    href: "/docs/space/space-walk",
+    chips: (
+      <>
+        <TextChip icon="monitor" label="localhost:5002" />
+        <TextChip label="cowork-api daemon" />
+        <TextChip icon="layers" label="Team Workspace" />
+      </>
+    ),
+  },
+  {
+    id: "layer-3-agent",
+    index: "03",
+    icon: "robot",
+    title: "3. Plug in Any Agent (Unopinionated)",
+    time: "Layer 3",
+    layer: "Agent Layer",
+    summary:
+      "Auto-discovers Claude Code, OpenClaw, Hermes, Antigravity, Cursor.",
+    detail:
+      "XO is completely unopinionated about agents. When you boot Space locally, it auto-detects existing CLIs in your $PATH. On Cloud, it provides pre-configured agent templates.",
+    highlights: [
+      "Auto-detects claude, openclaw, hermes, antigravity, and cursor",
+      "Bring your own API key (Anthropic, OpenAI, OpenRouter) or OAuth",
+      "Plug new custom agent adapters via BaseAgentAdapter",
+    ],
+    ctaLabel: "Explore Agent Guides",
     href: "/docs/agents",
     chips: (
       <>
         <AgentChip
-          slug="openclaw"
-          label="OpenClaw"
-          href="/docs/agents/openclaw"
-        />
-        <AgentChip
           slug="claude-code"
           label="Claude Code"
           href="/docs/agents/claude-code"
+        />
+        <AgentChip
+          slug="openclaw"
+          label="OpenClaw"
+          href="/docs/agents/openclaw"
         />
         <AgentChip slug="hermes" label="Hermes" href="/docs/agents/hermes" />
         <AgentChip
@@ -135,70 +178,38 @@ const STEPS: Step[] = [
           label="Antigravity"
           href="/docs/agents/antigravity"
         />
-        <AgentChip
-          slug="xo-cowork"
-          label="XO Cowork"
-          href="/docs/agents/xo-cowork"
-        />
       </>
     ),
   },
   {
-    id: "launch",
-    index: "03",
-    icon: "rocket",
-    title: "Launch the space",
-    time: "5 min",
-    summary: "Spin up a secure cloud space and connect your model.",
-    detail:
-      "Open New Project, pick your template, connect Anthropic, OpenAI, or OpenRouter (API key or OAuth). Everything runs in a cloud browser IDE — nothing to install.",
-    highlights: [
-      "Isolated machine per project",
-      "BYO API key or Claude/ChatGPT OAuth",
-      "Cloud IDE — no local setup",
-    ],
-    ctaLabel: "Launch guide",
-    href: "/docs/getting-started/launch-first-agent",
-    chips: (
-      <>
-        <AgentChip slug="anthropic" label="Anthropic" />
-        <AgentChip slug="openai" label="OpenAI" />
-        <TextChip label="OpenRouter" />
-      </>
-    ),
-  },
-  {
-    id: "talk",
+    id: "layer-4-output",
     index: "04",
-    icon: "chat",
-    title: "Talk to your agent",
-    time: "Go",
-    summary: "Reach it from Slack, Telegram, WhatsApp, or the browser IDE.",
+    icon: "gauge",
+    title: "4. Measure Output & quirqs (The Output Meter)",
+    time: "Layer 4",
+    layer: "Output Layer",
+    summary: "Measure delivered work outcomes instead of just burning tokens.",
     detail:
-      "Once the space is up, chat in the browser or connect the channels you already use. Manage restarts, services, and access from one dashboard.",
+      "Labs push token spend without showing ROI. quirq is the output meter: minting verified units of delivered work (V · B) scored against machine-checkable definitions of done.",
     highlights: [
-      "Slack, Telegram, WhatsApp",
-      "Browser IDE built in",
-      "One dashboard for the whole team",
+      "Live session trace streaming & token/cost telemetry",
+      "quirq scores completion V ∈ [0, 1] against verified state diffs (S₀ → S₁)",
+      "Proves real engineering output vs raw model spend to stakeholders",
     ],
-    ctaLabel: "Manage space",
-    href: "/docs/getting-started/manage-space",
+    ctaLabel: "Read quirq Docs",
+    href: "/docs/quirq",
     chips: (
       <>
-        <TextChip icon="slack" label="Slack" />
-        <TextChip icon="telegram" label="Telegram" />
-        <TextChip icon="whatsapp" label="WhatsApp" />
-        <TextChip icon="monitor" label="Browser IDE" />
+        <TextChip icon="gauge" label="quirq = V · B" />
+        <TextChip icon="eye" label="Live Tracing" />
+        <TextChip label="Verified ROI" />
       </>
     ),
   },
 ];
 
-/** How long click/keyboard selection pauses scroll-driven expansion. */
 const SCROLL_LOCK_MS = 2200;
-/** Debounce scroll-driven step changes so expansion feels calmer. */
 const SCROLL_DEBOUNCE_MS = 220;
-/** New step must beat the current by this much intersection ratio to switch. */
 const SCROLL_HYSTERESIS = 0.12;
 
 function StepConnector({ lit }: { lit: boolean }) {
@@ -223,7 +234,7 @@ function StepConnector({ lit }: { lit: boolean }) {
   );
 }
 
-function FirstTenMinutes() {
+function FourLayersExplainer() {
   const [active, setActive] = useState(0);
   const baseId = useId();
   const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
@@ -253,7 +264,6 @@ function FirstTenMinutes() {
     }, SCROLL_DEBOUNCE_MS);
   }, []);
 
-  // Expand the step nearest the viewport center as the user scrolls.
   useEffect(() => {
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -282,14 +292,12 @@ function FirstTenMinutes() {
 
         const current = activeRef.current;
         const currentRatio = ratios.get(current) ?? 0;
-        // Stay on the current step until another clearly wins — less flicker.
         if (best !== current && bestRatio < currentRatio + SCROLL_HYSTERESIS) {
           return;
         }
         selectStep(best, "scroll");
       },
       {
-        // Narrower active band → more scroll distance per step change
         root: null,
         rootMargin: "-42% 0px -42% 0px",
         threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
@@ -322,7 +330,7 @@ function FirstTenMinutes() {
   return (
     <div className="mt-10">
       <p className="mb-4 text-center text-xs font-semibold uppercase tracking-wide text-fd-muted-foreground">
-        Your first 10 minutes
+        The 4-Layer Agentic Architecture
       </p>
 
       {/* Progress rail */}
@@ -342,7 +350,7 @@ function FirstTenMinutes() {
                   ? "w-4 bg-fd-primary/50"
                   : "w-4 bg-fd-border"
             }`}
-            aria-label={`Go to step ${step.index}: ${step.title}`}
+            aria-label={`Go to ${step.layer}: ${step.title}`}
           />
         ))}
       </div>
@@ -399,7 +407,7 @@ function FirstTenMinutes() {
                   <span className="min-w-0 flex-1">
                     <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                       <span className="text-[10px] font-semibold uppercase tracking-wide text-fd-muted-foreground">
-                        {step.index}
+                        {step.layer}
                       </span>
                       <span
                         className={`text-sm font-medium ${
@@ -493,7 +501,7 @@ function FirstTenMinutes() {
                             onClick={() => goToStep(i + 1)}
                             className="inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-fd-muted-foreground transition-colors hover:bg-fd-muted hover:text-fd-foreground"
                           >
-                            Next step
+                            Next layer
                             <span
                               className="icon-[ph--caret-right-bold] size-3.5"
                               aria-hidden="true"
@@ -517,50 +525,114 @@ function FirstTenMinutes() {
   );
 }
 
-// What is XO — the 30-second explainer for the home page.
+// What is XO — developer explainer for home page.
 export function WhatIsXO() {
+  const [copied, setCopied] = useState(false);
+  const curlCmd = "curl -fsSL https://quirq.ai/install | sh";
+
+  const copyCommand = () => {
+    navigator.clipboard.writeText(curlCmd);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <section className="not-prose mb-14">
-      <div className="mx-auto mb-8 max-w-2xl text-center">
+      <div className="mx-auto mb-8 max-w-3xl text-center">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-fd-border bg-fd-muted/50 px-3 py-1 text-xs font-medium text-fd-foreground">
+          <BrandIcon name="quirq" size={14} />
+          <span>XO Space is Open Source (v2.1.0)</span>
+          <a
+            href={GITHUB_REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-fd-primary hover:underline"
+          >
+            GitHub Repo →
+          </a>
+        </div>
         <h1 className="text-3xl font-bold tracking-tight text-fd-foreground sm:text-5xl">
-          What is XO?
+          One-Click Agentic Environments. Measure Output, Not Just Tokens.
         </h1>
-        <p className="mt-3 text-sm leading-relaxed text-fd-muted-foreground sm:text-base">
-          The home for your AI agent team. XO runs your agents for you — launch
-          a ready-made harness, bring your own model, and reach it from Slack,
-          Telegram, or your browser.
+        <p className="mt-4 text-sm leading-relaxed text-fd-muted-foreground sm:text-base">
+          Every AI agent workload requires four layers: <strong>Runtime</strong>{" "}
+          (the machine), <strong>Environment</strong> (XO Space),{" "}
+          <strong>Agent</strong> (unopinionated harness), and{" "}
+          <strong>Output</strong> (quirq). XO decouples the environment from the
+          machine—providing live observability and measuring verified work
+          delivered across your entire team.
         </p>
       </div>
 
-      <div className="mt-2 flex flex-col items-center gap-3">
+      {/* Hero Dual CTA */}
+      <div className="mx-auto flex max-w-2xl flex-col items-stretch gap-4">
+        {/* Terminal Install Snippet */}
+        <div className="flex items-center justify-between gap-3 rounded-xl border border-fd-border bg-fd-card p-3 shadow-sm sm:px-4 sm:py-3">
+          <div className="flex items-center gap-2 overflow-x-auto font-mono text-xs text-fd-foreground sm:text-sm">
+            <span className="text-fd-primary font-bold">$</span>
+            <code className="text-fd-foreground">{curlCmd}</code>
+          </div>
+          <button
+            type="button"
+            onClick={copyCommand}
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-fd-border bg-fd-muted px-2.5 py-1.5 text-xs font-medium text-fd-foreground transition-colors hover:bg-fd-accent"
+            aria-label="Copy install command"
+          >
+            {copied ? (
+              <>
+                <Icon name="check" className="size-3.5 text-fd-primary" />
+                <span className="text-fd-primary">Copied</span>
+              </>
+            ) : (
+              <>
+                <Icon
+                  name="copy"
+                  className="size-3.5 text-fd-muted-foreground"
+                />
+                <span>Copy</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Buttons Row */}
         <div className="flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="/docs/space"
+            className="inline-flex items-center gap-2 rounded-lg bg-fd-primary px-5 py-2.5 text-sm font-semibold text-fd-primary-foreground transition-opacity hover:opacity-90"
+          >
+            <Icon name="terminal" className="size-4" />
+            Install Space (Local)
+          </a>
           <a
             href={SIGN_UP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 rounded-lg bg-fd-primary px-5 py-2.5 text-sm font-semibold text-fd-primary-foreground transition-opacity hover:opacity-90"
-          >
-            Start free — first agent in 5 minutes
-          </a>
-          <a
-            href="/getting-started"
             className="inline-flex items-center gap-2 rounded-lg border border-fd-border bg-fd-background px-5 py-2.5 text-sm font-semibold text-fd-foreground transition-colors hover:bg-fd-muted"
           >
-            Read the guide
+            <Icon name="rocket" className="size-4" />
+            Launch on Managed Cloud
+          </a>
+          <a
+            href={GITHUB_REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg border border-fd-border bg-fd-background px-4 py-2.5 text-sm font-semibold text-fd-foreground transition-colors hover:bg-fd-muted"
+          >
+            <BrandIcon name="github" size={16} />
+            GitHub
           </a>
         </div>
-        <p className="text-xs text-fd-muted-foreground">
-          30-day free trial · No credit card · Bring your own model
-        </p>
       </div>
 
-      <FirstTenMinutes />
+      <FourLayersExplainer />
 
-      <div className="mt-6 flex flex-col items-center gap-2 rounded-2xl border border-fd-primary/20 bg-fd-primary/5 px-5 py-4 text-center sm:flex-row sm:justify-center sm:gap-3">
+      <div className="mt-8 flex flex-col items-center gap-2 rounded-2xl border border-fd-primary/20 bg-fd-primary/5 px-5 py-4 text-center sm:flex-row sm:justify-center sm:gap-3">
         <Icon name="shield" className="size-5 shrink-0 text-fd-primary" />
         <span className="text-xs font-medium leading-relaxed text-fd-foreground sm:text-sm">
-          Every agent runs in a secure, isolated cloud space — one dashboard, no
-          local setup, no infra to manage.
+          <strong>Environment = Space:</strong> Decoupling the environment from
+          the runtime eliminates vendor lock-in and gives teams unified
+          observability across local machines and cloud sandboxes.
         </span>
       </div>
     </section>

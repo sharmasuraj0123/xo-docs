@@ -1,0 +1,14 @@
+{
+  "title": "Cloud Space (Managed)",
+  "icon": "Cloud",
+  "pages": [
+    "overview",
+    "create-account",
+    "choose-an-agent",
+    "launch-first-agent",
+    "---Manage Infrastructure---",
+    "manage-space",
+    "vs-code-server",
+    "share-project"
+  ]
+}

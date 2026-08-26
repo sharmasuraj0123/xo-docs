@@ -12,6 +12,7 @@ import {
 // Static map of all sidebar icon names → Phosphor CSS classes (Tailwind scans these literals)
 const ICON_CLASSES: Record<string, string> = {
   Archive: "icon-[ph--archive-fill]",
+  Activity: "icon-[ph--activity-fill]",
   Blocks: "icon-[ph--squares-four-fill]",
   Bot: "icon-[mingcute--chat-2-ai-fill]",
   Building2: "icon-[ph--buildings-fill]",
@@ -60,6 +61,10 @@ const ICON_CLASSES: Record<string, string> = {
   Atom: "icon-[ph--atom-fill]",
   Gauge: "icon-[ph--gauge-fill]",
   ChartLineUp: "icon-[ph--chart-line-up-fill]",
+  Cloud: "icon-[ph--cloud-fill]",
+  Map: "icon-[ph--map-trifold-fill]",
+  Download: "icon-[ph--download-simple-fill]",
+  Code: "icon-[ph--code-fill]",
   more: "icon-[ph--dots-three-fill]",
 };
 

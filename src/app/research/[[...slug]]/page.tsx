@@ -9,6 +9,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/components/mdx";
+import { ResearchHub, type ResearchPageItem } from "@/components/research-hub";
+import { socialLinks } from "@/lib/layout.shared";
 import { siteUrl } from "@/lib/shared";
 import {
   getResearchPageImage,
@@ -146,189 +148,60 @@ function PostNav({ currentUrl }: { currentUrl: string }) {
   );
 }
 
-function TagCloud() {
-  const counts = new Map<string, number>();
-
-  for (const page of researchSource.getPages()) {
-    const tags = (page.data as { tags?: string[] }).tags ?? [];
-    for (const tag of tags) {
-      counts.set(tag, (counts.get(tag) ?? 0) + 1);
-    }
+function getTrack(
+  slugs: string[],
+  tags: string[],
+): "speed-trials" | "from-the-desk" | "proving-grounds" {
+  if (tags.includes("speed-trials") || slugs[0] === "experiments") {
+    return "speed-trials";
   }
-
-  const sorted = Array.from(counts.entries())
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 12);
-
-  if (sorted.length === 0) return null;
-
-  const maxCount = sorted[0][1];
-
-  return (
-    <div className="mb-14 text-center">
-      <div className="flex flex-wrap justify-center gap-2">
-        {sorted.map(([tag, count]) => {
-          const weight = 0.7 + (count / maxCount) * 0.6;
-          return (
-            <Link
-              key={tag}
-              href={`/research/category/${tag.toLowerCase().replace(/\s+/g, "-")}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-fd-border px-3 py-1 text-sm text-fd-muted-foreground hover:text-fd-primary hover:border-fd-primary/40 transition-all"
-              style={{ fontSize: `${0.75 + (weight - 0.7) * 0.25}rem` }}
-            >
-              {tag}
-              <span className="text-[10px] text-fd-muted-foreground/60">
-                {count}
-              </span>
-            </Link>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function ResearchCard({
-  page,
-}: {
-  page: ReturnType<typeof researchSource.getPages>[number];
-}) {
-  const data = page.data as {
-    title: string;
-    description?: string;
-    tags?: string[];
-    date?: string;
-  };
-  const date = formatDate(data.date);
-  const category = data.tags?.[0];
-  const thumb = getResearchPageImage(page);
-
-  return (
-    <Link
-      href={page.url}
-      className="group relative flex flex-col rounded-xl border border-fd-border bg-fd-card overflow-hidden hover:border-fd-primary/40 hover:shadow-lg hover:shadow-fd-primary/5 transition-all"
-    >
-      <div className="w-full aspect-video overflow-hidden bg-fd-muted">
-        <Image
-          src={thumb.url}
-          alt=""
-          width={1200}
-          height={630}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-      </div>
-      <div className="flex flex-col p-5 flex-1">
-        {category && (
-          <span className="text-[10px] font-semibold tracking-widest uppercase text-fd-primary mb-2">
-            {category}
-          </span>
-        )}
-        <h2 className="text-base font-semibold text-fd-foreground group-hover:text-fd-primary transition-colors mb-2 leading-snug">
-          {data.title}
-        </h2>
-        {data.description && (
-          <p className="text-sm text-fd-muted-foreground leading-relaxed mb-4 line-clamp-2 flex-1">
-            {data.description}
-          </p>
-        )}
-        {date && (
-          <p className="text-xs text-fd-muted-foreground mt-auto pt-3 border-t border-fd-border/50">
-            {date}
-          </p>
-        )}
-      </div>
-    </Link>
-  );
-}
-
-const isQuirq = (slug: string[]) =>
-  slug.length > 1 &&
-  slug[0] === "phase-1-agentic-workforce" &&
-  (slug[1] === "quirq" || slug[1] === "unit-of-work-research");
-
-function orderFromTree(): Map<string, number> {
-  const order = new Map<string, number>();
-  let idx = 0;
-  function walk(node: { $ref?: string; children?: unknown[] }) {
-    if (node.$ref) order.set(node.$ref, idx++);
-    if (node.children)
-      for (const child of node.children) walk(child as typeof node);
+  if (tags.includes("from-the-desk") || slugs[0] === "perspectives") {
+    return "from-the-desk";
   }
-  walk(
-    researchSource.pageTree as typeof walk extends (arg: infer T) => void
-      ? T
-      : never,
-  );
-  return order;
+  if (slugs[0]?.startsWith("phase-") || tags.includes("proving-grounds")) {
+    return "proving-grounds";
+  }
+  return "speed-trials";
 }
 
 function ResearchListing() {
-  const treeOrder = orderFromTree();
-
   const allPages = researchSource
     .getPages()
     .filter((p) => p.slugs.length > 0)
     .sort((a, b) => {
       const da = (a.data as { date?: string }).date ?? "";
       const db = (b.data as { date?: string }).date ?? "";
-      if (da !== db) return db.localeCompare(da);
-      const oa = treeOrder.get(a.slugs.join("/")) ?? 999;
-      const ob = treeOrder.get(b.slugs.join("/")) ?? 999;
-      return oa - ob;
+      return db.localeCompare(da);
     });
 
-  const fowPages = allPages.filter((p) => !isQuirq(p.slugs));
-  const quirqPages = allPages.filter((p) => isQuirq(p.slugs));
+  const items: ResearchPageItem[] = allPages.map((page, idx) => {
+    const data = page.data as {
+      title: string;
+      description?: string;
+      tags?: string[];
+      date?: string;
+    };
+    const tags = data.tags ?? [];
+    const track = getTrack(page.slugs, tags);
+    const dateFormatted = data.date ? (formatDate(data.date) ?? data.date) : "";
+    const num = String(idx + 1).padStart(2, "0");
+    const thumb = getResearchPageImage(page);
 
-  return (
-    <main className="min-h-screen">
-      <div className="max-w-5xl mx-auto px-6 py-16">
-        <div className="mb-12 text-center">
-          <p className="text-xs font-semibold tracking-widest uppercase text-fd-muted-foreground mb-3">
-            Research
-          </p>
-          <h1 className="text-4xl font-semibold tracking-tight text-fd-foreground mb-4">
-            Future of Work
-          </h1>
-          <p className="text-fd-muted-foreground text-base leading-relaxed max-w-lg mx-auto">
-            Perspectives, experiments, and thinking on AI-native work.
-          </p>
-        </div>
+    return {
+      url: page.url,
+      slugs: page.slugs,
+      title: data.title,
+      description: data.description,
+      date: dateFormatted,
+      tags,
+      imageUrl: thumb.url,
+      track,
+      num,
+      readTime: "5 min read",
+    };
+  });
 
-        <TagCloud />
-
-        <div className="mb-14">
-          <div className="flex items-center gap-4 mb-6">
-            <h2 className="text-xs font-semibold tracking-widest uppercase text-fd-muted-foreground">
-              The Future of Work
-            </h2>
-            <span className="flex-1 h-px bg-fd-border/50" />
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {fowPages.map((page) => (
-              <ResearchCard key={page.url} page={page} />
-            ))}
-          </div>
-        </div>
-
-        {quirqPages.length > 0 && (
-          <div>
-            <div className="flex items-center gap-4 mb-6">
-              <h2 className="text-xs font-semibold tracking-widest uppercase text-fd-muted-foreground">
-                quirq: A Unit of Work for Intelligence
-              </h2>
-              <span className="flex-1 h-px bg-fd-border/50" />
-            </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {quirqPages.map((page) => (
-                <ResearchCard key={page.url} page={page} />
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </main>
-  );
+  return <ResearchHub items={items} />;
 }
 
 export default async function Page({ params }: Props) {
@@ -365,21 +238,48 @@ export default async function Page({ params }: Props) {
     <TOCProvider toc={data.toc}>
       <div className="mx-auto w-full max-w-(--fd-layout-width) px-4 py-16">
         <div className="flex gap-12">
-          <aside className="w-56 shrink-0 hidden xl:block self-start sticky top-24">
-            {data.toc.length > 0 && (
-              <>
-                <p className="text-xs font-semibold tracking-widest uppercase text-fd-muted-foreground mb-4">
-                  On this page
-                </p>
-                <TOCScrollArea>
-                  <div className="flex flex-col border-s border-fd-foreground/10">
-                    {data.toc.map((item) => (
-                      <TOCItem key={item.url} item={item} />
-                    ))}
-                  </div>
-                </TOCScrollArea>
-              </>
-            )}
+          <aside className="w-56 shrink-0 hidden xl:flex flex-col justify-between self-start sticky top-24 max-h-[calc(100vh-8rem)]">
+            <div className="overflow-y-auto pr-2">
+              {data.toc.length > 0 && (
+                <>
+                  <p className="text-xs font-semibold tracking-widest uppercase text-fd-muted-foreground mb-4">
+                    On this page
+                  </p>
+                  <TOCScrollArea>
+                    <div className="flex flex-col border-s border-fd-foreground/10">
+                      {data.toc.map((item) => (
+                        <TOCItem key={item.url} item={item} />
+                      ))}
+                    </div>
+                  </TOCScrollArea>
+                </>
+              )}
+            </div>
+
+            <div className="pt-6 mt-8 border-t border-fd-border/50">
+              <div className="flex flex-wrap items-center gap-1.5 text-fd-muted-foreground">
+                {(
+                  socialLinks as Array<{
+                    label?: string;
+                    text?: string;
+                    url: string;
+                    icon?: React.ReactNode;
+                  }>
+                ).map((item) => (
+                  <a
+                    key={item.label ?? item.text ?? item.url}
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={item.label ?? item.text}
+                    title={item.label ?? item.text}
+                    className="p-2 rounded-lg border border-fd-border/40 hover:border-fd-primary/40 hover:bg-fd-accent hover:text-fd-foreground transition-all inline-flex items-center justify-center"
+                  >
+                    {item.icon}
+                  </a>
+                ))}
+              </div>
+            </div>
           </aside>
 
           <article
@@ -393,7 +293,7 @@ export default async function Page({ params }: Props) {
               ← All Posts
             </Link>
 
-            <div className="w-full aspect-video rounded-xl overflow-hidden mb-8">
+            <div className="w-full aspect-[1200/630] rounded-xl overflow-hidden mb-8 bg-[#0c0c0e]">
               <Image
                 src={getResearchPageImage(page).url}
                 alt=""
@@ -444,6 +344,34 @@ export default async function Page({ params }: Props) {
 
             <div className="mt-16 pt-8 border-t border-fd-border">
               <PostNav currentUrl={page.url} />
+            </div>
+
+            <div className="mt-8 flex items-center justify-between flex-wrap gap-4 pt-6 border-t border-fd-border/50 xl:hidden">
+              <span className="text-xs font-semibold uppercase tracking-wider text-fd-muted-foreground">
+                Connect with us
+              </span>
+              <div className="flex items-center gap-2 text-fd-muted-foreground">
+                {(
+                  socialLinks as Array<{
+                    label?: string;
+                    text?: string;
+                    url: string;
+                    icon?: React.ReactNode;
+                  }>
+                ).map((item) => (
+                  <a
+                    key={item.label ?? item.text ?? item.url}
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={item.label ?? item.text}
+                    title={item.label ?? item.text}
+                    className="p-2 rounded-lg border border-fd-border/40 hover:border-fd-primary/40 hover:bg-fd-accent hover:text-fd-foreground transition-all inline-flex items-center justify-center"
+                  >
+                    {item.icon}
+                  </a>
+                ))}
+              </div>
             </div>
 
             <RelatedPosts currentUrl={page.url} tags={data.tags ?? []} />

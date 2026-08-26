@@ -1,0 +1,70 @@
+---
+title: Cloud Space (Managed)
+description: Pre-provisioned cloud infrastructure for running XO Space on managed remote machines.
+icon: Cloud
+---
+
+import { Cards, Card } from "@/components/card";
+
+<Lead>
+  **Cloud Space** is the managed cloud offering on [app.xo.builders](https://app.xo.builders). It runs the exact same **XO Space** engine (`cowork-api`) on isolated cloud infrastructure with automated VM provisioning, browser-based VS Code IDE access, persistent webhooks, and project dashboard management.
+</Lead>
+
+## Managed Cloud Workflow
+
+<Cards>
+	<Card
+		icon={<span className="icon-[ph--cloud-fill] size-6" />}
+		title="Overview"
+		description="Learn how Cloud Space provisions hosted remote machines running XO Space."
+		href="/docs/cloud/overview"
+	/>
+	<Card
+		icon={<span className="icon-[ph--user-plus-fill] size-6" />}
+		title="Create an Account"
+		description="Sign up on app.xo.builders, choose your handle, and start a 30-day Basic trial."
+		href="/docs/cloud/create-account"
+	/>
+	<Card
+		icon={<span className="icon-[mingcute--chat-2-ai-fill] size-6" />}
+		title="Choose an Agent Template"
+		description="Select pre-configured runtimes for OpenClaw, Claude Code, Hermes, XO Cowork, or Antigravity."
+		href="/docs/cloud/choose-an-agent"
+	/>
+	<Card
+		icon={<span className="icon-[ph--rocket-fill] size-6" />}
+		title="Launch First Cloud Agent"
+		description="Provision your cloud container, open the browser IDE, and verify agent status."
+		href="/docs/cloud/launch-first-agent"
+	/>
+</Cards>
+
+## Managing Your Cloud Machine
+
+<Cards>
+	<Card
+		icon={<span className="icon-[ph--air-traffic-control-fill] size-6" />}
+		title="Manage Space Machine"
+		description="Monitor CPU/RAM usage, manage services, restart gateways, and control VM power states."
+		href="/docs/cloud/manage-space"
+	/>
+	<Card
+		icon={<span className="icon-[ph--code-fill] size-6" />}
+		title="Browser VS Code IDE"
+		description="Access your Space files and terminals directly from any browser via code-server."
+		href="/docs/cloud/vs-code-server"
+	/>
+	<Card
+		icon={<span className="icon-[ph--share-network-fill] size-6" />}
+		title="Share Project Workspace"
+		description="Invite team members to collaborate on your managed Cloud Space."
+		href="/docs/cloud/share-project"
+	/>
+</Cards>
+
+## Related
+
+- [XO Space Core](/docs/space) — Self-hosted local installation & observability engine.
+- [Space Configuration](/docs/setup) — Models, data sources, channels, and secrets.
+- [AI Agent Guides](/docs/agents) — Deep dives for supported agent runtimes.
+- [Glossary](/docs/glossary) — Platform terminology.

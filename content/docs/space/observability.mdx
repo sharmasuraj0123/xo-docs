@@ -1,0 +1,75 @@
+---
+title: Agent Observability & Metrics
+description: How XO Space measures agent performance, tracks work delivered, and provides real-time visibility into agent execution.
+icon: Activity
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+import { Cards, Card } from "@/components/card";
+
+<Lead>
+  **XO Space** is the core open-source engine (`cowork-api`) for agent observability. Whether your agent runs on your local machine or in a hosted cloud container, Space gives you full visibility into what your agents are doing, how long tasks take, and what value they deliver.
+</Lead>
+
+## Core Observability Capabilities
+
+Every Space instance tracks agent actions in real time, transforming raw terminal or API execution into structured, measurable telemetry.
+
+<Cards>
+	<Card
+		icon={<span className="icon-[ph--eye-fill] size-6" />}
+		title="Live Session Streaming"
+		description="Watch agent reasoning, terminal commands, file edits, and tool calls unfold live on your screen."
+	/>
+	<Card
+		icon={<span className="icon-[ph--chart-line-up-fill] size-6" />}
+		title="Work Measurement (quirq)"
+		description="Automatically measure verified units of work delivered by agents across local and cloud environments."
+	/>
+	<Card
+		icon={<span className="icon-[ph--list-checks-fill] size-6" />}
+		title="Audit & Execution Logs"
+		description="Deep trace logs for every agent invocation, tool call, error, and state change stored via cowork-api."
+	/>
+	<Card
+		icon={<span className="icon-[ph--cpu-fill] size-6" />}
+		title="Cost & Resource Metrics"
+		description="Track model usage, token consumption, latency, and system resource utilization."
+	/>
+</Cards>
+
+## How Space Observability Works
+
+Inside every agent environment (whether launched locally via CLI/skill or hosted on [app.xo.builders](https://app.xo.builders)), **`cowork-api`** runs alongside your agent.
+
+1. **Agent Telemetry**: As your agent runs, tool calls, file writes, bash commands, and thought processes stream into the local or cloud `cowork-api`.
+2. **Real-time UI**: The Space UI (on `localhost` or `app.xo.builders`) renders the activity feed live.
+3. **Work Verification**: Space evaluates task completion and logs performance data for later review.
+
+## Observing Local Agents
+
+When running local agents (e.g. Claude Code, OpenClaw, or Hermes on your laptop), Space collects observability data without sending your source code to external servers:
+
+```bash
+# Start your local Space observer
+curl -fsSL quirq.ai/install | sh
+
+# Open the live observability dashboard
+open http://localhost:5002/space/
+```
+
+- **Local Storage**: All trace logs and metrics stay on your machine in `~/.quirq/` or your configured state directory.
+- **Zero Overhead**: Minimal memory footprint designed to run persistently in the background.
+
+## Observing Cloud Agents
+
+On **XO Cloud** ([app.xo.builders](https://app.xo.builders)), every provisioned agent container has Space built-in. 
+
+- Access the same live session logs, tool execution history, and metrics directly from your browser dashboard.
+- Identical API endpoints (`/api/sessions`, `/api/usage`) exist between local and cloud Space instances.
+
+## Next Steps
+
+- Explore the [cowork-api Reference](/api-reference) for programmatically retrieving session logs.
+- Learn how [quirqs](/docs/quirq) measure verified work inside a Space.
+- Deploy local Space as a [Claude Code Skill](/docs/space/install-space-as-a-skill/claude-code).

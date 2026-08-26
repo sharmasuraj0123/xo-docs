@@ -2,13 +2,20 @@
   "title": "XO Documentation",
   "pages": [
     "index",
-    "changelog",
-    "getting-started",
-    "agents",
-    "setup",
+    "---XO Space Engine---",
     "space",
+    "---Work Measurement---",
     "quirq",
+    "---Deployment---",
+    "cloud",
+    "---Agent Runtimes---",
+    "agents",
+    "---Capabilities---",
+    "setup",
+    "more",
+    "---Reference---",
+    "glossary",
     "troubleshooting",
-    "more"
+    "changelog"
   ]
 }

@@ -24,12 +24,32 @@ const config = {
       },
       {
         source: "/getting-started",
-        destination: "/docs/getting-started",
+        destination: "/docs/cloud",
+        permanent: true,
+      },
+      {
+        source: "/docs/getting-started",
+        destination: "/docs/cloud",
+        permanent: true,
+      },
+      {
+        source: "/docs/getting-started/:path*",
+        destination: "/docs/cloud/:path*",
+        permanent: true,
+      },
+      {
+        source: "/docs/cloud/core-concepts",
+        destination: "/docs/glossary",
         permanent: true,
       },
       {
         source: "/docs/getting-started/manage-workspace",
-        destination: "/docs/getting-started/manage-space",
+        destination: "/docs/cloud/manage-space",
+        permanent: true,
+      },
+      {
+        source: "/docs/cloud/manage-workspace",
+        destination: "/docs/cloud/manage-space",
         permanent: true,
       },
       {

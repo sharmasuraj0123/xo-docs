@@ -1,0 +1,28 @@
+---
+title: Workspace Timeline
+description: Parallel multi-repo Git commit history and dated artifact tracking across all projects.
+icon: ChartLineUp
+---
+
+<Lead>
+  The **Timeline** view plots the chronological growth of your entire workspace over time. It aggregates Git commit logs from multiple project repositories into synchronized parallel lanes.
+</Lead>
+
+![XO Space Parallel Timeline Viewer](/images/space/timeline-viewer.gif)
+
+## Parallel Git Lanes
+
+When multiple agents and developers work across different project folders:
+
+- **Dedicated Repo Lanes**: Each project with a `.git` directory gets its own vertical timeline lane.
+- **Synchronized Commit Dots**: Commits across different repositories are aligned by timestamp, making cross-repo dependencies and parallel agent progress immediately visible.
+- **Non-Git Project Parity**: Projects without Git repositories are drawn in darker, muted lanes so the Timeline never quietly omits projects shown in the Files tab.
+
+---
+
+## Dated Artifacts
+
+The Timeline also captures non-commit milestones:
+
+- **Snapshot Milestones**: Automatic state checkpoints captured before and after major agent tasks ($S_0 \to S_1$).
+- **Exported Deliverables**: Generated reports, test runs, and deployed builds.

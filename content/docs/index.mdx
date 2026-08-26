@@ -53,6 +53,42 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 
 <Cards>
 	<Card
+		icon={<span className="icon-[ph--desktop-fill] size-6" />}
+		title="XO Space (Local OSS)"
+		description="Install Space engine locally via curl command to run & observe local agents."
+		href="/docs/space"
+	/>
+	<Card
+		icon={<span className="icon-[ph--cloud-fill] size-6" />}
+		title="XO Space (Managed Cloud)"
+		description="Launch a managed cloud Space on app.xo.builders with instant browser IDE."
+		href="/docs/cloud"
+	/>
+	<Card
+		icon={<span className="icon-[ph--map-trifold-fill] size-6" />}
+		title="Space Walk"
+		description="Interactive tour of /space/ on localhost:5002: Files, Tree lens, Orbiting todos, and Timeline."
+		href="/docs/space/space-walk"
+	/>
+	<Card
+		icon={<span className="icon-[ph--gauge-fill] size-6" />}
+		title="Measure Work (quirq)"
+		description="The output meter for AI work: minting verified deliverables (V · B) vs model token burn."
+		href="/docs/quirq"
+	/>
+	<Card
+		icon={<span className="icon-[ph--activity-fill] size-6" />}
+		title="Agent Observability"
+		description="Watch agent execution live, stream session traces, and monitor cowork-api events."
+		href="/docs/space/observability"
+	/>
+	<Card
+		icon={<span className="icon-[ph--book-open-fill] size-6" />}
+		title="Platform glossary"
+		description="Space = Environment, runtime decoupling, cowork-api, and universal terms."
+		href="/docs/glossary"
+	/>
+	<Card
 		icon={<span className="icon-[mingcute--telescope-fill] size-6" />}
 		title="Read the research"
 		description="Explore the Future of Work thesis, quirq, experiments, and perspectives."
@@ -60,8 +96,8 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 	/>
 	<Card
 		icon={<span className="icon-[ph--robot-fill] size-6" />}
-		title="Choose and use an agent"
-		description="Compare OpenClaw, Claude Code, Hermes, XO Cowork, and Antigravity, then follow its workflow."
+		title="Agent guides"
+		description="Setup guides for OpenClaw, Claude Code, Hermes, XO Cowork, and Antigravity."
 		href="/docs/agents"
 	/>
 	<Card
@@ -101,31 +137,23 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 ## Quick Answers
 
 <Accordions>
-	<Accordion title="Is XO free?">
-		Hosted XO on [app.xo.builders](https://app.xo.builders) is not free. Every
-		new account gets a **30-day Basic trial** when you sign up so you can try
-		the product. After the trial, you need a paid plan. You always bring your
-		own model (API key or OAuth).
-
-		Want to try without a cloud subscription? [Install Space
-		locally](/docs/space) and run it on your machine.
+	<Accordion title="Is XO Space free?">
+		Yes! **XO Space** is open-source. You can run Space locally on your machine for free with a single `curl` command to observe and measure your local agents.
+		
+		If you prefer a managed environment, **XO Cloud** on [app.xo.builders](https://app.xo.builders) provides pre-provisioned cloud infrastructure (includes a 30-day trial). You bring your own model key in both cases.
 	</Accordion>
 	<Accordion title="Do I need my own model key?">
 		You bring your own model: use an API key from Anthropic, OpenAI, or
 		OpenRouter, or connect via OAuth with your existing Claude or ChatGPT
 		subscription. XO does not sell model credits.
 	</Accordion>
-	<Accordion title="What can I actually run?">
-		Five agent templates (OpenClaw, Claude Code, Hermes, XO Cowork,
-		Antigravity), XO Launchpad deploys, and purpose-built environments for
-		real work and experimentation.
+	<Accordion title="What is the relationship between XO Space and XO Cloud?">
+		**XO Space** is the core open-source engine (`cowork-api`) for agent execution and observability. **XO Cloud** is simply a managed way to launch Space on remote infrastructure. Anything you can do on XO Cloud can also be done locally with XO Space.
 	</Accordion>
-	<Accordion title="Do I need to install anything?">
-		No. Everything runs in the cloud browser IDE — secure, isolated
-		spaces with no local setup or infra to manage.
+	<Accordion title="How do I observe local agents?">
+		Install Space locally using `curl -fsSL quirq.ai/install | sh` (or add it as an agent skill). Launch the local UI on `localhost:5002` to watch live agent sessions, inspect tool execution, and track performance metrics.
 	</Accordion>
 	<Accordion title="Is my data secure?">
-		Credentials live in your space. Each project gets an isolated
-		machine so agents and secrets stay separated from other users.
+		On **Local Space**, work and telemetry stay 100% on your machine. On **Cloud Space**, credentials live in isolated cloud containers under your control. See the [Glossary](/docs/glossary) for details.
 	</Accordion>
 </Accordions>

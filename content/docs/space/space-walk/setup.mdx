@@ -1,32 +1,55 @@
 ---
-title: Space Setup & Storage
-description: Manage storage roots, file watcher coverage, credentials, and self-updates in XO Space.
+title: Setup & Quirq State
+description: Manage storage roots, file watcher coverage, write-only credentials, and inspect machine-local vs portable metadata in XO Space.
 icon: Settings
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  The **Setup** tab in the local Space UI provides single-pane administration over your running `xo-space` daemon, storage paths, file watcher status, and connected providers.
+  The **Setup** tab (`# /setup`) provides single-pane administration over your local `xo-space` daemon, file watcher coverage, storage roots, connected agent runtimes, and write-only credentials.
 </Lead>
 
 ![XO Space Setup & Machine State](/images/space/setup.jpeg)
 
-## Storage Configuration
+## Storage Roots
 
-- **`XO_PROJECTS_ROOT`**: The directory containing all workspace projects. Defaults to the directory you ran the installer from, or `~/xo-projects`. You can change this path directly in the Setup UI.
-- **State Root (`~/.quirq/`)**: Where daemon logs (`quirq.log`), internal database indices, and cache tokens live.
+- **`XO_PROJECTS_ROOT`**: The directory containing all workspace projects. Defaults to the directory where the installer was launched or `~/xo-projects`. You can update this root directly in the Setup UI.
+- **State Root (`~/.quirq/`)**: Machine-local daemon state, watcher offsets, and operational caches.
 
 ---
 
-## System Health & Coverage
+## File Watcher & Runtime Health
 
-- **File Watcher Status**: Real-time status of the inotify / fsevents daemon watching your project folders.
-- **Active Backend**: Shows which agent backend is currently selected for active chat turns.
-- **Git Self-Update**: Checks [github.com/quirq-ai/xo-space](https://github.com/quirq-ai/xo-space) for new releases and lets you update your local daemon in place.
+- **Watcher Status**: Live monitoring of the inotify / fsevents daemon watching your project directories.
+- **Active Backend**: Select which agent backend executes active chat turns in the workspace.
+- **Git Self-Update**: One-click check against [github.com/quirq-ai/xo-space](https://github.com/quirq-ai/xo-space) to update your daemon binary in place without re-running shell scripts.
+
+---
+
+## The Quirq State View
+
+Clicking **Open Quirq state** in the Setup header (or deep-linking to `# /quirq`) opens a privacy-aware operational map separating two storage destinations:
+
+```
+┌───────────────────────────────┬───────────────────────────────┐
+│ Machine-Local (.quirq/)       │ Portable Project (.xo/)       │
+├───────────────────────────────┼───────────────────────────────┤
+│ • .quirq/watcher/offsets.json │ • <project>/.xo/project.json  │
+│ • .quirq/watcher/locks/       │ • <project>/.xo/todos.json    │
+│ • .quirq/watcher/activity/    │ • <project>/.xo/timeline.jsonl│
+│ • Ephemeral presence & cursors│ • <XO root>/.xo/space.json    │
+└───────────────────────────────┴───────────────────────────────┘
+```
+
+- **Machine-Local `.quirq/`**: Offsets, ephemeral file locks, and live activity streams that belong only to this machine.
+- **Portable `.xo/`**: Project identities, durable todos, session indices, and timeline logs designed to travel with the codebase and be committed to Git.
 
 ---
 
 ## Write-Only Credentials
 
-Configure API keys for Anthropic, OpenAI, OpenRouter, GitHub (`gh` token), Vercel, and Google Drive without exposing them in plain text.
+Store API keys securely without exposing them in plaintext or committing them to version control:
+- **AI Providers**: Anthropic, OpenAI, OpenRouter.
+- **Developer Tools**: GitHub (`gh` tokens), Vercel, Google Drive.
+- **Masked Storage**: Keys are saved write-only; the UI masks values and never transmits raw tokens to the browser.

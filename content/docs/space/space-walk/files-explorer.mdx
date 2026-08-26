@@ -1,44 +1,74 @@
 ---
-title: Files Explorer & Drawer
-description: The Files list, project drawer, and in-place file previewer in XO Space.
-icon: LayoutDashboard
+title: Files Explorer & Graph
+description: "The Files tab in XO Space: List, Graph, and Tree lenses with project drawers and safe in-place file previews."
+icon: Folder
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  The **Files** tab in XO Space gives you three distinct lenses over your workspace projects. The **List** lens gives every project a dedicated row with rich metadata, while the **Project Drawer** and **Viewer** let you inspect files without losing context.
+  The **Files** tab is one top-level home with three interchangeable lenses behind a **List | Graph | Tree** switch. It lands on **List** for operational browsing, offers **Graph** for cross-project relationships, and provides **Tree** for horizontal directory hierarchy.
 </Lead>
 
 ![XO Space Files List View](/images/space/files-list.png)
 
-## The List View
+## Three Lenses, One Tab
 
-In the List lens, every project in your `XO_PROJECTS_ROOT` appears as an interactive card:
+### 1. List Lens (Operational Directory)
 
-- **Project Description**: Extracted automatically from the project's local `README.md` or `PROJECT.md`.
-- **File & Folder Metrics**: Live file counts and folder depth.
-- **Active Agent Status**: A live pulse indicating whether an agent (Claude Code, OpenClaw, Hermes, Antigravity, etc.) is currently executing tasks inside that directory.
-- **Last Activity Timestamp**: Sourced from the in-memory file watcher.
+The List lens gives every project under `XO_PROJECTS_ROOT` a dedicated operational row:
+
+- **Project Metadata**: Display name, description (extracted from `project.json`, `README.md`, `PROJECT.md`, or `OBJECTIVES.md`), and creation date.
+- **Activity & Presence**: Live badges indicating active agent sessions (Claude Code, OpenClaw, Hermes, Codex, Cursor) currently running in that directory.
+- **Last Active**: Timestamp sourced from normalized watcher timeline events.
+- **Unscaffolded Badges**: Folders lacking a `project.json` are still listed so no workspace code is hidden.
 
 ---
 
-## The Project Drawer & In-Place File Viewer
+## The Project Drawer
 
-Clicking on any project row slides open the two-pane **Project Drawer** and file viewer:
+Clicking any project row opens a multi-panel slideout drawer:
 
 ![XO Space In-Place File Viewer](/images/space/files-viewer.png)
 
-1. **Left Pane (File Tree)**: Browse the project's subdirectories and files in an interactive explorer.
-2. **Right Pane (Context & Events)**:
-   - **Active Todos**: Open tasks and checkboxes pulled from `PLAN.md` / `todos.json`.
-   - **Open Sessions**: Active and recent chat session threads.
-   - **Watcher Events**: Real-time stream of file additions, modifications, and deletions.
+- **Files Panel**: Path-safe folder-by-folder file explorer via `GET /api/xo-projects/{id}/tree`. Includes clickable breadcrumbs, file size indicators, item counts for subfolders, and modified timestamps.
+- **Todos Panel**: Lists open and completed tasks from portable `todos.json`.
+- **Sessions Panel**: Shows active and historical agent chat threads for that specific project.
+- **Timeline Panel**: Live stream of file modifications, additions, and deletions captured by the watcher.
 
-### Safe In-Place Previews
+---
 
-Clicking any file opens the preview drawer without navigating you away from your current work:
+## Safe In-Place File Viewer
 
-- **Markdown**: Rendered with GitHub-flavored markdown, headings, code blocks, and math.
-- **HTML**: Sandboxed in an isolated `iframe` with `sandbox="allow-scripts"` disabled and zero same-origin access.
-- **Code & Text**: Displayed with escaped syntax highlighting and line numbers.
+Clicking any file row in the Project Drawer, Tree lens, or Graph detail panel opens the safe in-place preview drawer:
+
+- **Markdown**: Rendered with GitHub-flavored Markdown, headings, tables, task lists, and syntax blocks.
+- **HTML**: Rendered inside an isolated `iframe` with empty sandbox attributes (`sandbox=""`) and zero same-origin access.
+- **Code & Text**: Escaped syntax display with line numbers and a 256 KB safety cap. Unsupported file types return a clean notice.
+- **Raw Source Toggle**: Toggle between rendered view and raw plaintext source at any time; press `Esc` to close immediately.
+- **Graph Jump**: Click the "Graph" button in the preview header to immediately fly to that file's node in the Graph lens.
+
+---
+
+## Graph Lens (Relationship Network)
+
+The Graph lens maps the workspace as projects, artifact clusters, and cross-project ties:
+
+- **Cluster Expansion**: Double-click clusters to expand or collapse child leaves.
+- **Neighborhood Focus**: Click a node to highlight its connected paths and dim unrelated areas.
+- **Show on Timeline**: Click "Show on timeline" to carry the selected run or artifact directly into the Timeline tab.
+
+---
+
+## Data Sources & Safety
+
+| Endpoint | File / Store | Purpose |
+|---|---|---|
+| `GET /xo/space.json` | `<XO root>/.xo/space.json` | Atlas graph, tree, and project counts. Rebuilt by the watcher at most every 30s. |
+| `GET /api/xo-projects` | Project directory scan | High-level project catalog paired with `/activity` and `/timeline`. |
+| `GET /api/xo-projects/{id}/tree` | Project filesystem | Bounded, folder-by-folder file listing for the drawer explorer. |
+| `GET /api/xo-projects/{id}/file` | Project filesystem | File content for the safe previewer (256 KB cap, suffix allowlist). |
+
+<Callout type="info">
+  The Files tab is strictly read-only. It reads derived metadata and project structure, and never modifies project files, `.xo`, or `.quirq` files.
+</Callout>

@@ -1,28 +1,50 @@
 ---
 title: Workspace Timeline
-description: Parallel multi-repo Git commit history and dated artifact tracking across all projects.
+description: Parallel multi-repo Git commit history and dated artifact tracking with upward time flow in XO Space.
 icon: ChartLineUp
 ---
 
+import { Callout } from "fumadocs-ui/components/callout";
+
 <Lead>
-  The **Timeline** view plots the chronological growth of your entire workspace over time. It aggregates Git commit logs from multiple project repositories into synchronized parallel lanes.
+  The **Timeline** tab (`# /time`) plots when work happened across the workspace. It arranges dated work into vertical columns with time flowing upward: **newest at the top, oldest at the bottom**.
 </Lead>
 
 ![XO Space Parallel Timeline Viewer](/images/space/timeline-viewer.gif)
 
-## Parallel Git Lanes
+## Two Timeline Modes
 
-When multiple agents and developers work across different project folders:
+Timeline supports two distinct operational modes via the mode toggle:
 
-- **Dedicated Repo Lanes**: Each project with a `.git` directory gets its own vertical timeline lane.
-- **Synchronized Commit Dots**: Commits across different repositories are aligned by timestamp, making cross-repo dependencies and parallel agent progress immediately visible.
-- **Non-Git Project Parity**: Projects without Git repositories are drawn in darker, muted lanes so the Timeline never quietly omits projects shown in the Files tab.
+### 1. By Project Mode (Parallel Git Histories)
+
+Plots each project's Git commit history in parallel vertical columns:
+
+- **One Column per Project**: Every project with its own Git repository occupies a dedicated column.
+- **Commit Dots**: Each dot represents a commit day, with dot radius sized by the number of commits landed that day.
+- **Cross-Repo Momentum**: Compare velocity across multiple repositories side-by-side to understand cross-team and multi-agent coordination.
+- **Click to Graph**: Clicking any commit dot immediately opens that project and its touched files on the Graph map.
+
+### 2. By File Mode (Dated Artifact History)
+
+Plots every dated artifact in the workspace:
+
+- **First-Commit Milestone**: Each file is plotted at the date of its first commit.
+- **Cluster Tracing**: Opening a cluster from the Graph lens allows you to carry related artifacts into a focused timeline trace.
+- **Scrubber & Playback**: Drag the bottom scrubber or click **Play** to watch the sweep line move up the page as artifacts appear in chronological order.
 
 ---
 
-## Dated Artifacts
+## Non-Git Project Parity
 
-The Timeline also captures non-commit milestones:
+The Timeline never silently omits projects that exist in the Files tab:
 
-- **Snapshot Milestones**: Automatic state checkpoints captured before and after major agent tasks ($S_0 \to S_1$).
-- **Exported Deliverables**: Generated reports, test runs, and deployed builds.
+- Projects that have their own Git repository display their full commit timeline.
+- Projects without a Git repository (or new folders without commits yet) appear in darker, muted lanes, maintaining full parity with the workspace directory list.
+
+---
+
+## Data Sources
+
+- **`GET /xo/space.json`**: Serves `<XO root>/.xo/space.json`, providing `gitHistory`, dated leaves, categories, and relationship edges.
+- **`<project>/.xo/timeline.jsonl`**: The watcher's durable normalized event history, capturing file lifecycle events across agent runs.

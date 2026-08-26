@@ -1,0 +1,132 @@
+---
+title: Contributing to XO Space
+description: "How to contribute to the open-source xo-space daemon, add agent adapters, and validate changes."
+icon: GitPullRequest
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+import { Steps } from "fumadocs-ui/components/steps";
+
+<Lead>
+  `xo-space` is the open-source local control plane service for AI coding agents. It stitches together runtimes (Claude Code, OpenClaw, Hermes, Antigravity, Codex, Cursor), manages workspace project metadata, and serves the browser UI at `/space/`.
+</Lead>
+
+---
+
+## Core Invariants
+
+When contributing to `xo-space`, uphold the following four architectural invariants:
+
+1. **The Modularity Invariant**: Core code is agent-agnostic. No core file (`server.py`, `routers/`, `services/engine/`) may name a specific agent backend. Agent-specific code lives exclusively in `config/agents/<name>/` and `services/cowork_agent/adapters/<name>/`.
+2. **The Project Folder is Sacred**: Never write chat transcripts, session messages, or secrets into a project directory or `<XO root>/<project>/.xo/`. Conversations remain strictly in the runtime's native storage (`~/.claude/`, `~/.openclaw/`, `~/.hermes/`, `~/.gemini/antigravity-cli/`, `~/.codex/`).
+3. **`.xo/` Belongs to the Watcher**: Only `services/cowork_agent/visualizer/{sinks,workspace}/` writes to `.xo/` directories. All other services and UI endpoints read derived state.
+4. **Thin Routers, Logic in Services**: Endpoints defined in `routers/` act as thin HTTP request/response handlers; business logic lives in `services/`.
+
+---
+
+## Development Setup
+
+<Steps>
+### Clone and Set Up Python Venv
+
+```bash
+git clone https://github.com/quirq-ai/xo-space.git
+cd xo-space
+
+# Create virtual environment and install dependencies
+./cowork-api.sh install
+```
+
+### Start the Local Development Server
+
+```bash
+# Runs FastAPI with hot reloading on port 5002 (falls back to 5003 if busy)
+./cowork-api.sh dev
+```
+
+Open **[http://localhost:5002/space/](http://localhost:5002/space/)** in your browser.
+
+### Run with a Specific Backend
+
+```bash
+AGENT_NAME=claude_code venv/bin/python server.py
+# or: AGENT_NAME=hermes, AGENT_NAME=openclaw, AGENT_NAME=antigravity
+```
+</Steps>
+
+---
+
+## Adding a New Agent Backend ("Drop Two Folders")
+
+Adding a new coding agent requires **zero changes to core router files**.
+
+<Steps>
+### 1. Declarative Config (`config/agents/<name>/`)
+
+Create `config/agents/<name>/`:
+- `manifest.json`: Defines binary name, home directory, agent directory, and template commands.
+- `capabilities.json`: Declares UI capability flags (Models, Data, Channels, Secrets).
+- `settings.json`: Agent-specific default parameters.
+
+### 2. Dispatch Adapter (`services/cowork_agent/adapters/<name>/`)
+
+Create `services/cowork_agent/adapters/<name>/adapter.py` subclassing `BaseAgentAdapter`:
+
+```python
+from services.cowork_agent.adapters.base import BaseAgentAdapter
+
+class MyAgentAdapter(BaseAgentAdapter):
+    @property
+    def adapter_name(self) -> str:
+        return "my_agent"
+
+    async def run(self, question: str, session_id: str | None = None, **kwargs):
+        # One-shot command execution
+        ...
+
+    async def stream(self, prompt: str, session_id: str | None = None, **kwargs):
+        # Asynchronous SSE token streaming
+        ...
+
+Adapter = MyAgentAdapter
+```
+
+### 3. Add Optional Capabilities
+
+Implement only the capabilities your agent provides:
+- `usage.py`: Normalized token and cost reporting (`/api/usage`).
+- `models.py`: Supported model catalog listing (`/api/models`).
+- `sessions.py`: Ingest and parse native session transcripts.
+- `routes.py`: Optional agent-specific FastAPI routes (`APIRouter`).
+
+Any omitted capability gracefully falls back to empty default responses or 501 status without runtime errors.
+</Steps>
+
+---
+
+## Validation Playbook
+
+Run the test suite and validation gates before submitting a Pull Request:
+
+```bash
+# 1. Run unit test suite (94 tests across 14 modules)
+venv/bin/python -m unittest discover -s tests -t .
+
+# 2. Test import gates across all agent backends
+for a in claude_code openclaw hermes antigravity; do
+  AGENT_NAME=$a venv/bin/python -c "import server; \
+    print('$a', len(server.app.openapi()['paths']))"
+done
+
+# 3. Check Claude & Codex plugin synchronization
+./scripts/check_plugin_sync.sh
+```
+
+---
+
+## Pull Request Guidelines
+
+- **Target Branch**: Target `main` for all features and fixes.
+- **Documentation**: If your change modifies the adapter contract, `.xo/` schema, or `/xo/*.json` views, update `DEVELOPING.md` and `space_ui/js/views/wiki.js` in the same commit.
+- **Backward Compatibility**: Preserve existing endpoint schemas and response shapes.
+- **No Secret Logging**: Never log API tokens, user prompt text, or authentication cookies.

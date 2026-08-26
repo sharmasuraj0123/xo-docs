@@ -10,7 +10,7 @@ import { Callout } from "fumadocs-ui/components/callout";
   The **Files** tab is one top-level home with three interchangeable lenses behind a **List | Graph | Tree** switch. It lands on **List** for operational browsing, offers **Graph** for cross-project relationships, and provides **Tree** for horizontal directory hierarchy.
 </Lead>
 
-![XO Space Files List View](/images/space/files-list.png)
+![The Files list: one row per project with counts, activity and descriptions](/images/space/files-list.png)
 
 ## Three Lenses, One Tab
 
@@ -29,7 +29,7 @@ The List lens gives every project under `XO_PROJECTS_ROOT` a dedicated operation
 
 Clicking any project row opens a multi-panel slideout drawer:
 
-![XO Space In-Place File Viewer](/images/space/files-viewer.png)
+![A project drawer: two-pane file explorer beside todos, sessions and events](/images/space/files-drawer.png)
 
 - **Files Panel**: Path-safe folder-by-folder file explorer via `GET /api/xo-projects/{id}/tree`. Includes clickable breadcrumbs, file size indicators, item counts for subfolders, and modified timestamps.
 - **Todos Panel**: Lists open and completed tasks from portable `todos.json`.
@@ -41,6 +41,8 @@ Clicking any project row opens a multi-panel slideout drawer:
 ## Safe In-Place File Viewer
 
 Clicking any file row in the Project Drawer, Tree lens, or Graph detail panel opens the safe in-place preview drawer:
+
+![The file previewer: rendered markdown in a side drawer over the tree](/images/space/file-preview.png)
 
 - **Markdown**: Rendered with GitHub-flavored Markdown, headings, tables, task lists, and syntax blocks.
 - **HTML**: Rendered inside an isolated `iframe` with empty sandbox attributes (`sandbox=""`) and zero same-origin access.

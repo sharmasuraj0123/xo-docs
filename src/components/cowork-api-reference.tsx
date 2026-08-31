@@ -76,7 +76,7 @@ export function CoworkApiReference() {
   const configuration = useMemo<AnyApiReferenceConfiguration>(
     () => ({
       url: "/openapi/xo-cowork-api.json",
-      servers: [{ url: server, description: "Selected XO Cowork space" }],
+      servers: [{ url: server, description: "Selected XO Space" }],
       persistAuth: false,
       telemetry: false,
       agent: { disabled: true },
@@ -154,7 +154,7 @@ export function CoworkApiReference() {
               </p>
             </div>
             <a
-              href="/more/xo-cowork-api/overview"
+              href="/api-reference/overview"
               className="inline-flex shrink-0 items-center gap-1.5 text-sm font-medium text-fd-primary hover:underline"
             >
               Connection and auth guide
@@ -242,7 +242,7 @@ export function CoworkApiReference() {
         {hostedLoopbackWarning ? (
           <div className="border-t border-amber-500/30 bg-amber-500/10 px-5 py-4 text-sm leading-6 text-amber-900 dark:text-amber-200 sm:px-6">
             A hosted HTTPS page may need browser local-network permission, and
-            Cowork API must allow this docs origin through CORS. For the most
+            the Space API must allow this docs origin through CORS. For the most
             reliable local workflow, open a same-origin reference from the space
             or run these docs at <code>http://localhost:3100</code>.
           </div>

@@ -30,9 +30,6 @@ export function QuirqHome() {
         >
           <BrandIcon name="quirq" size={24} />
           <span className="text-base font-bold">XO Space</span>
-          <span className="rounded-full border border-fd-border bg-fd-muted px-2 py-0.5 text-[10px] font-medium text-fd-muted-foreground">
-            v2.1.0 OSS
-          </span>
         </Link>
         <nav aria-label="Primary" className="flex items-center gap-4 text-sm">
           <Link
@@ -45,7 +42,7 @@ export function QuirqHome() {
             href="/docs/space/space-walk"
             className="hidden text-fd-muted-foreground transition-colors hover:text-fd-foreground sm:inline-block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-fd-primary"
           >
-            Space Walk
+            Space UI
           </Link>
           <Link
             href="/docs/quirq"
@@ -115,7 +112,7 @@ export function QuirqHome() {
                 {copied ? (
                   <>
                     <span className="icon-[ph--check-bold] size-3.5 text-fd-primary" />
-                    <span className="text-fd-primary">Copied</span>
+                    <span className="text-fd-primary font-semibold">Copied</span>
                   </>
                 ) : (
                   <>
@@ -163,7 +160,7 @@ export function QuirqHome() {
       {/* 5-Stage Sequence Visual */}
       <SystemSequence />
 
-      {/* Two Deployment Targets */}
+      {/* Two Deployment Targets (Decoupled Architecture) */}
       <section className="border-y border-fd-border bg-fd-muted px-5 py-20 sm:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="max-w-2xl">
@@ -342,7 +339,7 @@ export function QuirqHome() {
               <span className="mb-3 flex size-8 items-center justify-center rounded-lg border border-fd-border bg-fd-muted text-fd-primary">
                 <span className="icon-[ph--map-trifold-fill] size-4" />
               </span>
-              <span className="font-semibold">Space Walk</span>
+              <span className="font-semibold">Space UI</span>
               <span className="mt-2 block text-sm text-fd-muted-foreground">
                 UI guide for localhost:5002.
               </span>
@@ -380,17 +377,20 @@ export function QuirqHome() {
         <div className="mx-auto flex max-w-6xl flex-col gap-5 text-sm text-fd-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>XO Space — Open-source agent workspace & observability engine.</p>
           <nav aria-label="Social links" className="flex items-center gap-2">
-            {socialLinks.map((link) => {
-              if (link.type !== "icon") return null;
-
+            {socialLinks.map((link, idx) => {
+              if (!("url" in link) || typeof link.url !== "string") return null;
+              const label =
+                "text" in link && typeof link.text === "string"
+                  ? link.text
+                  : "Social link";
               return (
                 <a
-                  key={link.label}
+                  key={link.url || idx}
                   href={link.url}
-                  aria-label={link.label}
                   target="_blank"
-                  rel="noreferrer"
-                  className="flex size-8 items-center justify-center rounded-lg border border-fd-border bg-fd-card text-fd-muted-foreground transition-colors hover:bg-fd-accent hover:text-fd-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-fd-primary"
+                  rel="noopener noreferrer"
+                  className="rounded-md p-2 text-fd-muted-foreground transition-colors hover:bg-fd-accent hover:text-fd-foreground"
+                  aria-label={label}
                 >
                   {link.icon}
                 </a>

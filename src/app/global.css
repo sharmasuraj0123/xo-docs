@@ -56,3 +56,16 @@ html {
 [data-single-font] :is(code, kbd, samp, pre, .font-mono, svg text) {
   font-family: inherit;
 }
+
+/*
+ * Ensure sidebar viewport has ample bottom padding so that when items in the
+ * sidebar page tree are expanded, bottom items (Changelog, Troubleshooting,
+ * Glossary, social links) scroll completely clear of the floating bottom bar.
+ */
+aside [data-radix-scroll-area-viewport],
+aside [data-sidebar-viewport],
+#nd-sidebar [data-radix-scroll-area-viewport],
+#nd-sidebar-mobile [data-radix-scroll-area-viewport],
+[data-sidebar] [data-radix-scroll-area-viewport] {
+  padding-bottom: calc(var(--docs-bottom-bar-height, 60px) + 3.5rem) !important;
+}

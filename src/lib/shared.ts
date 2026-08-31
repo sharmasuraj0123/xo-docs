@@ -7,7 +7,7 @@ export const researchContentRoute = "/llms.mdx/research";
 
 // fill this with your actual GitHub info, for example:
 export const gitConfig = {
-  user: "sharmasuraj0123",
-  repo: "xo-docs",
+  user: "quirq-ai",
+  repo: "xo-space",
   branch: "main",
 };

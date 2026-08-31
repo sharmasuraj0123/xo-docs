@@ -1,16 +1,47 @@
 ---
-title: Install Space
-description: Install and run XO Space locally—the environment where your agents work on your machine.
-icon: Download
+title: Getting Started
+description: Launch a managed XO Space in the cloud or install and run the open-source daemon locally on your machine.
+icon: Rocket
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
+import { VideoEmbed } from "@/components/video-embed";
 
 <Lead>
-  Install **XO Space** on your local machine with a single curl command. XO Space is open-source on GitHub at [github.com/quirq-ai/xo-space](https://github.com/quirq-ai/xo-space). Once installed, it boots the local `cowork-api` control plane and observability UI on your machine.
+  **XO Space** is the core environment and control plane (`cowork-api`) where AI coding agents execute and measure their work. You can get started with an instant **1-Click Cloud Sandbox** or install the **Local Space (OSS)** daemon directly on your laptop.
 </Lead>
 
-## Install Local Space (OSS)
+## 1. One-Click Launch (XO Cloud)
+
+The fastest way to start with zero local configuration. **XO Cloud** provisions a dedicated, isolated Linux sandbox running XO Space with a pre-configured browser IDE, persistent storage, and public endpoints.
+
+- **Instant Provisioning**: One click to spin up an isolated environment on high-performance cloud infrastructure.
+- **Pre-Configured Agent Runtimes**: Out-of-the-box support for Claude Code, OpenClaw, Hermes, Antigravity, and Codex.
+- **Built-in Browser IDE**: Access VS Code server in the browser directly alongside your live agent sessions.
+- **BYO Model Keys**: Connect your Anthropic, OpenAI, or OpenRouter keys, or use Claude/ChatGPT OAuth.
+
+<div className="my-6">
+  <a
+    href="https://app.xo.builders/sign-up?ref=docs.quirq.ai"
+    target="_blank"
+    rel="noreferrer noopener"
+    className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02] hover:opacity-95 active:scale-[0.98]"
+  >
+    <span className="icon-[ph--rocket-launch-fill] size-5" />
+    <span>Launch on XO Cloud (app.xo.builders)</span>
+    <span className="icon-[ph--arrow-right-bold] size-4" />
+  </a>
+</div>
+
+<Callout type="info">
+  XO Cloud includes a 30-day trial for every new project with full access to all Space features.
+</Callout>
+
+---
+
+## 2. Install Local Space (OSS)
+
+If you prefer to run agents directly on your laptop, Mac Studio, or private workstation, install the open-source **XO Space** daemon. It is 100% private, free, and runs on your loopback interface.
 
 Run this command in your terminal:
 
@@ -18,34 +49,33 @@ Run this command in your terminal:
 curl -fsSL https://quirq.ai/install | sh
 ```
 
-The installer downloads the latest release of XO Space, provisions the background `cowork-api` daemon, and launches your local Space at:
+The installer downloads the latest release of XO Space, boots the background `cowork-api` daemon, and opens your local Space control plane at:
 
 👉 **[http://localhost:5002/space/](http://localhost:5002/space/)**
 
 Keep the terminal running while you use Space (press `Ctrl-C` to stop).
 
 <Callout type="info">
-	XO Space is the open-source packaging of `cowork-api` (the exact engine running inside every hosted agent on [app.xo.builders](https://app.xo.builders)). State and logs are stored locally at `~/.quirq/`.
+  Local Space stores metadata, session traces, and todos locally at `~/.quirq/` and your workspace `.xo/` folder without transmitting telemetry outside your machine.
 </Callout>
 
 ![Installing Space through terminal/command prompt](/images/quirq.png)
 
-## Optional tools
+<VideoEmbed id="nrDtDvbqu00" title="Installing and Running XO Space Locally" />
 
-The installer reports optional integrations individually. Node and npm enable
-the agent CLI at boot, while GitHub CLI (`gh`) enables repository backup. If an
-optional tool is missing, only the adjacent feature is unavailable.
+### Optional Tools & Prerequisites
 
-## Local or cloud
+The installer automatically inspects your environment and auto-detects installed coding agents (Claude Code, OpenClaw, Hermes, Antigravity, Cursor):
 
-A **Space** is the environment where the agent works in either place. This page
-installs that environment **on your machine**. To run on an XO-provisioned
-remote machine instead, use [XO Cloud](/docs/cloud/overview).
+- **Node.js & npm**: Enables agent CLI spawning and local execution.
+- **GitHub CLI (`gh`)**: Enables repository sync and branch backup.
+- **Python 3.12+**: For extending custom tools or direct API integration.
 
-## Next
+---
 
-Continue with [Your first Space](/docs/space/first-space) for a guided walkthrough
-of the UI. To install Space guidance inside Claude Code, see
-[Install as a skill](/docs/space/install-space-as-a-skill/claude-code).
+## Next Steps
 
-[quirqs](/docs/quirq) measure verified work delivered inside a Space.
+- [Your First Space](/docs/space/first-space) — A step-by-step walkthrough of the Space UI.
+- [Space UI Overview](/docs/space/space-walk) — Explore the Dashboard, Files Explorer, Tree Lens, and Timeline.
+- [Agent Observability](/docs/space/observability) — Watch live multi-runtime telemetry and session traces.
+- [Install as a Skill](/docs/space/install-space-as-a-skill/claude-code) — Add Space skills directly to Claude Code.

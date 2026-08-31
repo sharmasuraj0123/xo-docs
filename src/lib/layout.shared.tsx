@@ -23,8 +23,8 @@ const logo = (
 
 const tabLinks: LinkItemType[] = [
   { text: "Guides", url: "/docs", active: "nested-url" },
-  { text: "API Reference", url: "/api-reference", active: "nested-url" },
-  { text: "Templates", url: "/templates", active: "nested-url" },
+  { text: "Space API Reference", url: "/api-reference", active: "nested-url" },
+  // { text: "Templates", url: "/templates", active: "nested-url" },
   { text: "Research", url: "/research", active: "nested-url" },
 ];
 
@@ -83,5 +83,6 @@ export function baseOptions(): BaseLayoutProps {
   return {
     nav: { title: logo },
     links: tabLinks,
+    githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
   };
 }

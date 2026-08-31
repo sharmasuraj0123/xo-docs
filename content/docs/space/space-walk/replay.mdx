@@ -1,5 +1,5 @@
 ---
-title: Space Walk 3D Session Replay
+title: 3D Session Replay
 description: "Replaying agent sessions as moving light over Firefly Tree and Attention Terrain 3D repository maps."
 icon: Play
 ---
@@ -7,7 +7,7 @@ icon: Play
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  **Space Walk** is XO Labs' fork of `mindwalk`. It reads native session logs from Claude Code, Codex, and pi harnesses, normalizes each run into a replayable trace, and plays it back as **light moving over a 3D map of the repository**: where the agent searched, read, and edited, the map glows — everything else stays dark.
+  **3D Session Replay** is XO Space's built-in visual replay engine (forked from `mindwalk`). It reads native session logs from Claude Code, Codex, and pi harnesses, normalizes each run into a replayable trace, and plays it back as **light moving over a 3D map of the repository**: where the agent searched, read, and edited, the map glows — everything else stays dark.
 </Lead>
 
 ---
@@ -32,7 +32,7 @@ Session Logs (JSONL)
 
 ## Touch State Lattice & Color Encoding
 
-Space Walk tracks target file interactions across a strict progression lattice:
+The replay engine tracks target file interactions across a strict progression lattice:
 
 **`edit > read > hit`**
 

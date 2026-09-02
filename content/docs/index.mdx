@@ -1,6 +1,7 @@
 ---
 title: XO Space
 description: The home for your AI Agent Team.
+icon: BookOpen
 ---
 
 import { Cards, Card } from "@/components/card";
@@ -34,12 +35,6 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 		href="/docs/agents/hermes"
 	/>
 	<Card
-		icon={<BrandIcon name="xo-cowork" size={24} />}
-		title="XO Cowork"
-		description="Chat-first AI space with per-project memory and multi-channel reach."
-		href="/docs/agents/xo-cowork"
-	/>
-	<Card
 		icon={<BrandIcon name="antigravity" size={24} />}
 		title="Antigravity"
 		description="Google's agent-first coding platform, running in a secure XO space."
@@ -66,15 +61,9 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 	/>
 	<Card
 		icon={<span className="icon-[ph--map-trifold-fill] size-6" />}
-		title="Space Walk"
+		title="Space UI"
 		description="Interactive tour of /space/ on localhost:5002: Files, Tree lens, Orbiting todos, and Timeline."
 		href="/docs/space/space-walk"
-	/>
-	<Card
-		icon={<span className="icon-[ph--gauge-fill] size-6" />}
-		title="Measure Work (quirq)"
-		description="The output meter for AI work: minting verified deliverables (V · B) vs model token burn."
-		href="/docs/quirq"
 	/>
 	<Card
 		icon={<span className="icon-[ph--activity-fill] size-6" />}
@@ -97,25 +86,13 @@ import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
 	<Card
 		icon={<span className="icon-[ph--robot-fill] size-6" />}
 		title="Agent guides"
-		description="Setup guides for OpenClaw, Claude Code, Hermes, XO Cowork, and Antigravity."
+		description="Setup guides for OpenClaw, Claude Code, Hermes, and Antigravity."
 		href="/docs/agents"
-	/>
-	<Card
-		icon={<span className="icon-[ph--squares-four-fill] size-6" />}
-		title="Create an environment"
-		description="Choose or build a purpose-built space for real work, learning, and experimentation."
-		href="/docs/more/create-your-environments"
-	/>
-	<Card
-		icon={<span className="icon-[ph--rocket-fill] size-6" />}
-		title="Deploy an application"
-		description="Use XO Launchpad to deploy from GitHub, local Docker, Lovable, or a template."
-		href="/docs/more/xo-launchpad"
 	/>
 	<Card
 		icon={<span className="icon-[ph--code-fill] size-6" />}
 		title="Build an integration"
-		description="Connect through the XO Cowork API or give supported AI clients access through the XO MCP Server."
+		description="Connect through the Space API or give supported AI clients access through the XO MCP Server."
 		href="/api-reference"
 	/>
 	<Card

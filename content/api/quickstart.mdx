@@ -1,18 +1,18 @@
 ---
-title: "Quickstart: Make Your First Cowork API Request"
+title: "Quickstart: Make Your First Space API Request"
 icon: Zap
-description: "Verify a Cowork API instance, discover its space configuration, and stream a first chat turn."
+description: "Verify a Space API instance, discover its space configuration, and stream a first chat turn."
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 
-Use this guide to verify that `xo-cowork-api` is reachable, discover the space
+Use this guide to verify that `cowork-api` (the Space API) is reachable, discover the space
 instead of hardcoding its paths, and send one streamed chat turn.
 
 ## Before you start
 
-You need a running XO Coworker space. The API runs inside it on port `5002` by
+You need a running XO Space. The API runs inside it on port `5002` by
 default.
 
 ```bash
@@ -37,10 +37,10 @@ overview](/api-reference/overview#auth-model).
     A healthy instance returns:
 
     ```json
-    { "status": "XO Cowork API running" }
+    { "status": "Space API running" }
     ```
 
-    If this request cannot connect, confirm that the Coworker space is running
+    If this request cannot connect, confirm that the Space daemon is running
     and that `BASE` points to its current local port or tunnel URL.
   </Step>
 
@@ -75,7 +75,7 @@ overview](/api-reference/overview#auth-model).
     curl --fail --silent --show-error \
       -X POST "$BASE/api/chat/prompt" \
       -H "Content-Type: application/json" \
-      -d '{"text":"Reply with exactly: XO Cowork API connected."}'
+      -d '{"text":"Reply with exactly: Space API connected."}'
     ```
 
     The API returns a stream identifier and a logical session identifier:
@@ -108,7 +108,7 @@ overview](/api-reference/overview#auth-model).
     data: {"session_id":"9d4e5f6a-..."}
 
     event: text-delta
-    data: {"session_id":"9d4e5f6a-...","text":"XO Cowork API connected."}
+    data: {"session_id":"9d4e5f6a-...","text":"Space API connected."}
 
     event: done
     data: {"finish_reason":"stop","session_id":"9d4e5f6a-..."}
@@ -133,7 +133,7 @@ the model choices your space exposes.
 
 Before moving on, verify all four outcomes:
 
-- `/` returns HTTP `200` with `{ "status": "XO Cowork API running" }`.
+- `/` returns HTTP `200` with `{ "status": "Space API running" }`.
 - `/api/config/workspace` returns a `default` key present in `roots`.
 - `/api/chat/prompt` returns a non-empty `stream_id`.
 - The SSE request ends with `done`, or surfaces an actionable `agent-error`.

@@ -1,5 +1,5 @@
 {
-  "title": "Space Walk",
+  "title": "Space UI",
   "icon": "Map",
   "pages": [
     "index",
@@ -8,7 +8,6 @@
     "tree-lens",
     "timeline",
     "sessions",
-    "replay",
     "setup"
   ]
 }

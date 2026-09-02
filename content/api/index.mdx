@@ -1,12 +1,12 @@
 ---
-title: XO Cowork API
+title: Space API
 description: Build frontends and AI agents on top of the in-space control plane.
 icon: Network
 ---
 
 import { Cards, Card } from "@/components/card";
 
-The XO Cowork API (`xo-cowork-api`) is the FastAPI control plane and agent observability daemon that runs **inside** every XO Space—both in the open-source [XO Space](https://github.com/quirq-ai/xo-space) local runtime and in every hosted container on [app.xo.builders](https://app.xo.builders). It brokers chat to agent runtimes (Claude Code, Codex, OpenClaw), owns the `~/xo-projects/` tree, streams live session telemetry, manages secrets, and proxies connector OAuth flows.
+The **Space API** (`cowork-api`) is the FastAPI control plane and agent observability daemon that runs **inside** every XO Space—both in the open-source [XO Space](https://github.com/quirq-ai/xo-space) local runtime and in every hosted container on [app.xo.builders](https://app.xo.builders). It brokers chat to agent runtimes (Claude Code, Codex, OpenClaw), owns the `~/xo-projects/` tree, streams live session telemetry, manages secrets, and proxies connector OAuth flows.
 
 This section is a developer-facing integration guide for the stable client
 surface. The running service also mounts agent-specific, internal, legacy, and
@@ -97,7 +97,7 @@ administrative routes, so its raw OpenAPI operation count varies by space.
 
 ```
 ┌──────────────────────────┐    HTTP + SSE     ┌──────────────────────────┐
-│   Your frontend          │  (loopback by     │      xo-cowork-api       │
+│   Your frontend          │  (loopback by     │        Space API         │
 │   (web, Tauri, mobile,   │   default)        │      FastAPI :5002       │
 │    AI agent)             │ ────────────────► │                          │
 │                          │                   │   /api/chat/*            │
@@ -127,7 +127,7 @@ administrative routes, so its raw OpenAPI operation count varies by space.
                                                           └──────────────────────┘
 ```
 
-`xo-cowork-api` is the only thing that knows which CLI to spawn or which OpenClaw URL to call. Frontends never speak to a runtime directly, and they never reach `xo-swarm-api` directly either.
+The Space API is the only component that knows which CLI to spawn or which OpenClaw URL to call. Frontends never speak to a runtime directly, and they never reach `xo-swarm-api` directly either.
 
 ## At a glance
 
@@ -162,7 +162,7 @@ administrative routes, so its raw OpenAPI operation count varies by space.
 └── agents/<a>/sessions/
     └── <session_id>.jsonl           message content lives here
 
-~/.claude/                           Claude Code runtime (read-only for cowork)
+~/.claude/                           Claude Code runtime (read-only for space API)
 └── projects/<encoded-path>/<sid>.jsonl
 
 ~/.xo-cowork/                        machine-local UI state

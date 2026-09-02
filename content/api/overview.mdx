@@ -1,12 +1,12 @@
 ---
-title: XO Cowork API Architecture and Conventions
+title: Space API Architecture and Conventions
 icon: Info
 description: Base URL, auth model, transport conventions, and error envelope.
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
 
-`xo-cowork-api` is a Python 3.12 FastAPI app that runs inside every Coworker space on port `5002`. The frontend (Tauri desktop, browser, mobile, or any AI client) talks to it over plain HTTP plus Server-Sent Events.
+`cowork-api` (the Space API) is a Python 3.12 FastAPI app that runs inside every Space on port `5002`. The frontend (Tauri desktop, browser, mobile, or any AI client) talks to it over plain HTTP plus Server-Sent Events.
 
 ## Base URL
 
@@ -34,7 +34,7 @@ one of:
 - `Authorization: Bearer {token}` (most hosts)
 - `Coder-Session-Token: {token}` (Coder spaces)
 
-These headers belong to the remote proxy boundary and are ignored by Cowork API
+These headers belong to the remote proxy boundary and are ignored by Space API
 when no validating proxy is present. They are **not** the same as the
 `xo-swarm-api` Bearer token that cowork-api itself holds for upstream calls. That
 token is minted by the Clerk poll-token flow in `/xo-auth/*` and is invisible to

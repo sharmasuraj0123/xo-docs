@@ -1,4 +1,5 @@
 {
   "title": "Templates",
+  "icon": "LayoutTemplate",
   "pages": ["n8n-workflows", "gaianet-node"]
 }

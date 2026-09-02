@@ -1,6 +1,6 @@
 {
-  "title": "XO Cowork API",
-  "icon": "XoCowork",
+  "title": "Space API",
+  "icon": "Code",
   "pages": [
     "quickstart",
     "reference",

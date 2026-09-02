@@ -132,7 +132,7 @@ const STEPS: Step[] = [
       "Tracks ~/xo-projects/ metadata, todos, and file events in real time",
       "Persistent state survives agent swaps and server restarts",
     ],
-    ctaLabel: "Take a Space Walk",
+    ctaLabel: "Tour Space UI",
     href: "/docs/space/space-walk",
     chips: (
       <>
@@ -182,27 +182,27 @@ const STEPS: Step[] = [
     ),
   },
   {
-    id: "layer-4-output",
+    id: "layer-4-observability",
     index: "04",
-    icon: "gauge",
-    title: "4. Measure Output & quirqs (The Output Meter)",
+    icon: "activity",
+    title: "4. Live Observability & Telemetry (Session Traces)",
     time: "Layer 4",
-    layer: "Output Layer",
-    summary: "Measure delivered work outcomes instead of just burning tokens.",
+    layer: "Observability Layer",
+    summary: "Live trace streams, multi-runtime telemetry, and 3D session replay.",
     detail:
-      "Labs push token spend without showing ROI. quirq is the output meter: minting verified units of delivered work (V · B) scored against machine-checkable definitions of done.",
+      "Monitor every coding agent in real time. Space normalizes session traces, token volumes, latency percentiles, and tool invocations across Claude Code, Codex, and Cursor into one unified control plane.",
     highlights: [
-      "Live session trace streaming & token/cost telemetry",
-      "quirq scores completion V ∈ [0, 1] against verified state diffs (S₀ → S₁)",
-      "Proves real engineering output vs raw model spend to stakeholders",
+      "Real-time session trace streaming & token/cost telemetry",
+      "Unified multi-runtime monitoring across Claude Code, Codex, and Cursor",
+      "3D spatial session replays over interactive repository citymaps",
     ],
-    ctaLabel: "Read quirq Docs",
-    href: "/docs/quirq",
+    ctaLabel: "Explore Observability",
+    href: "/docs/space/observability",
     chips: (
       <>
-        <TextChip icon="gauge" label="quirq = V · B" />
         <TextChip icon="eye" label="Live Tracing" />
-        <TextChip label="Verified ROI" />
+        <TextChip label="Token Telemetry" />
+        <TextChip label="3D Session Replay" />
       </>
     ),
   },
@@ -541,7 +541,7 @@ export function WhatIsXO() {
       <div className="mx-auto mb-8 max-w-3xl text-center">
         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-fd-border bg-fd-muted/50 px-3 py-1 text-xs font-medium text-fd-foreground">
           <BrandIcon name="quirq" size={14} />
-          <span>XO Space is Open Source (v2.1.0)</span>
+          <span>XO Space is Open Source</span>
           <a
             href={GITHUB_REPO_URL}
             target="_blank"
@@ -552,15 +552,14 @@ export function WhatIsXO() {
           </a>
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-fd-foreground sm:text-5xl">
-          One-Click Agentic Environments. Measure Output, Not Just Tokens.
+          One-Click Agentic Environments. Live Multi-Runtime Observability.
         </h1>
         <p className="mt-4 text-sm leading-relaxed text-fd-muted-foreground sm:text-base">
-          Every AI agent workload requires four layers: <strong>Runtime</strong>{" "}
-          (the machine), <strong>Environment</strong> (XO Space),{" "}
-          <strong>Agent</strong> (unopinionated harness), and{" "}
-          <strong>Output</strong> (quirq). XO decouples the environment from the
-          machine—providing live observability and measuring verified work
-          delivered across your entire team.
+          Every AI coding workload requires three core layers: <strong>Runtime</strong>{" "}
+          (the machine), <strong>Environment</strong> (XO Space), and{" "}
+          <strong>Agent</strong> (Claude Code, OpenClaw, Hermes, Antigravity, Codex, Cursor).
+          XO decouples the environment from the machine—providing live session tracing, unified
+          telemetry, and workspace coordination across your entire team.
         </p>
       </div>
 

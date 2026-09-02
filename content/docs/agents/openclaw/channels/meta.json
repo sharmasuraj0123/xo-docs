@@ -1,4 +1,5 @@
 {
   "title": "Channels",
+  "icon": "Workflow",
   "pages": ["connect-slack"]
 }

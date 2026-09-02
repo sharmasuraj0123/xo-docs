@@ -2,7 +2,6 @@
   "title": "XO Space",
   "icon": "Blocks",
   "pages": [
-    "index",
     "install-space",
     "first-space",
     "space-walk",

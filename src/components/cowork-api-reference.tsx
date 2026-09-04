@@ -125,7 +125,7 @@ export function CoworkApiReference() {
     <div className="not-prose w-full" data-ph-no-capture data-private>
       <section
         className="mb-6 overflow-hidden rounded-2xl border bg-fd-card text-fd-card-foreground shadow-sm"
-        aria-labelledby="cowork-connection-title"
+        aria-labelledby="space-connection-title"
       >
         <div className="border-b bg-fd-muted/40 p-5 sm:p-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
@@ -141,10 +141,7 @@ export function CoworkApiReference() {
                   Auth is not saved
                 </span>
               </div>
-              <h2
-                id="cowork-connection-title"
-                className="text-xl font-semibold"
-              >
+              <h2 id="space-connection-title" className="text-xl font-semibold">
                 Connect your space
               </h2>
               <p className="mt-2 text-sm leading-6 text-fd-muted-foreground">
@@ -167,14 +164,14 @@ export function CoworkApiReference() {
           <form className="contents" onSubmit={applyServer}>
             <div>
               <label
-                htmlFor="cowork-server-url"
+                htmlFor="space-server-url"
                 className="mb-2 block text-sm font-medium"
               >
                 Space API URL
               </label>
               <div className="flex flex-col gap-2 sm:flex-row">
                 <input
-                  id="cowork-server-url"
+                  id="space-server-url"
                   type="url"
                   inputMode="url"
                   autoComplete="off"
@@ -182,7 +179,7 @@ export function CoworkApiReference() {
                   value={draftServer}
                   onChange={(event) => setDraftServer(event.target.value)}
                   aria-invalid={Boolean(error)}
-                  aria-describedby={error ? "cowork-server-error" : undefined}
+                  aria-describedby={error ? "space-server-error" : undefined}
                   className="min-w-0 flex-1 rounded-lg border bg-fd-background px-3.5 py-2.5 font-mono text-sm outline-none transition focus:border-fd-primary focus:ring-2 focus:ring-fd-primary/20"
                 />
                 <button
@@ -195,7 +192,7 @@ export function CoworkApiReference() {
               </div>
               {error ? (
                 <p
-                  id="cowork-server-error"
+                  id="space-server-error"
                   role="alert"
                   className="mt-2 text-sm text-red-600 dark:text-red-400"
                 >

@@ -50,7 +50,7 @@ manus
 
 ## 1. Google Drive (rclone-backed)
 
-The cowork-api is the OAuth orchestrator; rclone holds the tokens. One file, `<repo>/rclone.conf`, holds every Drive **and** OneDrive remote.
+Space is the OAuth orchestrator; rclone holds the tokens. One file, `<repo>/rclone.conf`, holds every Drive **and** OneDrive remote.
 
 <Callout type="warn">
 Concurrent OAuth flows for Drive and OneDrive are serialized by a single-flight lock on port `:53682` (Google's bundled OAuth client embeds this as the only allowed callback). If a flow is already in flight you'll get a 409.
@@ -103,7 +103,7 @@ body: { "code": "http://localhost:53682/?code=..." }
 → {"ok": true}
 ```
 
-The cowork-api extracts the code via regex, forwards it to rclone, and writes the new `[name]` section into `rclone.conf`.
+Space extracts the code via regex, forwards it to rclone, and writes the new `[name]` section into `rclone.conf`.
 
 ### Cancel
 
@@ -223,7 +223,7 @@ body: { "session_id": "gh-cli-..." }
 → { "status": "pending" | "approved" | "expired" }
 ```
 
-On approval, the token is written to `~/.xo-cowork/github_token.json` and registered in `mcp-tokens.json`.
+On approval, the token is written to `~/.space/github_token.json` and registered in `mcp-tokens.json`.
 
 ```
 POST /api/connectors/github/cli/cancel
@@ -305,7 +305,7 @@ The token lands in `mcp-tokens.json` under `manus`.
 ```
 <repo>/rclone.conf                     gdrive + onedrive remotes (rclone-managed)
 <repo>/mcp-tokens.json                 github / vercel / manus tokens
-~/.xo-cowork/github_token.json         gh CLI cached token (device-flow path)
+~/.space/github_token.json             gh CLI cached token (device-flow path)
 ~/.openclaw/.env                       provider API keys (Anthropic, OpenAI, etc.)
 auth_state (in-memory)                 swarm Bearer token (Clerk poll-token flow)
 ```

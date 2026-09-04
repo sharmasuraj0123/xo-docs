@@ -6,7 +6,7 @@ icon: Network
 
 import { Cards, Card } from "@/components/card";
 
-The **Space API** (`cowork-api`) is the FastAPI control plane and agent observability daemon that runs **inside** every XO Space—both in the open-source [XO Space](https://github.com/quirq-ai/xo-space) local runtime and in every hosted container on [app.xo.builders](https://app.xo.builders). It brokers chat to agent runtimes (Claude Code, Codex, OpenClaw), owns the `~/xo-projects/` tree, streams live session telemetry, manages secrets, and proxies connector OAuth flows.
+The **Space API** (`space`) is the FastAPI control plane and agent observability daemon that runs **inside** every XO Space—both in the open-source [XO Space](https://github.com/quirq-ai/xo-space) local runtime and in every hosted container on [app.xo.builders](https://app.xo.builders). It brokers chat to agent runtimes (Claude Code, Codex, OpenClaw), owns the `~/xo-projects/` tree, streams live session telemetry, manages secrets, and proxies connector OAuth flows.
 
 This section is a developer-facing integration guide for the stable client
 surface. The running service also mounts agent-specific, internal, legacy, and
@@ -165,7 +165,7 @@ The Space API is the only component that knows which CLI to spawn or which OpenC
 ~/.claude/                           Claude Code runtime (read-only for space API)
 └── projects/<encoded-path>/<sid>.jsonl
 
-~/.xo-cowork/                        machine-local UI state
+~/.space/                            machine-local UI state
 ├── state.json                       onboarding flags
 └── github_token.json                gh CLI cached token
 

@@ -22,7 +22,7 @@ The config surface answers "what does this space know about itself?" Fetch it on
 | `GET` | `/api/config/openyak-account` | OpenYak account state. |
 | `GET` | `/api/config/ollama` | Local Ollama detection. |
 | `GET` | `/api/config/local` | Local provider state (heuristic). |
-| `GET` | `/api/onboarding` | Onboarding state from `~/.xo-cowork/state.json`. |
+| `GET` | `/api/onboarding` | Onboarding state from `~/.space/state.json`. |
 | `POST` | `/api/onboarding/complete` | Persist onboarding completion. |
 | `POST` | `/api/channels/add` | Save a channel token (Slack / Telegram / Discord). |
 
@@ -89,7 +89,7 @@ Returns the list of models the active agent manifest declares. Drives the model 
 }
 ```
 
-The manifest lives at `config/agents/<backend>/commands.json` on the cowork-api side. To add a model, edit the manifest and restart the API; there is no PUT endpoint for it today.
+The manifest lives at `config/agents/<backend>/commands.json` on the space side. To add a model, edit the manifest and restart the API; there is no PUT endpoint for it today.
 
 ## 3. Provider state
 
@@ -136,7 +136,7 @@ Use this in onboarding "Save Key" flows. For bulk edits where you don't care abo
 
 ## 5. Onboarding state
 
-Backed by `~/.xo-cowork/state.json`. The frontend reads it on every boot to decide whether to show the onboarding wizard.
+Backed by `~/.space/state.json`. The frontend reads it on every boot to decide whether to show the onboarding wizard.
 
 ### `GET /api/onboarding`
 
@@ -210,7 +210,7 @@ Outside `/api/*`, a handful of server-direct routes exist for diagnostics and li
 | `GET` | `/health` | Detailed process diagnostics: stage, upstream URL, CLI paths, sanitized auth state, and session count. |
 | `GET` | `/debug/ai-auth` | Sanitized provider creds |
 | `POST` | `/gateway/restart` | Restart the OpenClaw gateway subprocess |
-| `POST` | `/app/restart` | Restart cowork-api itself |
+| `POST` | `/app/restart` | Restart space daemon itself |
 | `POST` | `/app/update` | `git pull` then restart |
 | `GET` | `/sessions` | Legacy `session_store` dump (used by `/ask_question*`) |
 | `DELETE` | `/sessions/{project_id}` | Drop a legacy session entry |

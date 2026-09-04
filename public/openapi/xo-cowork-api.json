@@ -1,22 +1,22 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "XO Cowork API — Safe Explorer",
+    "title": "XO Space API — Safe Explorer",
     "version": "1.0.0",
     "summary": "Read-only discovery and workspace inspection endpoints",
-    "description": "A curated, read-only contract for the XO Cowork control plane. It is intentionally smaller than the service's internal OpenAPI document: credential management, file contents, agent execution, connector tokens, backup/restore, and lifecycle controls are excluded from interactive use. Requests affect the selected real workspace; this is not a mock server.",
+    "description": "A curated, read-only contract for the XO Space control plane. It is intentionally smaller than the service's internal OpenAPI document: credential management, file contents, agent execution, connector tokens, backup/restore, and lifecycle controls are excluded from interactive use. Requests affect the selected real workspace; this is not a mock server.",
     "license": {
       "name": "Internal XO developer documentation"
     }
   },
   "externalDocs": {
-    "description": "XO Cowork API guides and full behavioral documentation",
-    "url": "https://docs.xo.builders/more/xo-cowork-api"
+    "description": "XO Space API guides and full behavioral documentation",
+    "url": "https://docs.xo.builders/api-reference"
   },
   "servers": [
     {
       "url": "http://127.0.0.1:5002",
-      "description": "Local XO Cowork workspace"
+      "description": "Local XO Space workspace"
     }
   ],
   "security": [
@@ -68,20 +68,20 @@
     "/": {
       "get": {
         "tags": ["Connect"],
-        "summary": "Confirm the Cowork API is running",
+        "summary": "Confirm the Space API is running",
         "description": "The safest first request. It returns only the service banner and does not expose the diagnostic details returned by `/health`.",
-        "operationId": "getCoworkStatus",
+        "operationId": "getSpaceStatus",
         "x-xo-risk": "read-only-status",
         "responses": {
           "200": {
-            "description": "Cowork API banner",
+            "description": "Space API banner",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ServiceStatus"
                 },
                 "example": {
-                  "status": "XO Cowork API running"
+                  "status": "Space API running"
                 }
               }
             }
@@ -463,13 +463,13 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "Workspace proxy token",
-        "description": "Optional token enforced by some remote workspace proxies. The Cowork FastAPI app itself does not validate this header. Do not paste XO, model-provider, gateway, poll, or connector secrets here."
+        "description": "Optional token enforced by some remote workspace proxies. The Space FastAPI app itself does not validate this header. Do not paste XO, model-provider, gateway, poll, or connector secrets here."
       },
       "CoderSessionToken": {
         "type": "apiKey",
         "in": "header",
         "name": "Coder-Session-Token",
-        "description": "Optional Coder workspace-proxy session token. It is not an XO API key and is ignored by the Cowork FastAPI app when no validating proxy is present."
+        "description": "Optional Coder workspace-proxy session token. It is not an XO API key and is ignored by the Space FastAPI app when no validating proxy is present."
       }
     },
     "parameters": {
@@ -545,7 +545,7 @@
         "properties": {
           "status": {
             "type": "string",
-            "const": "XO Cowork API running"
+            "const": "Space API running"
           }
         },
         "additionalProperties": false

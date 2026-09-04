@@ -9,17 +9,17 @@ import { Callout } from 'fumadocs-ui/components/callout';
 
 The auth surface covers three distinct flows that all converge into the same in-memory token store (`auth_state`):
 
-1. **Clerk poll-token flow** (`/xo-auth/*`): how the Cowork desktop signs the user in to `xo-swarm-api`.
+1. **Clerk poll-token flow** (`/xo-auth/*`): how the Space desktop signs the user in to `xo-swarm-api`.
 2. **Claude CLI OAuth** (`/claude/*`): bootstrapping the `claude` subprocess with a token.
 3. **Codex device-auth** (`/codex/*`): bootstrapping the `codex` subprocess and upserting it into `~/.openclaw/openclaw.json`.
 
 <Callout type="warn">
-Tokens are stored in-memory only (`auth_state` in `routers/auth.py`). There is no refresh loop. Restart the cowork-api process and you'll need to re-consume.
+Tokens are stored in-memory only (`auth_state` in `routers/auth.py`). There is no refresh loop. Restart the space process and you'll need to re-consume.
 </Callout>
 
 ## 1. Clerk poll-token flow
 
-Triggered when no `XO_API_KEY` env var is set. The Tauri shell opens the browser, the user signs in to Clerk on swarm, and the cowork-api consumes the resulting one-time `poll_token` to mint a Bearer token for `xo-swarm-api`.
+Triggered when no `XO_API_KEY` env var is set. The Tauri shell opens the browser, the user signs in to Clerk on swarm, and the space daemon consumes the resulting one-time `poll_token` to mint a Bearer token for `xo-swarm-api`.
 
 ### Endpoint summary
 
@@ -78,7 +78,7 @@ Triggered when no `XO_API_KEY` env var is set. The Tauri shell opens the browser
 
     ```
     GET /xo-auth/whoami
-    headers: (none from the client; cowork-api injects Bearer from auth_state)
+    headers: (none from the client; space injects Bearer from auth_state)
     →  swarm GET /get-user-id (Bearer)
     ←  { user_id, email, ... }
     ```
@@ -179,8 +179,8 @@ Use these on the onboarding screen to drive "needs setup" badges.
 ```
 auth_state              in-memory dict in routers/auth.py
 ~/.openclaw/.env        provider keys (CLAUDE_CODE_OAUTH_TOKEN, OPENAI_API_KEY, …)
-~/.xo-cowork/state.json onboarding flags
-~/.xo-cowork/github_token.json     gh CLI cached token
+~/.space/state.json     onboarding flags
+~/.space/github_token.json gh CLI cached token
 <repo>/mcp-tokens.json  GitHub PAT / Vercel / Manus tokens
 ```
 

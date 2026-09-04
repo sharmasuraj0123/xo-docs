@@ -34,7 +34,9 @@ export function VideoEmbed({ id, title, type }: VideoEmbedProps) {
     >
       <iframe
         src={embedUrl}
-        title={title ?? (isYouTube ? "YouTube video player" : "Video walkthrough")}
+        title={
+          title ?? (isYouTube ? "YouTube video player" : "Video walkthrough")
+        }
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
         className="absolute inset-0 h-full w-full"

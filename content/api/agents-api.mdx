@@ -142,7 +142,7 @@ Two concurrent `PATCH` calls can race because the implementation does a full rea
 
 ## Related: agent selection in chat
 
-The agents listed here are OpenClaw agents (the `services.cowork_agent.openclaw_store` registry). They are what `agent_id` and `agent_name` in `POST /api/chat/prompt` reference when running OpenClaw turns.
+The agents listed here are OpenClaw agents (the `services.space_agent.openclaw_store` registry). They are what `agent_id` and `agent_name` in `POST /api/chat/prompt` reference when running OpenClaw turns.
 
 Claude Code agents are tracked separately under `~/xo-projects/<id>/.xo/sessions/sessionslist.json` (per-project) and in `config/agents/claude_code/commands.json` (skill registry). They are not exposed through `/api/agents/*`.
 
@@ -153,4 +153,4 @@ Skills (`/skill-name` for Claude, `$skill-name` for Codex) live in:
 - `config/agents/claude_code/commands.json`
 - `config/agents/openclaw/commands.json`
 
-These are read-only at the `/api/skills` and `/api/tools` endpoints (in `routers/cowork_agent/misc.py`). To list or modify skills you would edit the manifest files on disk; there is no PATCH endpoint for them today.
+These are read-only at the `/api/skills` and `/api/tools` endpoints (in `routers/space_agent/misc.py`). To list or modify skills you would edit the manifest files on disk; there is no PATCH endpoint for them today.

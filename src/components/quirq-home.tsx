@@ -112,7 +112,9 @@ export function QuirqHome() {
                 {copied ? (
                   <>
                     <span className="icon-[ph--check-bold] size-3.5 text-fd-primary" />
-                    <span className="text-fd-primary font-semibold">Copied</span>
+                    <span className="text-fd-primary font-semibold">
+                      Copied
+                    </span>
                   </>
                 ) : (
                   <>

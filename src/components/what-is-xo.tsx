@@ -188,7 +188,8 @@ const STEPS: Step[] = [
     title: "4. Live Observability & Telemetry (Session Traces)",
     time: "Layer 4",
     layer: "Observability Layer",
-    summary: "Live trace streams, multi-runtime telemetry, and 3D session replay.",
+    summary:
+      "Live trace streams, multi-runtime telemetry, and 3D session replay.",
     detail:
       "Monitor every coding agent in real time. Space normalizes session traces, token volumes, latency percentiles, and tool invocations across Claude Code, Codex, and Cursor into one unified control plane.",
     highlights: [
@@ -555,11 +556,12 @@ export function WhatIsXO() {
           One-Click Agentic Environments. Live Multi-Runtime Observability.
         </h1>
         <p className="mt-4 text-sm leading-relaxed text-fd-muted-foreground sm:text-base">
-          Every AI coding workload requires three core layers: <strong>Runtime</strong>{" "}
-          (the machine), <strong>Environment</strong> (XO Space), and{" "}
-          <strong>Agent</strong> (Claude Code, OpenClaw, Hermes, Antigravity, Codex, Cursor).
-          XO decouples the environment from the machine—providing live session tracing, unified
-          telemetry, and workspace coordination across your entire team.
+          Every AI coding workload requires three core layers:{" "}
+          <strong>Runtime</strong> (the machine), <strong>Environment</strong>{" "}
+          (XO Space), and <strong>Agent</strong> (Claude Code, OpenClaw, Hermes,
+          Antigravity, Codex, Cursor). XO decouples the environment from the
+          machine—providing live session tracing, unified telemetry, and
+          workspace coordination across your entire team.
         </p>
       </div>
 

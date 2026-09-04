@@ -6,7 +6,7 @@ description: Base URL, auth model, transport conventions, and error envelope.
 
 import { Callout } from 'fumadocs-ui/components/callout';
 
-`cowork-api` (the Space API) is a Python 3.12 FastAPI app that runs inside every Space on port `5002`. The frontend (Tauri desktop, browser, mobile, or any AI client) talks to it over plain HTTP plus Server-Sent Events.
+`space` (the Space API) is a Python 3.12 FastAPI app that runs inside every Space on port `5002`. The frontend (Tauri desktop, browser, mobile, or any AI client) talks to it over plain HTTP plus Server-Sent Events.
 
 ## Base URL
 
@@ -36,7 +36,7 @@ one of:
 
 These headers belong to the remote proxy boundary and are ignored by Space API
 when no validating proxy is present. They are **not** the same as the
-`xo-swarm-api` Bearer token that cowork-api itself holds for upstream calls. That
+`xo-swarm-api` Bearer token that space itself holds for upstream calls. That
 token is minted by the Clerk poll-token flow in `/xo-auth/*` and is invisible to
 the frontend.
 
@@ -92,7 +92,7 @@ This means:
 
 1. All paths must resolve under the OS user's home directory (`$HOME`).
 2. Symlinks are followed by `Path.resolve()`. A symlink under `$HOME` pointing outside is a known leak.
-3. Relative paths are resolved against the cowork-api process's CWD before the home check, so always send absolute paths.
+3. Relative paths are resolved against the space process's CWD before the home check, so always send absolute paths.
 
 The single exception is the `workspace` form field on `/api/files/upload`, which is **not** clamped to `$HOME`. Every other endpoint with a `path` parameter is clamped.
 
@@ -127,7 +127,7 @@ Always JSON, always `detail`-keyed, always parseable.
 | Codex binary | `shutil.which("codex")` | `/home/coder/.local/bin/codex` |
 | `AI_WORKSPACE_ROOT` | Project directory | `/home/coder` |
 
-`local` is for cowork-api on a developer laptop with whatever `claude` / `codex` are in PATH. `beta` assumes the Coder image with binaries at fixed paths. Frontends do not need to know the stage; everything routes through `/api/*` regardless.
+`local` is for space on a developer laptop with whatever `claude` / `codex` are in PATH. `beta` assumes the Coder image with binaries at fixed paths. Frontends do not need to know the stage; everything routes through `/api/*` regardless.
 
 ## Discoverable space config
 

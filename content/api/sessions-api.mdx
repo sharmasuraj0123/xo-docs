@@ -17,7 +17,7 @@ The sessions API reads from native runtime storage (Claude Code JSONL plus OpenC
         ├── sessions.json                 {session_key → {sessionId, updatedAt, directory, ...}}
         └── <session_id>.jsonl            line-per-record message log
 
-~/claude-space/                           ← Claude Code adapter
+~/claude-cowork/                          ← Claude Code adapter
 └── <agent_id>/
     └── sessions/
         ├── sessions.json                 {session_key → {sessionId, nativeSessionId,
@@ -25,7 +25,7 @@ The sessions API reads from native runtime storage (Claude Code JSONL plus OpenC
         └── <session_id>.jsonl
 
 (legacy fallback, read-only:)
-~/claude-space/<agent_id>/.sessions/<session_id>.json
+~/claude-cowork/<agent_id>/.sessions/<session_id>.json
 ```
 
 `sessions_io.load_all_sessions()` walks both roots and merges. `seen_ids` dedupes; an OpenClaw entry wins if both report the same id.
@@ -127,7 +127,7 @@ The frontend's main read path. Hydrates messages from native JSONL and normalize
 }
 ```
 
-The exact per-message shape varies by runtime. The conversion runs through `services.space_agent.messages.convert_messages()`, which normalizes Claude Code stream-json plus OpenClaw chat-completions JSONL into the same envelope.
+The exact per-message shape varies by runtime. The conversion runs through `services.cowork_agent.messages.convert_messages()`, which normalizes Claude Code stream-json plus OpenClaw chat-completions JSONL into the same envelope.
 
 ### Resolution diagram for a single fetch
 
@@ -137,7 +137,7 @@ GET /api/messages/abc-123?limit=50&offset=-1
         ▼
 find_session_file("abc-123"):
         ├── ~/.openclaw/agents/*/sessions/abc-123.jsonl     found? → return
-        ├── ~/claude-space/*/sessions/abc-123.jsonl        found? → return
+        ├── ~/claude-cowork/*/sessions/abc-123.jsonl        found? → return
         └── claude_sessions.find_session_messages_path      legacy .sessions/<id>.json
         │
         ▼
@@ -181,7 +181,7 @@ Update the working directory associated with a session (used by the project / sp
      set meta.directory + meta.updatedAt,
      json.dump back atomically.
 2. If not found, fall through to update_claude_session_directory
-   (same shape but in ~/claude-space/* tree, with legacy `.sessions/{id}.json` fallback).
+   (same shape but in ~/claude-cowork/* tree, with legacy `.sessions/{id}.json` fallback).
 3. 404 if neither layout has it.
 ```
 

@@ -69,7 +69,7 @@ If `agent_id` is missing, it's a new session, and `space` is provided:
 ```
 ws_path = Path(space).expanduser().resolve()
 if   ws_path startswith ~/xo-projects/{X}/...   →  agent_id = X
-elif ws_path startswith ~/claude-space/{X}/...  →  agent_id = X
+elif ws_path startswith ~/claude-cowork/{X}/... →  agent_id = X
 else                                             →  agent_id = None
 ```
 

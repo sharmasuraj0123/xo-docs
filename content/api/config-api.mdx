@@ -22,7 +22,7 @@ The config surface answers "what does this space know about itself?" Fetch it on
 | `GET` | `/api/config/openyak-account` | OpenYak account state. |
 | `GET` | `/api/config/ollama` | Local Ollama detection. |
 | `GET` | `/api/config/local` | Local provider state (heuristic). |
-| `GET` | `/api/onboarding` | Onboarding state from `~/.space/state.json`. |
+| `GET` | `/api/onboarding` | Onboarding state from `~/.xo-cowork/state.json`. |
 | `POST` | `/api/onboarding/complete` | Persist onboarding completion. |
 | `POST` | `/api/channels/add` | Save a channel token (Slack / Telegram / Discord). |
 
@@ -136,7 +136,7 @@ Use this in onboarding "Save Key" flows. For bulk edits where you don't care abo
 
 ## 5. Onboarding state
 
-Backed by `~/.space/state.json`. The frontend reads it on every boot to decide whether to show the onboarding wizard.
+Backed by `~/.xo-cowork/state.json`. The frontend reads it on every boot to decide whether to show the onboarding wizard.
 
 ### `GET /api/onboarding`
 

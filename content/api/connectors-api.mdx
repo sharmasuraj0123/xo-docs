@@ -223,7 +223,7 @@ body: { "session_id": "gh-cli-..." }
 → { "status": "pending" | "approved" | "expired" }
 ```
 
-On approval, the token is written to `~/.space/github_token.json` and registered in `mcp-tokens.json`.
+On approval, the token is written to `~/.xo-cowork/github_token.json` and registered in `mcp-tokens.json`.
 
 ```
 POST /api/connectors/github/cli/cancel
@@ -305,7 +305,7 @@ The token lands in `mcp-tokens.json` under `manus`.
 ```
 <repo>/rclone.conf                     gdrive + onedrive remotes (rclone-managed)
 <repo>/mcp-tokens.json                 github / vercel / manus tokens
-~/.space/github_token.json             gh CLI cached token (device-flow path)
+~/.xo-cowork/github_token.json         gh CLI cached token (device-flow path)
 ~/.openclaw/.env                       provider API keys (Anthropic, OpenAI, etc.)
 auth_state (in-memory)                 swarm Bearer token (Clerk poll-token flow)
 ```

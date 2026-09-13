@@ -897,9 +897,9 @@ export function UowLearningCurve() {
 
 export function Lead({ children }: { children: ReactNode }) {
   return (
-    <p className="not-prose my-5 border-l-2 border-fd-primary pl-4 text-base leading-relaxed text-fd-foreground">
+    <div className="not-prose my-5 border-l-2 border-fd-primary pl-4 text-base leading-relaxed text-fd-foreground">
       {children}
-    </p>
+    </div>
   );
 }
 

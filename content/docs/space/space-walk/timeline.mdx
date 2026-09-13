@@ -1,50 +1,57 @@
 ---
-title: Workspace Timeline
-description: "Parallel multi-repo Git commit history and dated artifact tracking with upward time flow in XO Space."
+title: Timeline
+description: Compare project Git histories and first appearances of mapped files across the workspace.
 icon: ChartLineUp
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  The **Timeline** tab (`# /time`) plots when work happened across the workspace. It arranges dated work into vertical columns with time flowing upward: **newest at the top, oldest at the bottom**.
+  **Timeline** shows when work entered Git history. It places projects in parallel lanes with time flowing upward: newest at the top, oldest at the bottom.
 </Lead>
 
-![The Timeline: commit history in parallel lanes, projects without git drawn dark](/images/space/timeline.png)
+![Timeline in By project mode, with commit days in parallel project lanes](/images/space/timeline.png)
 
-## Two Timeline Modes
+Open the top-level **Timeline** tab, or use `/space/#/time`.
 
-Timeline supports two distinct operational modes via the mode toggle:
+## Choose what to plot
 
-### 1. By Project Mode (Parallel Git Histories)
+| Mode | What a dot means | Useful for |
+|---|---|---|
+| **By file** | A mapped file's first-appearance commit date. | Seeing when artifacts entered a project and tracing related files from Graph. |
+| **By project** | A day with commits in that project's Git history; larger dots represent more commits that day. | Comparing activity across repositories, including changes to existing files. |
 
-Plots each project's Git commit history in parallel vertical columns:
+The mode switch appears when the workspace dataset contains Git history. Space remembers your chosen mode in the browser. Each mode fits the dates it actually plots, so their axes can cover different periods.
 
-- **One Column per Project**: Every project with its own Git repository occupies a dedicated column.
-- **Commit Dots**: Each dot represents a commit day, with dot radius sized by the number of commits landed that day.
-- **Cross-Repo Momentum**: Compare velocity across multiple repositories side-by-side to understand cross-team and multi-agent coordination.
-- **Click to Graph**: Clicking any commit dot immediately opens that project and its touched files on the Graph map.
+![Timeline in By file mode showing the first committed dates of mapped files](/images/space/timeline-files.png)
 
-### 2. By File Mode (Dated Artifact History)
+Every project keeps a lane. A project without dates to plot has a dark lane, and the description reports how many projects lack Git history. In By file, uncommitted or otherwise undated files have no dots.
 
-Plots every dated artifact in the workspace:
+<Callout type="info">
+  A first-appearance date is a Git fact, not a file's filesystem creation or modification time. Timeline reads the workspace graph and Git history; the List drawer's **Recent events** is the separate view of normalized watcher activity.
+</Callout>
 
-- **First-Commit Milestone**: Each file is plotted at the date of its first commit.
-- **Cluster Tracing**: Opening a cluster from the Graph lens allows you to carry related artifacts into a focused timeline trace.
-- **Scrubber & Playback**: Drag the bottom scrubber or click **Play** to watch the sweep line move up the page as artifacts appear in chronological order.
+## Filter and navigate
 
----
+- **Filter projects…** narrows lanes by project name.
+- **Wheel** zooms the time axis around the pointer. **Drag** pans through time and across lanes.
+- **Shift + wheel** moves horizontally across lanes when they exceed the available width.
+- **Year chips** jump to a year. **All** restores the full date range.
+- **Hover a dot** for its details. A By project dot shows the project's commit count and available commit subjects for that day.
+- **Click a file dot** to open Graph focused on that file. **Click a commit-day dot** to focus its project on Graph; it does not open a diff or select every touched file.
 
-## Non-Git Project Parity
+## Scrub and play
 
-The Timeline never silently omits projects that exist in the Files tab:
+Move the range slider to change the current date. **Play** advances the sweep through the visible time window; **Pause** stops it. Dragging the slider stops playback so you can inspect a particular point. Starting Play at the end begins again from the start of the current window.
 
-- Projects that have their own Git repository display their full commit timeline.
-- Projects without a Git repository (or new folders without commits yet) appear in darker, muted lanes, maintaining full parity with the workspace directory list.
+This is playback of dated map entries. It does not replay an agent's chat messages or tool executions. For run-level information, open [Sessions](/docs/space/space-walk/sessions).
 
----
+## Follow a Graph trace
 
-## Data Sources
+In [Graph](/docs/space/space-walk/graph), select a file or cluster and choose **Show on timeline**. The trace switches Timeline to **By file**, highlights the relevant dated entries, and resets a narrowed time window so the trace can be seen. It can start playback automatically unless reduced motion is enabled.
 
-- **`GET /xo/space.json`**: Serves `<XO root>/.xo/space.json`, providing `gitHistory`, dated leaves, categories, and relationship edges.
-- **`<project>/.xo/timeline.jsonl`**: The watcher's durable normalized event history, capturing file lifecycle events across agent runs.
+Use **Clear trace** to return to the normal timeline. A selection with no Git-dated files produces an explanatory message rather than invented dates. Choosing By project also clears a file trace.
+
+## Coverage and loading
+
+Timeline always uses the workspace dataset at `GET /xo/space.json`. Opening it after Dashboard can reload the atlas to switch datasets. An empty axis can mean that the selected projects have no Git history, that the filter hides the relevant lanes, or that the map has not refreshed yet. Check the mode, clear the lane filter, and choose **All** before changing the workspace root in [Setup](/docs/space/space-walk/setup).

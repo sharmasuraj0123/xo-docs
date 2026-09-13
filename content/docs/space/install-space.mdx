@@ -1,81 +1,179 @@
 ---
-title: Getting Started
-description: Launch a managed XO Space in the cloud or install and run the open-source daemon locally on your machine.
+title: Install Space
+description: Install the local server, choose your workspace and runtime, and learn how to start, update, and remove it.
 icon: Rocket
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
-import { VideoEmbed } from "@/components/video-embed";
 
 <Lead>
-  **XO Space** is the core environment and control plane (`cowork-api`) where AI coding agents execute and measure their work. You can get started with an instant **1-Click Cloud Sandbox** or install the **Local Space (OSS)** daemon directly on your laptop.
+  Install XO Space in the directory that should contain your projects. The
+  installer prepares Python and starts the server; you supply the coding agent
+  you want to run.
 </Lead>
 
-## 1. One-Click Launch (XO Cloud)
+## Requirements
 
-The fastest way to start with zero local configuration. **XO Cloud** provisions a dedicated, isolated Linux sandbox running XO Space with a pre-configured browser IDE, persistent storage, and public endpoints.
+Use Linux or macOS. On Windows, run the installation and your agents inside WSL;
+native Windows is not supported. You need `git` and a working `curl` command.
+Docker is not required.
 
-- **Instant Provisioning**: One click to spin up an isolated environment on high-performance cloud infrastructure.
-- **Pre-Configured Agent Runtimes**: Out-of-the-box support for Claude Code, OpenClaw, Hermes, Antigravity, and Codex.
-- **Built-in Browser IDE**: Access VS Code server in the browser directly alongside your live agent sessions.
-- **BYO Model Keys**: Connect your Anthropic, OpenAI, or OpenRouter keys, or use Claude/ChatGPT OAuth.
+The installer fetches `uv` when needed, creates a Python 3.12 virtual environment,
+and installs Space's Python requirements. Other tools enable specific features:
 
-<div className="my-6">
-  <a
-    href="https://app.xo.builders/sign-up?ref=docs.quirq.ai"
-    target="_blank"
-    rel="noreferrer noopener"
-    className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02] hover:opacity-95 active:scale-[0.98]"
-  >
-    <span className="icon-[ph--rocket-launch-fill] size-5" />
-    <span>Launch on XO Cloud (app.xo.builders)</span>
-    <span className="icon-[ph--arrow-right-bold] size-4" />
-  </a>
-</div>
+| Tool | Needed for |
+|---|---|
+| An authenticated agent CLI or gateway | Running prompts through that agent |
+| `node` and `npm` | Installing Node-based agent CLIs |
+| `gh` | GitHub-backed project backup |
+| `rclone` | Drive and OneDrive file connectors |
+| `gpg` | Encrypted backup and restore |
 
-<Callout type="info">
-  XO Cloud includes a 30-day trial for every new project with full access to all Space features.
-</Callout>
+Missing optional tools are reported at startup. They do not prevent you from
+browsing local projects.
 
----
+## Install and open
 
-## 2. Install Local Space (OSS)
-
-If you prefer to run agents directly on your laptop, Mac Studio, or private workstation, install the open-source **XO Space** daemon. It is 100% private, free, and runs on your loopback interface.
-
-Run this command in your terminal:
+Choose a workspace directory, open a terminal there, and run:
 
 ```bash
 curl -fsSL https://quirq.ai/install | sh
 ```
 
-The installer downloads the latest release of XO Space, boots the background `cowork-api` daemon, and opens your local Space control plane at:
+The command clones `xo-space` into that directory, creates `xo-space/venv`, writes
+initial configuration to `xo-space/.env`, and creates `.quirq/` for local state.
+It prints the resolved roots, readiness checks, log paths, and browser URL.
 
-👉 **[http://localhost:5002/space/](http://localhost:5002/space/)**
-
-Keep the terminal running while you use Space (press `Ctrl-C` to stop).
+Open [http://localhost:5002/space/](http://localhost:5002/space/), or the URL printed
+by the installer if it selected another port. **Keep the terminal running.** The
+server runs in the foreground; `Ctrl-C` stops it.
 
 <Callout type="info">
-  Local Space stores metadata, session traces, and todos locally at `~/.quirq/` and your workspace `.xo/` folder without transmitting telemetry outside your machine.
+  The public command installs `main`, the release branch. To try the development
+  UI shown in these guides, use
+  `curl -fsSL https://quirq.ai/install | QUIRQ_SOURCE_REF=development sh`.
+  Development can contain changes that have not reached the release branch.
 </Callout>
 
-![Installing Space through terminal/command prompt](/images/quirq.png)
+## Check Setup before running an agent
 
-<VideoEmbed id="nrDtDvbqu00" title="Installing and Running XO Space Locally" />
+Open **Setup** in the top bar. Check the XO projects root, the machine-local state
+root, the active chat backend, and native session sources.
 
-### Optional Tools & Prerequisites
+![Setup shows configured roots, runtime readiness, watcher settings, and credentials](/images/space/setup.png)
 
-The installer automatically inspects your environment and auto-detects installed coding agents (Claude Code, OpenClaw, Hermes, Antigravity, Cursor):
+The installer defaults to `claude_code`, watches all supported installed runtime
+sources, and skips agent installation. Install and authenticate your chosen agent
+using its normal workflow. For example, if you use Claude Code:
 
-- **Node.js & npm**: Enables agent CLI spawning and local execution.
-- **GitHub CLI (`gh`)**: Enables repository sync and branch backup.
-- **Python 3.12+**: For extending custom tools or direct API integration.
+```bash
+npm install -g @anthropic-ai/claude-code
+```
 
----
+An existing native login can supply authentication. Setup also supports write-only
+credential fields for runtimes that use environment credentials. Installing Space
+does not supply an agent subscription, API key, or OAuth login.
 
-## Next Steps
+See [runtime discovery](/docs/space/auto-detection) when an executable or session
+store is missing.
 
-- [Your First Space](/docs/space/first-space) — A step-by-step walkthrough of the Space UI.
-- [Space UI Overview](/docs/space/space-walk) — Explore the Dashboard, Files Explorer, Tree Lens, and Timeline.
-- [Agent Observability](/docs/space/observability) — Watch live multi-runtime telemetry and session traces.
-- [Install as a Skill](/docs/space/install-space-as-a-skill/claude-code) — Add Space skills directly to Claude Code.
+## Understand the install directory
+
+For a fresh install started in your workspace:
+
+```text
+workspace/
+├── xo-space/                 server checkout and Python environment
+│   ├── .env                  install configuration
+│   └── venv/
+├── .quirq/                   machine-local configuration and telemetry
+│   ├── quirq.log             server output
+│   └── commands.log          external commands run by Space
+├── .xo/                      portable workspace records
+└── my-project/               your files and optional project .xo/ metadata
+```
+
+Your agents' native conversations stay in their own home directories. Project
+stats and session indexes are under `.quirq/projects/`; workspace graphs and
+session aggregates are under `.quirq/workspace/`.
+
+## Start again or update
+
+From the workspace directory:
+
+```bash
+# Start the existing checkout without fetching an update
+./xo-space/install.sh
+
+# Update the managed checkout, then start it
+curl -fsSL https://quirq.ai/install | sh
+```
+
+The update path preserves a checkout with local changes or one on a different
+branch. Read the startup message if an update is skipped. The installer does not
+add a system service, scheduled job, or login item.
+
+If Setup says a restart is needed, stop and rerun a foreground install yourself.
+A managed deployment can support the restart action; an unsupervised local
+process cannot restart itself through that button.
+
+## Change configuration
+
+The installer creates `.env` once and preserves later edits. Common settings are:
+
+| Setting | Fresh local install default | Meaning |
+|---|---|---|
+| `XO_PROJECTS_ROOT` | Directory where you launched the installer | Its child folders are projects. |
+| `QUIRQ_STATE_ROOT` | `.quirq` in that directory | Machine-local state and logs. |
+| `AGENT_NAME` | `claude_code` | Active chat backend; also supports `codex`, `openclaw`, `hermes`, `antigravity`. |
+| `QUIRQ_WATCHER_SOURCE_MODE` | `all` | Watch all configured runtime sources; `active` limits watcher ingestion to the active backend. |
+| `HOST` | `127.0.0.1` | Listening interface. |
+| `PORT` | `5002` | Preferred port. |
+| `QUIRQ_SKIP_BOOT_INSTALL` | `1` | Skip system/agent bootstrap installation. |
+| `UVICORN_RELOAD` | `false` | Enable server reload for development. |
+
+For an install-time override:
+
+```bash
+curl -fsSL https://quirq.ai/install | PORT=8080 sh
+```
+
+Exported settings override `.env`; settings saved through Setup may take precedence
+for the runtime and credentials it manages. Root selections are also persisted
+in `roots.env`. **Setup shows the effective configuration**, which is the useful
+place to check when an environment edit appears not to take effect.
+
+Keep the state root outside project folders. The default hidden `.quirq/` directly
+under the workspace is allowed; other nesting combinations are rejected to avoid
+copying projects into machine-local state during relocation.
+
+## Install from a clone
+
+For a checkout you manage yourself:
+
+```bash
+git clone https://github.com/quirq-ai/xo-space.git
+cd xo-space
+./install.sh
+```
+
+This uses the checkout in place without fetching or resetting it. With no saved
+root configuration, the launch directory becomes the workspace. Choose explicit
+roots in Setup if you want projects elsewhere. For code changes, follow the
+[contributor setup](/docs/space/contributing), which starts from `development`.
+
+## Remove a local install
+
+Preview what removal would do:
+
+```bash
+./xo-space/uninstall.sh --dry-run
+```
+
+Then run `./xo-space/uninstall.sh` when ready. It stops the server and removes
+managed installation/state files while preserving project folders by default.
+Read its summary: a checkout with local changes is kept, and native agent
+installations are separate from Space.
+
+Prefer hosting instead? Open [XO Managed Cloud](https://app.xo.builders/).
+Otherwise continue with [your first Space](/docs/space/first-space).

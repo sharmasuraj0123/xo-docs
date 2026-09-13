@@ -1,75 +1,151 @@
 ---
-title: Agent Observability & Metrics
-description: How XO Space measures agent performance, tracks work delivered, and provides real-time visibility into agent execution.
+title: Agent Observability
+description: Find live project activity, compare session telemetry, and understand the limits of tokens, costs, todos, and git history.
 icon: Activity
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
-import { Cards, Card } from "@/components/card";
 
 <Lead>
-  **XO Space** is the core open-source engine (`cowork-api`) for agent observability. Whether your agent runs on your local machine or in a hosted cloud container, Space gives you full visibility into what your agents are doing, how long tasks take, and what value they deliver.
+  Space reads supported runtime stores and project files to show what happened,
+  where it happened, and what usage was recorded. Use the different views together
+  to distinguish active work, completed steps, delivered files, and cost.
 </Lead>
 
-## Core Observability Capabilities
+## Choose the right view
 
-Every Space instance tracks agent actions in real time, transforming raw terminal or API execution into structured, measurable telemetry.
+| Question | Where to look |
+|---|---|
+| Which project has recent agent activity? | **Projects → List**, then its live badge and activity columns. |
+| What steps are open or blocked? | A project's **Todos** panel, or its selected node on **Dashboard**. |
+| When did files and commits enter Git history? | **Timeline**; use file previews to inspect current or historical contents. |
+| How much usage was recorded, and which tools were called? | **Sessions** and its Overview, Sessions, Tools, Models, and Trends views. |
+| What needs attention? | **Inbox**, filtered to the relevant source. |
+| Why is telemetry missing? | **Setup → Native session sources**, watcher status, and the server log. |
 
-<Cards>
-	<Card
-		icon={<span className="icon-[ph--eye-fill] size-6" />}
-		title="Live Session Streaming"
-		description="Watch agent reasoning, terminal commands, file edits, and tool calls unfold live on your screen."
-	/>
-	<Card
-		icon={<span className="icon-[ph--chart-line-up-fill] size-6" />}
-		title="Work Measurement (quirq)"
-		description="Automatically measure verified units of work delivered by agents across local and cloud environments."
-	/>
-	<Card
-		icon={<span className="icon-[ph--list-checks-fill] size-6" />}
-		title="Audit & Execution Logs"
-		description="Deep trace logs for every agent invocation, tool call, error, and state change stored via cowork-api."
-	/>
-	<Card
-		icon={<span className="icon-[ph--cpu-fill] size-6" />}
-		title="Cost & Resource Metrics"
-		description="Track model usage, token consumption, latency, and system resource utilization."
-	/>
-</Cards>
+![Sessions compares available runtime usage with source and time-window filters](/images/space/sessions.png)
 
-## How Space Observability Works
+## Follow an active project
 
-Inside every agent environment (whether launched locally via CLI/skill or hosted on [app.xo.builders](https://app.xo.builders)), **`cowork-api`** runs alongside your agent.
+Run your agent inside a project under the XO projects root. The watcher polls
+supported native session stores, attributes events to projects, and updates
+machine-local presence and history. It does not require you to start every task
+through Space.
 
-1. **Agent Telemetry**: As your agent runs, tool calls, file writes, bash commands, and thought processes stream into the local or cloud `cowork-api`.
-2. **Real-time UI**: The Space UI (on `localhost` or `app.xo.builders`) renders the activity feed live.
-3. **Work Verification**: Space evaluates task completion and logs performance data for later review.
+In **Projects → List**, refresh and open the project row. The live badge, open
+sessions, and events describe activity the watcher could observe. A missing badge
+can mean no recent observable activity, an unreadable source, or a session that
+could not be mapped to this project; it does not prove that every agent process
+has stopped.
 
-## Observing Local Agents
+Watcher coverage is selected separately from the active chat backend. The local
+installer defaults to `all`; `active` limits watcher ingestion to the selected
+runtime. The current Sessions dashboard discovers its own telemetry providers
+independently of that watcher switch.
 
-When running local agents (e.g. Claude Code, OpenClaw, or Hermes on your laptop), Space collects observability data without sending your source code to external servers:
+## Read Sessions accurately
+
+The current aggregate Sessions dashboard has providers for **Claude Code**,
+**Codex**, and **Cursor**. Other chat-capable runtimes can contribute native
+sessions and watcher events without having a provider for this aggregate view.
+
+1. Use **Sources** to choose which runtimes contribute. This selection applies
+   across all five subviews.
+2. In **Overview** or **Tools**, choose **Today**, **7 days**, **30 days**, or
+   **All**. The Overview heatmap always shows the last 16 weeks, independently
+   of that window.
+3. Open the **Sessions** subview to sort and page through all loaded sessions
+   for the selected sources. Select a row for model, tool, sub-agent, and
+   typed-prompt details.
+4. Use **Models** for an all-time model breakdown and **Trends** for an all-time
+   weekly breakdown. These views have no date-window control. **Refresh**
+   retrieves a newer aggregate payload; it does not clear the page's cached
+   prompt details.
+
+Session identity includes its runtime, so similarly named sessions from different
+sources remain distinct. Parent/subagent information is only as complete as the
+source's recorded relationships.
+
+### Tokens and costs
+
+| Display | Meaning |
+|---|---|
+| Claude Code cost | An estimate based on the Argus telemetry/pricing data. |
+| Codex or Cursor cost shown as unavailable | That provider does not report cost to this dashboard; it is not a zero-cost run. |
+| Partial cost estimate | The total includes only sources with known estimates; other usage is excluded from the cost sum. |
+| Unclassified tokens or unknown breakdown | Some or all tokens could not be assigned to fresh input, output, cache reads, or cache writes. Cursor can use an explicitly marked text-length estimate when native counters are absent. |
+| No data in a time window | No rows match the selected time/source filters in the loaded payload. |
+
+These are observability metrics, not a provider invoice or an automatic quality
+score. A large token count does not show that an outcome was useful or accepted.
+
+### Prompt details
+
+The aggregate `/xo/sessions.json` payload does not contain prompt text. Opening
+session details can fetch user prompts separately from the provider's native
+transcript, grouped into human turns with reply/tool-call counts when available.
+The detail view shows typed prompts, not full assistant replies. Sources without
+that capability show it as unsupported; missing logs have a separate message.
+
+## Connect activity to an outcome
+
+Todos, git history, and file previews answer different questions:
+
+- **Todos** record work through `/api/xo-projects/{id}/todos`. A native runtime todo
+  tool alone does not populate Space's shared list.
+- **Files** let you inspect the resulting document or source change.
+- **Git history** records committed versions. Timeline file dates come from git,
+  rather than file modification time or the moment a session started.
+- **Timeline playback** advances through dated map entries. The separate
+  **Space Walk** application described in the Wiki has its own session replay
+  and optional evaluation features; the current Space Sessions view does not
+  launch it. See [Session replay](/docs/space/space-walk/replay).
+
+Review the actual output and relevant validation before treating a task as
+complete. The [quirq concept](/docs/quirq) describes verified, owner-valued work;
+ordinary session telemetry does not automatically certify it.
+
+## Refresh and missing data
+
+Space materializes workspace views on disk. The watcher refreshes those views at
+most every `XO_VIEWS_REFRESH_S` (default 30 seconds). A request can rebuild a
+missing or stale view; `XO_VIEW_MAX_AGE_S` defaults to 120 seconds. The UI's Refresh
+button can therefore retrieve a cached aggregate rather than force an immediate
+rescan of every store.
+
+If a rebuild fails, a valid older payload can still be served. If there is no
+usable payload, the view reports its error. Use the displayed generation time,
+source status, and Setup to distinguish stale data from an empty workspace.
+
+Useful read-only checks are:
 
 ```bash
-# Start your local Space observer
-curl -fsSL quirq.ai/install | sh
-
-# Open the live observability dashboard
-open http://localhost:5002/space/
+curl -fsS http://localhost:5002/health
+curl -fsS http://localhost:5002/api/runtime-config
+curl -fsS http://localhost:5002/xo/sessions.json
+curl -fsS http://localhost:5002/api/xo-projects/activity
 ```
 
-- **Local Storage**: All trace logs and metrics stay on your machine in `~/.quirq/` or your configured state directory.
-- **Zero Overhead**: Minimal memory footprint designed to run persistently in the background.
+The API explorer at your running server's `/docs` describes that build's routes.
+See [runtime discovery](/docs/space/auto-detection) for source-specific checks.
 
-## Observing Cloud Agents
+## What is stored and reported
 
-On **XO Cloud** ([app.xo.builders](https://app.xo.builders)), every provisioned agent container has Space built-in. 
+| Location | Holds |
+|---|---|
+| Project files and `<project>/.xo/` | Deliverables and portable records such as identity, todos, workitems, and peers. |
+| `<state root>/projects/<pid>/` | Derived project stats, timeline, session indexes, and issue mirrors. |
+| `<state root>/workspace/` | Workspace graph, Dashboard projection, session aggregate, and rollups. |
+| `<state root>/watcher/` | Cursors, locks, heartbeat, and live presence. |
+| `<state root>/inbox.json` | Inbox items, user status, and feeder cursors. |
+| Native agent homes and ingestion stores | Conversations and source telemetry; Claude Code's aggregate uses the separate Argus database. |
 
-- Access the same live session logs, tool execution history, and metrics directly from your browser dashboard.
-- Identical API endpoints (`/api/sessions`, `/api/usage`) exist between local and cloud Space instances.
+A signed-out local install sends no XO usage summary. Setting `XO_API_KEY` or
+linking the install to XO enables a daily summary of tokens, estimated cost, and
+message/session/tool counts per model. That summary excludes prompts, responses,
+file contents, and paths. Setup displays the current reporting decision.
 
-## Next Steps
-
-- Explore the [cowork-api Reference](/api-reference) for programmatically retrieving session logs.
-- Learn how [quirqs](/docs/quirq) measure verified work inside a Space.
-- Deploy local Space as a [Claude Code Skill](/docs/space/install-space-as-a-skill/claude-code).
+Sharing additionally needs a workspace identity and reports commit hashes after
+pushes. Connected services, git operations, and the agent runtimes have their own
+network activity. The source repository's [What leaves your machine](https://github.com/quirq-ai/xo-space#what-leaves-your-machine)
+section describes those boundaries.

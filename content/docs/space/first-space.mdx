@@ -1,80 +1,134 @@
 ---
 title: Your First Space
-description: A step-by-step walkthrough of a local Space—from opening the UI to completing a first task.
+description: Set your workspace root, create a project, run a small task, and find its files, todos, and sessions.
 icon: Map
 ---
 
-import { Step, Steps } from "fumadocs-ui/components/steps";
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  This walkthrough assumes Space is already installed and running. If it is not,
-  complete [Install Space](/docs/space/install-space) first.
+  Start with Space running and one folder of work. This walkthrough connects the
+  project on disk to the views you use to follow it.
 </Lead>
 
-## Before you start
+## 1. Open the workspace
 
-- Space is running (installer terminal still open)
-- You can open [http://localhost:5002/space/](http://localhost:5002/space/) in a browser
-- Optional: an agent CLI or skill you plan to use with this Space
+Open the URL printed by the installer, usually
+[http://localhost:5002/space/](http://localhost:5002/space/). The current UI opens
+on **Dashboard**, the first lens under **Projects**.
 
-Terms: [Space](/docs/glossary#universal-terms), [work project](/docs/glossary#universal-terms).
+Use the **Dashboard | List | Graph | Tree | Sharing** switch to change perspective.
+Clicking the Projects tab opens List; it does not reset you to Dashboard. Existing
+links such as `#/projects`, `#/dashboard`, and `#/tree` open those lenses directly.
 
-## Walkthrough
+![The Projects List shows project descriptions, counts, and activity](/images/space/projects-list.png)
 
-<Steps>
-	<Step>
-		### Open the Space UI
+## 2. Check the roots
 
-		In your browser, go to
-		[http://localhost:5002/space/](http://localhost:5002/space/).
+Open **Setup** and check **XO root**. A project is a direct child folder
+of that root. If the folder you want is elsewhere, change the root or put the
+project under it. Changing the root changes what Space reads; it does not move
+your project folders.
 
-		You should see the local Space interface. This screen **is** your Space:
-		the environment where agents run and work is kept.
-	</Step>
-	<Step>
-		### Orient to the main areas
+Check the separate `.quirq` state root too. It holds machine-local configuration,
+watcher state, and telemetry, rather than your project deliverables.
 
-		Identify the primary regions of the UI (navigation, agent or work area,
-		and any status or project list your build shows). You do not need every
-		control yet—only enough to recognize that you are inside a Space.
-	</Step>
-	<Step>
-		### Attach or start an agent
+<Callout type="info">
+  An empty workspace is expected. Setup and Wiki work immediately. Project maps
+  need folders, git history needs commits, and session telemetry needs a readable
+  supported runtime store. The List's empty state explains how to add a project.
+</Callout>
 
-		Use your usual agent entry point for local Space (for example Claude Code
-		with the [Space skill](/docs/space/install-space-as-a-skill/claude-code),
-		or another supported agent). Confirm the agent is operating against this
-		Space, not a separate Cloud project.
-	</Step>
-	<Step>
-		### Open or create a work project
+## 3. Add a project
 
-		A **work project** is a folder of work *inside* the Space—not an XO Cloud
-		dashboard project. Create or open one so the agent has a place for files
-		and context.
-	</Step>
-	<Step>
-		### Complete one small task
+For existing work, clone or copy its folder directly under the XO projects root.
+It appears in List without requiring a special import operation. A plain folder
+can be browsed before it has scaffolded metadata.
 
-		Ask the agent to do something trivial and verifiable (for example list
-		files in the work project or create a short note). Confirm the result
-		appears in the Space / work project.
-	</Step>
-</Steps>
+For a new project with the standard operating documents, ask an agent with the
+`xo-projects` skill:
 
-## Check
+> Create an xo-project called `hello-space` for a short project note.
 
-You should now be able to:
+The skill discovers the configured root and creates the folder through Space's
+API. The scaffold includes `AGENTS.md`, `PROJECT.md`, `OBJECTIVES.md`, `PLAN.md`,
+`PROGRESS.md`, `memory/`, and `.xo/` metadata. Fill the template documents with the
+project's actual purpose and plan.
 
-1. Open the local Space UI and recognize it as the agent environment  
-2. Run an agent against that Space  
-3. Use a work project folder inside the Space  
-4. Point to one completed task as proof  
+You can also call the API directly. First read the root:
 
-## Next
+```bash
+curl -fsS http://localhost:5002/api/config/workspace
+```
 
-- Optional: [Install Space as a Claude Code skill](/docs/space/install-space-as-a-skill/claude-code)  
-- Measure verified work: [quirq](/docs/quirq)  
-- Prefer hosted machines and sharing: [XO Cloud overview](/docs/cloud/overview)  
-- Terms: [Glossary](/docs/glossary)
+Then replace `/absolute/path/to/workspace` with the returned projects root:
+
+```bash
+curl -fsS -X POST http://localhost:5002/api/files/mkdir \
+  -H 'Content-Type: application/json' \
+  -d '{"path":"/absolute/path/to/workspace/hello-space","scaffold":true,"display_name":"Hello Space"}'
+```
+
+The target must be a direct child of the configured root. An existing folder
+returns `409`; choose another name instead of overwriting it.
+
+## 4. Run a small, verifiable task
+
+Start your normal coding agent from the project folder, using its normal login.
+For example, ask it to create `hello.md` with the project's purpose and one next
+step, then read the file to confirm the result.
+
+Space can observe work launched outside its UI. Choose the runtime in Setup only
+when you need to change which backend handles prompts sent through Space's chat
+API. The bundled Space interface has no Chat tab; continue using your terminal,
+editor, or API client to run the agent.
+
+If you use the `xo-projects` skill, ask it to record work through the project todo
+API as it progresses. A runtime's private todo tool is not automatically mirrored
+into Space's shared todo list.
+
+## 5. Inspect the project
+
+Return to **Projects → List**, refresh, and open the project row.
+
+![A project drawer exposes its file browser and project state](/images/space/projects-detail.png)
+
+- **Files:** navigate folders with breadcrumbs and open `hello.md` in the preview
+  window. Markdown renders; Source shows the underlying text.
+- **Todos:** read the steps recorded through Space's todo API. Select the project
+  on Dashboard to see those todos on the map too.
+- **Open sessions and Recent events:** inspect observed activity when the runtime exposes
+  usable session data and the watcher can attribute it to this project.
+- **Issues:** if the project has a GitHub origin and issue polling is available,
+  inspect the local issue mirror.
+
+Use **Graph** for relationships and **Tree** for the folder hierarchy. A file
+preview stays within the Projects context as you move between lenses; leaving
+Projects closes it.
+
+## 6. Follow the work over time
+
+Open **Sessions** for supported runtime summaries. Start in **Overview**, select
+sources and a time window, then open a session. The Sessions table itself covers
+all loaded sessions for the selected sources. The current aggregate dashboard supports
+Claude Code, Codex, and Cursor; a missing source or unavailable cost is a data
+availability state, not evidence that no work occurred.
+
+Open **Timeline** after the project has git commits. File dates and commit lanes
+come from git, so simply creating a file does not give it a committed date. Review
+**Inbox** for new sessions, blocked todos, issues, sharing events, and configured
+connection updates.
+
+## If something is missing
+
+| Symptom | Check |
+|---|---|
+| Project is absent | It must be directly under the XO projects root shown in Setup. Refresh List after the watcher has run. |
+| Files appear but todos do not | Create/update the todo through `/api/xo-projects/{id}/todos`; the watcher does not mirror native task tools. |
+| No live activity | Check the runtime's native store, watcher source mode, and project working directory. |
+| Sessions shows no usable source | Check [runtime discovery](/docs/space/auto-detection); only available telemetry providers can contribute. |
+| Timeline has no commit points | The project needs its own git repository with commits. |
+| Sharing or Connectors asks for sign-in | Those features use XO identity and external services; local file browsing does not. |
+
+Continue with the [complete UI guide](/docs/space/space-walk) or learn how to
+[interpret observability data](/docs/space/observability).

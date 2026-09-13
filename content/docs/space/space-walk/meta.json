@@ -5,9 +5,15 @@
     "index",
     "dashboard",
     "files-explorer",
+    "graph",
     "tree-lens",
+    "sharing",
     "timeline",
     "sessions",
-    "setup"
+    "replay",
+    "inbox",
+    "wiki",
+    "setup",
+    "connectors"
   ]
 }

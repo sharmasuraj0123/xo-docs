@@ -1,132 +1,130 @@
 ---
 title: Contributing to XO Space
-description: "How to contribute to the open-source xo-space daemon, add agent adapters, and validate changes."
+description: Set up a development checkout, follow the architecture contracts, and validate a contribution against development.
 icon: GitPullRequest
 ---
 
-import { Callout } from "fumadocs-ui/components/callout";
-import { Steps } from "fumadocs-ui/components/steps";
-
 <Lead>
-  `xo-space` is the open-source local control plane service for AI coding agents. It stitches together runtimes (Claude Code, OpenClaw, Hermes, Antigravity, Codex, Cursor), manages workspace project metadata, and serves the browser UI at `/space/`.
+  Contribute to the server, agent adapters, project services, or the build-free
+  Space UI. Start from `development` and submit your pull request to
+  `development`; `main` is the release branch.
 </Lead>
 
----
+The repository's [AGENTS.md](https://github.com/quirq-ai/xo-space/blob/development/AGENTS.md),
+[CONTRIBUTING.md](https://github.com/quirq-ai/xo-space/blob/development/CONTRIBUTING.md),
+and [DEVELOPING.md](https://github.com/quirq-ai/xo-space/blob/development/DEVELOPING.md)
+are the working contracts. Check them in the revision you are changing.
 
-## Core Invariants
+## Set up a checkout
 
-When contributing to `xo-space`, uphold the following four architectural invariants:
-
-1. **The Modularity Invariant**: Core code is agent-agnostic. No core file (`server.py`, `routers/`, `services/engine/`) may name a specific agent backend. Agent-specific code lives exclusively in `config/agents/<name>/` and `services/cowork_agent/adapters/<name>/`.
-2. **The Project Folder is Sacred**: Never write chat transcripts, session messages, or secrets into a project directory or `<XO root>/<project>/.xo/`. Conversations remain strictly in the runtime's native storage (`~/.claude/`, `~/.openclaw/`, `~/.hermes/`, `~/.gemini/antigravity-cli/`, `~/.codex/`).
-3. **`.xo/` Belongs to the Watcher**: Only `services/cowork_agent/visualizer/{sinks,workspace}/` writes to `.xo/` directories. All other services and UI endpoints read derived state.
-4. **Thin Routers, Logic in Services**: Endpoints defined in `routers/` act as thin HTTP request/response handlers; business logic lives in `services/`.
-
----
-
-## Development Setup
-
-<Steps>
-### Clone and Set Up Python Venv
+Use Linux, macOS, or WSL. Contributor mode needs Python 3.12+ and `git`:
 
 ```bash
 git clone https://github.com/quirq-ai/xo-space.git
 cd xo-space
-
-# Create virtual environment and install dependencies
+git checkout development
+git switch -c fix/my-change
 ./cowork-api.sh install
+QUIRQ_SKIP_BOOT_INSTALL=1 ./cowork-api.sh dev
 ```
 
-### Start the Local Development Server
+Open the printed `/space/` URL. Development mode enables reload; the preferred
+port is 5002, with a fallback when it is busy. Use `PORT=5010` if you need an
+explicit alternative.
+
+To exercise the installation path instead, run `./install.sh` from your checkout.
+It creates a uv-managed environment and leaves your git working tree alone. That
+venv has no `pip`; install extra packages with
+`uv pip install --python venv/bin/python <package>`.
+Choose explicit workspace/state roots when your development checkout should not
+also be the project root.
+
+## Know where a change belongs
+
+| Location | Responsibility |
+|---|---|
+| `server.py` | Application wiring, lifespan jobs, router mounts. |
+| `routers/` | HTTP request/response handling. |
+| `services/` | Space-level services, shared storage, connections, Inbox, and swarm client. |
+| `services/cowork_agent/` | Agent execution, registry, adapters, session plumbing, watcher. |
+| `config/agents/<name>/` | Runtime manifests, settings, capabilities, lifecycle setup. |
+| `space_ui/` | HTML, CSS, and browser ES modules, with no bundler. |
+| `tests/` | Hermetic Python unittest suite and browser/module harnesses. |
+| `plugin/` and `.agents/` | Agent plugin/skill bundles that must stay synchronized. |
+
+New API work uses modular **Plane B**, selected by `AGENT_NAME`. The older
+`/ask_question*` **Plane A**, selected by `AI_PROVIDER`, remains a separate
+compatibility surface.
+
+## Preserve the contracts
+
+- Keep routers thin and API paths, request bodies, and response shapes compatible.
+- Resolve agent-specific behavior through the capability loader. Agent-specific
+  implementations belong in `adapters/<name>/`, `config/agents/<name>/`, or the
+  legacy `config/models/<name>/` tree; follow the documented frozen exceptions.
+- Keep conversations and credentials out of project folders. Portable `.xo/`
+  records and machine-local `.quirq/` telemetry have different owners and lifetimes.
+- Use the owning service/API for writes. In particular, todos have one HTTP write
+  path; the watcher does not mirror every agent's native task tool.
+- Run external commands through `utils.commands` with argument lists. Route all
+  xo-swarm-api calls through `services/swarm_api/`.
+- Use async network/subprocess operations and avoid logging secrets or prompt text.
+- Isolate tests with temporary roots and mocked external services; never point a
+  test at a real `.quirq/` directory or credential file.
+
+## Change the Space UI
+
+Each view has a module under `space_ui/js/views/`. The registry owns navigation,
+parents, hash routes, lazy mounting, and view isolation. Views do not import one
+another: use `ctx.switchTo()` or the documented shared events. HTTP calls use
+`js/core/api.js`.
+
+When changing a view:
+
+1. Update its module and the matching in-app Wiki guide.
+2. Bump its `?v=` import stamp in `js/app.js`, then the app stamp in `index.html`.
+   Bump changed stylesheet URLs and shared imports where appropriate.
+3. Run `node --check` on changed JavaScript modules.
+4. Exercise the actual user path in a browser, including deep links and any
+   related lens transitions. Include screenshots in the PR for visible changes.
+
+## Add a runtime
+
+Add `config/agents/<name>/manifest.json` and its settings/capability declarations,
+then `services/cowork_agent/adapters/<name>/adapter.py`. Export `Adapter` as a
+`BaseAgentAdapter` implementation with `run`, `stream`, and `adapter_name`.
+
+Optional modules supply models, usage, sessions, streaming, watcher sources, or
+session telemetry. `routes.py` supplies agent-owned routes, mounted only when
+that agent is active. Missing optional capabilities degrade to their documented
+empty/501 responses; an import failure inside an existing module is a bug and
+must remain visible.
+
+Use the [adapter guide](https://github.com/quirq-ai/xo-space/blob/development/DEVELOPING.md#4-adding-a-new-agent-drop-two-folders)
+for the full contract. No central hardcoded agent registry should need editing.
+
+## Validate and submit
 
 ```bash
-# Runs FastAPI with hot reloading on port 5002 (falls back to 5003 if busy)
-./cowork-api.sh dev
-```
-
-Open **[http://localhost:5002/space/](http://localhost:5002/space/)** in your browser.
-
-### Run with a Specific Backend
-
-```bash
-AGENT_NAME=claude_code venv/bin/python server.py
-# or: AGENT_NAME=hermes, AGENT_NAME=openclaw, AGENT_NAME=antigravity
-```
-</Steps>
-
----
-
-## Adding a New Agent Backend ("Drop Two Folders")
-
-Adding a new coding agent requires **zero changes to core router files**.
-
-<Steps>
-### 1. Declarative Config (`config/agents/<name>/`)
-
-Create `config/agents/<name>/`:
-- `manifest.json`: Defines binary name, home directory, agent directory, and template commands.
-- `capabilities.json`: Declares UI capability flags (Models, Data, Channels, Secrets).
-- `settings.json`: Agent-specific default parameters.
-
-### 2. Dispatch Adapter (`services/cowork_agent/adapters/<name>/`)
-
-Create `services/cowork_agent/adapters/<name>/adapter.py` subclassing `BaseAgentAdapter`:
-
-```python
-from services.cowork_agent.adapters.base import BaseAgentAdapter
-
-class MyAgentAdapter(BaseAgentAdapter):
-    @property
-    def adapter_name(self) -> str:
-        return "my_agent"
-
-    async def run(self, question: str, session_id: str | None = None, **kwargs):
-        # One-shot command execution
-        ...
-
-    async def stream(self, prompt: str, session_id: str | None = None, **kwargs):
-        # Asynchronous SSE token streaming
-        ...
-
-Adapter = MyAgentAdapter
-```
-
-### 3. Add Optional Capabilities
-
-Implement only the capabilities your agent provides:
-- `usage.py`: Normalized token and cost reporting (`/api/usage`).
-- `models.py`: Supported model catalog listing (`/api/models`).
-- `sessions.py`: Ingest and parse native session transcripts.
-- `routes.py`: Optional agent-specific FastAPI routes (`APIRouter`).
-
-Any omitted capability gracefully falls back to empty default responses or 501 status without runtime errors.
-</Steps>
-
----
-
-## Validation Playbook
-
-Run the test suite and validation gates before submitting a Pull Request:
-
-```bash
-# 1. Run unit test suite (94 tests across 14 modules)
 venv/bin/python -m unittest discover -s tests -t .
+venv/bin/python scripts/check_route_parity.py
+```
 
-# 2. Test import gates across all agent backends
-for a in claude_code openclaw hermes antigravity; do
-  AGENT_NAME=$a venv/bin/python -c "import server; \
-    print('$a', len(server.app.openapi()['paths']))"
-done
+Also run checks appropriate to the files changed:
 
-# 3. Check Claude & Codex plugin synchronization
+```bash
+# Installer changes
+bash tests/install_sh_harness.sh
+
+# Plugin or .agents changes
 ./scripts/check_plugin_sync.sh
 ```
 
----
+Review the modularity invariant and smoke the relevant capabilities under affected
+runtimes. Route totals can differ by runtime; the parity script checks the shared
+core plus each runtime's own routes instead of a fixed count.
 
-## Pull Request Guidelines
-
-- **Target Branch**: Target `main` for all features and fixes.
-- **Documentation**: If your change modifies the adapter contract, `.xo/` schema, or `/xo/*.json` views, update `DEVELOPING.md` and `space_ui/js/views/wiki.js` in the same commit.
-- **Backward Compatibility**: Preserve existing endpoint schemas and response shapes.
-- **No Secret Logging**: Never log API tokens, user prompt text, or authentication cookies.
+Target **development**. Describe the problem and resulting behavior, link the
+issue, list the validation you actually ran, and explain any changed contract.
+Keep the branch current with development. Maintainers promote development to
+main for releases.

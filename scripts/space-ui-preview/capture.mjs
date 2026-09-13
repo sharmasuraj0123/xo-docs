@@ -14,8 +14,15 @@ const { chromium } = await import(
     : "playwright"
 );
 const origin = process.env.SPACE_PREVIEW_URL || "http://127.0.0.1:5101";
-const docsRoot = "https://docs.quirq.ai/docs/space";
 const sourceRepository = "https://github.com/quirq-ai/xo-space";
+const primaryViews = [
+  "projects",
+  "time",
+  "sessions",
+  "inbox",
+  "secrets",
+  "connectors",
+];
 const output = resolve(
   process.argv[2] || resolve(here, "../../public/images/space"),
 );
@@ -109,17 +116,57 @@ async function shot(name, description) {
 }
 
 async function assertHeaderLinks() {
-  for (const href of [docsRoot, sourceRepository]) {
+  for (const href of ["#/wiki", sourceRepository]) {
     const link = page.locator(`.topbar a[href="${href}"]`);
     assert.equal(await link.count(), 1, `Global header link: ${href}`);
     assert.equal(await link.isVisible(), true);
-    assert.equal(await link.getAttribute("target"), "_blank");
-    const rel = (await link.getAttribute("rel"))?.split(/\s+/) || [];
-    assert.ok(rel.includes("noopener"), "External links isolate the new tab");
+    if (href === "#/wiki") {
+      assert.ok([null, "_self"].includes(await link.getAttribute("target")));
+      assert.equal((await link.innerText()).trim(), "Wiki");
+      assert.equal(
+        await link.getAttribute("aria-current"),
+        new URL(page.url()).hash === "#/wiki" ? "page" : null,
+      );
+    } else {
+      assert.equal(await link.getAttribute("target"), "_blank");
+      const rel = (await link.getAttribute("rel"))?.split(/\s+/) || [];
+      assert.ok(rel.includes("noopener"), "External links isolate the new tab");
+    }
     const bounds = await link.boundingBox();
     assert.ok(bounds && bounds.x >= 0 && bounds.y >= 0);
     assert.ok(bounds.x + bounds.width <= page.viewportSize().width + 1);
   }
+  assert.deepEqual(
+    await page
+      .locator(".tabs button")
+      .evaluateAll((buttons) => buttons.map((button) => button.id)),
+    primaryViews.map((id) => `tab-${id}`),
+  );
+}
+
+async function openWikiResource() {
+  const pagesBefore = context.pages().length;
+  const timeOrigin = await page.evaluate(() => performance.timeOrigin);
+  await page.locator('.topbar a[href="#/wiki"]').click();
+  await page.waitForFunction(() => location.hash === "#/wiki");
+  await page.locator('#wiki-link[aria-current="page"]').waitFor();
+  await page.locator(".wiki-topic").first().waitFor();
+  assert.equal(
+    context.pages().length,
+    pagesBefore,
+    "Wiki opens without a new tab",
+  );
+  assert.equal(
+    await page.evaluate(() => performance.timeOrigin),
+    timeOrigin,
+    "Wiki keeps the same document",
+  );
+  assert.equal(new URL(page.url()).origin, new URL(origin).origin);
+  assert.equal(
+    await page.locator('.topbar a[href="#/wiki"]').getAttribute("aria-current"),
+    "page",
+  );
+  assert.equal(await page.locator(".tabs button.is-on").count(), 0);
 }
 
 async function assertExternalLinkOpensNewTab(link) {
@@ -185,32 +232,49 @@ async function verifyWikiNavigation() {
       page.locator(".wiki-topic-actions > .wiki-doc-link").first(),
     );
     await assertExternalLinkOpensNewTab(
-      page.locator(`.topbar a[href="${docsRoot}"]`),
-    );
-    await assertExternalLinkOpensNewTab(
       page.locator(`.topbar a[href="${sourceRepository}"]`),
     );
     await page.locator('.wiki-quickstart [data-open-tab="projects"]').click();
     await page.waitForFunction(() => location.hash === "#/projects");
     await page.locator(".prj-row").first().waitFor();
-    await page.keyboard.press("5");
-    await page.waitForFunction(() => location.hash === "#/wiki");
+    await openWikiResource();
     await page.locator('.wiki-quickstart [data-open-tab="secrets"]').click();
     await page.waitForFunction(() => location.hash === "#/secrets");
     await page.locator("#setup-alert.is-good").waitFor();
+    for (const [index, id] of primaryViews.entries()) {
+      await page.keyboard.press(String(index + 1));
+      await page.waitForFunction((id) => location.hash === `#/${id}`, id);
+      assert.equal(await page.locator(`#tab-${id}.is-on`).count(), 1);
+      assert.equal(
+        await page
+          .locator('.topbar a[href="#/wiki"]')
+          .getAttribute("aria-current"),
+        null,
+      );
+    }
+    await go("quirq");
+    await page.locator('[data-wiki-page="xo-data"]').click();
+    await page.waitForFunction(() => location.hash === "#/wiki");
+    await page.locator("#wiki-observability.is-highlighted").waitFor();
+    assert.equal(
+      await page.evaluate(() => document.activeElement?.id),
+      "wiki-observability",
+    );
     layouts.push({
       width,
       topics: 9,
       docsLinks: 15,
       internalQuickstartActions: true,
-      wikiHotkey: true,
+      localWikiResource: true,
+      primaryHotkeys: "1–6",
+      legacyHelpHandoff: true,
       externalLinksPreserveView: true,
       horizontalOverflow: false,
     });
   }
   report.wikiNavigation = layouts;
   report.checks.push(
-    "Wiki and global Docs/GitHub links verified at 1440, 390 and 320 pixels. External destinations were stubbed only for new-tab navigation checks; published page content was not tested.",
+    "Local Wiki navigation, legacy help handoff, six primary tab shortcuts and external documentation/GitHub links verified at 1440, 390 and 320 pixels. External destinations were stubbed only for new-tab navigation checks; published page content was not tested.",
   );
 }
 
@@ -221,15 +285,7 @@ try {
     await page
       .locator(".tabs button")
       .evaluateAll((buttons) => buttons.map((b) => b.id)),
-    [
-      "tab-projects",
-      "tab-time",
-      "tab-sessions",
-      "tab-inbox",
-      "tab-wiki",
-      "tab-secrets",
-      "tab-connectors",
-    ],
+    primaryViews.map((id) => `tab-${id}`),
   );
   await shot(
     "dashboard",
@@ -437,7 +493,7 @@ try {
     "All data is synthetic; no xo-space runtime, upstream request, account write, credential or private workspace is used.",
   );
   report.checks.push(
-    "Seven tabs, ten projects, ten connectors, historical file preview, session table/detail, and polling drawer verified.",
+    "Six primary tabs, local Wiki resource, ten projects, ten connectors, historical file preview, session table/detail, and polling drawer verified.",
   );
   console.log(
     `Captured ${report.screenshots.length} screenshots without browser errors.`,

@@ -1,6 +1,6 @@
 ---
 title: Space UI Overview
-description: Navigate the seven Space tabs, choose a Projects lens, and follow a task from files to activity and incoming work.
+description: Navigate the six primary Space tabs, open Wiki, choose a Projects lens, and follow a task from files to activity and incoming work.
 icon: Map
 ---
 
@@ -13,17 +13,17 @@ import { Callout } from "fumadocs-ui/components/callout";
 ![Space opens to the Dashboard lens inside Projects](/images/space/dashboard.png)
 
 <Callout type="info" title="Version and screenshots">
-  Screenshots show the real UI at [xo-space revision 5eb122b](https://github.com/quirq-ai/xo-space/tree/5eb122b84dfdf1d3b7a2a237c366579045ac7d29), using fictional workspace data. This revision adds the compact Wiki and global Docs/GitHub links on the `codex/compact-wiki-doc-links` branch. It builds on [development at 5221119](https://github.com/quirq-ai/xo-space/tree/5221119), which includes the Projects navigation update merged in [PR #110](https://github.com/quirq-ai/xo-space/pull/110). The new Wiki and header links are awaiting merge into development; release installations following `main` can also differ. Technical guides retain their own source version notes. See [Install Space](/docs/space/install-space).
+  Screenshots show the real UI at [xo-space revision 8267c08](https://github.com/quirq-ai/xo-space/tree/8267c0860af045b7e1e1762f15ec9b01cb17432f), using fictional workspace data. It has six primary tabs and a top-right Wiki resource that opens the compact local directory. This update on `codex/compact-wiki-doc-links` is awaiting merge into development and builds on [revision 5221119](https://github.com/quirq-ai/xo-space/tree/5221119). Technical guides retain their own source version notes. Release installations following `main` can differ; see [Install Space](/docs/space/install-space).
 </Callout>
 
 ## Find the right tab
 
-The top bar contains **Projects · Timeline · Sessions · Inbox · Wiki · Setup · Connectors**. Press **1–7** to open those tabs in that order. Shortcuts pause while an input, text area, or select has focus.
+The primary tabs are **Projects · Timeline · Sessions · Inbox · Setup · Connectors**. Press **1–6** to open those tabs in that order. Shortcuts pause while an input, text area, or select has focus.
 
-The separate **Docs** and **GitHub** links open the
-[Space documentation](https://docs.quirq.ai/docs/space) and
-[source repository](https://github.com/quirq-ai/xo-space) in new tabs. They keep
-your current Space view open.
+**Wiki** sits at the top right beside **GitHub**. It opens Space's local quick
+start and topic directory in the same browser tab at `#/wiki`. Choose **Open
+docs** within Wiki to read a detailed guide in a new tab. **GitHub** opens the
+[source repository](https://github.com/quirq-ai/xo-space) in a new tab.
 
 | Tab | Use it to | Route after `/space/` |
 | --- | --- | --- |
@@ -31,9 +31,11 @@ your current Space view open.
 | [Timeline](/docs/space/space-walk/timeline) | Compare git commits and dated files across projects | `#/time` |
 | [Sessions](/docs/space/space-walk/sessions) | Review supported runtimes' sessions, usage, and recorded prompts | `#/sessions` |
 | [Inbox](/docs/space/space-walk/inbox) | Read incoming items and mark them seen or done | `#/inbox` |
-| [Wiki](/docs/space/space-walk/wiki) | Find a quick start, topic summaries and links to detailed guides | `#/wiki` |
 | [Setup](/docs/space/space-walk/setup) | Configure roots, runtime, watcher coverage, credentials, and updates | `#/secrets` |
 | [Connectors](/docs/space/space-walk/connectors) | Connect apps, control agent actions, and collect items into Inbox | `#/connectors` |
+
+The separate [Wiki](/docs/space/space-walk/wiki) resource link remains available
+from every view and has no numbered shortcut.
 
 Keep the full URL when bookmarking a view, including any access query parameters your deployment requires.
 

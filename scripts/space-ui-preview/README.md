@@ -5,8 +5,9 @@ These screenshots show the actual, unmodified `space_ui` browser application fro
 by a local Python fixture server. They are browser captures, not visual mockups.
 
 The checked-in images were captured from source revision
-`5eb122b84dfdf1d3b7a2a237c366579045ac7d29` on `codex/compact-wiki-doc-links`,
-which adds the compact Wiki and global documentation/repository links to
+`8267c0860af045b7e1e1762f15ec9b01cb17432f` on `codex/compact-wiki-doc-links`,
+which adds the compact Wiki as a top-right local resource, keeps six primary tabs,
+and adds an external GitHub resource link to
 development revision `522111900fa4224ef3914192b9eb78048fffb5e3`.
 `capture-report.json` records the captured revision,
 every source UI asset hash, screenshot descriptions, PNG hashes and byte sizes,
@@ -48,10 +49,12 @@ Inbox, Wiki, Setup and native runtime sources, Quirq state, and Connectors with
 polling and action drawers. All navigation, expansion, scrolling and selection
 uses real browser interactions; the script does not alter application DOM or CSS.
 
-Every capture checks the global Docs and GitHub links. After saving the images,
+Every capture checks the top-right Wiki and GitHub links. After saving the images,
 the script verifies the compact Wiki's nine topics, fifteen documentation links,
-quick-start actions, and keyboard shortcut at 1440, 390 and 320 pixels. It checks
-that external links open a new tab and preserve the current Space view. Those
+quick-start actions, the legacy Quirq help handoff, and the six primary tab
+shortcuts at 1440, 390 and 320 pixels.
+It checks that Wiki opens locally in the same tab, while topic documentation and
+GitHub open a new tab and preserve the current Space view. Those external
 destination requests receive a minimal test response, so this check does not
 contact the hosted documentation or GitHub and does not validate their published
 content. Screenshots contain only the real local Space UI.

@@ -1,0 +1,72 @@
+---
+title: Connectors
+description: Connect external apps to your XO account, enable them for this workspace, and configure actions and Inbox polling.
+icon: Plug2
+---
+
+<Lead>
+  **Connectors** manages the external apps your agent can use and the app events Space can collect. Open the sixth primary tab, press **6**, or use `/space/#/connectors`.
+</Lead>
+
+![Connector cards showing account labels and workspace controls](/images/space/connectors.png)
+
+## Before connecting
+
+Your Space must be signed in to XO and have a workspace identity. The signed-out page tells you to sign in through the app or configure `XO_API_KEY` and `XO_SPACE_ID` on the server, then refresh. Composio credentials and app authorization configurations belong on **xo-swarm-api**, not in this browser or the workspace's `.env`.
+
+Available apps and sign-in methods come from the server's toolkit catalog. Read each card: some use OAuth; others ask for an API key or bot token through the connection page. Telegram, for example, uses a bot token. A catalog entry does not necessarily have an Inbox collector.
+
+## Connect and enable an app
+
+1. Choose **Connect** on the app's card.
+2. Complete the provider's sign-in or credential flow in the new window. If the browser blocks it, allow the connection popup and try again.
+3. Return to Space and wait for the connection status to update. Use **Refresh** if needed.
+4. If the card says it is connected on your account but off here, choose **Turn on here** to let this workspace use it.
+5. Check the account chip where available. Gmail and Google Calendar resolve the email or label of the account bound to this workspace; the label may appear after the connection itself.
+
+The app connection belongs to your XO account, while **Turn on here** and **Turn off here** control this workspace's access. The **Actions** drawer appears for enabled apps that support per-action preferences. Uncheck an action to remove it from the agent's toolset; changes apply to the next agent turn. Opening or refreshing Connectors also asks the server to refresh the agent's MCP gateway wiring.
+
+![Actions drawer with per-action controls for the connected app](/images/space/connector-actions.png)
+
+## Collect app events into Inbox
+
+![Gmail polling settings with the account, cadence, and collectors](/images/space/connector-polling.png)
+
+1. With the app connected and enabled here, open **Polling**.
+2. Check **Collect into Inbox**.
+3. Choose the cadence under **Every** and the collectors you want.
+4. Press **Save**. Closing the drawer or switching to another app's polling drawer discards unsaved changes.
+5. Choose **Poll now** to check the saved configuration, then inspect its result and the [Inbox](/docs/space/space-walk/inbox).
+
+Polling uses the saved settings. The Poll now button is unavailable until a configuration has been saved. The drawer displays the last poll or error and, when known, the account it polls as.
+
+| App | Available collectors in this version |
+| --- | --- |
+| Gmail | Unread mail; new mail in Inbox from the last day |
+| Google Calendar | Upcoming events over the next seven days across the account's calendars, including shared and secondary calendars |
+| Notion | Recently edited pages |
+| Slack | Messages from the last day |
+| Telegram | New messages or channel posts available to the bot |
+
+Collectors make bounded reads. Gmail requests metadata without full message payloads and shows a warning if the provider truncates its response. Calendar reports per-calendar failures even when other calendars return events. These feeds help you notice work; use **Open link** in Inbox for the original content when available.
+
+## Turn off or remove a connection
+
+**Turn off here** stops this workspace using the connected app without deleting the account connection. **Delete connection…** removes that connection from **every workspace in your XO account** after confirmation. Deleting it in XO does not itself revoke the authorization grant at the provider; manage that in the provider's account settings if required.
+
+## Troubleshoot a connection
+
+| Message or symptom | Next step |
+| --- | --- |
+| Sign in to XO | Sign in/configure the server's XO identity, then refresh |
+| Session expired | Reload the page to establish a fresh browser session |
+| Composio is not configured | Check the server's XO access and the Composio configuration on xo-swarm-api |
+| Listing connectors failed | Read the xo-space server log; a server error alone does not identify which credential or upstream service failed |
+| Connected, but no incoming items | Turn the toolkit on here, save polling, select collectors, and inspect Poll now's result |
+| No collectors available | The toolkit can offer agent actions without an Inbox collector in this version |
+| Telegram polling fails with a webhook conflict | Check the bot's existing webhook arrangement; Telegram's update polling cannot run alongside an active webhook |
+| Wrong or missing email label | Refresh and check the authorized account; label lookup failure does not by itself mean the connection failed |
+
+Automatic polling needs the server running, signed in, the toolkit enabled here, saved collection enabled, and the background poller enabled (`XO_CONNECTIONS_POLL_ENABLED`). **Poll now** can still run with the background poller or **Collect into Inbox** switched off: it ignores the automatic cadence and collection toggle, but still requires saved collectors and workspace access to the toolkit.
+
+Saved polling configuration and collected event files live under the machine-local state root's `connections/` directory. They do not travel with a shared project.

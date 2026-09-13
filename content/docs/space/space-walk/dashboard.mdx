@@ -1,60 +1,63 @@
 ---
-title: Project Dashboard
-description: "Visualizing projects inside purpose environments with orbiting in-progress todo satellites."
+title: Dashboard
+description: Survey projects by purpose, explore their connections, and inspect recorded todos.
 icon: LayoutDashboard
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  The **Dashboard** organizes all discovered XO projects into five purpose environments. Each project is represented as an interactive visual node, with active agent tasks and todos orbiting the selected project like satellites.
+  **Dashboard** is the first lens inside **Projects** and the default view when you open Space without a saved URL hash. Each project is a node, surrounded by the purpose environments it belongs to.
 </Lead>
 
-![The Dashboard: projects inside purpose environments, todos orbiting the selected one](/images/space/dashboard-todos.png)
+![Projects Dashboard with projects arranged inside purpose environments](/images/space/dashboard.png)
 
-## Five Purpose Environments
+Open **Projects → Dashboard**, or use `/space/#/dashboard`. Clicking the top-level **Projects** tab opens its [List lens](/docs/space/space-walk/files-explorer); use the lens switch to return to Dashboard.
 
-Dashboard groups projects into five softly filled, dashed enclosures based on their purpose:
+## Read the map
 
-| Environment | Accent Color | Purpose |
-|---|---|---|
-| **Engineering** | `#6fb7e0` (Blue) | Apps, services, APIs, and libraries that are built and shipped. |
-| **Ops** | `#e8a15c` (Orange) | Infrastructure-as-code (Terraform, Kubernetes), CI/CD, and operational tooling. |
-| **Documentation** | `#c792ea` (Purple) | Docs sites, wikis, architecture notes, and one-pagers. |
-| **Research** | `#7fd0a8` (Green) | Papers, notebooks, studies, model evaluations, and exploratory prototypes. |
-| **Marketing** | `#e0708a` (Pink) | Decks, brand assets, proposals, and outward-facing launch material. |
+The five environments describe what projects are for:
+
+| Environment | Typical projects |
+|---|---|
+| Engineering | Apps, services, APIs, and libraries. |
+| Ops | Infrastructure and operational tooling. |
+| Documentation | Documentation sites, notes, wikis, and one-pagers. |
+| Research | Papers, notebooks, studies, and exploratory work. |
+| Marketing | Decks, brand assets, proposals, and launch material. |
+
+A tinted, dashed boundary encloses each environment's projects. Projects can belong to several environments, so a single node may sit between overlapping boundaries. The environment's small anchor gives its label and layout a stable position. An empty environment can have a label without an enclosed area.
+
+The node's shape describes its form separately: **App**, **One-pager**, **Docs**, **Slides**, or **Unknown**. The legend explains the current symbols. Saved project classification takes precedence over classification inferred from project paths and filenames.
+
+## Explore a project
+
+1. **Click a project** to focus its neighborhood and open the detail panel. The panel shows its description, related nodes, and recorded todos.
+2. **Click a connection** in the panel to move to that node.
+3. **Double-click an environment or cluster** to expand or collapse its projects. Drag a node to reposition it; drag empty canvas to pan; use the wheel to zoom.
+4. Press **/** to focus the top-bar search. Select a matching project to find it on the map.
+5. Use **Clear**, the panel's close button, or **Esc** to clear focus. If a file preview is open, the first Esc closes that preview.
+
+The top-bar root picker can center the graph around a chosen node. Its **Reset to …** button restores the workspace root. This changes the view, not the workspace folder configured in Setup.
+
+## Inspect recorded work
+
+Selecting a project fetches its todos. Up to **28** appear as satellites around the node and up to **40** appear in its detail panel. The status order is **in progress**, **pending**, **blocked**, **completed**, then **cancelled**. In-progress satellites have a spoke back to the project.
+
+![Selected Dashboard project with todo satellites and the Todos detail panel](/images/space/dashboard-detail.png)
+
+Click a satellite to locate its row in the panel, or click a todo row to highlight its satellite. Use the refresh control beside **Todos** to fetch the current list. Selecting a recently inspected project can reuse its todos for 20 seconds.
 
 <Callout type="info">
-  **Enclosures vs. Project Nodes**: The tinted dashed boundary is the environment collection; the small internal anchor point provides physics stabilization and focus. A project with multiple purposes sits between boundaries and belongs to all applicable enclosures simultaneously.
+  These are recorded project todos, not a list inferred from files or a guarantee that an agent is running now. Live presence appears in the Projects List. Dashboard reads todos; it does not create, edit, or complete them.
 </Callout>
 
----
+## Change perspective
 
-## Project Forms & Glyphs
+Choose **List** for project folders and operational details, **Graph** for mapped files and their relationships, **Tree** for hierarchy, or **Sharing** for collaboration. The same Projects tab stays selected across all five lenses.
 
-Node glyphs depict the structural form of a project independently of its purpose environment:
+Dashboard and Graph use different datasets, so moving between them can reload the page to reset the simulation. An open file preview is restored across that lens change. See [Projects List and previews](/docs/space/space-walk/files-explorer#preview-a-file) for its behavior.
 
-- **App** (Disc): Interactive web, mobile, or desktop applications.
-- **One-Pager** (Ring): Single-document specs, briefs, or landing pages.
-- **Docs** (Stack): Multi-page documentation or note collections.
-- **Slides** (Slab): Presentation decks and campaign slides.
-- **Model / Lab** (Diamond): ML models, benchmark suites, and notebooks.
+## Missing or old information
 
----
-
-## Orbiting Todo Satellites
-
-Selecting any project node focuses its neighborhood and reveals its open work:
-
-- **Orbiting Satellites**: Up to 28 project todos orbit the selected node. In-progress tasks maintain an active spoke connecting back to the project center.
-- **Detail Panel**: The slideout panel lists todos sorted by status (`in-progress` first, then `todo`, then `done`), complete with title, description, and task timestamps.
-- **Quick Search**: Press `/` anywhere in the dashboard to filter projects by name and immediately fly to matching nodes.
-
----
-
-## Data Sources & Architecture
-
-- **`GET /xo/dashboard.json`**: Serves `<XO root>/.xo/dashboard.json`, materialized by the watcher from workspace project scans. Rebuilt at most every 30 seconds.
-- **`<project>/.xo/project.json`**: Portable project metadata. Manual category definitions take precedence over automatic filename heuristics.
-- **`GET /api/xo-projects/{id}/todos`**: Fetched on demand when a project node is clicked. Cached in the browser for 20 seconds for instant re-selection.
-- **Read-Only Safety**: The Dashboard is completely read-only and writes neither project code, `.xo`, nor `.quirq` files.
+Dashboard reads the derived project map from `GET /xo/dashboard.json`. It does not rescan every project on each click. If a project is missing, confirm the **XO root** in [Setup](/docs/space/space-walk/setup), check that the folder is directly beneath it, and allow the workspace view to refresh. An empty workspace produces an empty map; creating a folder or project supplies the first node.

@@ -1,0 +1,58 @@
+---
+title: Inbox
+description: Triage incoming sessions, blocked todos, GitHub issues, shares, and connected-app events without losing their context.
+icon: Archive
+---
+
+<Lead>
+  **Inbox** collects incoming information and tracks whether you have seen or handled it. Open the fourth tab, press **4**, or use `/space/#/inbox`.
+</Lead>
+
+![Inbox with example workspace, issue, and connected-app items](/images/space/inbox.png)
+
+## Read and handle an item
+
+1. Open **Inbox**. **Open** includes both new and seen items; **Done** shows handled items; **All** includes both groups.
+2. Click a row to expand its details. Opening a new item marks it **seen** and reduces the new-item badge on the tab.
+3. Use **Open** to jump to its Space context, such as a project, session, or file. **Open link**, when present, opens the original issue, mail, event, or page in another browser tab.
+4. Choose **Done** when you have handled the item. Use **Reopen** from Done or All to bring it back to Open.
+
+**Done** changes the inbox item's status; it does not close a GitHub issue, complete its todo, or reply to a message. Make those changes in the relevant project or connected application.
+
+The header's counts cover the entire stored inbox; the tab badge counts its new items. **Mark all seen** marks every new item in the loaded page, including rows hidden by the source pills. **Delete** removes an item; a source such as a still-blocked todo can create it again, so Done is usually the better way to retain a record of handling it.
+
+## Filter by where it came from
+
+| Source | Items you can expect |
+| --- | --- |
+| Issues | GitHub issues mirrored from projects with a GitHub origin |
+| Connections | Items collected by enabled app polling |
+| Workspace | Session starts and todo events; blocked todos by default |
+| Sharing | Incoming shares and repository relay events |
+| Agents | Items posted through the Inbox API by agents or scripts |
+| All | Every source in the loaded page |
+
+Source pills filter the newest **200 loaded items**, rather than searching the entire archive. The status counts can therefore exceed the rows you see. The view refreshes every 30 seconds while open; **Refresh** reads it immediately.
+
+## Check connected apps
+
+Expand **Connections** above the rows to see each connected or configured toolkit's account label, collectors, cadence, and latest poll result. By default, the section opens when a connection reports an error; manually expanding or collapsing it overrides that automatic choice for the page session.
+
+- **Poll now** runs the saved collectors immediately and reloads the list.
+- **Configure** opens Connectors so you can adjust polling.
+- **No connections polled yet** means you need to connect an app and save its polling settings first.
+
+Gmail and Google Calendar can show the email of the account this workspace uses once the server resolves it. Check that label when expected items are missing. See [Connectors](/docs/space/space-walk/connectors) for the full setup flow.
+
+## When something is missing
+
+| Symptom | Check |
+| --- | --- |
+| No workspace items | Confirm watcher coverage and recent activity in Setup; a newly created inbox starts with recent events, not the full history |
+| No issues | Check the project's Issues panel and its last poll; projects need a GitHub origin and working GitHub access |
+| No connected-app items | Confirm XO sign-in, **On here**, saved polling, selected collectors, and the last poll result |
+| An error mentions only one calendar | Other calendars can still succeed; read the partial-error message before reconnecting everything |
+| An item disappears from Open | Check Done; blocked-todo and issue feeders can mark items done after their source leaves the watched state |
+| Older events are absent | Initial timeline/connection ingestion covers the last 24 hours; issues bootstrap from the last seven days |
+
+Inbox status is machine-local at `<state root>/inbox.json`. The local installer defaults to `.quirq/` in your workspace; Setup shows the effective root. It is not shared project metadata. On writes, the store keeps at most 500 items and prunes Done items whose item timestamp is older than 30 days; it is a working inbox, not a permanent audit archive.

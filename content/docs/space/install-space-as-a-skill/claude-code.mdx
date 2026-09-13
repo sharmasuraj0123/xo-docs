@@ -1,56 +1,93 @@
 ---
 title: Claude Code
-description: Add Space to Claude Code and start a guided setup workflow.
+description: Discover, install, and start a local XO Space with the Quirq plugin for Claude Code.
 icon: Terminal
 ---
 
-import { Steps, Step } from "fumadocs-ui/components/steps";
+<Lead>
+  The Quirq plugin adds local Space discovery and explicit install/start commands
+  to Claude Code. Installing the plugin and installing the Space server are
+  separate steps.
+</Lead>
 
-<Lead>Install Space with the Quirq plugin to make Space guidance and its CLI integration available in Claude Code.</Lead>
+## Install the plugin
 
-## Install the Space skill
+Run these commands in Claude Code:
 
-In Claude Code, run these commands in order:
+```text
+/plugin marketplace add quirq-ai/xo-space
+/plugin install quirq@quirq-ai
+```
 
-<Steps>
-	<Step>
-		### Add the Quirq marketplace
+`quirq-ai` is the marketplace name; `quirq` is the plugin identifier in the
+[source manifest](https://github.com/quirq-ai/xo-space/blob/development/.claude-plugin/marketplace.json).
+Start a new Claude Code session if the installed commands are not yet available.
 
-		```text
-		/plugin marketplace add quirq-ai/xo-space
-		```
+## Check the server
 
-		This registers the marketplace that provides the Space skill.
-	</Step>
-	<Step>
-		### Install the plugin
+```text
+/quirq:status
+```
 
-		```text
-		/plugin install quirq@quirq-ai
-		```
+This is a read-only discovery command. It checks the server's install pointer,
+probes its health endpoint, and can inspect the current directory for a checkout.
+It reports one of three states:
 
-		`quirq` is the plugin's published identifier. It installs Space's CLI
-		integration into Claude Code.
-	</Step>
-	<Step>
-		### Reload plugins
+| State | Meaning | Next step |
+|---|---|---|
+| `running` | A local Space responds. | Open the reported `/space/` URL. |
+| `installed` | A checkout was found, but no server is running. | Use `/quirq:start` when ready. |
+| `not_installed` | No usable local installation was found. | Choose a workspace and use `/quirq:install`. |
 
-		```text
-		/reload-plugins
-		```
+Discovery reads `~/.config/quirq/install.json`, written on server boot. It probes
+the recorded port first, then local defaults 5002/5003. Checking status does not
+install, update, or start a server.
 
-		Reload Claude Code so the installed skill is available in the current
-		session.
-	</Step>
-</Steps>
+## Install a Space
 
-![how to install space locally using your agent](/images/space-install-as-skill.png)
+Choose the directory whose child folders should become projects. Supply that
+path explicitly:
 
-## Start with a Space
+```text
+/quirq:install /absolute/path/to/workspace
+```
 
-Ask Claude Code: **“Help me set up a Space for this task.”** The skill supplies Space context and starts a guided interaction. Follow the product guidance it provides rather than relying on undocumented slash commands.
+The command checks for an existing installation, presents the destination and
+installation steps, and asks you to confirm. It then runs the official installer,
+waits for health, and reports the UI URL, log path, and configuration file. It does
+not reinstall over an existing server.
 
-To install and run a Space directly, see [Install Space](/docs/space/install-space),
-then [Your first Space](/docs/space/first-space).
-To understand how work inside a Space is measured, see [quirq](/docs/quirq).
-Terms: [Glossary](/docs/glossary).
+When launched by the plugin, the server runs as a background task of that Claude
+Code session. It is not installed as an operating-system service and may stop when
+the session or task ends. To run it independently, use a terminal and follow
+[Install Space](/docs/space/install-space).
+
+## Start an existing installation
+
+```text
+/quirq:start
+```
+
+This starts the existing checkout without fetching an update. It reports the
+server URL if Space is already running. Updating is a separate operation: use the
+[documented update path](/docs/space/install-space#start-again-or-update).
+
+You can also ask in plain language, such as “Is my local Space running?” or “Start
+my installed Space.” The bundled skill uses the same discovery and lifecycle
+rules. Credentials and connector OAuth flows belong in Space's **Setup** and
+**Connectors** tabs.
+
+## Work in a project
+
+After the server is running, open the reported URL. The current UI opens on
+Dashboard under Projects; click Projects for List. The plugin also bundles the
+`xo-projects` skill for project creation, operating documents, shared todos,
+Inbox items, and the backup/restore API.
+
+Ask Claude Code to create an xo-project with a clear name and purpose, then follow
+[Your First Space](/docs/space/first-space). The skill discovers the configured root
+and uses Space's project API; an agent's private todo list alone does not update
+the project's shared todos.
+
+The [plugin README](https://github.com/quirq-ai/xo-space/blob/development/plugin/README.md)
+lists the commands shipped by the current source revision.

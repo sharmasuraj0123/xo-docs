@@ -1,55 +1,89 @@
 ---
 title: Setup & Quirq State
-description: "Manage storage roots, file watcher coverage, write-only credentials, and inspect machine-local vs portable metadata in XO Space."
+description: Configure workspace roots, agent and watcher settings, credentials, and software updates.
 icon: Settings
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  The **Setup** tab (`# /setup`) provides single-pane administration over your local `xo-space` daemon, file watcher coverage, storage roots, connected agent runtimes, and write-only credentials.
+  **Setup** shows the effective configuration of the running Space server and the settings saved for its next start. Use it to select roots, configure the active agent and watcher, manage credentials, and check for updates.
 </Lead>
 
-![The Setup tab: storage roots, runtime, credentials and update state](/images/space/setup.png)
+![Setup showing storage roots, agent and watcher settings, and native sources](/images/space/setup.png)
 
-## Storage Roots
+Open the fifth primary tab, **Setup**, press **5**, or use `/space/#/secrets`. The visible tab was renamed Setup; its route remains `secrets`.
 
-- **`XO_PROJECTS_ROOT`**: The directory containing all workspace projects. Defaults to the directory where the installer was launched or `~/xo-projects`. You can update this root directly in the Setup UI.
-- **State Root (`~/.quirq/`)**: Machine-local daemon state, watcher offsets, and operational caches.
+## Check the running installation
 
----
+The top cards report the browser address, project path, and Quirq state path. They distinguish missing, unreadable, read-only, and writable locations. **Refresh status** reads runtime and credential status again. The main banner explains whether saved changes are already applied or require a restart.
 
-## File Watcher & Runtime Health
+## Set storage roots
 
-- **Watcher Status**: Live monitoring of the inotify / fsevents daemon watching your project directories.
-- **Active Backend**: Select which agent backend executes active chat turns in the workspace.
-- **Git Self-Update**: One-click check against [github.com/quirq-ai/xo-space](https://github.com/quirq-ai/xo-space) to update your daemon binary in place without re-running shell scripts.
+**XO root** is the host folder whose direct child directories are projects. Changing it selects another workspace; it does not move your existing project files.
 
----
+**.quirq root** is the machine-local state directory. The form distinguishes the configured path from **Mounted now**. In installer-managed environments, the installer can copy current state when the new state directory is empty.
 
-## The Quirq State View
+1. Enter the required host paths and click **Save roots**.
+2. Read the resulting **Pending restart** notice and apply command.
+3. Restart the server to use the saved roots. On installer-managed containers, run the displayed installer command to update the bind mounts as well.
+4. Use **Refresh status** to confirm the **Mounted now** paths.
 
-Clicking **Open Quirq state** in the Setup header (or deep-linking to `# /quirq`) opens a privacy-aware operational map separating two storage destinations:
+**Copy apply command** copies the command shown by your installation. Use that displayed command because host paths and mount requirements vary.
 
-```
-┌───────────────────────────────┬───────────────────────────────┐
-│ Machine-Local (.quirq/)       │ Portable Project (.xo/)       │
-├───────────────────────────────┼───────────────────────────────┤
-│ • .quirq/watcher/offsets.json │ • <project>/.xo/project.json  │
-│ • .quirq/watcher/locks/       │ • <project>/.xo/todos.json    │
-│ • .quirq/watcher/activity/    │ • <project>/.xo/timeline.jsonl│
-│ • Ephemeral presence & cursors│ • <XO root>/.xo/space.json    │
-└───────────────────────────────┴───────────────────────────────┘
-```
+## Configure the agent and watcher
 
-- **Machine-Local `.quirq/`**: Offsets, ephemeral file locks, and live activity streams that belong only to this machine.
-- **Portable `.xo/`**: Project identities, durable todos, session indices, and timeline logs designed to travel with the codebase and be committed to Git.
+![Agent and watcher controls with native session-source readiness](/images/space/setup-runtime.png)
 
----
+| Control | What it changes |
+|---|---|
+| **Active agent backend** | The backend used for new chats. The choices come from installed agent manifests. |
+| **Run the watcher** | Whether the background watcher materializes supported native session activity into Space's project/runtime records. |
+| **Session stores to watch** | **All mounted runtimes** or **Active agent only**. This is independent of the active chat backend. |
+| **Watcher tick interval** | A value from **0.25 to 60 seconds**; the form identifies one second as the local default. |
 
-## Write-Only Credentials
+Click **Save runtime**. When changes require a restart, a managed installation offers **Apply & restart**, asks for confirmation, and waits for the server to become healthy again. An unmanaged process shows **Restart from terminal** and must be restarted where it was launched.
 
-Store API keys securely without exposing them in plaintext or committing them to version control:
-- **AI Providers**: Anthropic, OpenAI, OpenRouter.
-- **Developer Tools**: GitHub (`gh` tokens), Vercel, Google Drive.
-- **Masked Storage**: Keys are saved write-only; the UI masks values and never transmits raw tokens to the browser.
+The watcher reads runtime activity. Agents record shared project todos through the todo API; changing watcher settings does not import a runtime's private todo list into Space.
+
+## Inspect native sources
+
+**Native session sources** lists the discovered runtimes, their home paths, CLI availability, login/setup status, and whether each is watched. Badges distinguish the current **Chat backend** from a selection that becomes active **after restart**.
+
+Use a source's recommended credential button to fill the credential key below. Some runtimes use native login files instead. Mounted or watched sources do not all contribute to the [Sessions telemetry tab](/docs/space/space-walk/sessions#select-sources); telemetry and watcher capabilities have separate coverage.
+
+## Manage credentials
+
+1. Choose a recommended key or enter an uppercase **Environment key**.
+2. Paste its **Secret value** and click **Save credential**.
+3. Apply a restart when the banner requests it.
+
+**Show / Hide** reveals only the value currently being typed. Saved values are represented by fixed masks and configured status; the UI does not fetch their plaintext. **Replace** starts a blank replacement form. **Remove** deletes the saved variable after confirmation.
+
+Credentials are stored in machine-local Quirq state, outside project folders. Choosing a source's credential does not by itself prove that its CLI is installed, authenticated, or currently running; check the source's status after applying changes.
+
+## Check usage reporting
+
+The **Agent and watcher** card reports whether usage reporting is **off**, **on**, **pending**, or **blocked**. An accepted credential enables daily token, cost, and session/tool summaries. **Pending** means the key has no conclusive probe result; **blocked** means the key was rejected. These are current status indicators, not proof that the installation has never sent an earlier report.
+
+The UI's **What leaves your machine** link summarizes the policy. Normal metric fields exclude prompt and file contents, but reporting error notes can include source filenames and raw error details. See the source-checked [collection and reporting guide](/docs/space/observability/collection) for that exception and the other network paths.
+
+## Update xo-space
+
+In **xo-space updates**, click **Check for updates** to compare the checkout with its configured Git remote. The result shows the installed commit, branch, latest commit, and whether local changes or divergence prevent an update.
+
+**Update now** appears when the checkout can fast-forward. Applying an update changes code on disk; restart to run the new version. If dependency requirements changed, follow the command or installation guidance shown in the result. The apply endpoint accepts requests from localhost, so a remote/proxied installation may need the terminal update path.
+
+<Callout type="info">
+  Self-update fast-forwards a clean Git checkout. It does not resolve a divergent branch or discard local edits. Save or reconcile your local work before updating, then follow the page's restart instructions.
+</Callout>
+
+## Open Quirq state
+
+**Open Quirq state** opens `/space/#/quirq`, a child view of Setup. It presents watcher state, project records, runtime configuration, and their availability. Use **Refresh data** to fetch another snapshot or **← Setup** to return.
+
+![Quirq state view with machine-local and portable project records](/images/space/quirq.png)
+
+<Callout type="info">
+  Some section headings retain the older “portable .xo” wording. Current session indexes, project stats, and normalized timeline history live under the machine-local state root's `projects/` directory. Identity, todos, workitems, and peers remain portable project records. Follow the effective row locations and the [storage map](/docs/space/observability/storage) rather than treating every item in that section as a project `.xo` file.
+</Callout>

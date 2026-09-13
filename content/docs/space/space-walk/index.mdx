@@ -1,60 +1,73 @@
 ---
 title: Space UI Overview
-description: A guided tour of the local XO Space UI served at http://localhost:5002/space/
+description: Navigate the six primary Space tabs, open Wiki, choose a Projects lens, and follow a task from files to activity and incoming work.
 icon: Map
 ---
 
-import { Cards, Card } from "@/components/card";
+import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  The **XO Space UI** (`/space/`) is a zero-dependency local browser control plane shipped directly inside the `xo-space` daemon. It reads directly from your workspace `.xo` metadata and native runtime logs, providing live visibility into your files, agent tasks, git commits, and multi-runtime telemetry.
+  Space brings your projects, runtime activity, incoming work, and workspace settings into one browser interface. Open **http://localhost:5002/space/** after starting XO Space, or use your deployment's Space URL.
 </Lead>
 
-## The Views of Space
+![Space opens to the Dashboard lens inside Projects](/images/space/dashboard.png)
 
-<Cards>
-  <Card
-    icon={<span className="icon-[ph--chart-bar-fill] size-6" />}
-    title="Project Dashboard"
-    description="Visual project nodes inside five purpose environments with orbiting todo satellites and overlapping boundaries."
-    href="/docs/space/space-walk/dashboard"
-  />
-  <Card
-    icon={<span className="icon-[ph--folder-fill] size-6" />}
-    title="Files Explorer & Graph"
-    description="Three lenses in one tab: operational List with project drawers, interactive Graph network, and Tree hierarchy."
-    href="/docs/space/space-walk/files-explorer"
-  />
-  <Card
-    icon={<span className="icon-[ph--git-fork-fill] size-6" />}
-    title="Tree Lens"
-    description="A horizontal visual tree of your workspace with folders as columns, stacked files, and dynamic limb sizing."
-    href="/docs/space/space-walk/tree-lens"
-  />
-  <Card
-    icon={<span className="icon-[ph--chart-line-up-fill] size-6" />}
-    title="Workspace Timeline"
-    description="Parallel multi-repo git commit lanes and dated artifact history flowing upward, newest at the top."
-    href="/docs/space/space-walk/timeline"
-  />
-  <Card
-    icon={<span className="icon-[ph--activity-fill] size-6" />}
-    title="Sessions & Telemetry"
-    description="Multi-runtime telemetry across Claude Code, Codex, and Cursor with honest cost reporting and turn-by-turn prompt inspection."
-    href="/docs/space/space-walk/sessions"
-  />
-  <Card
-    icon={<span className="icon-[ph--gear-fill] size-6" />}
-    title="Setup & Quirq State"
-    description="Manage XO_PROJECTS_ROOT, file watcher coverage, write-only credentials, and inspect machine-local vs portable storage."
-    href="/docs/space/space-walk/setup"
-  />
-</Cards>
+<Callout type="info" title="Version and screenshots">
+  Screenshots show the real UI at [xo-space revision 8267c08](https://github.com/quirq-ai/xo-space/tree/8267c0860af045b7e1e1762f15ec9b01cb17432f), using fictional workspace data. It has six primary tabs and a top-right Wiki resource that opens the compact local directory. This update on `codex/compact-wiki-doc-links` is awaiting merge into development and builds on [revision 5221119](https://github.com/quirq-ai/xo-space/tree/5221119). Technical guides retain their own source version notes. Release installations following `main` can differ; see [Install Space](/docs/space/install-space).
+</Callout>
 
-## Accessing the Local UI
+## Find the right tab
 
-When you run `curl -fsSL https://quirq.ai/install | sh` (or start `./cowork-api.sh start`), open:
+The primary tabs are **Projects · Timeline · Sessions · Inbox · Setup · Connectors**. Press **1–6** to open those tabs in that order. Shortcuts pause while an input, text area, or select has focus.
 
-👉 **[http://localhost:5002/space/](http://localhost:5002/space/)**
+**Wiki** sits at the top right beside **GitHub**. It opens Space's local quick
+start and topic directory in the same browser tab at `#/wiki`. Choose **Open
+docs** within Wiki to read a detailed guide in a new tab. **GitHub** opens the
+[source repository](https://github.com/quirq-ai/xo-space) in a new tab.
 
-The interface binds `127.0.0.1` only, requires no authentication, and operates completely offline on your loopback interface without sending telemetry outside your machine.
+| Tab | Use it to | Route after `/space/` |
+| --- | --- | --- |
+| [Projects](/docs/space/space-walk/files-explorer) | Inspect project files, activity, todos, history, and sharing through five lenses | `#/projects` |
+| [Timeline](/docs/space/space-walk/timeline) | Compare git commits and dated files across projects | `#/time` |
+| [Sessions](/docs/space/space-walk/sessions) | Review supported runtimes' sessions, usage, and recorded prompts | `#/sessions` |
+| [Inbox](/docs/space/space-walk/inbox) | Read incoming items and mark them seen or done | `#/inbox` |
+| [Setup](/docs/space/space-walk/setup) | Configure roots, runtime, watcher coverage, credentials, and updates | `#/secrets` |
+| [Connectors](/docs/space/space-walk/connectors) | Connect apps, control agent actions, and collect items into Inbox | `#/connectors` |
+
+The separate [Wiki](/docs/space/space-walk/wiki) resource link remains available
+from every view and has no numbered shortcut.
+
+Keep the full URL when bookmarking a view, including any access query parameters your deployment requires.
+
+## One Projects tab, five lenses
+
+Opening `/space/` without a hash starts at **Dashboard**. Clicking **Projects**, or pressing **1**, opens **List**. Choose another lens from the persistent control beneath the top bar; Projects stays highlighted throughout.
+
+| Lens | What it shows | Route |
+| --- | --- | --- |
+| [Dashboard](/docs/space/space-walk/dashboard) | Project nodes grouped into purpose environments with project todo context | `#/dashboard` |
+| [List](/docs/space/space-walk/files-explorer) | Project rows and expandable working details | `#/projects` |
+| [Graph](/docs/space/space-walk/graph) | A spatial map of projects and their files | `#/graph` |
+| [Tree](/docs/space/space-walk/tree-lens) | Folders and files arranged as a horizontal hierarchy | `#/tree` |
+| [Sharing](/docs/space/space-walk/sharing) | Shared projects, incoming repositories, and sync status | `#/sharing` |
+
+![Projects List with project counts and activity](/images/space/projects-list.png)
+
+Opening a supported file brings up a floating preview. It stays open when you move between all five Projects lenses, including its selected historical version, Source mode, size, and position. Leaving Projects closes the preview. See [files and version history](/docs/space/space-walk/files-explorer).
+
+## A useful first walkthrough
+
+1. Start with [Setup](/docs/space/space-walk/setup). Confirm the projects root and watcher coverage point to the folders and runtimes you actually use.
+2. Open **Projects → List**, find a project, expand it, and open a file. Review its todos, sessions, and git history when those sources are available.
+3. Choose **Dashboard**, **Graph**, or **Tree** for another view of the same workspace. Use **Timeline** when the question is when files or commits changed.
+4. Open **Sessions** to inspect recorded usage and prompts for a supported telemetry source. Continue running agent tasks in your runtime's own client or an API client.
+5. Open **Inbox** to read new items. Follow **Open** or **Open link** to their context, then mark the inbox item **Done** when handled.
+6. If you need external app tools or incoming mail/calendar items, configure **Connectors** and its **Polling** drawer.
+
+## Understand empty or unavailable views
+
+Space combines different sources; they do not all become available at once. A project can have files without a git repository, an active runtime can lack aggregate telemetry, and a connector can be authorized without polling enabled. Each guide explains its prerequisites and empty states.
+
+Local project browsing does not require a connector account. Sharing and Connectors use external services and require their own configuration. The UI is served by the Space backend; its bind address and authentication depend on how you run it. Check [installation](/docs/space/install-space) before exposing a local server remotely.
+
+For storage and runtime boundaries, read [Observability](/docs/space/observability) and [Auto-detection](/docs/space/auto-detection). For the distinction between session inspection and the separate replay tool, read [Session replay](/docs/space/space-walk/replay).

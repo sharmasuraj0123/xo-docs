@@ -64,7 +64,9 @@ Credentials are stored in machine-local Quirq state, outside project folders. Ch
 
 ## Check usage reporting
 
-The **Agent and watcher** card reports whether usage reporting is **off**, **on**, **pending**, or **blocked**. When on, it sends a daily summary of token counts, cost, and session/tool counts; the status states that prompts, responses, and files are excluded. Pending and blocked states explain why nothing has been sent. The **What leaves your machine** link provides the detailed policy.
+The **Agent and watcher** card reports whether usage reporting is **off**, **on**, **pending**, or **blocked**. An accepted credential enables daily token, cost, and session/tool summaries. **Pending** means the key has no conclusive probe result; **blocked** means the key was rejected. These are current status indicators, not proof that the installation has never sent an earlier report.
+
+The UI's **What leaves your machine** link summarizes the policy. Normal metric fields exclude prompt and file contents, but reporting error notes can include source filenames and raw error details. See the source-checked [collection and reporting guide](/docs/space/observability/collection) for that exception and the other network paths.
 
 ## Update xo-space
 
@@ -83,5 +85,5 @@ In **xo-space updates**, click **Check for updates** to compare the checkout wit
 ![Quirq state view with machine-local and portable project records](/images/space/quirq.png)
 
 <Callout type="info">
-  Some section headings retain the older “portable .xo” wording. Current session indexes, project stats, and normalized timeline history live under the machine-local state root's `projects/` directory. Identity, todos, workitems, and peers remain portable project records. Follow the effective row locations and the [storage map](/docs/space/observability#what-is-stored-and-reported) rather than treating every item in that section as a project `.xo` file.
+  Some section headings retain the older “portable .xo” wording. Current session indexes, project stats, and normalized timeline history live under the machine-local state root's `projects/` directory. Identity, todos, workitems, and peers remain portable project records. Follow the effective row locations and the [storage map](/docs/space/observability/storage) rather than treating every item in that section as a project `.xo` file.
 </Callout>

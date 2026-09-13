@@ -1,10 +1,8 @@
 ---
-title: Agent Observability
+title: Reading the Data
 description: Find live project activity, compare session telemetry, and understand the limits of tokens, costs, todos, and git history.
 icon: Activity
 ---
-
-import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
   Space reads supported runtime stores and project files to show what happened,
@@ -21,7 +19,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 | When did files and commits enter Git history? | **Timeline**; use file previews to inspect current or historical contents. |
 | How much usage was recorded, and which tools were called? | **Sessions** and its Overview, Sessions, Tools, Models, and Trends views. |
 | What needs attention? | **Inbox**, filtered to the relevant source. |
-| Why is telemetry missing? | **Setup → Native session sources**, watcher status, and the server log. |
+| Why is telemetry missing? | **Sessions → Sources** and the server log for aggregate usage; **Setup → Native session sources** and watcher status for native activity coverage. |
 
 ![Sessions compares available runtime usage with source and time-window filters](/images/space/sessions.png)
 
@@ -129,23 +127,6 @@ curl -fsS http://localhost:5002/api/xo-projects/activity
 The API explorer at your running server's `/docs` describes that build's routes.
 See [runtime discovery](/docs/space/auto-detection) for source-specific checks.
 
-## What is stored and reported
+## Follow the data back to its source
 
-| Location | Holds |
-|---|---|
-| Project files and `<project>/.xo/` | Deliverables and portable records such as identity, todos, workitems, and peers. |
-| `<state root>/projects/<pid>/` | Derived project stats, timeline, session indexes, and issue mirrors. |
-| `<state root>/workspace/` | Workspace graph, Dashboard projection, session aggregate, and rollups. |
-| `<state root>/watcher/` | Cursors, locks, heartbeat, and live presence. |
-| `<state root>/inbox.json` | Inbox items, user status, and feeder cursors. |
-| Native agent homes and ingestion stores | Conversations and source telemetry; Claude Code's aggregate uses the separate Argus database. |
-
-A signed-out local install sends no XO usage summary. Setting `XO_API_KEY` or
-linking the install to XO enables a daily summary of tokens, estimated cost, and
-message/session/tool counts per model. That summary excludes prompts, responses,
-file contents, and paths. Setup displays the current reporting decision.
-
-Sharing additionally needs a workspace identity and reports commit hashes after
-pushes. Connected services, git operations, and the agent runtimes have their own
-network activity. The source repository's [What leaves your machine](https://github.com/quirq-ai/xo-space#what-leaves-your-machine)
-section describes those boundaries.
+Read the [storage hierarchy and catalog](/docs/space/observability/storage) to locate a record, or [collection and reporting](/docs/space/observability/collection) to understand how it was produced, what can leave the machine, and how long it is kept.

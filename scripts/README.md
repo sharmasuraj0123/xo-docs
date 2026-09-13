@@ -42,7 +42,8 @@ Optional environment variables:
 The script discovers every MDX page under `content/docs/space`, opens each in a
 real browser, checks its title, decodes its images, follows internal article links
 and anchors, and rejects page errors or horizontal overflow. It also captures
-desktop and mobile documentation layouts. Results and screenshots go to the
+desktop and mobile documentation layouts, including the Codex guide and all three
+Observability diagrams. Figure captures also check viewport bounds. Results and screenshots go to the
 output directory, outside the published website.
 
 ## Capture product screenshots

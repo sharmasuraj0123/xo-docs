@@ -4,6 +4,7 @@ import { BrandIcon } from "./brand-icon";
 import { Card, Cards } from "./card";
 import * as Figure from "./figure";
 import * as Fow from "./fow";
+import * as SpaceObservability from "./space-observability";
 import { VideoEmbed } from "./video-embed";
 import { WhatIsXO } from "./what-is-xo";
 
@@ -17,6 +18,7 @@ export function getMDXComponents(components?: MDXComponents) {
     WhatIsXO,
     ...Fow,
     ...Figure,
+    ...SpaceObservability,
     ...components,
   } satisfies MDXComponents;
 }

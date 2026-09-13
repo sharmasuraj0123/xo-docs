@@ -94,6 +94,10 @@ try {
     for (const [route, slug] of [
       ["/docs/space/space-walk", "overview"],
       ["/docs/space/space-walk/connectors", "connectors"],
+      ["/docs/space/observability", "observability"],
+      ["/docs/space/observability/storage", "storage"],
+      ["/docs/space/observability/collection", "collection"],
+      ["/docs/space/install-space-as-a-skill/codex", "codex"],
     ]) {
       await page.goto(`${origin}${route}`, { waitUntil: "networkidle" });
       assert.ok(
@@ -103,6 +107,22 @@ try {
         `${width}px ${route}: horizontal overflow`,
       );
       await page.screenshot({ path: resolve(output, `${slug}-${name}.png`) });
+      for (const [index, figure] of (
+        await page.locator("#nd-page figure").all()
+      ).entries()) {
+        assert.ok(
+          await figure.evaluate((element) => {
+            const bounds = element.getBoundingClientRect();
+            return bounds.left >= 0 && bounds.right <= innerWidth;
+          }),
+          `${width}px ${route}: figure extends outside viewport`,
+        );
+        await figure.screenshot({
+          path: resolve(output, `${slug}-figure-${index + 1}-${name}.png`),
+          // Isolate the diagram; full-page captures above retain the site chrome.
+          style: ".fixed, .sticky, nextjs-portal { visibility: hidden; }",
+        });
+      }
     }
   }
   assert.deepEqual(errors, []);

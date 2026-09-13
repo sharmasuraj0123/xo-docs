@@ -7,7 +7,8 @@ icon: Play
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  The current Space UI provides session telemetry and Git timeline playback. The separate **Space Walk** 3D replay tool is described in the bundled Wiki, but is not launched from the Sessions view.
+  The current Space UI provides session telemetry and Git timeline playback. The
+  separate **Space Walk** 3D replay tool is not launched from the Sessions view.
 </Lead>
 
 ## Inspect a run in Space
@@ -20,8 +21,13 @@ Open [Timeline](/docs/space/space-walk/timeline) and use **Play** or the scrubbe
 
 ## Space Walk is a separate tool
 
-The Wiki's **Space Walk session replay** article describes a separate Go application that turns native session logs into a 3D repository map. Its server, commands, and API belong to that application. The Sessions telemetry endpoint and the Space static UI do not serve its replay API.
+Space Walk is a separate Go application that turns native session logs into a 3D
+repository map. Its server, commands, and API belong to that application. The
+Sessions telemetry endpoint and the Space static UI do not serve its replay API.
 
 <Callout type="info">
-  Run and configure Space Walk separately if you use it. In particular, the article's optional model-based judge can send session-derived information to the provider behind your local model CLI and consume tokens; it is separate from reading local telemetry in Space.
+  Run and configure Space Walk separately if you use it. Its optional model-based
+  judge can send session-derived information to the provider behind your local
+  model CLI and consume tokens; it is separate from reading local telemetry in
+  Space.
 </Callout>

@@ -93,6 +93,7 @@ try {
     await page.setViewportSize({ width, height: 1000 });
     for (const [route, slug] of [
       ["/docs/space/space-walk", "overview"],
+      ["/docs/space/space-walk/wiki", "wiki"],
       ["/docs/space/space-walk/connectors", "connectors"],
       ["/docs/space/observability", "observability"],
       ["/docs/space/observability/storage", "storage"],

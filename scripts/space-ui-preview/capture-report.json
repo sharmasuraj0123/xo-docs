@@ -1,17 +1,17 @@
 {
   "source": {
     "repository": "https://github.com/quirq-ai/xo-space",
-    "revision": "522111900fa4224ef3914192b9eb78048fffb5e3",
+    "revision": "5eb122b84dfdf1d3b7a2a237c366579045ac7d29",
     "assets_modified": false,
     "asset_sha256": {
-      "README.md": "efe2e1f6380da059b2c114dfc212085ffc8cec88c305a7e8c6b0921385759944",
-      "css/base.css": "972151516100d2f35e6bb32c68f2444eed18ded10290202540b8276ed5caeb53",
+      "README.md": "beb1f3344e53dc23e0a8851d3078b996e741b10d277dae77425b946018c8e1c7",
+      "css/base.css": "8f4e4fc560880184545da1b328b07b1562e9182bf732df487e9f230892941429",
       "css/chat.css": "d8ee0ae5c0bf7f1bd1687f8f2835644f3b264f7b463c36ba690c2a23b6bb8f14",
-      "css/chrome.css": "df5bcc5e8a6f612a99708f01e2ec62552f1ea36e71aff4631fe0a65e2eda83ea",
+      "css/chrome.css": "0066c40b5c65d661d84741d83afa0fb0de7c101b3029b9eb564aa08ddcf3f876",
       "css/connectors.css": "391f049f911694f52b97db4804d7b669c3dddac9df9132723ad290c12bcf67b6",
-      "css/graph.css": "47a74bf2f5a137d7828e61953a7a2150360459b6a42ca9da6bbd2fb525df8e71",
+      "css/graph.css": "dee6045c2fea3b807aa843b6c62b3db2745bed8be2909d7b0f699878b8833485",
       "css/inbox.css": "e441456fb4f8d1435987fa6369d9a78f8478207139d90f025588dbdecdd80e9f",
-      "css/preview.css": "994900e08e1e4a23473d2de188cd44896ec3e0e4d160ae2dd6ba4dfd565f3ecb",
+      "css/preview.css": "3b6a50413278fcd34b0d22dca1d22e4273b93ce8380e4c85f879354278353ece",
       "css/projects.css": "163abdf092e03f41d644b156de4cefe13298f90914839a1e73745cdc316401a6",
       "css/quirq.css": "ef645e79664e6eb206a10fc4e3f6cb02d225208f3191f33eee63713324b8e939",
       "css/secrets.css": "2dbfca2a4fcbb002698fd5c874ed3c5f04076868d07db0f0024003fb5327eff4",
@@ -19,14 +19,14 @@
       "css/sharing.css": "6e49ed7c5ee9c0441e305ed15fa1a6823acb4cb624a0ca38c45af32b16bb403a",
       "css/stage.css": "24173fe9294fa4f725eb3d695aae673b4a34da39bfe9b07c2f5d0e776984143a",
       "css/timeline.css": "850d1c75eb8cb4d685748496644de6d17abe69168ba292a68644c4af570a9085",
-      "css/wiki.css": "91343b588ed969efc71965d7fe60fae211e11c22cca5dd4d2afb665f103dbf20",
-      "index.html": "49891232a3d8ced5b19e2738e1217bcb028612dc07954e775da2e441dacb03b5",
-      "js/app.js": "a913475951eaac981a693ddabaedc0efbff63a76975edba7019e69523dc70875",
+      "css/wiki.css": "5ccb1a970ca7cd2fd7938cd06ad025017ec11972089031d699569e1cd842afe3",
+      "index.html": "e19751d7bb0d561a2abf724d9e377f1a6a0c80d3dc50d76850ea8547af77087c",
+      "js/app.js": "18e572912a361042d0ed7071f2a84b6f8159e012f960206fadf4244cce240954",
       "js/core/api.js": "73cdc522920d90d4a13bd3e0be1985dcc6655d04b5008e8556dc90bdda801a26",
       "js/core/connections.js": "ac9e17835b06a38edb704902f506677914550820c68e2925899c9d9e5adabde3",
       "js/core/lens-switch.js": "8f27ee929eb1e00f189a86a83181c08c2324cd05a59752c5570c8d97b442f790",
       "js/core/markdown.js": "e3bbc4025da7ac58b4937847b722d7f122d1b8753c167eed15c8afb097ede93b",
-      "js/core/preview.js": "bb79f0d98bcfccdf0a71d627cc124406d06a8764299ceb9ad8a68b2f247f53e3",
+      "js/core/preview.js": "1ebb78074ee160bf5954ef41ed026031158c37c6c21be198cd2043d7b726b5b3",
       "js/core/registry.js": "28807ab83a0c783e8fff3c3b1da1daf64a310ad13605e632d67a7c9b9f5d63a2",
       "js/core/server-widget.js": "ef199f45becacd67ab55847c8739650bb756372d7adf7e44422d70acb3dbb264",
       "js/core/session.js": "a5f5e2a2f60c2c7e943a9f2739b2adf9a83f5e5afcaf98356dcb7a04eecf0320",
@@ -44,7 +44,7 @@
       "js/views/sharing.js": "55a705e5444ff5b535db4f64ca0b75148683c573aa7a07a85525d261ec579fa7",
       "js/views/sharing_data.js": "8a601478def5a94a94e2180d46178db27141b83cad398a4b7a1abf714d00164f",
       "js/views/tree.js": "283f5e95e41903ad867a88762519e468e1d0acdf5c2dd8866efe8e8644691810",
-      "js/views/wiki.js": "79b8d21dbd343017b4a391d8fdebb6758672a2be9d6f4a03f51220ea973b19d0"
+      "js/views/wiki.js": "d044bcf7e53f1378a82b1be3ea632dc13c3fd6a2f57f029bbcce2ebe88c4ad78"
     },
     "fixture_data": "All projects, sessions, activity, accounts and paths are fictional.",
     "fixture_time": "2026-09-14T10:00:00Z"
@@ -57,164 +57,194 @@
     {
       "file": "dashboard.png",
       "description": "Default Dashboard lens: ten projects grouped into five environments.",
-      "bytes": 420928,
-      "sha256": "bae92c0a1d5683ae5d91fd2de9b6f8cfa3198d340273b2b6c33e37f72697fcab"
+      "bytes": 421625,
+      "sha256": "726beaa34264c07af92c8424f41edd0988889491e6c18f90c093bedf538b1a7e"
     },
     {
       "file": "dashboard-detail.png",
       "description": "Selected Dashboard project with live todo satellites and the detail panel.",
-      "bytes": 387549,
-      "sha256": "bc3ef2b8d0a7c16d7473d3516a3e03e4cb2d6e95e0fccb0b6f30626ab5c4e0c8"
+      "bytes": 387671,
+      "sha256": "73f1294b8b69dce00fbd2c0953b52e418aa0ffb3b5e1794d8d472621174938b1"
     },
     {
       "file": "projects-list.png",
       "description": "Projects List with descriptions, live activity and file counts.",
-      "bytes": 152705,
-      "sha256": "ab4307d52ddb18a7a48e94ad70d187188a70e533eb0856002c18a095f7e3c0a3"
+      "bytes": 153147,
+      "sha256": "265f2ca263480d5ff6b80010d689e5d32de2c2322ad94e9b04a74a59e449421e"
     },
     {
       "file": "projects-detail.png",
       "description": "Expanded project drawer: files, todos, open sessions and recent events.",
-      "bytes": 142777,
-      "sha256": "57864e2bb94508da17727931387b7360902e647ba60ed8589e858a68122468a4"
+      "bytes": 143212,
+      "sha256": "b45f146e4e579723f1a753000889c022e7e76e4b8421283efaa9f072005f0e8a"
     },
     {
       "file": "file-preview.png",
       "description": "Rendered file preview with source toggle and version history picker.",
-      "bytes": 180248,
-      "sha256": "efabcc8cf2cd986fcb483354a6cc66baf8fab77d3b87b2601c519cd79c12f83e"
+      "bytes": 180513,
+      "sha256": "32cc54f8dc15dfbb2d09e0e7996aa6ca850832719e465c04426ba1a49d40b0f3"
     },
     {
       "file": "file-version.png",
       "description": "A historical version rendered in the same file preview.",
-      "bytes": 154937,
-      "sha256": "6db05fce365a7e8f42a11f366e5a0db973d3a7928f3ed9566c327b5acdc2a071"
+      "bytes": 155207,
+      "sha256": "e5156beac84c5944c16865f508b20f0b555e47688388d3dc50a054c67130cec5"
     },
     {
       "file": "graph.png",
       "description": "File graph across all ten fictional projects.",
-      "bytes": 503108,
-      "sha256": "c1eac956f347edb774485402f62134de559ee1791716ccb552a14529832d0156"
+      "bytes": 502658,
+      "sha256": "34e137a73b532b90927398f52849fe2730478cb3e892968b705e54f047990fbb"
     },
     {
       "file": "tree.png",
       "description": "Tree lens: an expanded project and source folder in the workspace directory hierarchy.",
-      "bytes": 218108,
-      "sha256": "4d5d00ea0886971d91a9387fb164f02c6e7f76ff3cdabf418002305267a0f330"
+      "bytes": 217998,
+      "sha256": "056061e19b68b2b71cd6ac2a1be7b7e4b7c5e5333cdd7277cbbf8f76625581f5"
     },
     {
       "file": "sharing.png",
       "description": "Sharing lens with fetched commits awaiting explicit application.",
-      "bytes": 144205,
-      "sha256": "9398a8ca2445c40f0d42163bb3395947e3a66009770b1cb103695e6e5dcb7396"
+      "bytes": 144072,
+      "sha256": "a879e07fd677be3d6aa8d79022525200772f70e8b1aa165e7216e9d9c5490bfc"
     },
     {
       "file": "timeline.png",
       "description": "Timeline in By project mode, showing parallel project histories.",
-      "bytes": 97229,
-      "sha256": "f6d0160bd8b3c1c7c2b313584c42796c108c1e30c0661e041fd1cc2abb31f3c7"
+      "bytes": 97180,
+      "sha256": "43efeec8078747e90c2590af517b081fbfe8c506d7ece426d7a35b334237494c"
     },
     {
       "file": "timeline-files.png",
       "description": "Timeline in By file mode, showing when artifacts first appeared.",
-      "bytes": 100202,
-      "sha256": "1e53c83e2c8c6262c5620ec75738c751c94602fb2ad8fc7c18f4e75cb1a07dd1"
+      "bytes": 100171,
+      "sha256": "afb8697bdb5e1fc1467f9a7be16265b86a860629f2d684f873e872b0c1bc12c9"
     },
     {
       "file": "sessions.png",
       "description": "Sessions overview: token trends, source filters, costs and model usage.",
-      "bytes": 110894,
-      "sha256": "163c5a26ec69588460777b64bbe6a79c1ca414671dc8ad9792262705f44add09"
+      "bytes": 110893,
+      "sha256": "ab46f877783d55a56fd521a76a0f45f31a5fb0c1f67c3f78f04128b7e5182b2a"
     },
     {
       "file": "sessions-tools.png",
       "description": "Session tools: call counts, errors and the tool leaderboard.",
-      "bytes": 68485,
-      "sha256": "f90b980f8f920c8a3a2863868bd38b0f8668d03994f3aefbdc84d2b2bad6a00b"
+      "bytes": 68473,
+      "sha256": "8c505e90a9c8cf0293d21804a60f78519a31826f384fb7fcfe6deb3908f34203"
     },
     {
       "file": "sessions-models.png",
       "description": "Session models: token share and costs where available.",
-      "bytes": 63881,
-      "sha256": "3c0d6fefded08b6e1eda7ec949430eb6fce773f842f8ed36526eecf02cdb9c3b"
+      "bytes": 63872,
+      "sha256": "2825e6b01ec307a51f9ce6d10e125ca2cf6e6c7558a16693ddf68327e635d5db"
     },
     {
       "file": "sessions-trends.png",
       "description": "Session trends: weekly usage and top model by week.",
-      "bytes": 117704,
-      "sha256": "79c4ee03717169cbf131c79b23e699f8e55ba0e83e75b53f1e8132be59acd7ae"
+      "bytes": 117698,
+      "sha256": "e1e3dab92cbbee5223111f3526a8d1df3ec3a5f3c8dce4ccf74798cab5107660"
     },
     {
       "file": "sessions-list.png",
       "description": "Session table with sorting, pagination and telemetry by source.",
-      "bytes": 136983,
-      "sha256": "3f8df0ecbf76d3d2bd10a2524016516bd45b5f6c8f47686438ea540e9eed092e"
+      "bytes": 136997,
+      "sha256": "b8b4c9b3d4722f6f7e948eaa44775d63af1964ee958b637b5a830f807de21468"
     },
     {
       "file": "session-detail.png",
       "description": "Session detail: tokens, duration, source and tools.",
-      "bytes": 111241,
-      "sha256": "7a5c20a1b2087568b9690b66e305bf7b7520a506531076567a1e23aff6709810"
+      "bytes": 111253,
+      "sha256": "2defddb3c0acbd2dcb2247acabf6e0772c85b7125312115aeee851eacda1395d"
     },
     {
       "file": "session-prompts.png",
       "description": "Session detail showing fictional prompts grouped by turn.",
-      "bytes": 109649,
-      "sha256": "4c31285e3d5e34b2935c65d04c00781e1f32b003f44da466455b1a26c8ab0fdf"
+      "bytes": 109646,
+      "sha256": "201d5d7644948c62e057c5f52ec92d31b09c2032d5ff1cf78318a2966fc88ba7"
     },
     {
       "file": "inbox.png",
       "description": "Inbox with expanded connections, account labels, and an item already marked seen.",
-      "bytes": 132520,
-      "sha256": "dc1cf7b48e6dc24e7d039e50c2f3de066a3b7f9f937fa9d6b2b2b64e67a15aad"
+      "bytes": 132599,
+      "sha256": "9d8ff75d505d8b84cb26dd2956a634425d9d1a937d3eb70a32386cc145f49370"
     },
     {
       "file": "wiki.png",
-      "description": "Bundled Wiki with the version-matched storage and data map.",
-      "bytes": 364533,
-      "sha256": "2093bd3ce5b5c860b7007144b0e5f895a8988e848636c5faed89dd8e6a899b7c"
+      "description": "Compact Wiki directory with local summaries and links to detailed hosted documentation.",
+      "bytes": 194871,
+      "sha256": "7dc20350659a23bd2c55ec2162ef717eb280e771964d9e9a726e98fcd0ab4da8"
     },
     {
       "file": "setup.png",
       "description": "Runtime Setup: storage roots, active backend and watched native session stores.",
-      "bytes": 261692,
-      "sha256": "5fb417a00958dc421f2626c32c8240b5f107a247738d0686b91473daa76683a5"
+      "bytes": 261869,
+      "sha256": "a58b69611762a7e4b398fc25f2de183e59f1967c496421e2af62ea2d8ad7b1f9"
     },
     {
       "file": "setup-runtime.png",
       "description": "Runtime settings and native source coverage; no secret values exist in the fixtures.",
-      "bytes": 216067,
-      "sha256": "a614969b8f313fd018a96476039d3b5553e5615ab5b9f242457a1256f2ace62e"
+      "bytes": 216196,
+      "sha256": "63c0cef59ac9274221bb1759cc7c371cdefc451ab147a6a3399fca95758f741e"
     },
     {
       "file": "quirq.png",
       "description": "Machine-local Quirq state reached from Setup, including storage ownership and watcher heartbeat.",
-      "bytes": 320837,
-      "sha256": "609f5e19ae7c43962053d29152fbd0e3ae018364ae4d9b238c9a6fe4b0534ed6"
+      "bytes": 320963,
+      "sha256": "37e197a954ca8a5ad2866f4c5839ab6e0c0418caf4303f0bb24611c65129eb0a"
     },
     {
       "file": "connectors.png",
       "description": "Connected apps showing account labels, workspace scope and available actions.",
-      "bytes": 139094,
-      "sha256": "4df398532235771721115083a63e61778c12fdc849858314ca6495a399db0016"
+      "bytes": 139068,
+      "sha256": "88fc858f947dca85a32cf87b9937c8319cd83f8bd3a50ca769857c5b08b7b2d8"
     },
     {
       "file": "connector-polling.png",
       "description": "Gmail polling drawer with collector selection, cadence and account label.",
-      "bytes": 136091,
-      "sha256": "5b3656d34c1019b682b61db7ab03b48ddc7840201aacfddabe68946b99664089"
+      "bytes": 136069,
+      "sha256": "8bfbd1b57bba51ab7c45620865b92ee751cbf10547ae3946ee4782248d0e8bb9"
     },
     {
       "file": "connector-actions.png",
       "description": "Gmail action preferences with read/write categories and a disabled send action.",
-      "bytes": 139149,
-      "sha256": "d3e743b52a036746c208255cc2b3b98ad78ac34838a02ea9916d0303b1c8f381"
+      "bytes": 139127,
+      "sha256": "b9d3eee3acb5b109dd720e139b9659862328cc38958e9c547e38d6dbbe402ad2"
     }
   ],
   "checks": [
+    "Wiki and global Docs/GitHub links verified at 1440, 390 and 320 pixels. External destinations were stubbed only for new-tab navigation checks; published page content was not tested.",
     "Every capture rendered using original source assets, with no source modifications or DOM/CSS substitutions.",
     "All data is synthetic; no xo-space runtime, upstream request, account write, credential or private workspace is used.",
     "Seven tabs, ten projects, ten connectors, historical file preview, session table/detail, and polling drawer verified."
   ],
-  "errors": []
+  "errors": [],
+  "wikiNavigation": [
+    {
+      "width": 1440,
+      "topics": 9,
+      "docsLinks": 15,
+      "internalQuickstartActions": true,
+      "wikiHotkey": true,
+      "externalLinksPreserveView": true,
+      "horizontalOverflow": false
+    },
+    {
+      "width": 390,
+      "topics": 9,
+      "docsLinks": 15,
+      "internalQuickstartActions": true,
+      "wikiHotkey": true,
+      "externalLinksPreserveView": true,
+      "horizontalOverflow": false
+    },
+    {
+      "width": 320,
+      "topics": 9,
+      "docsLinks": 15,
+      "internalQuickstartActions": true,
+      "wikiHotkey": true,
+      "externalLinksPreserveView": true,
+      "horizontalOverflow": false
+    }
+  ]
 }

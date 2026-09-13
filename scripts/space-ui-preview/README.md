@@ -5,7 +5,10 @@ These screenshots show the actual, unmodified `space_ui` browser application fro
 by a local Python fixture server. They are browser captures, not visual mockups.
 
 The checked-in images were captured from source revision
-`522111900fa4224ef3914192b9eb78048fffb5e3`. `capture-report.json` records that revision,
+`5eb122b84dfdf1d3b7a2a237c366579045ac7d29` on `codex/compact-wiki-doc-links`,
+which adds the compact Wiki and global documentation/repository links to
+development revision `522111900fa4224ef3914192b9eb78048fffb5e3`.
+`capture-report.json` records the captured revision,
 every source UI asset hash, screenshot descriptions, PNG hashes and byte sizes,
 and browser validation results. It contains no local checkout paths.
 
@@ -44,6 +47,14 @@ Sharing, both Timeline modes, all five Sessions subviews and session details,
 Inbox, Wiki, Setup and native runtime sources, Quirq state, and Connectors with
 polling and action drawers. All navigation, expansion, scrolling and selection
 uses real browser interactions; the script does not alter application DOM or CSS.
+
+Every capture checks the global Docs and GitHub links. After saving the images,
+the script verifies the compact Wiki's nine topics, fifteen documentation links,
+quick-start actions, and keyboard shortcut at 1440, 390 and 320 pixels. It checks
+that external links open a new tab and preserve the current Space view. Those
+destination requests receive a minimal test response, so this check does not
+contact the hosted documentation or GitHub and does not validate their published
+content. Screenshots contain only the real local Space UI.
 
 Browser time, timezone and the graph's random seed are fixed. The script waits for
 data and graph layout, verifies expected project/connector counts and selected

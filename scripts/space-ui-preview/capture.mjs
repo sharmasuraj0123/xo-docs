@@ -14,6 +14,8 @@ const { chromium } = await import(
     : "playwright"
 );
 const origin = process.env.SPACE_PREVIEW_URL || "http://127.0.0.1:5101";
+const docsRoot = "https://docs.quirq.ai/docs/space";
+const sourceRepository = "https://github.com/quirq-ai/xo-space";
 const output = resolve(
   process.argv[2] || resolve(here, "../../public/images/space"),
 );
@@ -91,6 +93,7 @@ async function settleGraph() {
 async function shot(name, description) {
   // Let native page crossfades and drawer transitions finish before capture.
   await page.waitForTimeout(750);
+  await assertHeaderLinks();
   await page.mouse.move(1430, 985);
   await page.screenshot({
     path: resolve(output, `${name}.png`),
@@ -103,6 +106,112 @@ async function shot(name, description) {
     sha256: createHash("sha256").update(bytes).digest("hex"),
   });
   console.log(`Captured ${name}.png`);
+}
+
+async function assertHeaderLinks() {
+  for (const href of [docsRoot, sourceRepository]) {
+    const link = page.locator(`.topbar a[href="${href}"]`);
+    assert.equal(await link.count(), 1, `Global header link: ${href}`);
+    assert.equal(await link.isVisible(), true);
+    assert.equal(await link.getAttribute("target"), "_blank");
+    const rel = (await link.getAttribute("rel"))?.split(/\s+/) || [];
+    assert.ok(rel.includes("noopener"), "External links isolate the new tab");
+    const bounds = await link.boundingBox();
+    assert.ok(bounds && bounds.x >= 0 && bounds.y >= 0);
+    assert.ok(bounds.x + bounds.width <= page.viewportSize().width + 1);
+  }
+}
+
+async function assertExternalLinkOpensNewTab(link) {
+  const originalURL = page.url();
+  const destination = await link.getAttribute("href");
+  const popupReady = context.waitForEvent("page");
+  await link.click();
+  const popup = await popupReady;
+  await popup.waitForLoadState("domcontentloaded");
+  assert.equal(popup.url(), destination);
+  assert.equal(
+    page.url(),
+    originalURL,
+    "External links preserve the Space view",
+  );
+  await popup.close();
+}
+
+async function verifyWikiNavigation() {
+  // Inspect navigation without contacting GitHub or the published docs site.
+  // No screenshot includes this destination stub or modified Space content.
+  for (const pattern of ["https://docs.quirq.ai/**", "https://github.com/**"]) {
+    await context.route(pattern, (route) =>
+      route.fulfill({
+        contentType: "text/html",
+        body: "<!doctype html><title>Navigation destination verified</title>",
+      }),
+    );
+  }
+  const layouts = [];
+  for (const width of [1440, 390, 320]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await go("wiki");
+    await page.locator(".wiki-topic").first().waitFor();
+    await page.waitForTimeout(750);
+    await assertHeaderLinks();
+    const topics = page.locator(".wiki-topic");
+    assert.equal(await topics.count(), 9);
+    const layout = await topics.evaluateAll((cards) => ({
+      documentWidth: document.documentElement.scrollWidth,
+      cards: cards.map((card) => {
+        const bounds = card.getBoundingClientRect();
+        return { left: bounds.left, right: bounds.right };
+      }),
+    }));
+    assert.ok(layout.documentWidth <= width, "Wiki has no horizontal overflow");
+    assert.ok(
+      layout.cards.every((card) => card.left >= 0 && card.right <= width + 1),
+    );
+    const docsLinks = page.locator(".wiki-doc-link");
+    assert.equal(await docsLinks.count(), 15);
+    assert.equal(
+      await page.locator(".wiki-topic-actions > .wiki-doc-link").count(),
+      9,
+    );
+    for (const link of await docsLinks.all()) {
+      assert.equal(await link.getAttribute("target"), "_blank");
+      assert.ok(
+        (await link.getAttribute("rel"))?.split(/\s+/).includes("noopener"),
+      );
+    }
+    await assertExternalLinkOpensNewTab(
+      page.locator(".wiki-topic-actions > .wiki-doc-link").first(),
+    );
+    await assertExternalLinkOpensNewTab(
+      page.locator(`.topbar a[href="${docsRoot}"]`),
+    );
+    await assertExternalLinkOpensNewTab(
+      page.locator(`.topbar a[href="${sourceRepository}"]`),
+    );
+    await page.locator('.wiki-quickstart [data-open-tab="projects"]').click();
+    await page.waitForFunction(() => location.hash === "#/projects");
+    await page.locator(".prj-row").first().waitFor();
+    await page.keyboard.press("5");
+    await page.waitForFunction(() => location.hash === "#/wiki");
+    await page.locator('.wiki-quickstart [data-open-tab="secrets"]').click();
+    await page.waitForFunction(() => location.hash === "#/secrets");
+    await page.locator("#setup-alert.is-good").waitFor();
+    layouts.push({
+      width,
+      topics: 9,
+      docsLinks: 15,
+      internalQuickstartActions: true,
+      wikiHotkey: true,
+      externalLinksPreserveView: true,
+      horizontalOverflow: false,
+    });
+  }
+  report.wikiNavigation = layouts;
+  report.checks.push(
+    "Wiki and global Docs/GitHub links verified at 1440, 390 and 320 pixels. External destinations were stubbed only for new-tab navigation checks; published page content was not tested.",
+  );
 }
 
 try {
@@ -263,10 +372,11 @@ try {
     "Inbox with expanded connections, account labels, and an item already marked seen.",
   );
   await go("wiki");
-  await page.locator(".wiki-article").waitFor();
+  await page.locator(".wiki-topic").first().waitFor();
+  assert.equal(await page.locator(".wiki-topic").count(), 9);
   await shot(
     "wiki",
-    "Bundled Wiki with the version-matched storage and data map.",
+    "Compact Wiki directory with local summaries and links to detailed hosted documentation.",
   );
 
   await go("secrets");
@@ -312,6 +422,8 @@ try {
     "connector-actions",
     "Gmail action preferences with read/write categories and a disabled send action.",
   );
+
+  await verifyWikiNavigation();
 
   assert.deepEqual(
     errors,

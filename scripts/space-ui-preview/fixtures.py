@@ -317,7 +317,7 @@ def runtime_config():
                "watcher_source_mode": "all", "watcher_interval_seconds": 1}
     roots = {"xo_projects_root": WORKSPACE, "quirq_state_root": "/demo/.quirq"}
     return {"configured": applied, "applied": applied, "restart_required": False,
-            "restart_supported": False, "restart_reasons": [],
+            "restart_supported": True, "restart_mode": "native", "restart_reasons": [],
             "roots": {"configured": roots, "applied": roots, "change_required": False},
             "paths": {"projects": path(WORKSPACE, "/workspace/xo-projects"),
                       "state": path("/demo/.quirq", "/state/.quirq"),
@@ -356,6 +356,10 @@ def quirq(project_contract, workspace_contract):
         ("workspace/dashboard.json", "Derived project environment map", 7300),
         ("workspace/sessions.json", "Aggregated session telemetry", 51000),
         ("inbox.json", "Local incoming events and read status", 3900),
+        ("scheduler/jobs.json", "Saved manual commands and optional intervals", 1250),
+        ("scheduler/state.json", "Command execution state and last result", 820),
+        ("scheduler/runs/checkout-status.jsonl", "Retained command results and output tails", 940),
+        ("scheduler/logs/checkout-status.log", "Appended command output", 1120),
     ]
     return {"root": {"host_path": "/demo/.quirq", "container_path": "/state/.quirq", "readable": True, "writable": True},
             "totals": {"files": len(paths), "bytes": sum(p[2] for p in paths), "directories": 5, "truncated": False},
@@ -369,6 +373,27 @@ def quirq(project_contract, workspace_contract):
                                 "project_contract": project_contract, "workspace_contract": workspace_contract},
             "tree": [{"path": path, "name": path, "kind": "file", "depth": 0, "description": purpose,
                       "size_bytes": size, "modified_at": stamp(2), "sensitive": False} for path, purpose, size in paths]}
+
+
+def commands():
+    """Read-only examples; nothing is executed or registered by the preview."""
+    rows = [
+        ("checkout-status", "Check checkout status", "Inspect local edits before a release.",
+         ["git", "status", "--short"], None, "ok", 0, " M README.md\n M src/app.py\n"),
+        ("smoke-check", "Run smoke checks", "Validate the service before sharing an update.",
+         ["python3", "scripts/smoke.py"], None, "failed", 1, "2 checks passed; API readiness check failed.\n"),
+        ("graph-health", "Check graph health", "Check the generated workspace views every hour.",
+         ["python3", "scripts/check_views.py"], 3600, None, None, ""),
+    ]
+    return [{"id": job_id, "name": name, "description": description,
+             "command": {"argv": argv, "cwd": "/demo/xo-space", "timeout": 30},
+             "every_seconds": interval, "enabled": True, "project_id": None,
+             "created_at": stamp(120), "updated_at": stamp(60), "next_run": None,
+             "running": False, "running_since": None, "last_run": stamp(5) if status else None,
+             "last_result": {"started_at": stamp(5), "finished_at": stamp(5), "trigger": "manual",
+                             "status": status, "returncode": code, "duration_seconds": 0.24,
+                             "output_tail": output} if status else None}
+            for job_id, name, description, argv, interval, status, code, output in rows]
 
 
 def gmail_tools():

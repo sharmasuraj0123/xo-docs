@@ -11,7 +11,7 @@ icon: Database
   views, with selected content copies described below.
 </Lead>
 
-This catalog describes xo-space at [revision `5221119`](https://github.com/quirq-ai/xo-space/tree/5221119).
+The baseline storage catalog describes [xo-space `5221119`](https://github.com/quirq-ai/xo-space/tree/5221119); saved-command behavior is updated against [revision `84f0737e23b6bb369fc6b8853afb510a02dd8b21`](https://github.com/quirq-ai/xo-space/tree/84f0737e23b6bb369fc6b8853afb510a02dd8b21).
 Paths are defaults, not a scan of your computer. Optional features create their
 files when used, and older installations can retain the legacy files described
 below. A runtime or connected service can keep additional data of its own.
@@ -157,6 +157,22 @@ polling data does not retroactively delete its copied Inbox items. See the
 [collectors](https://github.com/quirq-ai/xo-space/blob/5221119/services/connections/collectors.py),
 and [sharing state](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/project_sharing/state.py).
 
+## Saved commands and schedules
+
+Setup's [Commands card](/docs/space/space-walk/setup#run-saved-commands) uses the existing scheduler for both manual commands and interval jobs. Their files live under the machine-local state root, outside project `.xo` folders:
+
+```text
+scheduler/
+├── jobs.json          # command definitions and optional intervals
+├── state.json         # next/last run, running marker, last result
+├── runs/<id>.jsonl    # append-only results and raw output tails
+└── logs/<id>.log      # appended full command output
+```
+
+A manual definition has no interval and never launches from a watcher tick. **Run** launches it explicitly; status reads collect completed results even when the watcher is off. Interval jobs share the same executor, concurrency limit, history, and logs. A server restart cannot resume a command: a remaining running marker is recorded as `lost` when reconciled.
+
+Deleting a saved definition retains its history and logs and does not cancel an active process. Its eventual result can still be collected while the server remains running. Those files can outlive the command's row in Setup. The Quirq state view labels the directory and its files without returning their contents. The Commands card's separate API shows definitions and run output.
+
 ## Configuration, credentials, logs, and scheduled work
 
 The state root is not the only installation-owned directory. These exceptions
@@ -177,9 +193,9 @@ matter when locating sensitive data or moving an installation.
 | `${XDG_CONFIG_HOME:-~/.config}/quirq/install.json` | Last-known checkout, project and state-root paths, host, port, and boot timestamp for local discovery. |
 | `<state root>/quirq.log` | Local installer's appended server stdout/stderr: startup, requests, warnings, failures, and feature diagnostics. Other launch methods can send these logs elsewhere. |
 | `<state root>/commands.log` and `commands.log.1` | Command label, arguments, working directory, status/duration, and bounded stdout/stderr. Recognized secret patterns are redacted; arbitrary command output is not guaranteed anonymous. |
-| `<state root>/scheduler/jobs.json` | Scheduled job definitions, including command arguments, working directory, environment overrides, timing, and timeout. |
+| `<state root>/scheduler/jobs.json` | Manual and interval job definitions: name, description, command arguments, working directory, environment overrides, optional interval, timeout, enabled state, and optional project association. |
 | `<state root>/scheduler/state.json` | Scheduling state, next/last run, running marker, and last result. |
-| `<state root>/scheduler/runs/<id>.jsonl` | Append-only execution results, including an output tail. |
+| `<state root>/scheduler/runs/<id>.jsonl` | Append-only execution results: start/finish times, trigger, status, return code, duration, and a raw output tail up to 2,000 characters. |
 | `<state root>/scheduler/logs/<id>.log` | Full command execution output through the command logger. |
 | `<xo-space checkout>/data/<active-agent>/usage_sync_state.json` | Daily usage-reporting watermark and API-key probe bookkeeping. It does not contain the native transcript. |
 
@@ -192,7 +208,7 @@ access boundary. See [agent env](https://github.com/quirq-ai/xo-space/blob/52211
 [Composio paths](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/connectors/composio/paths.py),
 [backup config](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/xo_projects_sync/config.py),
 [command logger](https://github.com/quirq-ai/xo-space/blob/5221119/utils/commands/__init__.py),
-[scheduler](https://github.com/quirq-ai/xo-space/blob/5221119/utils/commands/scheduler.py),
+[scheduler](https://github.com/quirq-ai/xo-space/blob/84f0737e23b6bb369fc6b8853afb510a02dd8b21/utils/commands/scheduler.py),
 and [usage reporting](https://github.com/quirq-ai/xo-space/blob/5221119/services/usage_sync.py).
 
 ## Native runtime stores and ingestion databases

@@ -63,7 +63,7 @@ class Handler(SimpleHTTPRequestHandler):
             "/api/xo-projects/activity": fixtures.activity,
             "/api/xo-projects/timeline": fixtures.timeline,
             "/api/project-sharing/status": fixtures.sharing,
-            "/space/server/status": lambda: {"running": True},
+            "/space/server/status": lambda: {"running": True, "restart_mode": "native", "instance_id": "fictional-space-instance"},
             "/api/inbox": lambda: fixtures.inbox(query.get("status", ["open"])[0], int(query.get("limit", [200])[0])),
             "/api/connections": fixtures.connections,
             "/xo/sessions.json": fixtures.session_telemetry,
@@ -71,6 +71,7 @@ class Handler(SimpleHTTPRequestHandler):
             "/api/secrets": lambda: {"items": []},
             "/api/runtime-config": fixtures.runtime_config,
             "/api/quirq": lambda: fixtures.quirq(*QUIRQ_CONTRACTS),
+            "/api/schedules": lambda: {"jobs": fixtures.commands()},
             "/space/update/status": lambda: {"supported": False, "message": "Fictional review server; updates are unavailable."},
             "/xo-auth/session/self": lambda: {"session_id": "fictional-review-session"},
             "/api/connectors/composio/toolkits": fixtures.toolkits,
@@ -79,6 +80,14 @@ class Handler(SimpleHTTPRequestHandler):
         if route:
             self.json_response(route())
             return
+        command_match = re.fullmatch(r"/api/schedules/([^/]+)(/runs)?", path)
+        if command_match:
+            job = next((job for job in fixtures.commands() if job["id"] == command_match[1]), None)
+            if job:
+                self.json_response({"job_id": job["id"], "runs": [job["last_result"]] if job["last_result"] else [],
+                                    "log_path": "/demo/.quirq/scheduler/logs/" + job["id"] + ".log"}
+                                   if command_match[2] else job)
+                return
         if path.startswith("/api/connections/"):
             toolkit = path.rsplit("/", 1)[-1]
             entry = next((c for c in fixtures.connections()["connections"] if c["toolkit"] == toolkit), None)

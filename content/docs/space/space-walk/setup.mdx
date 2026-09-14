@@ -1,13 +1,13 @@
 ---
 title: Setup & Quirq State
-description: Configure workspace roots, agent and watcher settings, credentials, and software updates.
+description: Configure Space, restart the server, and run saved commands with retained results.
 icon: Settings
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  **Setup** shows the effective configuration of the running Space server and the settings saved for its next start. Use it to select roots, configure the active agent and watcher, manage credentials, and check for updates.
+  **Setup** shows the effective configuration of the running Space server and the settings saved for its next start. Use it to select roots, configure the agent and watcher, manage credentials, restart Space, and run saved commands.
 </Lead>
 
 ![Setup showing storage roots, agent and watcher settings, and native sources](/images/space/setup.png)
@@ -17,6 +17,18 @@ Open the fifth primary tab, **Setup**, press **5**, or use `/space/#/secrets`. T
 ## Check the running installation
 
 The top cards report the browser address, project path, and Quirq state path. They distinguish missing, unreadable, read-only, and writable locations. **Refresh status** reads runtime and credential status again. The main banner explains whether saved changes are already applied or require a restart.
+
+## Restart the server
+
+**Restart server** sits beside **Refresh status**. Confirm the restart, then leave the page open. The button shows **Restarting…** while Space waits for a new server instance; the footer can briefly show offline. The page reloads when the replacement responds, so every view loads the new code. A response from the old instance does not count as completion.
+
+| Installation mode | What happens |
+|---|---|
+| **Managed** | A container supervisor restarts the process after it exits. |
+| **Native** | A server started through the native process manager has a matching PID file. The detached restart helper stops only that installation and starts its replacement. |
+| **Foreground** | A manually launched process or development reload mode cannot use this restart path. The button is disabled with **Ctrl-C and re-run** guidance; restart in the terminal that launched it. |
+
+**Apply & restart** and the button shown after a code update use the same restart flow. Opening the page remotely does not grant process-control access: the restart endpoint accepts local clients, and browser requests must come from the same loopback origin. If the page cannot reconnect, read its error and check the original terminal or server log.
 
 ## Set storage roots
 
@@ -42,7 +54,7 @@ The top cards report the browser address, project path, and Quirq state path. Th
 | **Session stores to watch** | **All mounted runtimes** or **Active agent only**. This is independent of the active chat backend. |
 | **Watcher tick interval** | A value from **0.25 to 60 seconds**; the form identifies one second as the local default. |
 
-Click **Save runtime**. When changes require a restart, a managed installation offers **Apply & restart**, asks for confirmation, and waits for the server to become healthy again. An unmanaged process shows **Restart from terminal** and must be restarted where it was launched.
+Click **Save runtime**. When changes require a restart, managed and native installations offer **Apply & restart**. Foreground and development reload processes show terminal restart guidance. See [Restart the server](#restart-the-server) for the three modes.
 
 The watcher reads runtime activity. Agents record shared project todos through the todo API; changing watcher settings does not import a runtime's private todo list into Space.
 
@@ -72,11 +84,49 @@ The UI's **What leaves your machine** link summarizes the policy. Normal metric 
 
 In **xo-space updates**, click **Check for updates** to compare the checkout with its configured Git remote. The result shows the installed commit, branch, latest commit, and whether local changes or divergence prevent an update.
 
-**Update now** appears when the checkout can fast-forward. Applying an update changes code on disk; restart to run the new version. If dependency requirements changed, follow the command or installation guidance shown in the result. The apply endpoint accepts requests from localhost, so a remote/proxied installation may need the terminal update path.
+**Update now** appears when the checkout can fast-forward. Applying an update changes code on disk; use the resulting **Restart server** button to run the new version, or follow the foreground terminal hint. If dependency requirements changed, follow the command or installation guidance shown in the result. The apply endpoint accepts requests from localhost, so a remote/proxied installation may need the terminal update path.
 
 <Callout type="info">
   Self-update fast-forwards a clean Git checkout. It does not resolve a divergent branch or discard local edits. Save or reconcile your local work before updating, then follow the page's restart instructions.
 </Callout>
+
+## Run saved commands
+
+The **Commands** card starts with **No commands yet**. Space does not seed or run an example when you open Setup.
+
+![Commands showing saved manual and interval jobs with their latest results](/images/space/setup-commands.png)
+
+1. Click **Add command** and enter a name and optional description.
+2. Enter a command line, or an explicit JSON argument array such as `["git", "status", "--short"]`.
+3. Set a working directory if needed and a timeout in seconds. With no working directory, the command inherits the server's working directory.
+4. Leave **Interval** empty for a manual command. A positive whole number at least as long as the watcher tick schedules an interval job; its row shows **Runs every N**.
+5. Click **Save command**, then **Run** when you want to execute it.
+
+Space passes arguments to the command utility without wrapping them in a shell. Shell operators in a command line are rejected; put multi-step work in a script and invoke that script explicitly. Invalid arguments, timeout, or interval leave the form open with the service's validation message. **Edit** retains existing environment overrides, project association, and enabled state even though these are not fields in this form. **Run** is explicit: it can run a disabled interval job and leaves its next scheduled time unchanged.
+
+While a run is active, the row shows its start time and disables **Run**. Setup polls jobs it has seen running every three seconds and displays the result and duration when they finish. Use **Refresh status** or reopen Setup to discover interval runs that start later. A command cannot overlap itself; all manual and interval jobs share the server's concurrency limit. A busy command or full limit produces a conflict message rather than starting a second run.
+
+Manual commands work with the watcher disabled: reading their status collects finished results. Automatic interval launches require the watcher and scheduler to be enabled. Disabling the watcher or automatic scheduling does not cancel an already running command.
+
+### Read results and history
+
+Click **Runs** to open the newest 20 recorded results. Each result shows its start and finish, trigger, status, return code, duration, and up to 2,000 characters from the output tail. Output is shown as text, so HTML from a command is not executed.
+
+![Command run history with status, duration, output, and local log path](/images/space/setup-command-runs.png)
+
+| Result | Meaning |
+|---|---|
+| `ok` | The process completed with exit code zero. |
+| `failed` | The process returned a nonzero exit code. |
+| `timed_out` | The command exceeded its timeout. |
+| `missing_binary` | Its executable could not be found. |
+| `error` | The executor could not launch or complete the command normally. |
+| `lost` | A previously recorded in-flight run could not be recovered after the server restarted. |
+| `skipped` | An automatic run was due while the previous run was still active. |
+
+The drawer gives the full log's local path as text. **Delete** removes the saved definition after confirmation and keeps its history and logs on disk. Deleting does not cancel an active process; its completion can still be collected on a later read or tick. Jobs, state, results, and logs live under [the state root's `scheduler/` directory](/docs/space/observability/storage#saved-commands-and-schedules).
+
+Commands run locally with the server's permissions and inherited environment. Their definitions and raw result tails can contain sensitive arguments or output; they are not anonymous telemetry. A command you choose can make its own network requests. Command writes and **Run** require a local client; cross-origin browser requests are rejected.
 
 ## Open Quirq state
 
@@ -87,3 +137,5 @@ In **xo-space updates**, click **Check for updates** to compare the checkout wit
 <Callout type="info">
   Some section headings retain the older “portable .xo” wording. Current session indexes, project stats, and normalized timeline history live under the machine-local state root's `projects/` directory. Identity, todos, workitems, and peers remain portable project records. Follow the effective row locations and the [storage map](/docs/space/observability/storage) rather than treating every item in that section as a project `.xo` file.
 </Callout>
+
+Restart and Commands behavior is based on [xo-space `84f0737e23b6bb369fc6b8853afb510a02dd8b21`](https://github.com/quirq-ai/xo-space/tree/84f0737e23b6bb369fc6b8853afb510a02dd8b21), including the [restart route](https://github.com/quirq-ai/xo-space/blob/84f0737e23b6bb369fc6b8853afb510a02dd8b21/routers/space.py) and [scheduler](https://github.com/quirq-ai/xo-space/blob/84f0737e23b6bb369fc6b8853afb510a02dd8b21/utils/commands/scheduler.py).

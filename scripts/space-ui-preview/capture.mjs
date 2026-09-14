@@ -217,7 +217,7 @@ async function verifyWikiNavigation() {
       layout.cards.every((card) => card.left >= 0 && card.right <= width + 1),
     );
     const docsLinks = page.locator(".wiki-doc-link");
-    assert.equal(await docsLinks.count(), 15);
+    assert.equal(await docsLinks.count(), 16);
     assert.equal(
       await page.locator(".wiki-topic-actions > .wiki-doc-link").count(),
       9,
@@ -449,6 +449,21 @@ try {
     "setup-runtime",
     "Runtime settings and native source coverage; no secret values exist in the fixtures.",
   );
+  await page.locator("#setup-commands").scrollIntoViewIfNeeded();
+  await page.locator(".setup-command-row").first().waitFor();
+  await shot(
+    "setup-commands",
+    "Three fictional saved commands: manual results and an optional interval; no command is executed.",
+  );
+  await page
+    .locator('[data-command-id="checkout-status"] [data-command-action="runs"]')
+    .click();
+  await page.locator("#command-runs .setup-run").waitFor();
+  await shot(
+    "setup-command-runs",
+    "Retained command result with return code, duration, escaped output tail and local full-log path.",
+  );
+  await page.locator("#command-runs-close").click();
   await go("quirq");
   await page.locator("#quirq-activity-badge.is-live").waitFor();
   await shot(

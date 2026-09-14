@@ -13,7 +13,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 ![Space opens to the Dashboard lens inside Projects](/images/space/dashboard.png)
 
 <Callout type="info" title="Version and screenshots">
-  Screenshots show the real UI at [xo-space revision 8267c08](https://github.com/quirq-ai/xo-space/tree/8267c0860af045b7e1e1762f15ec9b01cb17432f), using fictional workspace data. It has six primary tabs and a top-right Wiki resource that opens the compact local directory. This update on `codex/compact-wiki-doc-links` is awaiting merge into development and builds on [revision 5221119](https://github.com/quirq-ai/xo-space/tree/5221119). Technical guides retain their own source version notes. Release installations following `main` can differ; see [Install Space](/docs/space/install-space).
+  Screenshots show the real UI at [xo-space revision 84f0737e23b6bb369fc6b8853afb510a02dd8b21](https://github.com/quirq-ai/xo-space/tree/84f0737e23b6bb369fc6b8853afb510a02dd8b21), using fictional workspace data. This includes the merged compact Wiki and contextual toolbar, plus Setup restart and Commands from [PR106](https://github.com/quirq-ai/xo-space/pull/106) against development. Technical guides retain their own source version notes. Release installations following `main` can differ; see [Install Space](/docs/space/install-space).
 </Callout>
 
 ## Find the right tab
@@ -41,7 +41,7 @@ Keep the full URL when bookmarking a view, including any access query parameters
 
 ## One Projects tab, five lenses
 
-Opening `/space/` without a hash starts at **Dashboard**. Clicking **Projects**, or pressing **1**, opens **List**. Choose another lens from the persistent control beneath the top bar; Projects stays highlighted throughout.
+Opening `/space/` without a hash starts at **Dashboard**. Clicking **Projects**, or pressing **1**, opens **List**. Choose another lens from the control beneath the top bar while inside Projects; Projects stays highlighted throughout.
 
 | Lens | What it shows | Route |
 | --- | --- | --- |
@@ -54,6 +54,15 @@ Opening `/space/` without a hash starts at **Dashboard**. Clicking **Projects**,
 ![Projects List with project counts and activity](/images/space/projects-list.png)
 
 Opening a supported file brings up a floating preview. It stays open when you move between all five Projects lenses, including its selected historical version, Source mode, size, and position. Leaving Projects closes the preview. See [files and version history](/docs/space/space-walk/files-explorer).
+
+## Controls for the current page
+
+Dashboard and Graph show map controls. List, Tree, Sessions' session list, Inbox,
+Connectors, and Quirq state show search for their own content. Each view remembers
+its query while you move between pages; use the clear button or **Escape** to
+reset it, and **/** to focus a visible search field. Sessions searches the records
+already loaded in its list. Setup, Wiki, and other pages without these controls
+use a compact header.
 
 ## A useful first walkthrough
 

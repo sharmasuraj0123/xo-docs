@@ -11,7 +11,7 @@ icon: Workflow
   separate process with its own authentication gate.
 </Lead>
 
-This page describes [xo-space `5221119`](https://github.com/quirq-ai/xo-space/tree/5221119).
+The baseline collection paths describe [xo-space `5221119`](https://github.com/quirq-ai/xo-space/tree/5221119); manual command controls are updated against [revision `84f0737e23b6bb369fc6b8853afb510a02dd8b21`](https://github.com/quirq-ai/xo-space/tree/84f0737e23b6bb369fc6b8853afb510a02dd8b21).
 Read [Where the data lives](/docs/space/observability/storage) alongside it for
 the full path catalog and the meaning of projects root, state root, and native
 home.
@@ -324,20 +324,21 @@ These rules come from the [timeline](https://github.com/quirq-ai/xo-space/blob/5
 [connection](https://github.com/quirq-ai/xo-space/blob/5221119/services/connections/store.py),
 [Inbox](https://github.com/quirq-ai/xo-space/blob/5221119/services/inbox/store.py),
 [command](https://github.com/quirq-ai/xo-space/blob/5221119/utils/commands/__init__.py),
-[scheduler](https://github.com/quirq-ai/xo-space/blob/5221119/utils/commands/scheduler.py),
+[scheduler](https://github.com/quirq-ai/xo-space/blob/84f0737e23b6bb369fc6b8853afb510a02dd8b21/utils/commands/scheduler.py),
 and [backup](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/xo_projects_sync/backup.py) writers.
 
 ## Control the producing feature
 
 | Intent | Control and scope |
 |---|---|
-| Pause the watcher | `QUIRQ_WATCHER_ENABLED=false`, then restart as required. Stops watcher ingestion/presence and the scheduler driven by its ticks. It does not disable direct API writes, Sessions reads, Argus, or other pollers. |
+| Pause the watcher | `QUIRQ_WATCHER_ENABLED=false`, then restart as required. Stops watcher ingestion/presence and automatic command launches driven by its ticks. Manual commands in Setup still run and collect results on status reads. It does not disable direct API writes, Sessions reads, Argus, or other pollers. |
 | Narrow watcher sources | `QUIRQ_WATCHER_SOURCE_MODE=active` rather than `all`. Changes watcher coverage, not aggregate Sessions discovery. |
 | Change watcher cadence | `QUIRQ_WATCHER_INTERVAL_SECONDS`, normally 1 second, clamped to 0.25–60 seconds. |
 | Change projection cadence | `XO_VIEWS_REFRESH_S`, default 30 seconds. HTTP stale-view threshold is `XO_VIEW_MAX_AGE_S`, default 120 seconds. Neither is a history-retention limit. |
 | Pause background connection polling | Global `XO_CONNECTIONS_POLL_ENABLED` or a connection's saved `enabled` choice. The connection interval defaults to 900 seconds and is bounded to 60–86,400 seconds. |
 | Run a deliberate connection check | **Poll now** bypasses background enable/due checks but still needs a saved config, enabled toolkit scope, valid identity, and its execution lock. |
 | Restrict a connected toolkit | Use Connectors to select the account, enable it for this Space, and disable individual actions. Account connection, toolkit scope, action preferences, and polling are separate choices. |
+| Pause automatic commands | `XO_SCHEDULER_ENABLED=false` stops automatic launches. Manual **Run** still works, and neither this setting nor disabling the watcher cancels an active process. |
 | Stop shared command logging | `QUIRQ_COMMAND_LOG=off`; use `QUIRQ_COMMAND_LOG_PATH` to change its destination. This does not turn off explicit per-command logs or scheduler result records. |
 | Pause sharing | `PROJECT_SHARING_ENABLED=false`; automatic cloning has its own `PROJECT_SHARING_AUTO_CLONE` switch. |
 | Inspect reporting state | Setup's usage-reporting status and probe time. Reporting requires an accepted XO credential; there is no independent per-source reporting toggle in this build. |

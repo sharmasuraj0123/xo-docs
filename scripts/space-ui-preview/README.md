@@ -5,10 +5,10 @@ These screenshots show the actual, unmodified `space_ui` browser application fro
 by a local Python fixture server. They are browser captures, not visual mockups.
 
 The checked-in images were captured from source revision
-`8267c0860af045b7e1e1762f15ec9b01cb17432f` on `codex/compact-wiki-doc-links`,
-which adds the compact Wiki as a top-right local resource, keeps six primary tabs,
-and adds an external GitHub resource link to
-development revision `522111900fa4224ef3914192b9eb78048fffb5e3`.
+`84f0737e23b6bb369fc6b8853afb510a02dd8b21` on `fix/issue-105`, proposed in
+[PR106](https://github.com/quirq-ai/xo-space/pull/106) against development.
+It includes the merged compact Wiki and contextual toolbar, plus Setup's restart
+and saved Commands controls.
 `capture-report.json` records the captured revision,
 every source UI asset hash, screenshot descriptions, PNG hashes and byte sizes,
 and browser validation results. It contains no local checkout paths.
@@ -45,12 +45,13 @@ capture report alongside itself. Stop the Python server with Ctrl-C when finishe
 The 1440 × 1000 captures cover Dashboard (overview and selected project), Projects
 List (collapsed and expanded), rendered and historical file previews, Graph, Tree,
 Sharing, both Timeline modes, all five Sessions subviews and session details,
-Inbox, Wiki, Setup and native runtime sources, Quirq state, and Connectors with
+Inbox, Wiki, Setup and native runtime sources, saved Commands and run history,
+Quirq state, and Connectors with
 polling and action drawers. All navigation, expansion, scrolling and selection
 uses real browser interactions; the script does not alter application DOM or CSS.
 
 Every capture checks the top-right Wiki and GitHub links. After saving the images,
-the script verifies the compact Wiki's nine topics, fifteen documentation links,
+the script verifies the compact Wiki's nine topics, sixteen documentation links,
 quick-start actions, the legacy Quirq help handoff, and the six primary tab
 shortcuts at 1440, 390 and 320 pixels.
 It checks that Wiki opens locally in the same tab, while topic documentation and
@@ -75,6 +76,11 @@ documentation, research and marketing. Project text, activity, accounts, session
 prompts, paths, connection state and issue links are invented. Example paths use
 `/demo/`; the only identity email is `alex@example.com`. No real workspace content,
 credentials, native session stores or connected accounts are read.
+
+The three saved-command examples and their histories are fictional API reads.
+No command is registered or executed and no restart is requested by this server
+or the capture script. Real scheduler execution and restart lifecycle checks
+belong to the product repository's isolated tests.
 
 The fixtures follow the source contracts for the project catalog and visualizer
 builders, project file/history and sharing endpoints, session telemetry adapters,

@@ -1,7 +1,8 @@
 # Space documentation review
 
 The Space guides follow xo-space `development` at
-`522111900fa4224ef3914192b9eb78048fffb5e3` (the Projects navigation merge).
+`4b1a580` (September 15, 2026: Projects, Agents, guided Setup, command palette,
+and the storage reorganization).
 The website's documentation branch is independent of the product's release branch.
 
 ## Build and check the guides

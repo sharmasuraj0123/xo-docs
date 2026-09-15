@@ -11,7 +11,7 @@ icon: Workflow
   separate process with its own authentication gate.
 </Lead>
 
-The baseline collection paths describe [xo-space `5221119`](https://github.com/quirq-ai/xo-space/tree/5221119); manual command controls are updated against [revision `84f0737e23b6bb369fc6b8853afb510a02dd8b21`](https://github.com/quirq-ai/xo-space/tree/84f0737e23b6bb369fc6b8853afb510a02dd8b21).
+These collection paths follow [xo-space `4b1a580`](https://github.com/quirq-ai/xo-space/tree/4b1a580).
 Read [Where the data lives](/docs/space/observability/storage) alongside it for
 the full path catalog and the meaning of projects root, state root, and native
 home.
@@ -35,34 +35,34 @@ Several qualifications matter when reading this flow:
   guarantee a live badge.
 - Workspace graph/Dashboard projections refresh from project and git data.
   The **Timeline** UI's dated file map uses git history; it is not a direct
-  rendering of every line in `workspace/timeline.jsonl`.
+  rendering of every line in `projects/timeline.jsonl`.
 - The watcher is an observation pipeline. A recorded tool call or token count
   does not establish that the edit succeeded, passed tests, or completed the
   user's work.
 
-The implementation is in the [watcher](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/watcher.py),
-[event definitions](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/ingest/events.py),
-[timeline sink](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/sinks/timeline.py),
-and [workspace view builder](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/workspace/views.py).
+The implementation is in the [watcher](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/watcher.py),
+[event definitions](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/ingest/events.py),
+[timeline sink](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/sinks/timeline.py),
+and [workspace view builder](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/workspace/views.py).
 
 ## Two session data paths
 
-The watcher and the aggregate **Sessions** page discover different adapter
+The watcher and the aggregate **Agents** page discover different adapter
 capabilities. The active chat backend is a third choice. Selecting one runtime
-for chat does not by itself describe everything visible in Sessions.
+for chat does not by itself describe everything visible in Agents.
 
 | Path | How it works | Current coverage |
 |---|---|---|
 | **Watcher** | Discovers `visualizer_source` adapters, polls native files/databases, attributes events to projects, and writes project/workspace history and live presence. | Claude Code, Codex, OpenClaw, Hermes, and Antigravity have source adapters. Their discovery and presence support differ. |
-| **Aggregate Sessions** | Discovers `session_telemetry` adapters and combines their summaries into `workspace/sessions.json`. | Claude Code through Argus, Codex through its SQLite index and rollouts, and Cursor through native transcript/chat/desktop stores. |
+| **Agents telemetry** | Discovers `session_telemetry` adapters and combines their summaries into `cache/sessions.json`. | Claude Code through Argus, Codex through its SQLite index and rollouts, and Cursor through native transcript/chat/desktop stores. |
 | **Prompt details** | A request for one session loads that adapter's `session_prompts` capability. It is not part of the aggregate payload. | Claude Code and Codex. Other sources show unsupported rather than inventing prompt text. |
 
 The local installer defaults watcher source mode to `all`; standalone service
 code defaults to `active`. `QUIRQ_WATCHER_SOURCE_MODE=active` limits watcher
 ingestion to the active runtime; it does not filter aggregate Sessions providers.
-See [watcher discovery](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/watcher.py),
-[telemetry aggregation](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/session_telemetry.py),
-and the [prompt endpoint](https://github.com/quirq-ai/xo-space/blob/5221119/routers/space.py).
+See [watcher discovery](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/watcher.py),
+[telemetry aggregation](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/session_telemetry.py),
+and the [prompt endpoint](https://github.com/quirq-ai/xo-space/blob/4b1a580/routers/space.py).
 
 ### Source discovery and project attribution
 
@@ -80,8 +80,8 @@ avoid normal repeat reads but are not a transactional, exactly-once event log:
 manually resetting cursors, restoring old state, or partial failures can replay
 or lose increments. Do not reset cursors as a way to refresh the UI.
 
-See the [JSONL tailer](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/ingest/jsonl_tail.py)
-and [source adapters](https://github.com/quirq-ai/xo-space/tree/5221119/services/cowork_agent/adapters).
+See the [JSONL tailer](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/ingest/jsonl_tail.py)
+and [source adapters](https://github.com/quirq-ai/xo-space/tree/4b1a580/services/cowork_agent/adapters).
 
 ## What the watcher extracts
 
@@ -106,28 +106,39 @@ therefore do not populate Space's todos, task timeline, or task counters.
 This is a narrow field allowlist, not a claim that every file in the installation
 is free of content or identifying information. Paths, identifiers, tool/model
 names, authored work, native stores, connected-service text, and diagnostic
-logs all have their own rules. See [event types](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/ingest/events.py),
-[filtering](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/ingest/pii_filter.py),
-[watcher task exclusion](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/watcher.py),
-and [presence writer](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/sinks/activity.py).
+logs all have their own rules. See [event types](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/ingest/events.py),
+[filtering](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/ingest/pii_filter.py),
+[watcher task exclusion](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/watcher.py),
+and [presence writer](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/sinks/activity.py).
 
 ## Other local writers
+
+At each watcher check, new project folders gain the canonical `.xo/` identity,
+todos, workitems, and peers records if they are missing. Existing records are
+preserved; full operating-document scaffolding is a separate creation action.
+Timeline lines begin with `ts` and `type`, and carry `pid` when a stable project
+identity is available. Workspace copies preserve those fields and add the folder
+`project_id`. Inbox items also carry a project `pid` when it can be resolved.
+These are join fields, not a guarantee of exactly-once delivery.
 
 ### Authored work and project files
 
 Todo and Workitems APIs record explicit content and lifecycle changes. The Todo
-API writes the portable record and updates session task counters and timeline;
-Workitems/claims write work lifecycle history with fields such as title,
+API writes the portable record and updates session task counters and both
+project and workspace timelines. Writes refuse unreadable or merge-conflicted
+records with `409 corrupt_document`, and newer unsupported schemas with
+`409 unsupported_schema`, preserving the file for repair. Schema-1 records
+can still upgrade on write. Workitems/claims write work lifecycle history with fields such as title,
 assignee, issue reference, and state reason. Peer changes write roster data.
 These actions can create data even when the watcher is disabled.
 
 The workspace file scan reads directory/file information and git history to
 build the graph and Dashboard. File-preview requests can read current content,
 or retrieve a committed version through git. They are separate from the
-watcher's path-only events. See the [Todo store](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/todos_store.py),
-[Workitems store](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/workitems_store.py),
-[space index](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/space_index.py),
-and [file preview](https://github.com/quirq-ai/xo-space/blob/5221119/space_ui/js/core/preview.js).
+watcher's path-only events. See the [Todo store](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/todos_store.py),
+[Workitems store](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/workitems_store.py),
+[space index](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/space_index.py),
+and [file preview](https://github.com/quirq-ai/xo-space/blob/4b1a580/space_ui/js/core/preview.js).
 
 ### GitHub issues
 
@@ -137,8 +148,8 @@ to open and closed issues since the cursor. Stored fields include issue ID,
 number, title, state/reason, assignees, URL, and update time. The mirror also
 retains polling/rate-limit/error state. It is not a full copy of issue bodies or
 comments. Authored workitems can contain a body independently of that mirror.
-See the [GitHub query](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/connectors/github/issues.py)
-and [mirror](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/github_mirror.py).
+See the [GitHub query](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/connectors/github/issues.py)
+and [mirror](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/github_mirror.py).
 
 ### Connected services
 
@@ -151,7 +162,7 @@ polling config.
 | Toolkit | Examples of selected data |
 |---|---|
 | Gmail | Message IDs, subjects, snippets, sender/time information, and links from bounded unread/recent-inbox queries. These collectors request metadata rather than full message payloads. |
-| Google Calendar | Calendar/event IDs, summary, start time, description/location, and event link from the upcoming window. |
+| Google Calendar | Calendar/event IDs, summary, start time, description/location, and event link from the upcoming window across all readable calendars, rather than only the primary calendar. |
 | Notion | Recently edited page IDs, titles, timestamps, and URLs. |
 | Slack | Selected message text, channel/sender context, timestamps, and links from the collector's bounded query. |
 | Telegram | Bot updates with message/chat/sender context and text when present. |
@@ -159,9 +170,9 @@ polling config.
 Normalized titles are capped at 300 characters and bodies at 4,000. These limits
 bound a record; they do not make its contents non-sensitive. Provider IDs are
 the deduplication keys, so a change to an already-seen record need not create a
-new event. See [collectors](https://github.com/quirq-ai/xo-space/blob/5221119/services/connections/collectors.py),
-[poller](https://github.com/quirq-ai/xo-space/blob/5221119/services/connections/poller.py),
-and [store](https://github.com/quirq-ai/xo-space/blob/5221119/services/connections/store.py).
+new event. See [collectors](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/connections/collectors.py),
+[poller](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/connections/poller.py),
+and [store](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/connections/store.py).
 
 ### Inbox
 
@@ -176,8 +187,25 @@ than its rotations, and the issue feeder initially focuses on recent issues.
 Inbox therefore is an attention list, not a complete event archive. A feeder
 may automatically close a resolved issue or unblocked todo; if it returns, an
 automatically closed item can reopen. A person's **Done** choice is preserved.
-See [feeders](https://github.com/quirq-ai/xo-space/tree/5221119/services/inbox)
+See [feeders](https://github.com/quirq-ai/xo-space/tree/4b1a580/services/inbox)
 and [Inbox behavior](/docs/space/space-walk/inbox).
+
+## Configure aggregate telemetry
+
+[Agents → Configure](/docs/space/space-walk/sessions#configure-telemetry-collection)
+controls which telemetry sources Space reads and where it reads them. The source
+path settings (`ARGUS_DB`, `CODEX_HOME`, and `CURSOR_HOME`) and
+`QUIRQ_TELEMETRY_DISABLED` are persisted through the shared secrets env store,
+normally `<state root>/secrets/secrets.env` in a local installation. The disabled
+setting is a comma-separated list of source IDs. These non-secret choices share
+that env store with credentials; they are not saved in `settings/runtime.env`.
+
+Saving updates the running process and takes effect on the next aggregate
+rebuild without a restart. Pausing a source excludes it from rebuilt aggregate
+data; it does not delete native logs, stop the runtime, or turn off watcher
+ingestion. Source checkboxes on Overview, Sessions, and Trends only filter the
+UI. See the [source configuration service](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/telemetry_sources.py)
+and [telemetry aggregation](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/session_telemetry.py).
 
 ## Argus is a separate ingestion store
 
@@ -212,8 +240,8 @@ automatically purge Argus's retained rows.
 `ARGUS_DB` changes the path **Space reads**. The daemon is launched as
 `argus daemon start` without that path argument, so redirecting the reader alone
 does not relocate Argus ingestion. Argus's data directory also holds its own
-daemon log and PID file. See the [xo-space requirement pin](https://github.com/quirq-ai/xo-space/blob/5221119/requirements.txt),
-[adapter lifecycle](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/adapters/claude_code/session_telemetry.py),
+daemon log and PID file. See the [xo-space requirement pin](https://github.com/quirq-ai/xo-space/blob/4b1a580/requirements.txt),
+[adapter lifecycle](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/adapters/claude_code/session_telemetry.py),
 and the published [Argus 0.5.1 package](https://pypi.org/project/argus-code/0.5.1/).
 These underlying-store details were checked against that release's packaged
 source; an older installed Argus version can behave differently.
@@ -232,16 +260,16 @@ maintaining another transcript copy there. Hermes has an additional
 process-memory exchange cache containing user/assistant text for up to 60
 seconds, bridging the delay before its native database commit is readable.
 Old migrated session directories may still contain historical files from
-earlier versions. See [prompt endpoint](https://github.com/quirq-ai/xo-space/blob/5221119/routers/space.py),
-[Claude prompt extraction](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/adapters/claude_code/session_prompts.py),
-[Codex prompt extraction](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/adapters/codex/session_prompts.py),
-and [Hermes exchange cache](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/adapters/hermes/state_db.py).
+earlier versions. See [prompt endpoint](https://github.com/quirq-ai/xo-space/blob/4b1a580/routers/space.py),
+[Claude prompt extraction](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/adapters/claude_code/session_prompts.py),
+[Codex prompt extraction](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/adapters/codex/session_prompts.py),
+and [Hermes exchange cache](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/adapters/hermes/state_db.py).
 
 ## Daily usage reporting to XO
 
 The daily reporter is `services/usage_sync.py`. It uses the **active agent's
 usage module**, independently of the watcher's `all`/`active` choice and the
-Sessions page's selected sources. First use without a watermark can backfill
+Agents page's selected sources. First use without a watermark can backfill
 historical days; subsequent runs reprocess dates from the watermark onward.
 The default scheduled time is 02:00 UTC, controlled by `USAGE_SYNC_HOUR_UTC`.
 
@@ -268,8 +296,8 @@ usable usage is available. It passes the same authentication probe.
 
 The local watermark advances only after a successful report and keeps the
 current day eligible for a later update. Removing it can trigger a historical
-backfill; it is not a deletion request to XO. See [report orchestration and payload](https://github.com/quirq-ai/xo-space/blob/5221119/services/usage_sync.py)
-and [usage parsing](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/adapters/usage_common.py).
+backfill; it is not a deletion request to XO. See [report orchestration and payload](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/usage_sync.py)
+and [usage parsing](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/adapters/usage_common.py).
 
 ## Other external boundaries
 
@@ -290,9 +318,9 @@ features can communicate independently.
 The sharing loop can be parked independently by its feature switch, missing
 Space ID, or missing auth. A signed-out local install is not the same thing as
 network isolation for installed runtimes and connected services. See
-[sharing gates](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/project_sharing/config.py),
-[Composio scope](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/connectors/composio/space_scope.py),
-and [backup implementation](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/xo_projects_sync/backup.py).
+[sharing gates](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/project_sharing/config.py),
+[Composio scope](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/connectors/composio/space_scope.py),
+and [backup implementation](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/xo_projects_sync/backup.py).
 
 ## Retention is per store
 
@@ -318,20 +346,21 @@ separate.
 | Prompt caches | Server: default 30-second TTL, maximum 32 session keys. Browser: page lifetime. |
 | Project backups | Keeps ten snapshot directories per backup repository's current tree. Removing an older directory is not a rewrite of that git repository's prior history. |
 
-These rules come from the [timeline](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/sinks/timeline.py),
-[workspace timeline](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/workspace/timeline.py),
-[stats](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/visualizer/sinks/stats.py),
-[connection](https://github.com/quirq-ai/xo-space/blob/5221119/services/connections/store.py),
-[Inbox](https://github.com/quirq-ai/xo-space/blob/5221119/services/inbox/store.py),
-[command](https://github.com/quirq-ai/xo-space/blob/5221119/utils/commands/__init__.py),
-[scheduler](https://github.com/quirq-ai/xo-space/blob/84f0737e23b6bb369fc6b8853afb510a02dd8b21/utils/commands/scheduler.py),
-and [backup](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_agent/xo_projects_sync/backup.py) writers.
+These rules come from the [timeline](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/sinks/timeline.py),
+[workspace timeline](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/workspace/timeline.py),
+[stats](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/visualizer/sinks/stats.py),
+[connection](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/connections/store.py),
+[Inbox](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/inbox/store.py),
+[command](https://github.com/quirq-ai/xo-space/blob/4b1a580/utils/commands/__init__.py),
+[scheduler](https://github.com/quirq-ai/xo-space/blob/4b1a580/utils/commands/scheduler.py),
+and [backup](https://github.com/quirq-ai/xo-space/blob/4b1a580/services/cowork_agent/xo_projects_sync/backup.py) writers.
 
 ## Control the producing feature
 
 | Intent | Control and scope |
 |---|---|
 | Pause the watcher | `QUIRQ_WATCHER_ENABLED=false`, then restart as required. Stops watcher ingestion/presence and automatic command launches driven by its ticks. Manual commands in Setup still run and collect results on status reads. It does not disable direct API writes, Sessions reads, Argus, or other pollers. |
+| Pause an aggregate source or change its native path | **Agents → Configure** saves `QUIRQ_TELEMETRY_DISABLED` and source path variables through the secrets env store. Effective on the next aggregate rebuild without restart; independent of watcher ingestion, chat backend, and UI source filters. |
 | Narrow watcher sources | `QUIRQ_WATCHER_SOURCE_MODE=active` rather than `all`. Changes watcher coverage, not aggregate Sessions discovery. |
 | Change watcher cadence | `QUIRQ_WATCHER_INTERVAL_SECONDS`, normally 1 second, clamped to 0.25–60 seconds. |
 | Change projection cadence | `XO_VIEWS_REFRESH_S`, default 30 seconds. HTTP stale-view threshold is `XO_VIEW_MAX_AGE_S`, default 120 seconds. Neither is a history-retention limit. |
@@ -341,7 +370,7 @@ and [backup](https://github.com/quirq-ai/xo-space/blob/5221119/services/cowork_a
 | Pause automatic commands | `XO_SCHEDULER_ENABLED=false` stops automatic launches. Manual **Run** still works, and neither this setting nor disabling the watcher cancels an active process. |
 | Stop shared command logging | `QUIRQ_COMMAND_LOG=off`; use `QUIRQ_COMMAND_LOG_PATH` to change its destination. This does not turn off explicit per-command logs or scheduler result records. |
 | Pause sharing | `PROJECT_SHARING_ENABLED=false`; automatic cloning has its own `PROJECT_SHARING_AUTO_CLONE` switch. |
-| Inspect reporting state | Setup's usage-reporting status and probe time. Reporting requires an accepted XO credential; there is no independent per-source reporting toggle in this build. |
+| Inspect reporting state | **Setup → Intelligence layer → Usage reporting** and its probe time. Reporting requires an accepted XO credential; there is no independent per-source reporting toggle in this build. |
 
 Pausing collection preserves existing files. Disconnecting a service, clearing
 a browser cache, removing a local record, and deleting a remote copy are

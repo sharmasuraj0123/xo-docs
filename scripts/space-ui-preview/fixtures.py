@@ -7,6 +7,7 @@ Shapes follow categorized_graph.py, space_index.py and the project BFFs.
 
 from datetime import datetime, timedelta, timezone
 import math
+import json
 
 NOW = datetime(2026, 9, 14, 10, tzinfo=timezone.utc)
 WORKSPACE = "/demo/xo-projects"
@@ -158,7 +159,12 @@ def tree(pid, relative_path):
 
 def file_payload(pid, path, commit=None):
     name = next(p[1] for p in PROJECTS if p[0] == pid)
-    content = f"# {name}\n\nA fictional workspace project used for reviewing Space UI.\n\n## This week's focus\n\n- Make the important work easy to find.\n- Keep context when moving between project views.\n- Document decisions alongside the work.\n\n## Review checklist\n\nThe **Dashboard**, **List**, **Graph**, **Tree**, and **Sharing** lenses provide different ways to explore the same workspace.\n\nOpen a file once, then move between lenses without losing your place.\n"
+    if path == ".xo/project.json":
+        content = json.dumps({"pid": f"demo-project-{pid}", "owner_user_id": "demo-user-alex",
+                              "git": {"remote_url": f"https://github.com/fictional-workspace/{pid}.git", "default_branch": "main"}})
+        return {"project_id": pid, "relative_path": path, "name": "project.json", "kind": "text",
+                "content": content, "size_bytes": len(content.encode()), "modified_at": stamp(16), "truncated": False}
+    content = f"# {name}\n\nA fictional workspace project used for reviewing Space UI.\n\n## This week's focus\n\n- Make the important work easy to find.\n- Keep context when moving between project views.\n- Document decisions alongside the work.\n\n## Review checklist\n\nUse **Projects → Data** to browse files in List, Graph or Tree. Explore dated work in **Timeline** and project access in **Manage**.\n\nOpen a file once, then move between views without losing your place.\n"
     if commit:
         content = f"# {name}\n\nAn earlier version of this fictional project brief.\n\n## First milestone\n\nAgree on a clear scope and record the first design decisions.\n"
     return {"project_id": pid, "relative_path": path, "name": path.rsplit("/", 1)[-1],
@@ -228,7 +234,9 @@ def session_telemetry():
                                  for agent, label, _ in sources]},
             "totals": {"sessions": len(sessions), "tokens": sum(s["tokens"] for s in sessions),
                        "cost_usd": sum(s["cost"] for s in sessions), "projects": len(PROJECTS),
-                       "sessions_by_agent": {agent: 6 for agent, _, _ in sources}, "cost_complete": False},
+                       "sessions_by_agent": {agent: 6 for agent, _, _ in sources},
+                       "tokens_by_agent": {agent: sum(s["tokens"] for s in sessions if s["agent"] == agent) for agent, _, _ in sources},
+                       "cost_by_agent": {agent: sum(s["cost"] for s in sessions if s["agent"] == agent) for agent, _, _ in sources}, "cost_complete": False},
             "sessions": sessions, "daily_sessions": daily_sessions,
             "daily_models": daily_models, "daily_tools": daily_tools}
 
@@ -334,6 +342,32 @@ def runtime_config():
                                                           ("openclaw", "openclaw"), ("hermes", "hermes"), ("antigravity", "antigravity")])]}
 
 
+def setup_identity():
+    return {"space": {"status": "configured", "id": WORKSPACE_ID, "label": "Aurora workspace", "owner": "Alex Example"},
+            "xo": {"status": "connected", "user_id": "demo-user-alex"},
+            "github": {"status": "connected", "username": "alex-example", "source": "connector"}}
+
+
+def telemetry_sources():
+    return {"items": [{"id": agent, "label": label, "enabled": True,
+                       "vendor": {"claude_code": "anthropic", "codex": "openai", "cursor": "cursor"}[agent],
+                       "cost_status": "estimated" if agent == "claude_code" else "unavailable",
+                       "path": {"editable": True, "env": env, "label": "Argus database" if agent == "claude_code" else label + " home",
+                                "configured": "", "default": folder, "effective": folder, "resolved": folder}}
+                      for agent, label, env, folder in [
+                          ("claude_code", "Claude Code", "ARGUS_DB", "/demo/.argus/argus.db"),
+                          ("codex", "Codex", "CODEX_HOME", "/demo/.codex"),
+                          ("cursor", "Cursor", "CURSOR_HOME", "/demo/.cursor")]]}
+
+
+def native_connector(toolkit):
+    return {"github": {"status": "connected", "username": "alex-example"},
+            "magicpath": {"logged_in": False, "cli_installed": True, "skill_installed": True},
+            "vercel": {"status": "needs_auth"},
+            "gdrive": {"remotes": [{"name": "demo-drive", "complete": True}]},
+            "onedrive": {"remotes": []}}[toolkit]
+
+
 def github_issues(pid):
     return {"project_id": pid, "state": "ok", "repo": f"fictional-workspace/{pid}",
             "tracked": 1, "fetched_at": stamp(20), "issues": [
@@ -348,14 +382,14 @@ def github_issues(pid):
 
 def quirq(project_contract, workspace_contract):
     paths = [
-        ("watcher/offsets.json", "Read offsets for native session logs", 2450),
-        ("watcher/heartbeat.json", "Watcher process heartbeat", 260),
-        ("watcher/activity/workspace.json", "Current live workspace activity", 1350),
-        ("watcher/activity/projects/aurora-console.json", "Aurora Console session presence", 490),
-        ("workspace/graph.json", "Derived file graph", 24500),
-        ("workspace/dashboard.json", "Derived project environment map", 7300),
-        ("workspace/sessions.json", "Aggregated session telemetry", 51000),
-        ("inbox.json", "Local incoming events and read status", 3900),
+        ("projects/offsets.json", "Read offsets for native session logs", 2450),
+        ("cache/heartbeat.json", "Watcher process heartbeat", 260),
+        ("cache/activity/workspace.json", "Current live workspace activity", 1350),
+        ("cache/activity/projects/aurora-console.json", "Aurora Console session presence", 490),
+        ("cache/graph.json", "Derived file graph", 24500),
+        ("cache/dashboard.json", "Derived project environment map", 7300),
+        ("cache/sessions.json", "Aggregated session telemetry", 51000),
+        ("inbox/inbox.json", "Local incoming events and read status", 3900),
         ("scheduler/jobs.json", "Saved manual commands and optional intervals", 1250),
         ("scheduler/state.json", "Command execution state and last result", 820),
         ("scheduler/runs/checkout-status.jsonl", "Retained command results and output tails", 940),

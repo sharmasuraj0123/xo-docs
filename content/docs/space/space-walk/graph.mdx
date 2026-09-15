@@ -12,7 +12,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
 ![Graph lens with projects and their mapped workspace files](/images/space/graph.png)
 
-Open **Projects → Graph**, use `/space/#/graph`, or click **Map** on a [List](/docs/space/space-walk/files-explorer) row to focus that project.
+Open **Projects → Data → Graph**, or use `/space/#/projects/data/graph`. The older `#/graph` link also opens this view.
 
 ## Move through the map
 
@@ -22,7 +22,7 @@ Open **Projects → Graph**, use `/space/#/graph`, or click **Map** on a [List](
 - **Hover a node** for its summary. Click a connection in the detail panel to follow it.
 - Use **Clear**, the detail panel's close button, or **Esc** to clear focus. An open preview takes the first Esc.
 
-The top-bar search is focused with **/**. Search by a mapped node's name or descriptive metadata, then select a result to focus it. Search navigates the map; the List and Tree have their own local filters.
+Use **Graph root** in the Projects navigation row to search mapped nodes by name or descriptive metadata. Selecting a result reorganizes the map around it. **⌘K / Ctrl+K**, or **/** on the map, opens the global command menu; choosing a project there opens its Data List drawer.
 
 ## Read a file or follow time
 
@@ -30,18 +30,18 @@ Selecting a mapped file shows its name, path, date when available, description, 
 
 **Show on timeline** appears for files and clusters. It opens [Timeline](/docs/space/space-walk/timeline) with a focused trace of dated related files. Use **Clear trace** there to return to the wider timeline.
 
-Dashboard uses project nodes and purpose environments; Graph uses the more detailed workspace map. Project todo satellites belong to [Dashboard](/docs/space/space-walk/dashboard), because Graph's file nodes represent a different level of detail.
+Overview uses project nodes and purpose environments; Graph uses the more detailed workspace map. Project todo satellites belong to [Overview](/docs/space/space-walk/dashboard), because Graph's file nodes represent a different level of detail.
 
 ## Change the graph root
 
-Open the top-bar root picker, search for a node, and select it to reorganize the map around that node. Choose **Reset to …** in the same picker to return to the workspace center.
+Open the **Graph root** picker, search for a node, and select it to reorganize the map around that node. Choose **Reset to …** in the same picker to return to the workspace center.
 
 <Callout type="info">
-  Re-rooting and dragging affect the visualization only. To change which directory Space treats as the workspace, use **XO root** in Setup.
+  Re-rooting and dragging affect the visualization only. To change which directory Space treats as the workspace, use **Projects folder** in **Setup → Workspace**.
 </Callout>
 
 ## Coverage and reloads
 
 Graph reads the derived map at `GET /xo/space.json`; it includes mapped files rather than every filesystem entry. An excluded or newly created file can still be browsable through the List drawer before it appears here.
 
-Switching between Dashboard and Graph can reload the atlas to change datasets. An open preview is restored across that Projects lens change when browser session storage is available. Switching to another top-level tab closes the preview.
+Switching between Overview and Graph rebuilds the atlas for the selected dataset without reloading the page. An open preview stays mounted across Projects sections, including Timeline and Manage. Switching to Agents, Inbox, Setup, or Wiki closes it.

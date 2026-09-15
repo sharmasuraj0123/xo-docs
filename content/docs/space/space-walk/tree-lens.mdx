@@ -12,7 +12,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
 ![Tree with expandable project branches and stacked file cards](/images/space/tree.png)
 
-Open **Projects → Tree**, or use `/space/#/tree`.
+Open **Projects → Data → Tree**, or use `/space/#/projects/data/tree`. The older `#/tree` link also opens this view.
 
 ## Browse the hierarchy
 
@@ -20,13 +20,13 @@ Click the workspace, project, or folder chips to expand and collapse their conte
 
 A file card initially shows up to **12 files**. Click **+N more** to expand the card and **show fewer** to collapse it again. Opening a branch keeps the selected chip anchored so the surrounding layout does not move your target out from under the pointer.
 
-Click a file to open the shared [file preview](/docs/space/space-walk/files-explorer#preview-a-file). The Tree's camera and expansion state stay in place. Close the preview to continue browsing, or use the Projects lens switch to change views.
+Click a file to open the shared [file preview](/docs/space/space-walk/files-explorer#preview-a-file). The Tree's camera and expansion state stay in place. Close the preview to continue browsing, or use the **List | Graph | Tree** switch within Data to change views.
 
 ## Controls
 
 | Control | Effect |
 |---|---|
-| **Filter by name…** | Matches names case-insensitively and reveals matching paths. A suffix such as `.md` works as ordinary name text. Clear the field to return to the unfiltered tree. |
+| Active **Filter tree by name…** query | Matches names case-insensitively and reveals matching paths. A suffix such as `.md` works as ordinary name text. Clear the active query to return to the unfiltered tree. |
 | **Projects only** | Collapses expanded project/folder branches to the workspace's project level and collapses expanded file cards. |
 | **Reset view** | Resets the camera's position and zoom. It does not collapse the tree. |
 | **Refresh** | Fetches the latest available workspace map again. |

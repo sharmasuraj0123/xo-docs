@@ -22,7 +22,7 @@ def read_quirq_contracts(source):
     """Read only literal catalog definitions; never import the live service."""
     class Tiers(ast.NodeTransformer):
         def visit_Name(self, node):
-            values = {"_TIER_SYNCED": "synced", "_TIER_RUNTIME": "runtime"}
+            values = {"_TIER_SYNCED": "synced", "_TIER_RUNTIME": "runtime", "_TIER_HISTORY": "history"}
             return ast.Constant(values[node.id]) if node.id in values else node
 
     syntax = ast.parse((source / "services/cowork_agent/quirq_catalog.py").read_text())
@@ -33,7 +33,7 @@ def read_quirq_contracts(source):
     result = []
     for name, prefixes, count in [
         ("_PROJECT_OUTPUT_CONTRACT", {"synced": "<project>/.xo", "runtime": "<quirq state>/projects/<pid>"}, 10),
-        ("_WORKSPACE_OUTPUT_CONTRACT", {"synced": "<XO root>/.xo", "runtime": "<quirq state>/workspace"}, 1),
+        ("_WORKSPACE_OUTPUT_CONTRACT", {"synced": "<XO root>/.xo", "runtime": "<quirq state>/cache", "history": "<quirq state>/projects"}, 1),
     ]:
         result.append([{**row, "location": f"{prefixes[row['tier']]}/{row['path']}",
                         "present_count": count, "bytes": 2048, "updated_at": fixtures.stamp(2)}
@@ -70,6 +70,8 @@ class Handler(SimpleHTTPRequestHandler):
             "/space/data/session_prompts.json": fixtures.prompts,
             "/api/secrets": lambda: {"items": []},
             "/api/runtime-config": fixtures.runtime_config,
+            "/space/setup/status": fixtures.setup_identity,
+            "/api/telemetry/sources": fixtures.telemetry_sources,
             "/api/quirq": lambda: fixtures.quirq(*QUIRQ_CONTRACTS),
             "/api/schedules": lambda: {"jobs": fixtures.commands()},
             "/space/update/status": lambda: {"supported": False, "message": "Fictional review server; updates are unavailable."},
@@ -79,6 +81,10 @@ class Handler(SimpleHTTPRequestHandler):
         }.get(path)
         if route:
             self.json_response(route())
+            return
+        native_match = re.fullmatch(r"/api/connectors/(github|magicpath|vercel|gdrive|onedrive)/(status|remotes)", path)
+        if native_match:
+            self.json_response(fixtures.native_connector(native_match[1]))
             return
         command_match = re.fullmatch(r"/api/schedules/([^/]+)(/runs)?", path)
         if command_match:
@@ -152,7 +158,7 @@ if __name__ == "__main__":
     dirty = subprocess.run(["git", "-C", str(args.source), "status", "--porcelain", "--", "space_ui"],
                            capture_output=True, text=True, check=True).stdout.strip()
     asset_hashes = {p.relative_to(UI_ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
-                    for p in sorted(UI_ROOT.rglob("*")) if p.is_file()}
+                    for p in sorted(UI_ROOT.rglob("*")) if p.is_file() and p.name != ".DS_Store"}
     SOURCE_META = {"repository": "https://github.com/quirq-ai/xo-space", "revision": revision,
                    "assets_modified": bool(dirty), "asset_sha256": asset_hashes,
                    "fixture_data": "All projects, sessions, activity, accounts and paths are fictional.",

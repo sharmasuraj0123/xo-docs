@@ -18,16 +18,16 @@ runtime through its API and read activity from supported native session stores.
 You can also keep working in your usual terminal or editor and use Space to
 inspect the results.
 
-![Projects open on the Dashboard lens, with project nodes grouped by purpose](/images/space/dashboard.png)
+![Projects open on Overview, with project nodes grouped by purpose](/images/space/dashboard.png)
 
 *Screenshots in this section use fictional workspace data.*
 
 <Callout type="info">
-  This walkthrough shows [revision 84f0737e23b6bb369fc6b8853afb510a02dd8b21](https://github.com/quirq-ai/xo-space/tree/84f0737e23b6bb369fc6b8853afb510a02dd8b21),
-  including the contextual toolbar, compact Wiki, and Setup restart and Commands
-  controls. Restart and Commands are proposed in [PR106](https://github.com/quirq-ai/xo-space/pull/106)
-  against development. Technical guides identify their source versions. The public
-  installer follows the release branch `main`, which can differ. See the [UI version notes](/docs/space/space-walk) and
+  These guides follow [xo-space revision 4b1a580](https://github.com/quirq-ai/xo-space/tree/4b1a580)
+  from September 15, 2026: the Projects and Agents redesigns, guided Setup,
+  command palette, scheduled jobs, and storage reorganization. The public
+  installer follows the release branch `main`, which can differ from this
+  development revision. See the [UI guide](/docs/space/space-walk) and
   [installation options](/docs/space/install-space).
 </Callout>
 
@@ -35,18 +35,15 @@ inspect the results.
 
 | Area | Use it to |
 |---|---|
-| **Projects** | Survey projects in Dashboard, browse rows and project drawers in List, inspect relationships in Graph, explore folders in Tree, and manage shared repositories in Sharing. |
-| **Timeline** | Read mapped files' first Git dates or project commit days, play through the date range, and click a dot to focus its file or project in Graph. |
-| **Sessions** | Compare available runtime telemetry, tokens, estimated costs, models, tools, and session details. |
-| **Inbox** | Review new sessions, blocked todos, GitHub issues, sharing events, connected-service updates, and items posted by agents. |
-| **Wiki** | Find a quick start and topic summaries, then open detailed documentation. |
-| **Setup** | Check roots, agent readiness, watcher coverage, credentials, reporting status, and updates. |
-| **Connectors** | Connect external accounts, choose tools available to the workspace, and configure supported polling sources. |
+| **Projects** | Start in Overview, browse Data through List/Graph/Tree, inspect Git dates in Timeline, and clone, share, pin, or remove repositories in Manage. |
+| **Agents** | Compare available runtime telemetry in Overview, inspect Sessions, review model/tool/weekly Trends, and check sources in Configure. |
+| **Inbox** | Review incoming Items, connection events, scheduled Jobs, project Activity, and Sharing activity. |
+| **Setup** | Set Workspace roots and the Intelligence layer, connect apps, manage Secrets and Commands, and update or restart the Server. |
 
-Space opens on **Dashboard** under Projects. Clicking **Projects** opens **List**.
-All five project lenses keep the same Projects tab highlighted. The keyboard
-shortcuts are Projects `1`, Timeline `2`, Sessions `3`, Inbox `4`, Setup `5`,
-and Connectors `6`.
+Space opens on **Projects → Overview**. The primary keyboard shortcuts are
+Projects `1`, Agents `2`, Inbox `3`, and Setup `4`, when a form field is not
+focused. **Search**, **⌘K** on macOS, or **Ctrl+K** elsewhere opens the command
+palette for pages and projects.
 
 **Wiki** at the top right opens the local quick start and topic directory in the
 same tab. Its **Open docs** links open detailed guides in new tabs. **GitHub**
@@ -55,9 +52,10 @@ beside Wiki opens the source repository in a new tab.
 ## A project is a folder
 
 Every eligible direct child folder of the configured **XO projects root** appears
-as a project. You can browse an existing repository immediately. Creating a
-scaffolded project through the API adds project identity, operating documents,
-memory folders, and portable metadata.
+as a project. **Projects → Manage → Add project** clones an existing Git
+repository. Space creates missing canonical `.xo/` records for cloned projects
+and folders found by the watcher. Scaffolding a new project through the API also
+adds operating documents and memory folders; an ordinary clone does not.
 
 Space keeps three kinds of data separate:
 
@@ -76,11 +74,11 @@ Claude Code, Codex, OpenClaw, Hermes, and Antigravity have chat adapters and nat
 session support. The active chat runtime is selected separately from the sources
 Space observes. Cursor contributes read-only session telemetry.
 
-The **Sessions dashboard** currently aggregates Claude Code, Codex, and Cursor
+The **Agents dashboard** currently aggregates Claude Code, Codex, and Cursor
 telemetry. Coverage varies by source: a missing cost or token breakdown is shown
 as unavailable or estimated. See [runtime discovery](/docs/space/auto-detection)
 and [observability](/docs/space/observability) for the distinction between chat,
-watcher activity, and the Sessions dashboard.
+watcher activity, and the Agents dashboard.
 
 ## Local or managed
 

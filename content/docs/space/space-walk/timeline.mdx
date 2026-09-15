@@ -12,7 +12,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
 ![Timeline in By project mode, with commit days in parallel project lanes](/images/space/timeline.png)
 
-Open the top-level **Timeline** tab, or use `/space/#/time`.
+Open **Projects → Timeline**, or use `/space/#/projects/timeline`. Timeline is part of Projects; the older `#/time` and `#/timeline` links also resolve here.
 
 ## Choose what to plot
 
@@ -25,10 +25,10 @@ The mode switch appears when the workspace dataset contains Git history. Space r
 
 ![Timeline in By file mode showing the first committed dates of mapped files](/images/space/timeline-files.png)
 
-Every project keeps a lane. A project without dates to plot has a dark lane, and the description reports how many projects lack Git history. In By file, uncommitted or otherwise undated files have no dots.
+The summary reports the plotted dates and counts for the selected mode and filtered lanes. Every project keeps a lane. A project without dates to plot has a dark lane, and the description reports how many projects lack Git history. In By file, uncommitted or otherwise undated files have no dots.
 
 <Callout type="info">
-  A first-appearance date is a Git fact, not a file's filesystem creation or modification time. Timeline reads the workspace graph and Git history; the List drawer's **Recent events** is the separate view of normalized watcher activity.
+  A first-appearance date is a Git fact, not a file's filesystem creation or modification time. Timeline reads the workspace graph and Git history; **Inbox → Activity** is the separate view of normalized watcher activity.
 </Callout>
 
 ## Filter and navigate
@@ -44,7 +44,7 @@ Every project keeps a lane. A project without dates to plot has a dark lane, and
 
 Move the range slider to change the current date. **Play** advances the sweep through the visible time window; **Pause** stops it. Dragging the slider stops playback so you can inspect a particular point. Starting Play at the end begins again from the start of the current window.
 
-This is playback of dated map entries. It does not replay an agent's chat messages or tool executions. For run-level information, open [Sessions](/docs/space/space-walk/sessions).
+This is playback of dated map entries. It does not replay an agent's chat messages or tool executions. For run-level information, open [Agents → Sessions](/docs/space/space-walk/sessions).
 
 ## Follow a Graph trace
 
@@ -54,4 +54,4 @@ Use **Clear trace** to return to the normal timeline. A selection with no Git-da
 
 ## Coverage and loading
 
-Timeline always uses the workspace dataset at `GET /xo/space.json`. Opening it after Dashboard can reload the atlas to switch datasets. An empty axis can mean that the selected projects have no Git history, that the filter hides the relevant lanes, or that the map has not refreshed yet. Check the mode, clear the lane filter, and choose **All** before changing the workspace root in [Setup](/docs/space/space-walk/setup).
+Timeline always uses the workspace dataset at `GET /xo/space.json`. Opening it after Overview rebuilds the atlas for the workspace dataset without reloading the page. An open project file preview remains visible. An empty axis can mean that the selected projects have no Git history, that the filter hides the relevant lanes, or that the map has not refreshed yet. Check the mode, clear the lane filter, and choose **All** before changing the workspace root in [Setup](/docs/space/space-walk/setup).

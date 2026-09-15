@@ -1,6 +1,6 @@
 ---
 title: Session Replay
-description: Understand the distinction between Sessions telemetry, Timeline playback, and the separate Space Walk tool.
+description: Understand the distinction between Agents telemetry, Projects Timeline playback, and the separate Space Walk tool.
 icon: Play
 ---
 
@@ -8,16 +8,16 @@ import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
   The current Space UI provides session telemetry and Git timeline playback. The
-  separate **Space Walk** 3D replay tool is not launched from the Sessions view.
+  separate **Space Walk** 3D replay tool is not launched from the Agents pages.
 </Lead>
 
 ## Inspect a run in Space
 
-Open [Sessions](/docs/space/space-walk/sessions), choose its **Sessions** subview, and click a row. You can inspect token usage, tools, sub-agents, and typed prompts with reply/tool counts. There is no **Replay** button or registered `/space/#/replay` view in the current UI.
+Open [Agents → Sessions](/docs/space/space-walk/sessions) and click a row. You can inspect token usage, tools, sub-agents, and typed prompts with reply/tool counts. There is no **Replay** button or registered `/space/#/replay` view in the current UI.
 
 ## Play workspace history
 
-Open [Timeline](/docs/space/space-walk/timeline) and use **Play** or the scrubber to advance through mapped file dates or project commit days. This visualizes Git history; it does not replay the session's messages or individual tool calls.
+Open [Projects → Timeline](/docs/space/space-walk/timeline) and use **Play** or the scrubber to advance through mapped file dates or project commit days. This visualizes Git history; it does not replay the session's messages or individual tool calls.
 
 ## Space Walk is a separate tool
 

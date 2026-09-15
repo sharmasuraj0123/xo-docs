@@ -93,6 +93,11 @@ try {
     await page.setViewportSize({ width, height: 1000 });
     for (const [route, slug] of [
       ["/docs/space/space-walk", "overview"],
+      ["/docs/space/space-walk/manage", "manage"],
+      ["/docs/space/space-walk/sessions", "agents"],
+      ["/docs/space/space-walk/setup", "setup"],
+      ["/docs/space/space-walk/commands", "commands"],
+      ["/docs/space/space-walk/inbox", "inbox"],
       ["/docs/space/space-walk/wiki", "wiki"],
       ["/docs/space/space-walk/connectors", "connectors"],
       ["/docs/space/observability", "observability"],

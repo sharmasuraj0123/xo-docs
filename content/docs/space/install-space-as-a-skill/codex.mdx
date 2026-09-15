@@ -89,7 +89,7 @@ creating the directory if needed.
 After confirmation, Codex runs the official installer from that directory,
 prepares the Python environment, and starts the server as a background task of
 the session. On success it reports the `/space/` URL, the log at
-`<workspace>/.quirq/quirq.log`, and configuration at `<workspace>/xo-space/.env`.
+`<workspace>/.quirq/logs/quirq.log`, and configuration at `<workspace>/xo-space/.env`.
 The [bundled install skill](https://github.com/quirq-ai/xo-space/blob/development/.agents/plugins/quirq/skills/quirq-install/SKILL.md)
 defines this sequence.
 
@@ -109,7 +109,7 @@ It does not fetch changes or rerun the installer. To update, use the separate
 Checking status is read-only. Installation and startup need your explicit
 authorization; choosing a workspace directory is your decision. Codex's own
 sandbox and approval policy still apply when a skill runs commands. The plugin
-directs credentials and OAuth setup to Space's **Setup** and **Connectors** pages.
+directs credentials and OAuth setup to Space's **Setup → Secrets** and **Setup → Connectors** pages.
 
 The install/start skills run the server as a background task of the current
 Codex session. They do not create an operating-system service. The server can stop

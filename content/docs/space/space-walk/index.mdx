@@ -1,6 +1,6 @@
 ---
 title: Space UI Overview
-description: Navigate the six primary Space tabs, open Wiki, choose a Projects lens, and follow a task from files to activity and incoming work.
+description: Navigate Projects, Agents, Inbox, and Setup, use the command menu, and follow work from project files to activity.
 icon: Map
 ---
 
@@ -10,73 +10,74 @@ import { Callout } from "fumadocs-ui/components/callout";
   Space brings your projects, runtime activity, incoming work, and workspace settings into one browser interface. Open **http://localhost:5002/space/** after starting XO Space, or use your deployment's Space URL.
 </Lead>
 
-![Space opens to the Dashboard lens inside Projects](/images/space/dashboard.png)
+![Space opens to Overview inside Projects](/images/space/dashboard.png)
 
 <Callout type="info" title="Version and screenshots">
-  Screenshots show the real UI at [xo-space revision 84f0737e23b6bb369fc6b8853afb510a02dd8b21](https://github.com/quirq-ai/xo-space/tree/84f0737e23b6bb369fc6b8853afb510a02dd8b21), using fictional workspace data. This includes the merged compact Wiki and contextual toolbar, plus Setup restart and Commands from [PR106](https://github.com/quirq-ai/xo-space/pull/106) against development. Technical guides retain their own source version notes. Release installations following `main` can differ; see [Install Space](/docs/space/install-space).
+  This guide follows [xo-space development at 4b1a580](https://github.com/quirq-ai/xo-space/tree/4b1a580)
+  from September 15, 2026. Screenshots show the real UI with fictional workspace
+  data. The public installer's release branch can differ; check your running
+  version in **Setup → Server**.
 </Callout>
 
 ## Find the right tab
 
-The primary tabs are **Projects · Timeline · Sessions · Inbox · Setup · Connectors**. Press **1–6** to open those tabs in that order. Shortcuts pause while an input, text area, or select has focus.
+The primary tabs are **Projects · Agents · Inbox · Setup**. Press **1–4** to open them in that order. Shortcuts pause while an input, text area, or select has focus.
 
-**Wiki** sits at the top right beside **GitHub**. It opens Space's local quick
-start and topic directory in the same browser tab at `#/wiki`. Choose **Open
-docs** within Wiki to read a detailed guide in a new tab. **GitHub** opens the
-[source repository](https://github.com/quirq-ai/xo-space) in a new tab.
-
-| Tab | Use it to | Route after `/space/` |
+| Tab | Use it to | Default route after `/space/` |
 | --- | --- | --- |
-| [Projects](/docs/space/space-walk/files-explorer) | Inspect project files, activity, todos, history, and sharing through five lenses | `#/projects` |
-| [Timeline](/docs/space/space-walk/timeline) | Compare git commits and dated files across projects | `#/time` |
-| [Sessions](/docs/space/space-walk/sessions) | Review supported runtimes' sessions, usage, and recorded prompts | `#/sessions` |
-| [Inbox](/docs/space/space-walk/inbox) | Read incoming items and mark them seen or done | `#/inbox` |
-| [Setup](/docs/space/space-walk/setup) | Configure roots, runtime, watcher coverage, credentials, and updates | `#/secrets` |
-| [Connectors](/docs/space/space-walk/connectors) | Connect apps, control agent actions, and collect items into Inbox | `#/connectors` |
+| [Projects](/docs/space/space-walk/files-explorer) | Survey projects, browse files, compare Git history, and manage local projects | `#/projects/overview` |
+| [Agents](/docs/space/space-walk/sessions) | Inspect session usage, prompts, trends, and telemetry sources | `#/agents/overview` |
+| [Inbox](/docs/space/space-walk/inbox) | Handle incoming items, scheduled jobs, project activity, and sharing | `#/inbox/items` |
+| [Setup](/docs/space/space-walk/setup) | Configure the workspace, intelligence layer, connectors, secrets, and server | `#/setup/workspace` |
 
-The separate [Wiki](/docs/space/space-walk/wiki) resource link remains available
-from every view and has no numbered shortcut.
+**Wiki** sits at the top right beside **GitHub**. It opens the local quick start and topic directory at `#/wiki`. **Open docs** within Wiki opens a detailed guide in a new tab; **GitHub** opens the [source repository](https://github.com/quirq-ai/xo-space). Keep the full URL when bookmarking, including any access query parameters your deployment requires.
 
-Keep the full URL when bookmarking a view, including any access query parameters your deployment requires.
+## Projects: Overview, Data, Timeline, Manage
 
-## One Projects tab, five lenses
+Opening Space without a hash, clicking **Projects**, or pressing **1** opens **Overview**. The second navigation row contains four sections:
 
-Opening `/space/` without a hash starts at **Dashboard**. Clicking **Projects**, or pressing **1**, opens **List**. Choose another lens from the control beneath the top bar while inside Projects; Projects stays highlighted throughout.
-
-| Lens | What it shows | Route |
+| Section | What it shows | Route |
 | --- | --- | --- |
-| [Dashboard](/docs/space/space-walk/dashboard) | Project nodes grouped into purpose environments with project todo context | `#/dashboard` |
-| [List](/docs/space/space-walk/files-explorer) | Project rows and expandable working details | `#/projects` |
-| [Graph](/docs/space/space-walk/graph) | A spatial map of projects and their files | `#/graph` |
-| [Tree](/docs/space/space-walk/tree-lens) | Folders and files arranged as a horizontal hierarchy | `#/tree` |
-| [Sharing](/docs/space/space-walk/sharing) | Shared projects, incoming repositories, and sync status | `#/sharing` |
+| [Overview](/docs/space/space-walk/dashboard) | The dashboard map, purpose environments, and project todos | `#/projects/overview` |
+| [Data → List](/docs/space/space-walk/files-explorer) | Project rows and expandable file browsers | `#/projects/data/list` |
+| [Data → Graph](/docs/space/space-walk/graph) | A spatial map of mapped projects and files | `#/projects/data/graph` |
+| [Data → Tree](/docs/space/space-walk/tree-lens) | A horizontal folder hierarchy | `#/projects/data/tree` |
+| [Timeline](/docs/space/space-walk/timeline) | Git commit days and first appearances of mapped files | `#/projects/timeline` |
+| [Manage](/docs/space/space-walk/manage) | Clone projects, inspect metadata and issues, pin, share, and remove local projects | `#/projects/manage` |
 
-![Projects List with project counts and activity](/images/space/projects-list.png)
+**Data** contains the **List | Graph | Tree** switch and remembers the last Data view you visited. **Sharing** lives under [Inbox](/docs/space/space-walk/sharing). An open file preview stays visible while moving within Projects, including Timeline and Manage; leaving Projects closes it.
 
-Opening a supported file brings up a floating preview. It stays open when you move between all five Projects lenses, including its selected historical version, Source mode, size, and position. Leaving Projects closes the preview. See [files and version history](/docs/space/space-walk/files-explorer).
+![Data List with project counts and activity](/images/space/projects-list.png)
 
-## Controls for the current page
+Old links such as `#/dashboard`, `#/graph`, `#/tree`, `#/time`, and `#/sessions` still resolve. New bookmarks should use the section routes above; `#/projects` opens Overview.
 
-Dashboard and Graph show map controls. List, Tree, Sessions' session list, Inbox,
-Connectors, and Quirq state show search for their own content. Each view remembers
-its query while you move between pages; use the clear button or **Escape** to
-reset it, and **/** to focus a visible search field. Sessions searches the records
-already loaded in its list. Setup, Wiki, and other pages without these controls
-use a compact header.
+## Search and quick actions
+
+Click **Press ⌘K to search**, or press **⌘K** on macOS / **Ctrl+K** elsewhere, to open the command menu. Type to find a page, a project by name or description, or an action. Use **↑ / ↓** to choose, **Enter** to open, and **Esc** to close.
+
+![Command palette showing a matching project](/images/space/command-palette.png)
+
+- Choosing a project opens its file drawer in **Projects → Data → List**.
+- **Refresh this page** refreshes views that support it. Otherwise use the
+  page’s own **Refresh** or **Refresh status** control.
+- **New project** opens **Projects → Manage**, where **Add project** starts a clone.
+- **Copy link to this page** copies the current URL.
+
+On maps and pages that support search, **/** also opens the command menu. The navbar only shows a page's inline search field when it already has an active query. When that field is visible, the command menu can pass text to **Search “…” on this page**. Clear the field with its clear button or **Esc**. Page queries apply only to that page's loaded content; they are not a workspace-wide file-content search.
 
 ## A useful first walkthrough
 
-1. Start with [Setup](/docs/space/space-walk/setup). Confirm the projects root and watcher coverage point to the folders and runtimes you actually use.
-2. Open **Projects → List**, find a project, expand it, and open a file. Review its todos, sessions, and git history when those sources are available.
-3. Choose **Dashboard**, **Graph**, or **Tree** for another view of the same workspace. Use **Timeline** when the question is when files or commits changed.
-4. Open **Sessions** to inspect recorded usage and prompts for a supported telemetry source. Continue running agent tasks in your runtime's own client or an API client.
-5. Open **Inbox** to read new items. Follow **Open** or **Open link** to their context, then mark the inbox item **Done** when handled.
-6. If you need external app tools or incoming mail/calendar items, configure **Connectors** and its **Polling** drawer.
+1. In [Setup → Workspace](/docs/space/space-walk/setup), confirm your projects folder. Review runtime and watcher coverage in **Intelligence layer**.
+2. Open [Projects → Manage](/docs/space/space-walk/manage) to clone a repository or inspect a discovered project. Pin projects you visit often.
+3. Open **Projects → Data → List**, expand a project, and read a file. Use **Graph**, **Tree**, or **Timeline** for another view of the workspace.
+4. Use a project's **View activity** action in Manage to open its todos, open sessions, and watcher events in **Inbox → Activity**.
+5. Open [Agents](/docs/space/space-walk/sessions) for recorded usage and prompts. Continue running tasks in your runtime's own client or an API client.
+6. Handle incoming items in [Inbox](/docs/space/space-walk/inbox), and configure external app access in [Setup → Connectors](/docs/space/space-walk/connectors).
 
 ## Understand empty or unavailable views
 
-Space combines different sources; they do not all become available at once. A project can have files without a git repository, an active runtime can lack aggregate telemetry, and a connector can be authorized without polling enabled. Each guide explains its prerequisites and empty states.
+A project can have files without Git history, a watched runtime can lack aggregate telemetry, and an authorized connector can have polling disabled. Each guide explains its prerequisites and empty states.
 
-Local project browsing does not require a connector account. Sharing and Connectors use external services and require their own configuration. The UI is served by the Space backend; its bind address and authentication depend on how you run it. Check [installation](/docs/space/install-space) before exposing a local server remotely.
+Local project browsing does not require a connector account. Sharing and Connectors use external services and require their own configuration. The UI's bind address and authentication depend on how you run it; see [installation](/docs/space/install-space).
 
-For storage and runtime boundaries, read [Observability](/docs/space/observability) and [Auto-detection](/docs/space/auto-detection). For the distinction between session inspection and the separate replay tool, read [Session replay](/docs/space/space-walk/replay).
+For storage and runtime boundaries, read [Observability](/docs/space/observability) and [Auto-detection](/docs/space/auto-detection). For the separate replay tool, read [Session replay](/docs/space/space-walk/replay).

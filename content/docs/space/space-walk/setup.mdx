@@ -1,141 +1,207 @@
 ---
 title: Setup & Quirq State
-description: Configure Space, restart the server, and run saved commands with retained results.
+description: Set up your workspace and agent, manage secrets and connectors, and apply changes through Server controls.
 icon: Settings
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  **Setup** shows the effective configuration of the running Space server and the settings saved for its next start. Use it to select roots, configure the agent and watcher, manage credentials, restart Space, and run saved commands.
+  **Setup** separates initial setup from ongoing management. Start with
+  **Workspace** and **Intelligence layer**, then use **Connectors**, **Secrets**,
+  **Commands**, and **Server** as needed.
 </Lead>
 
-![Setup showing storage roots, agent and watcher settings, and native sources](/images/space/setup.png)
+![Setup Workspace with identity, folders, and section navigation](/images/space/setup.png)
 
-Open the fifth primary tab, **Setup**, press **5**, or use `/space/#/secrets`. The visible tab was renamed Setup; its route remains `secrets`.
+Open the fourth primary tab, **Setup**, press **4**, or use
+`/space/#/setup/workspace`. **Refresh status** checks the installation again. The
+banner distinguishes unsaved edits from saved changes that require a restart.
+
+| Section | What you can do | Route |
+| --- | --- | --- |
+| Workspace | Check Space and account identity; choose folders | `#/setup/workspace` |
+| Intelligence layer | Choose the agent for new chats and configure activity collection | `#/setup/intelligence` |
+| Connectors | Connect workspace tools and account apps | `#/setup/connectors` |
+| Secrets | Add, replace, or remove environment values | `#/setup/secrets` |
+| Commands | Save, run, and schedule commands; read their results | `#/setup/commands` |
+| Server | Restart, check updates, and inspect technical details | `#/setup/server` |
+
+Use the sidebar or the [command palette](/docs/space/space-walk#search-and-quick-actions)
+to find a section. If the **Search setup…** page filter is visible, it searches
+setting names, not typed values or saved credentials. Older `#/secrets` and
+`#/connectors` links still reach their corresponding sections.
 
 ## Check the running installation
 
-The top cards report the browser address, project path, and Quirq state path. They distinguish missing, unreadable, read-only, and writable locations. **Refresh status** reads runtime and credential status again. The main banner explains whether saved changes are already applied or require a restart.
+**Workspace identity** reports the Space ID, available workspace name and owner,
+and verified XO and GitHub connection status. A configured credential is not
+enough for a **Connected** label: Space checks the identity with the service.
+GitHub status also identifies whether access comes from `GITHUB_PAT` or a saved
+connection.
 
-## Restart the server
-
-**Restart server** sits beside **Refresh status**. Confirm the restart, then leave the page open. The button shows **Restarting…** while Space waits for a new server instance; the footer can briefly show offline. The page reloads when the replacement responds, so every view loads the new code. A response from the old instance does not count as completion.
-
-| Installation mode | What happens |
-|---|---|
-| **Managed** | A container supervisor restarts the process after it exits. |
-| **Native** | A server started through the native process manager has a matching PID file. The detached restart helper stops only that installation and starts its replacement. |
-| **Foreground** | A manually launched process or development reload mode cannot use this restart path. The button is disabled with **Ctrl-C and re-run** guidance; restart in the terminal that launched it. |
-
-**Apply & restart** and the button shown after a code update use the same restart flow. Opening the page remotely does not grant process-control access: the restart endpoint accepts local clients, and browser requests must come from the same loopback origin. If the page cannot reconnect, read its error and check the original terminal or server log.
+Expand **Folder and connection details** for the browser address, execution and
+project paths, and Space data path. These rows distinguish missing, unreadable,
+read-only, and writable locations.
 
 ## Set storage roots
 
-**XO root** is the host folder whose direct child directories are projects. Changing it selects another workspace; it does not move your existing project files.
+In **Workspace → Folders**:
 
-**.quirq root** is the machine-local state directory. The form distinguishes the configured path from **Mounted now**. In installer-managed environments, the installer can copy current state when the new state directory is empty.
+1. Set **Projects folder**, the folder whose direct child directories are
+   projects. Changing it selects another workspace; it does not move projects.
+2. Set **Space data folder**, which holds machine-local settings, credentials,
+   and activity. The runtime fallback is `~/.quirq/`; the local installer
+   normally selects `<workspace>/.quirq/`. Use the path shown for your installation.
+3. Click **Save folders**. When a saved path differs from the running one, the
+   form shows **Currently using** and **Pending restart**.
+4. Apply the displayed instructions. Restart to use saved folders; for an
+   installer-managed container, run the displayed installer command to update
+   its mounts. **Copy installer command** copies that installation's command.
+5. Refresh status after applying the changes to confirm the folders in use.
 
-1. Enter the required host paths and click **Save roots**.
-2. Read the resulting **Pending restart** notice and apply command.
-3. Restart the server to use the saved roots. On installer-managed containers, run the displayed installer command to update the bind mounts as well.
-4. Use **Refresh status** to confirm the **Mounted now** paths.
-
-**Copy apply command** copies the command shown by your installation. Use that displayed command because host paths and mount requirements vary.
+In installer-managed environments, the installer can copy current state when
+the new state directory is empty. Use the displayed command because host paths
+and mount requirements vary. Add or remove individual projects through
+**Projects → Manage**.
 
 ## Configure the agent and watcher
 
-![Agent and watcher controls with native session-source readiness](/images/space/setup-runtime.png)
+![Intelligence layer with agent selection and activity settings](/images/space/setup-runtime.png)
+
+In **Intelligence layer**, choose **Agent for new chats** and click **Save
+agent**. The choices come from installed agent manifests. **In use**, **Selected**,
+and **Restart to apply** distinguish the running agent from your draft or saved
+selection.
+
+Activity collection has its own form:
 
 | Control | What it changes |
-|---|---|
-| **Active agent backend** | The backend used for new chats. The choices come from installed agent manifests. |
-| **Run the watcher** | Whether the background watcher materializes supported native session activity into Space's project/runtime records. |
-| **Session stores to watch** | **All mounted runtimes** or **Active agent only**. This is independent of the active chat backend. |
-| **Watcher tick interval** | A value from **0.25 to 60 seconds**; the form identifies one second as the local default. |
+| --- | --- |
+| **Update activity automatically** | Runs the watcher that keeps supported sessions and project history up to date. Scheduled commands also need it enabled. |
+| **Activity sources** | **All agents** or **Chat agent only**; this is independent of which agent handles new chats. |
+| **Advanced → Check every** | Watcher interval from **0.25 to 60 seconds**; the default is one second. |
 
-Click **Save runtime**. When changes require a restart, managed and native installations offer **Apply & restart**. Foreground and development reload processes show terminal restart guidance. See [Restart the server](#restart-the-server) for the three modes.
+Click **Save activity settings**. If either form requires a restart, follow the
+banner to **Server** and use **Apply & restart**, or the terminal instructions
+for a foreground process.
 
-The watcher reads runtime activity. Agents record shared project todos through the todo API; changing watcher settings does not import a runtime's private todo list into Space.
+The watcher reads runtime activity. Agents record shared project todos through
+the todo API; changing watcher settings does not import a runtime's private
+todo list into Space.
 
 ## Inspect native sources
 
-**Native session sources** lists the discovered runtimes, their home paths, CLI availability, login/setup status, and whether each is watched. Badges distinguish the current **Chat backend** from a selection that becomes active **after restart**.
+The selected agent appears first; expand **Other agents** to inspect the rest.
+Each card reports CLI installation, whether the agent folder exists, and whether
+it is **Included in activity**. **Agent details** shows host/server paths and
+discovered session-file counts. A discovered file count does not establish that
+the agent is signed in or that its watcher is healthy.
 
-Use a source's recommended credential button to fill the credential key below. Some runtimes use native login files instead. Mounted or watched sources do not all contribute to the [Sessions telemetry tab](/docs/space/space-walk/sessions#select-sources); telemetry and watcher capabilities have separate coverage.
+Use a recommended credential button to open its key in **Secrets**. Some agents
+use their own sign-in. When supported, a missing CLI can be installed by Setup
+when that agent is selected and the server restarts. Watcher discovery and
+[Agents telemetry coverage](/docs/space/space-walk/sessions#select-sources) remain
+separate capabilities.
 
 ## Manage credentials
 
-1. Choose a recommended key or enter an uppercase **Environment key**.
-2. Paste its **Secret value** and click **Save credential**.
-3. Apply a restart when the banner requests it.
+Open **Secrets**:
 
-**Show / Hide** reveals only the value currently being typed. Saved values are represented by fixed masks and configured status; the UI does not fetch their plaintext. **Replace** starts a blank replacement form. **Remove** deletes the saved variable after confirmation.
+1. Click **Add secret**, or follow a recommended key from an agent card.
+2. Enter an uppercase **Key** and its **Value**, then click **Save secret**.
+3. Restart through **Server** when the banner requests it.
 
-Credentials are stored in machine-local Quirq state, outside project folders. Choosing a source's credential does not by itself prove that its CLI is installed, authenticated, or currently running; check the source's status after applying changes.
+**Show / Hide** reveals only the value being typed. Saved values use fixed masks
+and configured status; the UI never fetches their plaintext. **Replace** starts
+a blank replacement form. **Remove** deletes the saved variable after
+confirmation. Credentials are stored in machine-local Space data, outside
+project folders.
+
+For native service sign-in and account apps, use
+[Connectors](/docs/space/space-walk/connectors).
 
 ## Check usage reporting
 
-The **Agent and watcher** card reports whether usage reporting is **off**, **on**, **pending**, or **blocked**. An accepted credential enables daily token, cost, and session/tool summaries. **Pending** means the key has no conclusive probe result; **blocked** means the key was rejected. These are current status indicators, not proof that the installation has never sent an earlier report.
+**Intelligence layer** reports whether usage reporting is **off**, **on**,
+**pending**, or **blocked**. An accepted credential enables daily token, cost,
+and session/tool summaries. **Pending** means the key has no conclusive probe
+result; **blocked** means the key was rejected. These describe current status,
+not whether an earlier report was ever sent.
 
-The UI's **What leaves your machine** link summarizes the policy. Normal metric fields exclude prompt and file contents, but reporting error notes can include source filenames and raw error details. See the source-checked [collection and reporting guide](/docs/space/observability/collection) for that exception and the other network paths.
+**What leaves your machine** summarizes the policy. Normal metric fields
+exclude prompt and file contents, but reporting error notes can include source
+filenames and raw error details. See the
+[collection and reporting guide](/docs/space/observability/collection) for the
+full boundaries.
+
+## Restart the server
+
+![Server controls for restart, updates, and technical details](/images/space/setup-server.png)
+
+Open **Server → Restart** and click **Restart server** or **Apply & restart**.
+Confirm and leave the page open. Space shows **Restarting…** and reloads when a
+replacement server responds; a response from the old instance does not count
+as completion.
+
+| Installation mode | What happens |
+| --- | --- |
+| **Managed** | A container supervisor restarts the process after it exits. |
+| **Native** | The native process manager checks its PID file and restarts that installation. |
+| **Foreground** | A manually launched process or development reload mode requires **Ctrl-C and re-run** in its original terminal. The UI restart button is disabled. |
+
+If Space cannot reconnect, use **Refresh status** and check its server log or
+original terminal. A saved container folder change may require the installer
+command before a restart can apply it.
+
+Restart, update, and command writes support same-origin requests through a
+local HTTPS proxy as well as direct local access. The server connection must
+come from loopback, and browser origin checks still apply. If the request is
+refused, use the server's terminal rather than changing the browser URL alone.
 
 ## Update xo-space
 
-In **xo-space updates**, click **Check for updates** to compare the checkout with its configured Git remote. The result shows the installed commit, branch, latest commit, and whether local changes or divergence prevent an update.
+In **Server → Updates**, click **Check for updates**. The result compares the
+checkout with its configured Git remote and shows the branch, installed/latest
+commit, and any local changes or divergence that prevent an update.
 
-**Update now** appears when the checkout can fast-forward. Applying an update changes code on disk; use the resulting **Restart server** button to run the new version, or follow the foreground terminal hint. If dependency requirements changed, follow the command or installation guidance shown in the result. The apply endpoint accepts requests from localhost, so a remote/proxied installation may need the terminal update path.
+**Update now** appears when the checkout can fast-forward. Updating changes code
+on disk; use **Restart server** to run it, or follow the foreground terminal
+hint. If dependency requirements changed, follow the result's installation
+guidance.
 
 <Callout type="info">
-  Self-update fast-forwards a clean Git checkout. It does not resolve a divergent branch or discard local edits. Save or reconcile your local work before updating, then follow the page's restart instructions.
+  Self-update fast-forwards a clean Git checkout. It does not resolve a
+  divergent branch or discard local edits. Save or reconcile your local work
+  before updating.
 </Callout>
 
 ## Run saved commands
 
-The **Commands** card starts with **No commands yet**. Space does not seed or run an example when you open Setup.
+Open **Commands** to add a manual command or an interval schedule. **Copy agent
+prompt** supplies instructions for an agent to manage commands through the
+Space API. Nothing is seeded or run when you open the page.
 
-![Commands showing saved manual and interval jobs with their latest results](/images/space/setup-commands.png)
-
-1. Click **Add command** and enter a name and optional description.
-2. Enter a command line, or an explicit JSON argument array such as `["git", "status", "--short"]`.
-3. Set a working directory if needed and a timeout in seconds. With no working directory, the command inherits the server's working directory.
-4. Leave **Interval** empty for a manual command. A positive whole number at least as long as the watcher tick schedules an interval job; its row shows **Runs every N**.
-5. Click **Save command**, then **Run** when you want to execute it.
-
-Space passes arguments to the command utility without wrapping them in a shell. Shell operators in a command line are rejected; put multi-step work in a script and invoke that script explicitly. Invalid arguments, timeout, or interval leave the form open with the service's validation message. **Edit** retains existing environment overrides, project association, and enabled state even though these are not fields in this form. **Run** is explicit: it can run a disabled interval job and leaves its next scheduled time unchanged.
-
-While a run is active, the row shows its start time and disables **Run**. Setup polls jobs it has seen running every three seconds and displays the result and duration when they finish. Use **Refresh status** or reopen Setup to discover interval runs that start later. A command cannot overlap itself; all manual and interval jobs share the server's concurrency limit. A busy command or full limit produces a conflict message rather than starting a second run.
-
-Manual commands work with the watcher disabled: reading their status collects finished results. Automatic interval launches require the watcher and scheduler to be enabled. Disabling the watcher or automatic scheduling does not cancel an already running command.
+Follow [Commands & schedules](/docs/space/space-walk/commands) for command fields,
+start times, execution, and results.
 
 ### Read results and history
 
-Click **Runs** to open the newest 20 recorded results. Each result shows its start and finish, trigger, status, return code, duration, and up to 2,000 characters from the output tail. Output is shown as text, so HTML from a command is not executed.
-
-![Command run history with status, duration, output, and local log path](/images/space/setup-command-runs.png)
-
-| Result | Meaning |
-|---|---|
-| `ok` | The process completed with exit code zero. |
-| `failed` | The process returned a nonzero exit code. |
-| `timed_out` | The command exceeded its timeout. |
-| `missing_binary` | Its executable could not be found. |
-| `error` | The executor could not launch or complete the command normally. |
-| `lost` | A previously recorded in-flight run could not be recovered after the server restarted. |
-| `skipped` | An automatic run was due while the previous run was still active. |
-
-The drawer gives the full log's local path as text. **Delete** removes the saved definition after confirmation and keeps its history and logs on disk. Deleting does not cancel an active process; its completion can still be collected on a later read or tick. Jobs, state, results, and logs live under [the state root's `scheduler/` directory](/docs/space/observability/storage#saved-commands-and-schedules).
-
-Commands run locally with the server's permissions and inherited environment. Their definitions and raw result tails can contain sensitive arguments or output; they are not anonymous telemetry. A command you choose can make its own network requests. Command writes and **Run** require a local client; cross-origin browser requests are rejected.
+Each saved command's **Inbox** button opens its newest 20 runs and local log
+path. Scheduled commands also appear under **Inbox → Jobs**, where **Results**
+opens the same drawer. See
+[command results](/docs/space/space-walk/commands#read-results-and-history).
 
 ## Open Quirq state
 
-**Open Quirq state** opens `/space/#/quirq`, a child view of Setup. It presents watcher state, project records, runtime configuration, and their availability. Use **Refresh data** to fetch another snapshot or **← Setup** to return.
+Choose **Server → Technical details** to open `/space/#/setup/server/details`.
+The older `#/quirq` link remains an alias. This view maps installation state,
+watcher activity, project records, runtime configuration, and their availability.
+Use **Refresh data** for another snapshot or **← Setup** to return to Server.
 
 ![Quirq state view with machine-local and portable project records](/images/space/quirq.png)
 
-<Callout type="info">
-  Some section headings retain the older “portable .xo” wording. Current session indexes, project stats, and normalized timeline history live under the machine-local state root's `projects/` directory. Identity, todos, workitems, and peers remain portable project records. Follow the effective row locations and the [storage map](/docs/space/observability/storage) rather than treating every item in that section as a project `.xo` file.
-</Callout>
-
-Restart and Commands behavior is based on [xo-space `84f0737e23b6bb369fc6b8853afb510a02dd8b21`](https://github.com/quirq-ai/xo-space/tree/84f0737e23b6bb369fc6b8853afb510a02dd8b21), including the [restart route](https://github.com/quirq-ai/xo-space/blob/84f0737e23b6bb369fc6b8853afb510a02dd8b21/routers/space.py) and [scheduler](https://github.com/quirq-ai/xo-space/blob/84f0737e23b6bb369fc6b8853afb510a02dd8b21/utils/commands/scheduler.py).
+Portable project metadata lives in project `.xo/` folders. Machine-local
+materialized records and operational state live under the configured Space data
+folder. Follow each row's effective location and the
+[storage map](/docs/space/observability/storage) for the current layout.

@@ -73,7 +73,7 @@ export function SpaceDataFlow() {
         </div>
         <DownArrow label="Serve local APIs to the browser" />
         <div className="rounded-xl bg-fd-secondary p-4 text-center text-sm font-medium">
-          Projects · Timeline · Sessions · Inbox · Setup · Connectors
+          Projects · Agents · Inbox · Setup
         </div>
       </div>
     </Figure>
@@ -132,15 +132,18 @@ export function SpaceStorageMap() {
             <StorageBranch path="<state root>/projects/<pid>/">
               Project history and indexes; keyed by project identity.
             </StorageBranch>
-            <StorageBranch path="<state root>/workspace/">
-              Materialized workspace views and rollups.
+            <StorageBranch path="<state root>/cache/">
+              Rebuildable workspace views, rollups, heartbeat and live presence.
             </StorageBranch>
-            <StorageBranch path="<state root>/watcher/">
-              Reading positions, heartbeat and live presence.
+            <StorageBranch path="<state root>/projects/">
+              Workspace timeline and reading positions, beside project history.
             </StorageBranch>
-            <StorageBranch path="<state root>/">
-              Inbox, connections, configuration, credentials and other service
-              records. This directory contains more than disposable caches.
+            <StorageBranch path="inbox/ · connections/ · scheduler/ · sharing/ · usage/">
+              Incoming work, connected-service records, saved commands, sharing
+              decisions and reporting progress.
+            </StorageBranch>
+            <StorageBranch path="settings/ · secrets/ · logs/ · .locks/">
+              Local choices, credentials, diagnostics and internal locks.
             </StorageBranch>
           </ul>
         </section>
@@ -183,7 +186,7 @@ const editSteps = [
   ],
   [
     "You inspect the result",
-    "Use Projects for activity and files. Opening a file reads its contents on demand; Git history supplies committed versions and the Timeline tab's dated map.",
+    "Use Projects → Data for files and Inbox → Activity for observed events. Opening a file reads its contents on demand; Git history supplies committed versions and Projects → Timeline's dated map.",
   ],
 ];
 

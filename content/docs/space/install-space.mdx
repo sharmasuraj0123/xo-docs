@@ -25,7 +25,7 @@ and installs Space's Python requirements. Other tools enable specific features:
 |---|---|
 | An authenticated agent CLI or gateway | Running prompts through that agent |
 | `node` and `npm` | Installing Node-based agent CLIs |
-| `gh` | GitHub-backed project backup |
+| `gh` | GitHub issue polling and project backup |
 | `rclone` | Drive and OneDrive file connectors |
 | `gpg` | Encrypted backup and restore |
 
@@ -57,10 +57,11 @@ server runs in the foreground; `Ctrl-C` stops it.
 
 ## Check Setup before running an agent
 
-Open **Setup** in the top bar. Check the XO projects root, the machine-local state
-root, the active chat backend, and native session sources.
+Open **Setup → Workspace** and check the XO projects root and machine-local
+state root. Then use **Intelligence layer** for the active chat backend and
+native session sources.
 
-![Setup shows configured roots, runtime readiness, watcher settings, and credentials](/images/space/setup.png)
+![Setup Workspace shows configured roots and guided navigation](/images/space/setup.png)
 
 The installer defaults to `claude_code`, watches all supported installed runtime
 sources, and skips agent installation. Install and authenticate your chosen agent
@@ -87,15 +88,19 @@ workspace/
 │   ├── .env                  install configuration
 │   └── venv/
 ├── .quirq/                   machine-local configuration and telemetry
-│   ├── quirq.log             server output
-│   └── commands.log          external commands run by Space
+│   ├── logs/quirq.log         server output
+│   ├── logs/commands.log      external commands run by Space
+│   ├── projects/             durable history and watcher cursors
+│   ├── cache/                rebuildable views and live presence
+│   ├── settings/             roots and runtime controls
+│   └── secrets/              saved credentials
 ├── .xo/                      portable workspace records
-└── my-project/               your files and optional project .xo/ metadata
+└── my-project/               your files and canonical project .xo/ metadata
 ```
 
 Your agents' native conversations stay in their own home directories. Project
 stats and session indexes are under `.quirq/projects/`; workspace graphs and
-session aggregates are under `.quirq/workspace/`.
+session aggregates are under `.quirq/cache/`.
 
 ## Start again or update
 
@@ -113,9 +118,10 @@ The update path preserves a checkout with local changes or one on a different
 branch. Read the startup message if an update is skipped. The installer does not
 add a system service, scheduled job, or login item.
 
-If Setup says a restart is needed, stop and rerun a foreground install yourself.
-A managed deployment can support the restart action; an unsupervised local
-process cannot restart itself through that button.
+**Setup → Server** shows the restart capability of the running process. Supported
+native runners and managed deployments can restart through that control. For an
+unsupervised foreground process, stop and rerun the installer yourself. See
+[server controls](/docs/space/space-walk/setup#restart-the-server).
 
 ## Change configuration
 
@@ -140,7 +146,7 @@ curl -fsSL https://quirq.ai/install | PORT=8080 sh
 
 Exported settings override `.env`; settings saved through Setup may take precedence
 for the runtime and credentials it manages. Root selections are also persisted
-in `roots.env`. **Setup shows the effective configuration**, which is the useful
+in `<state root>/settings/roots.env`. **Setup shows the effective configuration**, which is the useful
 place to check when an environment edit appears not to take effect.
 
 Keep the state root outside project folders. The default hidden `.quirq/` directly

@@ -15,13 +15,12 @@ const { chromium } = await import(
 );
 const origin = process.env.SPACE_PREVIEW_URL || "http://127.0.0.1:5101";
 const sourceRepository = "https://github.com/quirq-ai/xo-space";
-const primaryViews = [
-  "projects",
-  "time",
-  "sessions",
-  "inbox",
-  "secrets",
-  "connectors",
+const primaryViews = ["projects", "agents", "inbox", "setup"];
+const primaryRoutes = [
+  "projects/overview",
+  "agents/overview",
+  "inbox/items",
+  "setup/workspace",
 ];
 const output = resolve(
   process.argv[2] || resolve(here, "../../public/images/space"),
@@ -88,8 +87,10 @@ async function go(id) {
   await page.waitForFunction((id) => location.hash === `#/${id}`, id);
 }
 async function settleGraph() {
-  await page.waitForFunction(() =>
-    document.querySelector("#q")?.placeholder.match(/Search \d+/),
+  await page.waitForFunction(
+    () =>
+      document.querySelector("#root-name")?.textContent &&
+      document.querySelector("#simstat"),
   );
   await page.waitForFunction(
     () => document.querySelector("#simstat")?.style.opacity === "0",
@@ -122,7 +123,7 @@ async function assertHeaderLinks() {
     assert.equal(await link.isVisible(), true);
     if (href === "#/wiki") {
       assert.ok([null, "_self"].includes(await link.getAttribute("target")));
-      assert.equal((await link.innerText()).trim(), "Wiki");
+      assert.equal((await link.textContent()).trim(), "Wiki");
       assert.equal(
         await link.getAttribute("aria-current"),
         new URL(page.url()).hash === "#/wiki" ? "page" : null,
@@ -138,7 +139,7 @@ async function assertHeaderLinks() {
   }
   assert.deepEqual(
     await page
-      .locator(".tabs button")
+      .locator(".tabs a")
       .evaluateAll((buttons) => buttons.map((button) => button.id)),
     primaryViews.map((id) => `tab-${id}`),
   );
@@ -166,7 +167,7 @@ async function openWikiResource() {
     await page.locator('.topbar a[href="#/wiki"]').getAttribute("aria-current"),
     "page",
   );
-  assert.equal(await page.locator(".tabs button.is-on").count(), 0);
+  assert.equal(await page.locator(".tabs a.is-on").count(), 0);
 }
 
 async function assertExternalLinkOpensNewTab(link) {
@@ -217,7 +218,7 @@ async function verifyWikiNavigation() {
       layout.cards.every((card) => card.left >= 0 && card.right <= width + 1),
     );
     const docsLinks = page.locator(".wiki-doc-link");
-    assert.equal(await docsLinks.count(), 16);
+    assert.equal(await docsLinks.count(), 15);
     assert.equal(
       await page.locator(".wiki-topic-actions > .wiki-doc-link").count(),
       9,
@@ -235,15 +236,20 @@ async function verifyWikiNavigation() {
       page.locator(`.topbar a[href="${sourceRepository}"]`),
     );
     await page.locator('.wiki-quickstart [data-open-tab="projects"]').click();
-    await page.waitForFunction(() => location.hash === "#/projects");
-    await page.locator(".prj-row").first().waitFor();
+    await page.waitForFunction(() => location.hash === "#/projects/overview");
+    await settleGraph();
     await openWikiResource();
-    await page.locator('.wiki-quickstart [data-open-tab="secrets"]').click();
-    await page.waitForFunction(() => location.hash === "#/secrets");
+    await page
+      .locator('.wiki-quickstart [data-open-tab="setup/workspace"]')
+      .click();
+    await page.waitForFunction(() => location.hash === "#/setup/workspace");
     await page.locator("#setup-alert.is-good").waitFor();
     for (const [index, id] of primaryViews.entries()) {
       await page.keyboard.press(String(index + 1));
-      await page.waitForFunction((id) => location.hash === `#/${id}`, id);
+      await page.waitForFunction(
+        (route) => location.hash === `#/${route}`,
+        primaryRoutes[index],
+      );
       assert.equal(await page.locator(`#tab-${id}.is-on`).count(), 1);
       assert.equal(
         await page
@@ -252,7 +258,7 @@ async function verifyWikiNavigation() {
         null,
       );
     }
-    await go("quirq");
+    await go("setup/server/details");
     await page.locator('[data-wiki-page="xo-data"]').click();
     await page.waitForFunction(() => location.hash === "#/wiki");
     await page.locator("#wiki-observability.is-highlighted").waitFor();
@@ -266,7 +272,7 @@ async function verifyWikiNavigation() {
       docsLinks: 15,
       internalQuickstartActions: true,
       localWikiResource: true,
-      primaryHotkeys: "1–6",
+      primaryHotkeys: "1–4",
       legacyHelpHandoff: true,
       externalLinksPreserveView: true,
       horizontalOverflow: false,
@@ -274,60 +280,55 @@ async function verifyWikiNavigation() {
   }
   report.wikiNavigation = layouts;
   report.checks.push(
-    "Local Wiki navigation, legacy help handoff, six primary tab shortcuts and external documentation/GitHub links verified at 1440, 390 and 320 pixels. External destinations were stubbed only for new-tab navigation checks; published page content was not tested.",
+    "Local Wiki navigation, legacy help handoff, four primary tab shortcuts and external documentation/GitHub links verified at 1440, 390 and 320 pixels. External destinations were stubbed only for new-tab navigation checks; published page content was not tested.",
   );
 }
 
 try {
-  await go("dashboard");
+  await go("projects/overview");
   await settleGraph();
   assert.deepEqual(
     await page
-      .locator(".tabs button")
+      .locator(".tabs a")
       .evaluateAll((buttons) => buttons.map((b) => b.id)),
     primaryViews.map((id) => `tab-${id}`),
   );
   await shot(
     "dashboard",
-    "Default Dashboard lens: ten projects grouped into five environments.",
+    "Projects Overview: ten projects grouped into five environments.",
   );
-  await page.locator("#q").fill("Aurora Console");
-  await page.locator("#q").press("Enter");
+  await page.locator("#root-btn").click();
+  await page.locator("#root-q").fill("Aurora Console");
+  await page.locator("#root-q").press("Enter");
+  await settleGraph();
+  await page.waitForTimeout(1300);
+  const canvasBounds = await page.locator("#gcanvas").boundingBox();
+  await page.mouse.click(
+    canvasBounds.x + canvasBounds.width / 2,
+    canvasBounds.y + canvasBounds.height / 2,
+  );
   await page
     .locator('#panel[data-id="aurora-console"] .ptodo')
     .first()
     .waitFor();
-  await page.waitForFunction(
-    () => !document.querySelector("#toast")?.classList.contains("is-on"),
-  );
-  await settleGraph();
-  await page.waitForTimeout(1300);
-  assert.equal(
-    await page.locator('#panel[data-id="aurora-console"].is-open').count(),
-    1,
-  );
-  assert.ok(
-    (await page.locator('#panel[data-id="aurora-console"] .ptodo').count()) >=
-      3,
-  );
   await shot(
     "dashboard-detail",
-    "Selected Dashboard project with live todo satellites and the detail panel.",
+    "Projects Overview focused on Aurora Console with its recorded todo satellites and detail panel.",
   );
-
   await page.locator("#panel-close").click();
-  await go("projects");
+
+  await go("projects/data/list");
   await page.locator(".prj-row").first().waitFor();
   assert.equal(await page.locator(".prj-row").count(), 10);
   await shot(
     "projects-list",
-    "Projects List with descriptions, live activity and file counts.",
+    "Projects Data List with descriptions, live activity and file counts.",
   );
   await page.locator('[data-id="aurora-console"].prj-row-head').click();
   await page.locator('[data-file="README.md"]').waitFor();
   await shot(
     "projects-detail",
-    "Expanded project drawer: files, todos, open sessions and recent events.",
+    "Expanded Data List project drawer focused on files and folders.",
   );
   await page.locator('[data-file="README.md"]').click();
   await page.locator("#preview-body .pv-md").waitFor();
@@ -350,10 +351,10 @@ try {
   );
   await page.locator("#preview-close").click();
 
-  await go("graph");
+  await go("projects/data/graph");
   await settleGraph();
   await shot("graph", "File graph across all ten fictional projects.");
-  await go("tree");
+  await go("projects/data/tree");
   await page.locator('.tv-node[title="Aurora Console"]').click();
   await page.locator('.tv-node[title="src"]').click();
   await page.locator(".tv-leaf").first().waitFor();
@@ -363,15 +364,15 @@ try {
     "tree",
     "Tree lens: an expanded project and source folder in the workspace directory hierarchy.",
   );
-  await go("sharing");
+  await go("inbox/sharing");
   await page.locator(".shl-detail").waitFor();
   await page.locator(".shr-members .shr-row").first().waitFor();
   await shot(
     "sharing",
-    "Sharing lens with fetched commits awaiting explicit application.",
+    "Inbox Sharing with fetched commits awaiting explicit application.",
   );
 
-  await go("time");
+  await go("projects/timeline");
   await page.locator("#tmode").waitFor({ state: "visible" });
   await page.locator('[data-tmode="project"]').click();
   await shot(
@@ -384,22 +385,43 @@ try {
     "Timeline in By file mode, showing when artifacts first appeared.",
   );
 
-  await go("sessions");
-  await page.locator("#ch-area canvas").waitFor();
+  await go("agents/overview");
+  await page.locator("#ch-area svg").waitFor();
   await shot(
     "sessions",
     "Sessions overview: token trends, source filters, costs and model usage.",
   );
-  for (const [id, description] of [
-    ["tools", "Session tools: call counts, errors and the tool leaderboard."],
-    ["models", "Session models: token share and costs where available."],
-    ["trends", "Session trends: weekly usage and top model by week."],
-  ]) {
-    await page.locator(`[data-sub="${id}"]`).click();
-    await page.locator("#sess-body .stbl").first().waitFor();
-    await shot(`sessions-${id}`, description);
-  }
-  await page.locator('[data-sub="sessions"]').click();
+  await go("agents/trends");
+  await page.locator("#ch-wk svg").first().waitFor();
+  await shot(
+    "sessions-trends",
+    "Agents Trends combines model, tool and weekly usage in one view.",
+  );
+  await page
+    .getByText("Tools", { exact: true })
+    .last()
+    .scrollIntoViewIfNeeded();
+  await shot(
+    "sessions-tools",
+    "Tools section within the combined Agents Trends page.",
+  );
+  await go("agents/trends");
+  await page
+    .getByText("Models", { exact: true })
+    .last()
+    .scrollIntoViewIfNeeded();
+  await shot(
+    "sessions-models",
+    "Model usage within the combined Agents Trends page.",
+  );
+  await go("agents/configure");
+  await page.locator(".sess-agent-card").first().waitFor();
+  assert.equal(await page.locator(".sess-agent-card").count(), 3);
+  await shot(
+    "agents-configure",
+    "Agents Configure: collection switches, local paths and recorded telemetry for three fictional sources.",
+  );
+  await go("agents/sessions");
   await page.locator("[data-sid]").first().waitFor();
   await shot(
     "sessions-list",
@@ -419,13 +441,12 @@ try {
     "Session detail showing fictional prompts grouped by turn.",
   );
 
-  await go("inbox");
+  await go("inbox/items");
   await page.locator(".inb-row").first().waitFor();
-  await page.locator('[data-act="conns-toggle"]').click();
   await page.locator('[data-act="toggle"][data-id="00000004"]').click();
   await shot(
     "inbox",
-    "Inbox with expanded connections, account labels, and an item already marked seen.",
+    "Inbox Items with source categories and an expanded item already marked seen.",
   );
   await go("wiki");
   await page.locator(".wiki-topic").first().waitFor();
@@ -435,20 +456,19 @@ try {
     "Compact Wiki directory with local summaries and links to detailed hosted documentation.",
   );
 
-  await go("secrets");
+  await go("setup/workspace");
   await page.locator("#setup-alert.is-good").waitFor();
-  await page.locator(".source-row").first().waitFor();
   await shot(
     "setup",
-    "Runtime Setup: storage roots, active backend and watched native session stores.",
+    "Setup Workspace: fictional Space identity, account verification and configured storage folders.",
   );
-  await page.mouse.move(1100, 700);
-  await page.mouse.wheel(0, 650);
-  await page.waitForTimeout(200);
+  await go("setup/intelligence");
+  await page.locator(".source-row").first().waitFor();
   await shot(
     "setup-runtime",
-    "Runtime settings and native source coverage; no secret values exist in the fixtures.",
+    "Setup Intelligence layer: chat agent selection and activity collection settings.",
   );
+  await go("setup/commands");
   await page.locator("#setup-commands").scrollIntoViewIfNeeded();
   await page.locator(".setup-command-row").first().waitFor();
   await shot(
@@ -464,19 +484,25 @@ try {
     "Retained command result with return code, duration, escaped output tail and local full-log path.",
   );
   await page.locator("#command-runs-close").click();
-  await go("quirq");
+  await go("setup/server");
+  await page.locator("#setup-restart").waitFor();
+  await shot(
+    "setup-server",
+    "Setup Server: restart and update controls; neither is triggered.",
+  );
+  await go("setup/server/details");
   await page.locator("#quirq-activity-badge.is-live").waitFor();
   await shot(
     "quirq",
     "Machine-local Quirq state reached from Setup, including storage ownership and watcher heartbeat.",
   );
 
-  await go("connectors");
-  await page.locator(".conn-card").first().waitFor();
-  assert.equal(await page.locator(".conn-card").count(), 10);
+  await go("setup/connectors");
+  await page.locator("#conn-grid .conn-card").first().waitFor();
+  assert.equal(await page.locator(".conn-card").count(), 15);
   await shot(
     "connectors",
-    "Connected apps showing account labels, workspace scope and available actions.",
+    "Setup Connectors: five native workspace connectors and ten account-app integrations.",
   );
   await page.locator('[data-toolkit="gmail"] [data-action="polling"]').click();
   await page.locator('#poll-gmail [data-poll="enabled"]').waitFor();
@@ -494,6 +520,36 @@ try {
     "Gmail action preferences with read/write categories and a disabled send action.",
   );
 
+  await go("projects/manage");
+  await page.locator(".manage-project-row").first().waitFor();
+  assert.equal(await page.locator(".manage-project-row").count(), 10);
+  await page.locator('[data-project-toggle="aurora-console"]').click();
+  await page
+    .locator('[data-project-id="aurora-console"] .manage-project-repo')
+    .waitFor();
+  await shot(
+    "manage",
+    "Projects Manage: project actions, expandable metadata and GitHub issues; no project mutation is performed.",
+  );
+  await go("inbox/jobs");
+  await page.locator(".inb-job-row").first().waitFor();
+  assert.equal(await page.locator(".inb-job-row").count(), 1);
+  await shot(
+    "jobs",
+    "Inbox Jobs includes only commands with intervals and links to their recorded results.",
+  );
+  await go("projects/overview");
+  await settleGraph();
+  await page.keyboard.press("ControlOrMeta+k");
+  await page.locator('[role="combobox"]').waitFor();
+  await page.locator('[role="combobox"]').fill("Aurora");
+  await page.locator(".cmdk-opt").first().waitFor();
+  await shot(
+    "command-palette",
+    "Command palette searches canonical pages, actions and fictional projects without executing a result.",
+  );
+  await page.keyboard.press("Escape");
+
   await verifyWikiNavigation();
 
   assert.deepEqual(
@@ -508,7 +564,7 @@ try {
     "All data is synthetic; no xo-space runtime, upstream request, account write, credential or private workspace is used.",
   );
   report.checks.push(
-    "Six primary tabs, local Wiki resource, ten projects, ten connectors, historical file preview, session table/detail, and polling drawer verified.",
+    "Four primary tabs, local Wiki resource, ten projects, fifteen connectors, historical file preview, session table/detail, and polling drawer verified.",
   );
   console.log(
     `Captured ${report.screenshots.length} screenshots without browser errors.`,

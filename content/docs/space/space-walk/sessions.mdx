@@ -1,58 +1,57 @@
 ---
-title: Sessions & Telemetry
-description: Compare local session sources, inspect usage and tools, and read typed prompts for individual runs.
+title: Agents & Telemetry
+description: Compare local session usage, inspect prompts and trends, export metrics, and configure telemetry collection.
 icon: Activity
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  **Sessions** combines local telemetry into five views: **Overview**, **Sessions**, **Tools**, **Models**, and **Trends**. Use it to understand usage across runs and then inspect an individual session.
+  **Agents** brings local telemetry into four pages: **Overview**, **Sessions**, **Trends**, and **Configure**. Compare usage across runs, inspect one session, or manage the native sources Space reads.
 </Lead>
 
-![Sessions Overview with source checkboxes, date windows, and usage charts](/images/space/sessions.png)
+![Agents Overview with source checkboxes, date windows, and usage charts](/images/space/sessions.png)
 
-Open the top-level **Sessions** tab, or use `/space/#/sessions`.
+Open **Agents**, press **2**, or use `/space/#/agents/overview`. The older `#/sessions` link opens Agents Overview. The documentation URL stays `/docs/space/space-walk/sessions` for existing bookmarks.
 
 ## Select sources
 
-Use the **Sources** checkboxes to include any combination of **Claude Code**, **Codex**, and **Cursor**. Available metrics depend on the native source. An unavailable source carries an **offline** label; hover it for the reported reason.
+Use the **Sources** checkboxes on Overview, Sessions, and Trends to include any combination of **Claude Code**, **Codex**, and **Cursor**. Available metrics depend on the native source. An unavailable source carries an **offline** label; hover it for the reported reason.
 
-Source selection applies across all five views. Selecting no sources produces **No session sources selected**. If every selected source is unavailable, choose another source or restore access to its local telemetry store and press **Refresh**.
+These checkboxes filter the displayed data. Collection switches in **Configure** control which sources Space reads. Selecting no sources produces **No session sources selected**. If every selected source is unavailable, restore access to its telemetry store or select another source.
 
 <Callout type="info">
-  Session telemetry coverage is distinct from watcher coverage. OpenClaw, Hermes, or Antigravity can have watched native sessions and project activity without contributing to this tab's current Claude Code/Codex/Cursor aggregate. Selecting an active chat backend in Setup does not select a Sessions source.
+  Telemetry collection is distinct from watcher coverage and the active chat backend. A runtime can contribute watched project activity without providing aggregate session telemetry. Chat agents and the activity watcher are configured in [Setup → Intelligence layer](/docs/space/space-walk/setup).
 </Callout>
 
 ## Know which filters apply
 
-| View | Scope and controls |
-|---|---|
-| **Overview** | **Today**, **7 days**, **30 days**, or **All** filter totals, the time chart, top models, and top sessions. The default window is 7 days. Its daily heatmap always shows the last 16 weeks, independently of the selected window. |
-| **Sessions** | All loaded sessions for the selected sources. Sortable columns and 10 rows per page; no date-window control. |
-| **Tools** | Uses the same four date-window choices for calls, errors, tool rankings, and MCP server activity. |
-| **Models** | All-time token and cost breakdown for selected sources; no date-window control. |
-| **Trends** | All-time data grouped by week, with token totals, cost, and each week's top model; no date-window control. |
+| Page | Scope and controls | Route |
+| --- | --- | --- |
+| **Overview** | Source selection and **Today**, **7 days**, **30 days**, or **All**. Default: 7 days. The heatmap always covers the last 16 weeks. | `#/agents/overview` |
+| **Sessions** | All loaded sessions for the selected sources, sortable columns, and 10 rows per page. No date-window control. | `#/agents/sessions` |
+| **Trends** | Source selection and the same four date windows for model, project, tool, and MCP metrics; **Export CSV** controls. | `#/agents/trends` |
+| **Configure** | Collection switches, source status, usage totals, and editable telemetry paths. | `#/agents/configure` |
 
-**Refresh** fetches the aggregate again. The server serves a derived telemetry snapshot, so Refresh does not imply an immediate full rescan of every native log.
+**Refresh** fetches another snapshot. The server builds aggregate telemetry separately, so Refresh does not imply an immediate full rescan of every native log. The former **Tools** and **Models** pages are merged into **Trends**; `#/agents/tools` and `#/agents/models` remain aliases for it.
 
 ## Start with Overview
 
-The headline shows **tokens**, **estimated cost** when known, **sessions**, and **tokens per session** for the selected window. Hover charts for their date and value. The **Top sessions in window** table ranks sessions by their usage within the window; clicking a row opens that session's full detail.
+Three headline cards show **Total tokens** and tokens per session, **Sessions** and the contributing harnesses, and **Time in sessions** with available estimated cost. The charts show **Tokens over time**, **Daily activity**, and **Top models**.
 
-The 16-week heatmap is in Overview. The separate **Trends** view is a weekly chart and breakdown table.
+**Top sessions** ranks sessions by their token usage within the selected window. Click a row to inspect its full detail. The 16-week Daily activity heatmap keeps its longer context when you change the window.
 
 ## Find an individual session
 
-Choose the **Sessions** subview. Click a column heading to sort by **Started**, **Project**, **Source**, **Model**, **Tokens**, **Cost**, **Turns**, or **Duration**; click it again to reverse the order. **Prev** and **Next** move through pages of 10 rows.
+Choose **Sessions**. Click a column heading to sort by **Started**, **Project**, **Source**, **Model**, **Tokens**, **Cost**, **Turns**, or **Duration**; click again to reverse the order. Pagination moves through pages of 10 rows.
 
-![Sessions table with sortable columns and pagination](/images/space/sessions-list.png)
+![Agents Sessions table with sortable columns and pagination](/images/space/sessions-list.png)
 
-The caption distinguishes the loaded rows from a larger total when only the newest sessions are available. Sorting and pagination operate on that loaded set. A sub-agent count appears on each row; click the row to inspect its details.
+The caption distinguishes loaded rows from a larger total when only the newest sessions are available. Sorting, pagination, and an active **Search loaded sessions…** query operate on that loaded set. The query matches project, path, source, model, and session ID. It does not search prompt text or load older sessions. Each row includes its sub-agent count.
 
 ## Read session details
 
-A session opens within the Sessions subview. **All sessions** returns to the table.
+A session opens within **Agents → Sessions**. Choose **Sessions** in its breadcrumb to return to the table.
 
 ![Session details with token accounting, tool usage, and sub-agent rows](/images/space/session-detail.png)
 
@@ -78,26 +77,46 @@ Each turn shows the typed prompt, its time, and reply/tool-call counts when supp
 
 After supported prompt data arrives, the headline **Turns** can show human exchanges, with the model-iteration count beneath it. Missing or cleaned-up logs, unsupported prompt capture, and request failures have distinct messages.
 
-## Compare tools, models, and weekly trends
+## Compare trends and export data
 
-Choose **Tools** to compare call counts, errors, tool rankings, and MCP server activity for the selected window. A tool's call count describes recorded execution, not whether its output was accepted.
+**Trends** combines the former Tools and Models views with project-level analysis. Select sources and a date window to inspect:
 
-![Tools view with call counts, error counts, and tool rankings](/images/space/sessions-tools.png)
+- **Tokens per week by model** and **Tokens per week by project**, stacked by the five heaviest groups.
+- **Models** and **Projects**, showing their share of tokens.
+- **Tools**, showing recorded calls, errors, and error rates.
+- **MCP servers**, grouping calls routed through MCP tools.
 
-Choose **Models** for the all-time token and available cost breakdown of the selected sources.
+![Agents Trends with model, project, tool, and MCP metrics](/images/space/sessions-trends.png)
 
-![Models view with token share and cost availability](/images/space/sessions-models.png)
+Use **Export CSV** on a card to download its data for the current source selection and window. Exports include cost availability; an unavailable cost remains blank. Project grouping joins telemetry to the loaded session catalog, so rows without loaded project metadata appear as **Other sessions**.
 
-Choose **Trends** for weekly totals and each week's top model. Use Overview when you need a specific Today, 7-day, or 30-day window.
+## Configure telemetry collection
 
-![Trends view with weekly usage and top models](/images/space/sessions-trends.png)
+Open **Agents → Configure**. Each source card shows its vendor, collection status, recorded sessions/tokens/cost, a collection switch, and its native data path.
+
+![Agents Configure with collection controls and native telemetry paths](/images/space/agents-configure.png)
+
+| Status | Meaning |
+| --- | --- |
+| **Collecting** | Collection is enabled and the source is readable. |
+| **Paused** | Collection was disabled for this source. |
+| **Pending / Starting** | The next aggregate build has not reported the new state yet. |
+| **Not found** | Collection is enabled but the source is unavailable; the card gives the reason. |
+
+Use the card's switch to pause or enable collection. To change an editable path, choose its pencil **Edit** control, enter the path, and **Save**. **Use default** removes a custom path; **Cancel** discards the edit. Changes trigger a later telemetry refresh without selecting a different chat agent.
+
+The native path settings include **ARGUS_DB** for Claude Code, **CODEX_HOME** for Codex, and **CURSOR_HOME** for Cursor. Point them to telemetry stores on the machine running Space. Sources marked **Discovered automatically** do not expose a path editor.
+
+### Codex sessions
+
+Enable Codex collection and ensure **CODEX_HOME** points to the Codex home directory. Space reads the local session metadata and rollout logs for token totals, duration, models, tool activity, and typed prompts where available. An incomplete token breakdown is preserved as **Unclassified**; Codex cost is shown as unavailable when the source does not report it.
 
 ## Read cost honestly
 
-`~$` indicates an estimate. **Unavailable** or a dash means the source did not report cost. A starred **partial estimate** includes only the selected sources with known cost; it is not the total bill for the combined selection.
+`~$` indicates an estimate. **Unavailable** or a dash means the source did not report cost. A starred **partial estimate** includes only selected sources with known cost; it is not the total bill for the combined selection.
 
 <Callout type="info">
-  Source availability, missing costs, and partial token categories are reported explicitly. An empty or unavailable metric is not evidence that no work happened. Check the selected sources and their native stores in [Setup](/docs/space/space-walk/setup) before interpreting it as a zero.
+  Source availability, missing costs, and partial token categories are reported explicitly. An empty or unavailable metric is not evidence that no work happened. Check the selected sources and their native paths in **Agents → Configure** before interpreting it as zero.
 </Callout>
 
 For the distinction between telemetry, Timeline playback, and the separate Space Walk tool, see [Session replay](/docs/space/space-walk/replay).

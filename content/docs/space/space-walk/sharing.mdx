@@ -12,7 +12,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
 ![Sharing lens with project status, commit details, and member controls](/images/space/sharing.png)
 
-Open **Projects → Sharing**, or use `/space/#/sharing`.
+Open **Inbox → Sharing**, or use `/space/#/inbox/sharing`. The older `#/sharing` and `#/projects/sharing` routes also resolve here. Sharing activity has its own neighboring **Sharing activity** page.
 
 ## Check that sharing is ready
 
@@ -27,6 +27,10 @@ If the strip says **sharing parked**, its reason identifies what is missing:
 Sharing a project also requires a valid Git `origin` repository. Reading or cloning a private GitHub repository requires an account with access. Fix the stated prerequisite before retrying; an empty rail alone does not mean the service is ready.
 
 ## Share a project
+
+For a project already on this machine, you can also open [Projects → Manage](/docs/space/space-walk/manage), choose **Share** on its card, enter the recipient's **Space ID**, and submit. The inline form shows the result without leaving Manage.
+
+From the Sharing page:
 
 1. Click **+ Share a project**.
 2. Use **Filter projects…** in the composer, then select a project with a Git origin.
@@ -44,7 +48,7 @@ Incoming repositories first appear under **Shared with you · not on this machin
 | State | Next step |
 |---|---|
 | **cloning…** | Wait for the clone to finish; it joins the shared-project list when ready. |
-| **needs GitHub** | **Connect GitHub** opens Setup. Configure the required GitHub access, then let the next check retry. |
+| **needs GitHub** | **Connect GitHub** opens **Setup → Connectors**. Configure the required GitHub access, then let the next check retry. |
 | **no access** | Ask the repository owner to give the connected account access. Workspace sharing does not make an inaccessible private repository readable by itself. |
 | **folder in the way** | Inspect and move or rename the conflicting local folder before the next retry. |
 | **clone failed** | Read the reason. Space retries later, and **clone by hand** copies a command for manual recovery. |
@@ -55,7 +59,7 @@ Incoming repositories first appear under **Shared with you · not on this machin
 
 The shared-project rail puts work waiting ahead of quiet projects. A row can show **N new · not applied**, **in sync**, or **fetch failed**. Select it for details.
 
-The detail panel shows the repository, watched branch, latest check, up to five recent commits, and members. New commits are marked **new**. **Open in List** switches to that project's expanded List drawer.
+The detail panel shows the repository, watched branch, latest check, up to five recent commits, and members. New commits are marked **new**. **Open in List** switches to that project's expanded drawer in **Projects → Data → List**.
 
 When commits are waiting, click the row's **Apply** or the detail panel's **Apply N commits**. This runs a fast-forward merge from the watched origin branch into the project's current checkout. The equivalent command and a **copy** button appear beside it for manual use.
 

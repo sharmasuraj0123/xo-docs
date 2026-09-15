@@ -1,18 +1,88 @@
 ---
 title: Connectors
-description: Connect external apps to your XO account, enable them for this workspace, and configure actions and Inbox polling.
+description: Connect workspace tools and account apps, choose access for this Space, and configure actions and Inbox polling.
 icon: Plug2
 ---
 
 <Lead>
-  **Connectors** manages the external apps your agent can use and the app events Space can collect. Open the sixth primary tab, press **6**, or use `/space/#/connectors`.
+  **Setup → Connectors** manages tools for this workspace and external apps
+  connected to your XO account. Open `/space/#/setup/connectors`; the older
+  `#/connectors` link still works.
 </Lead>
 
-![Connector cards showing account labels and workspace controls](/images/space/connectors.png)
+![Setup Connectors with workspace integrations and account apps](/images/space/connectors.png)
+
+The page has two groups with different connection scopes:
+
+| Group | What it connects | Where access is managed |
+| --- | --- | --- |
+| **Workspace integrations** | GitHub, MagicPath, Vercel, Google Drive, OneDrive | This Space's native connector APIs, CLIs, and file-storage configuration |
+| **Account apps** | Apps from the server's Composio catalog | Your XO account owns the connection; each workspace enables its own access |
+
+When the page's **Filter connectors…** field is visible, it narrows cards by
+name, description, or available account information. See the
+[search guide](/docs/space/space-walk#search-and-quick-actions) for the current
+toolbar behavior. **Refresh** checks both groups. Workspace integrations
+remain available even when XO sign-in or the account-app catalog is unavailable.
+
+## Connect a workspace integration
+
+### GitHub
+
+1. On the GitHub card, click **Connect** (or **Manage** for an existing connection).
+2. Paste a **Personal access token** and choose **Save token**, or choose
+   **Sign in with GitHub**.
+3. For browser sign-in, follow **Continue sign-in**, enter the displayed device
+   code on GitHub, and authorize access.
+4. Return to Space. It checks the connection automatically; **Check connection**
+   also refreshes its status. A connected card shows the GitHub username.
+
+### Vercel
+
+Open **Connect** and either save an **API token** or choose **Sign in with
+Vercel**. Approve access in the browser. If the redirect cannot load, paste its
+full URL into **Redirect URL** and choose **Complete sign-in**. The card polls
+for completion and then displays the connected account.
+
+Browser sign-in is offered when Vercel needs authentication. An already
+connected account must be disconnected before starting another browser sign-in;
+token replacement remains available through **Manage**. **Stop waiting** ends
+the UI's wait for a Vercel sign-in.
+
+### Google Drive and OneDrive
+
+These file-storage connections use **rclone** on the Space server:
+
+1. Click **Add account** on the relevant card.
+2. Enter an **Account name** using lowercase letters, numbers, `-`, or `_`
+   (up to 32 characters), then choose **Start sign-in**.
+3. Follow **Continue sign-in** and approve access with the provider.
+4. Paste the full redirect URL into the Space form and choose **Complete
+   sign-in**.
+5. Check that the named account is **Configured**. Each card can list several
+   accounts; **Remove** disconnects the selected one after confirmation.
+
+An **Incomplete** account needs sign-in to finish. If status is unavailable,
+check that rclone is installed and available to the server.
+
+### MagicPath
+
+If needed, choose **Install skill & CLI**. Then use **Connect → Open MagicPath
+sign-in**, approve access, and paste the returned **Authorization code** into
+Space. Choose **Complete sign-in** and verify the account on the card. The card
+reports CLI/skill installation separately from verified sign-in.
+
+For native integrations, **Disconnect** acts on that workspace's connection.
+During a pending login, finish or cancel that sign-in before starting another.
 
 ## Before connecting
 
-Your Space must be signed in to XO and have a workspace identity. The signed-out page tells you to sign in through the app or configure `XO_API_KEY` and `XO_SPACE_ID` on the server, then refresh. Composio credentials and app authorization configurations belong on **xo-swarm-api**, not in this browser or the workspace's `.env`.
+The following sections cover **Account apps**. Your Space must be signed in to
+XO and have a workspace identity. The signed-out message tells you to sign in
+through the app or configure `XO_API_KEY` and `XO_SPACE_ID` in **Secrets**, then
+refresh after applying any required restart. Composio credentials and app
+authorization configurations belong on **xo-swarm-api**, not in this browser or
+the workspace's `.env`.
 
 Available apps and sign-in methods come from the server's toolkit catalog. Read each card: some use OAuth; others ask for an API key or bot token through the connection page. Telegram, for example, uses a bot token. A catalog entry does not necessarily have an Inbox collector.
 
@@ -60,8 +130,8 @@ Collectors make bounded reads. Gmail requests metadata without full message payl
 | --- | --- |
 | Sign in to XO | Sign in/configure the server's XO identity, then refresh |
 | Session expired | Reload the page to establish a fresh browser session |
-| Composio is not configured | Check the server's XO access and the Composio configuration on xo-swarm-api |
-| Listing connectors failed | Read the xo-space server log; a server error alone does not identify which credential or upstream service failed |
+| Account apps need server configuration | Check the server's XO access and the Composio configuration on xo-swarm-api |
+| Could not load account apps | Read the xo-space server log; a server error alone does not identify which credential or upstream service failed |
 | Connected, but no incoming items | Turn the toolkit on here, save polling, select collectors, and inspect Poll now's result |
 | No collectors available | The toolkit can offer agent actions without an Inbox collector in this version |
 | Telegram polling fails with a webhook conflict | Check the bot's existing webhook arrangement; Telegram's update polling cannot run alongside an active webhook |

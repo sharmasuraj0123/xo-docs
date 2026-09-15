@@ -47,12 +47,12 @@ usage provider, and an app can be connected without polling turned on.
 
 | Information | What it helps answer | Where you see it |
 | --- | --- | --- |
-| Project files, metadata and Git history | What exists, how it is organized, and what was committed | Projects and Timeline |
-| Supported native activity and live presence | Which project or session recently produced observable activity | Projects and Setup |
-| Shared todos and workitems | What work was recorded and how its status changed | Project details, Dashboard and Inbox |
-| Recorded session usage and tools | How much usage was recorded and which tools ran | Sessions |
-| Selected incoming app and project events | What needs attention | Inbox and Connectors |
-| Source, watcher and installation status | Why a source is missing or a view is stale | Setup and local logs |
+| Project files, metadata and Git history | What exists, how it is organized, and what was committed | Projects → Data, Timeline, and Manage |
+| Supported native activity and live presence | Which project or session recently produced observable activity | Projects, Inbox → Activity, and Setup |
+| Shared todos and workitems | What work was recorded and how its status changed | Projects → Overview and Inbox |
+| Recorded session usage and tools | How much usage was recorded and which tools ran | Agents |
+| Selected incoming app and project events | What needs attention | Inbox and Setup → Connectors |
+| Source, watcher and installation status | Why a source is missing or a view is stale | Agents → Configure, Setup, and local logs |
 
 The [reading guide](/docs/space/observability/reading-data) explains time windows,
 missing costs, refresh delays and the difference between activity and a verified
@@ -93,8 +93,8 @@ behavior. Read the [reporting boundaries](/docs/space/observability/collection)
 before treating one feature's rules as the rules for the entire application.
 
 <Callout type="info" title="Version and actual paths">
-  This section follows [xo-space development at 5221119](https://github.com/quirq-ai/xo-space/tree/5221119).
-  **Setup → Quirq** exposes the data catalog for your running build. Older builds
+  This section follows [xo-space development at 4b1a580](https://github.com/quirq-ai/xo-space/tree/4b1a580).
+  **Setup → Server → Technical details** exposes the data catalog for your running build. Older builds
   and some legacy labels place derived telemetry under `.xo`; current writers use
   the machine-local state root. The [storage guide](/docs/space/observability/storage)
   explains defaults, overrides and migration leftovers.

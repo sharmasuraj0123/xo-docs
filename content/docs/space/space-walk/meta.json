@@ -7,13 +7,15 @@
     "files-explorer",
     "graph",
     "tree-lens",
-    "sharing",
     "timeline",
+    "manage",
     "sessions",
     "replay",
     "inbox",
-    "wiki",
+    "sharing",
     "setup",
-    "connectors"
+    "commands",
+    "connectors",
+    "wiki"
   ]
 }

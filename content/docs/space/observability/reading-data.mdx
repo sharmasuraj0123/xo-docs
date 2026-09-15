@@ -14,14 +14,14 @@ icon: Activity
 
 | Question | Where to look |
 |---|---|
-| Which project has recent agent activity? | **Projects → List**, then its live badge and activity columns. |
-| What steps are open or blocked? | A project's **Todos** panel, or its selected node on **Dashboard**. |
-| When did files and commits enter Git history? | **Timeline**; use file previews to inspect current or historical contents. |
-| How much usage was recorded, and which tools were called? | **Sessions** and its Overview, Sessions, Tools, Models, and Trends views. |
-| What needs attention? | **Inbox**, filtered to the relevant source. |
-| Why is telemetry missing? | **Sessions → Sources** and the server log for aggregate usage; **Setup → Native session sources** and watcher status for native activity coverage. |
+| Which project has recent agent activity? | **Projects → Data → List** for live badges; **Manage → View activity** for its observed events. |
+| What steps are open or blocked? | Select the project in **Projects → Overview** for todos, or review **Inbox → Items** for blocked work. |
+| When did files and commits enter Git history? | **Projects → Timeline**; use Data file previews for current or historical contents. |
+| How much usage was recorded, and which tools were called? | **Agents → Overview**, **Sessions**, and **Trends**. |
+| What needs attention? | **Inbox → Items**, filtered to the relevant source. |
+| Why is telemetry missing? | **Agents → Configure** and the server log for aggregate usage; **Setup → Intelligence layer** for native activity coverage. |
 
-![Sessions compares available runtime usage with source and time-window filters](/images/space/sessions.png)
+![Agents compares available runtime usage with source and time-window filters](/images/space/sessions.png)
 
 ## Follow an active project
 
@@ -30,35 +30,37 @@ supported native session stores, attributes events to projects, and updates
 machine-local presence and history. It does not require you to start every task
 through Space.
 
-In **Projects → List**, refresh and open the project row. The live badge, open
-sessions, and events describe activity the watcher could observe. A missing badge
+In **Projects → Data → List**, refresh to see live badges and file counts.
+Use the project’s **View activity** action in **Manage** to open Inbox Activity.
+These events describe activity the watcher could observe. A missing badge
 can mean no recent observable activity, an unreadable source, or a session that
 could not be mapped to this project; it does not prove that every agent process
 has stopped.
 
 Watcher coverage is selected separately from the active chat backend. The local
 installer defaults to `all`; `active` limits watcher ingestion to the selected
-runtime. The current Sessions dashboard discovers its own telemetry providers
+runtime. The current Agents dashboard discovers its own telemetry providers
 independently of that watcher switch.
 
-## Read Sessions accurately
+## Read Agents accurately
 
-The current aggregate Sessions dashboard has providers for **Claude Code**,
+The current aggregate Agents dashboard has providers for **Claude Code**,
 **Codex**, and **Cursor**. Other chat-capable runtimes can contribute native
 sessions and watcher events without having a provider for this aggregate view.
 
-1. Use **Sources** to choose which runtimes contribute. This selection applies
-   across all five subviews.
-2. In **Overview** or **Tools**, choose **Today**, **7 days**, **30 days**, or
-   **All**. The Overview heatmap always shows the last 16 weeks, independently
-   of that window.
-3. Open the **Sessions** subview to sort and page through all loaded sessions
-   for the selected sources. Select a row for model, tool, sub-agent, and
-   typed-prompt details.
-4. Use **Models** for an all-time model breakdown and **Trends** for an all-time
-   weekly breakdown. These views have no date-window control. **Refresh**
-   retrieves a newer aggregate payload; it does not clear the page's cached
-   prompt details.
+1. Use **Sources** on Overview, Sessions, and Trends to choose which runtimes
+   contribute to the display.
+2. In **Overview** or **Trends**, choose **Today**, **7 days**, **30 days**, or
+   **All**. The Overview heatmap always shows the last 16 weeks.
+3. Open **Sessions** to sort and page through all loaded sessions for the selected
+   sources. Select a row for model, tool, sub-agent, and typed-prompt details.
+   This table has no date-window control.
+4. Use **Trends** for weekly model/project charts, model/project shares, tools,
+   and MCP usage. Its **Export CSV** controls export the current sources/window.
+5. Use **Configure** to enable or pause telemetry collection and edit supported
+   source paths. These controls change collection, while Sources only filters
+   the displayed data. **Refresh** retrieves another aggregate snapshot; it does
+   not clear the browser's cached prompt details.
 
 Session identity includes its runtime, so similarly named sessions from different
 sources remain distinct. Parent/subagent information is only as complete as the
@@ -96,7 +98,7 @@ Todos, git history, and file previews answer different questions:
   rather than file modification time or the moment a session started.
 - **Timeline playback** advances through dated map entries. The separate
   **Space Walk** application described in the replay guide has its own session replay
-  and optional evaluation features; the current Space Sessions view does not
+  and optional evaluation features; the current Space Agents view does not
   launch it. See [Session replay](/docs/space/space-walk/replay).
 
 Review the actual output and relevant validation before treating a task as

@@ -7,7 +7,7 @@ icon: Terminal
 <Lead>
   The **XO Space** plugin bundles four lifecycle skills. Start with the
   [step-by-step Codex app installation guide](/docs/space/install-space-in-codex),
-  including screenshots, prerequisites, and preview-branch instructions.
+  including screenshots, prerequisites, and development-channel instructions.
 </Lead>
 
 ## Choose a skill
@@ -46,6 +46,9 @@ A status request never installs, starts, stops, or updates Space. An explicit
 open, run, or install request authorizes the corresponding setup/start steps;
 Codex's runtime permission gates still apply.
 
+Manage credentials in [Setup → Secrets](/docs/space/space-walk/setup#manage-credentials)
+and external app OAuth connections in [Setup → Connectors](/docs/space/space-walk/connectors).
+
 Startup verifies server health, the checkout, and effective workspace roots.
 Existing `.env`, the Python environment, saved backend, and roots are preserved.
 Projects and state live outside the plugin cache. Merely opening Space does not
@@ -61,8 +64,7 @@ terminal, use [Install Space](/docs/space/install-space).
 See the app walkthrough for [update and removal](/docs/space/install-space-in-codex#update-or-remove)
 and [troubleshooting](/docs/space/install-space-in-codex#troubleshooting).
 The current source is the
-[XO Space plugin](https://github.com/quirq-ai/xo-space/tree/7949065f30992aa76ce94257a019c6cda5b728f0/plugins/quirq)
-introduced by [PR #166](https://github.com/quirq-ai/xo-space/pull/166).
+[XO Space plugin](https://github.com/quirq-ai/xo-space/tree/development/plugins/quirq).
 
 Project creation and the shared todo workflow are covered separately by the
 [xo-projects skill](https://github.com/quirq-ai/xo-space/blob/development/.agents/skills/xo-projects/SKILL.md).

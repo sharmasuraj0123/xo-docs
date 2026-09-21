@@ -13,9 +13,9 @@ import { Callout } from "fumadocs-ui/components/callout";
 </Lead>
 
 <Callout type="info">
-  This guide covers the plugin in [xo-space PR #166](https://github.com/quirq-ai/xo-space/pull/166).
-  Until it reaches the release branch, use the preview marketplace command in
-  step 2. The plugin is distributed through Quirq's repository marketplace;
+  The plugin is currently available on the `development` branch. These
+  instructions use that development channel until the plugin is promoted to
+  `main`. The plugin is distributed through Quirq's repository marketplace;
   it is not a listing in OpenAI's public plugin directory.
 </Callout>
 
@@ -46,12 +46,11 @@ browse a local Space.
 Run this command in a terminal using the same Codex configuration as the app:
 
 ```bash
-codex plugin marketplace add quirq-ai/xo-space --ref codex/installable-space-plugin
+codex plugin marketplace add quirq-ai/xo-space --ref development
 ```
 
-This selects the preview branch for PR #166. Once that PR is merged into
-`development`, use `--ref development` instead. **Only after the plugin is
-promoted to `main`**, use the release command:
+Use `--ref development` now. **Only after the plugin is promoted to `main`**,
+use the release command:
 
 ```bash
 codex plugin marketplace add quirq-ai/xo-space --ref main
@@ -71,14 +70,10 @@ copy skill files. OpenAI documents this registration command in
 4. Confirm it is installed and enabled, then start a **new local task** so the
    task loads the plugin's skills.
 
-<figure>
-  <img src="/images/codex-space/plugin-marketplace-reference.png" alt="OpenAI reference showing a Local Example Plugins marketplace, Hello World plugin, and add button" />
-  <figcaption>
-    Reference UI from <a href="https://developers.openai.com/plugins/build/plugins#build-your-own-curated-plugin-list">OpenAI's plugin guide</a>:
-    this shows an example marketplace, not an XO Space installation. Select
-    Quirq and XO Space in your app; labels may vary by app version.
-  </figcaption>
-</figure>
+For an example of the marketplace selector and install control, see
+[OpenAI's plugin guide](https://developers.openai.com/plugins/build/plugins#build-your-own-curated-plugin-list).
+Its image shows an example marketplace; select **Quirq** and **XO Space** in
+your app. Labels may vary by app version.
 
 The visible name is **XO Space**; its stable command-line identifier is
 `quirq@quirq-ai`. To install through the terminal after adding the marketplace,
@@ -112,8 +107,8 @@ The installer obtains `uv` and Python when needed. Allow the task time to finish
 Codex's normal network and filesystem permission prompts may apply.
 
 The plugin's marketplace branch and the server branch are separate: a fresh
-Space installation uses `main` by default even when you installed the preview
-plugin. To explicitly test the development server shown in this guide, ask:
+Space installation uses `main` by default even when you installed the plugin
+from `development`. To explicitly test the development server shown in this guide, ask:
 
 ```text
 Install XO Space in ~/xo-space-preview using QUIRQ_SOURCE_REF=development.
@@ -163,6 +158,9 @@ you want a different runtime.
 These Space screenshots were captured from the development UI on September 21,
 2026; the release server can look different. Your project names, paths, and
 runtime availability will vary.
+
+Manage credentials in [Setup → Secrets](/docs/space/space-walk/setup#manage-credentials)
+and external app OAuth connections in [Setup → Connectors](/docs/space/space-walk/connectors).
 
 Space reuses the Codex CLI's existing login. A prompt sent through Space's chat
 API starts a separate Codex CLI process using Space's configuration; it does
@@ -231,5 +229,5 @@ copy login files.
 | A remote task returns an unreachable localhost URL | The server is on the remote host. Use that environment's port forwarding, or install in a local task. |
 
 The implementation is documented in the
-[XO Space plugin README](https://github.com/quirq-ai/xo-space/blob/7949065f30992aa76ce94257a019c6cda5b728f0/plugins/quirq/README.md).
+[XO Space plugin README](https://github.com/quirq-ai/xo-space/blob/development/plugins/quirq/README.md).
 For app-level plugin controls, see [OpenAI's plugin guide](https://learn.chatgpt.com/docs/plugins).

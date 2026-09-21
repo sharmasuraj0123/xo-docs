@@ -1,0 +1,233 @@
+---
+title: Install Space in Codex
+description: Add the XO Space plugin to the Codex app, open your local workspace, and check that it is ready.
+icon: Puzzle
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  Install the **XO Space** plugin, start a new local Codex task, and say
+  **“Open XO Space.”** On first use, Codex installs and starts Space, then opens
+  its browser interface. Your workspace stays on your machine.
+</Lead>
+
+<Callout type="info">
+  The plugin is currently available on the `development` branch. These
+  instructions use that development channel until the plugin is promoted to
+  `main`. The plugin is distributed through Quirq's repository marketplace;
+  it is not a listing in OpenAI's public plugin directory.
+</Callout>
+
+## 1. Check your local environment
+
+Use the Codex desktop app with a **local task** on macOS or Linux, or a task
+running inside WSL on Windows. Space's server does not support native Windows.
+You need Bash, Git, `curl`, network access for the first installation, and a working,
+authenticated Codex CLI on the same machine.
+
+In a terminal, check:
+
+```bash
+bash --version
+git --version
+curl --version
+codex --version
+codex login status
+```
+
+If the CLI asks you to sign in, run `codex login` and complete its sign-in flow.
+If `codex` is missing from your terminal but the desktop app is installed, see
+[CLI troubleshooting](#if-the-codex-cli-is-missing). No XO account is required to
+browse a local Space.
+
+## 2. Add the Quirq marketplace
+
+Run this command in a terminal using the same Codex configuration as the app:
+
+```bash
+codex plugin marketplace add quirq-ai/xo-space --ref development
+```
+
+Use `--ref development` now. **Only after the plugin is promoted to `main`**,
+use the release command:
+
+```bash
+codex plugin marketplace add quirq-ai/xo-space --ref main
+```
+
+You only need to add the marketplace once. This makes its plugins available;
+Space itself is installed in step 4. You do not need to clone the backend or
+copy skill files. OpenAI documents this registration command in
+[Add a marketplace from the CLI](https://developers.openai.com/plugins/build/plugins#add-a-marketplace-from-the-cli).
+
+## 3. Click Install in the Codex app
+
+1. Open **Plugins** in the desktop app. Reopen the app if the newly added
+   marketplace has not appeared.
+2. Choose the **Quirq** marketplace (`quirq-ai`).
+3. Open **XO Space** and click **Install** (the add button in some app versions).
+4. Confirm it is installed and enabled, then start a **new local task** so the
+   task loads the plugin's skills.
+
+For an example of the marketplace selector and install control, see
+[OpenAI's plugin guide](https://developers.openai.com/plugins/build/plugins#build-your-own-curated-plugin-list).
+Its image shows an example marketplace; select **Quirq** and **XO Space** in
+your app. Labels may vary by app version.
+
+The visible name is **XO Space**; its stable command-line identifier is
+`quirq@quirq-ai`. To install through the terminal after adding the marketplace,
+run `codex plugin add quirq@quirq-ai`, then start a new task in the app.
+Installing the plugin loads its lifecycle skills; the Space server is
+downloaded and started when you ask to open it.
+
+## 4. Ask Codex to open Space
+
+Send this prompt in the new local task:
+
+```text
+Open XO Space
+```
+
+For a fresh install, the default workspace is `~/xo-workspace`. To choose
+another folder from the start, send this instead:
+
+```text
+Install XO Space in ~/work
+```
+
+Codex first checks for an existing installation. If one is running, it opens
+that server. If one is stopped, it starts the saved checkout and preserves its
+backend and workspace settings. A requested folder does not relocate an existing
+installation; check the paths Codex reports before continuing.
+
+For a new workspace, Codex reports the resolved path, downloads Space and its
+Python dependencies, selects the **Codex** backend, and checks server health.
+The installer obtains `uv` and Python when needed. Allow the task time to finish;
+Codex's normal network and filesystem permission prompts may apply.
+
+The plugin's marketplace branch and the server branch are separate: a fresh
+Space installation uses `main` by default even when you installed the plugin
+from `development`. To explicitly test the development server shown in this guide, ask:
+
+```text
+Install XO Space in ~/xo-space-preview using QUIRQ_SOURCE_REF=development.
+```
+
+This is for a fresh preview workspace. Existing installations are reused rather
+than switched to another branch automatically.
+
+## 5. Open the workspace and check Setup
+
+When startup completes, Codex opens Space in its browser panel when available,
+or returns a clickable URL. Use the **actual URL it reports**; the preferred
+address is `http://localhost:5002/space/`, but the selected port can differ.
+
+<figure>
+  <img src="/images/codex-space/space-projects.png" alt="XO Space Projects overview in an empty local demonstration workspace" />
+  <figcaption>
+    Space after startup. A new workspace can be empty until you add project folders.
+  </figcaption>
+</figure>
+
+Open **Setup → Workspace** and check **Projects folder** and **Space data
+folder**. For a fresh default install, they are `~/xo-workspace` and
+`~/xo-workspace/.quirq`. The server checkout and Python environment are in
+`~/xo-workspace/xo-space`, with configuration in `xo-space/.env`.
+
+<figure>
+  <img src="/images/codex-space/space-setup-workspace.png" alt="Space Workspace settings showing separate projects and state folder fields" />
+  <figcaption>
+    Check both folders. The paths shown are temporary demonstration paths;
+    your fresh installation uses the workspace you chose.
+  </figcaption>
+</figure>
+
+Then open **Setup → Intelligence layer**. A fresh plugin installation selects
+**Codex**. An existing installation keeps its saved agent; change it only if
+you want a different runtime.
+
+<figure>
+  <img src="/images/codex-space/space-setup-intelligence.png" alt="Space Intelligence layer settings with Codex selected as the agent in use" />
+  <figcaption>
+    Check the agent in use and native activity sources. Activity collection is
+    off in this isolated demonstration; its setting in your workspace may differ.
+  </figcaption>
+</figure>
+
+These Space screenshots were captured from the development UI on September 21,
+2026; the release server can look different. Your project names, paths, and
+runtime availability will vary.
+
+Manage credentials in [Setup → Secrets](/docs/space/space-walk/setup#manage-credentials)
+and external app OAuth connections in [Setup → Connectors](/docs/space/space-walk/connectors).
+
+Space reuses the Codex CLI's existing login. A prompt sent through Space's chat
+API starts a separate Codex CLI process using Space's configuration; it does
+not continue this desktop task or inherit its approval settings. Use your usual
+Codex task for work, and follow [Your First Space](/docs/space/first-space) to
+add projects and inspect their files and activity.
+
+## 6. Keep Space running, then reopen it later
+
+**Keep the task or terminal that launched the server alive.** Space runs as a
+foreground process owned by that Codex task, not an operating-system service.
+Stopping the owning process or closing its environment stops the server.
+Codex reports the owning task/terminal and log location when startup succeeds.
+
+In a later local task, ask **“Open XO Space”** again. It starts the existing
+installation without fetching updates. To inspect it without starting anything:
+
+```text
+Use the quirq-status skill to check my local Space.
+```
+
+The status result reports whether Space is running, installed but stopped, or
+not found. When running, it also checks health and reports the URL and effective
+workspace roots. See the [Codex skill reference](/docs/space/install-space-as-a-skill/codex)
+for the four bundled skills.
+
+## Update or remove
+
+To refresh the plugin catalog, run:
+
+```bash
+codex plugin marketplace upgrade quirq-ai
+```
+
+Then update or reinstall **XO Space** from Plugins and start a new local task.
+Server updates are separate: explicitly ask Codex to update Space or follow
+[Start again or update](/docs/space/install-space#start-again-or-update). Merely
+opening Space preserves the checkout on disk.
+
+To uninstall the plugin, run `codex plugin remove quirq@quirq-ai`. Your projects,
+server checkout, Python environment, and local state live outside the plugin
+cache and remain in place. To remove the server too, stop its owning task and
+follow [Remove a local install](/docs/space/install-space#remove-a-local-install);
+the server uninstaller preserves projects by default.
+
+## Troubleshooting
+
+### If the Codex CLI is missing
+
+The desktop app may bundle a CLI even when `codex` is unavailable or broken on
+your terminal's `PATH`. Ask Codex to use the bundled CLI if its location is
+available in the task environment, or provide a known absolute executable path
+as `CODEX_CLI_PATH`. This is a launch-time override and may be needed again when
+you restart Space. The plugin does not replace a global CLI installation or
+copy login files.
+
+| Symptom | What to check |
+|---|---|
+| `codex plugin` is unavailable | Use a current CLI or the app's bundled CLI. Check `codex plugin marketplace add --help`. |
+| Quirq or XO Space is missing in Plugins | Run `codex plugin marketplace list`, verify `quirq-ai` and the intended branch, refresh the marketplace, then reopen the app. |
+| “Open XO Space” does not use the plugin | Confirm XO Space is installed and enabled, and start a new local task. You can explicitly ask to use the `quirq` skill. |
+| An existing Space is not found | Open a local task in its checkout or parent workspace and run `quirq-status`; discovery uses the install pointer, local ports, and the current directory. |
+| First startup fails or times out | Read the error Codex reports and `<workspace>/.quirq/logs/quirq.log`. A partial checkout is not overwritten; ask Codex to inspect and complete that installation. |
+| Space opens but the agent is unavailable | Check `codex login status`, CLI discovery, and Setup → Intelligence layer. See [runtime discovery](/docs/space/auto-detection). |
+| The URL stops responding after you close the task | Start a new local task and ask to open Space again. |
+| A remote task returns an unreachable localhost URL | The server is on the remote host. Use that environment's port forwarding, or install in a local task. |
+
+The implementation is documented in the
+[XO Space plugin README](https://github.com/quirq-ai/xo-space/blob/development/plugins/quirq/README.md).
+For app-level plugin controls, see [OpenAI's plugin guide](https://learn.chatgpt.com/docs/plugins).

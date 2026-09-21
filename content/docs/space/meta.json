@@ -4,6 +4,7 @@
   "pages": [
     "index",
     "install-space",
+    "install-space-in-codex",
     "first-space",
     "space-walk",
     "observability",

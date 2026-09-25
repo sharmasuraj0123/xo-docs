@@ -1,0 +1,199 @@
+---
+title: Team Workflow Template
+description: Create a reusable project brief, checklist, and review record in an organization workspace.
+icon: LayoutTemplate
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Callout } from "fumadocs-ui/components/callout";
+
+This template is a reusable set of project files for a small team delivery:
+**brief → draft checklist → review → reopen**. It uses fictional Pine Studio
+data so you can try the workflow before adding your own material.
+
+The example contains four Markdown files. Create a fresh project from the
+starter for each delivery, then replace the sample brief and record the actual
+review result.
+
+## Prerequisites
+
+Follow [Organization Mode](/docs/cloud/organization-mode) until the workspace
+and API are available and the selected agent can respond. Hosting readiness
+and provider authentication are separate requirements. This example does not
+require GitHub, team invitations, or external publishing.
+
+If Codex reports `401 Unauthorized` or `missing bearer/basic auth`, complete
+the [Codex connection steps](/docs/cloud/organization-mode#codex-returns-401-unauthorized),
+retry the creation prompt, and refresh Projects Management after a successful
+response.
+
+## Create the starter
+
+<Steps>
+  <Step>
+    ### Start at Workspace root
+
+    Open a new organization conversation with **Workspace root** selected.
+    Send the prompt below. It asks the agent to use the workspace's supported
+    scaffolding flow, which supplies the project's required structure.
+  </Step>
+  <Step>
+    ### Wait for a concrete result
+
+    The response should identify a project path and the four created files.
+    If the agent reports missing authentication, complete the connection
+    before retrying. Keep the task incomplete until you can inspect its
+    output.
+  </Step>
+  <Step>
+    ### Inspect the saved files
+
+    Choose **Open a view → Projects Management**, refresh if necessary, and
+    open `team-workflow-starter`. Compare the saved files with the examples
+    below. Leave review fields pending until you perform the checks.
+  </Step>
+</Steps>
+
+### Creation prompt
+
+```text
+Create a reusable fictional team-workflow starter project named
+team-workflow-starter in this organization workspace's configured projects
+root. Follow the workspace's project-scaffolding instructions and supported
+API; do not hand-edit .xo metadata.
+
+Create four Markdown files:
+- README.md explaining brief → draft checklist → review → reopen.
+- brief.md for fictional Pine Studio with outcome, inputs, scope, exclusions
+  and acceptance criteria.
+- checklist.md with exactly three unchecked tasks: create a project folder,
+  add a sample brief, review the draft. Add one next-step sentence.
+- review.md with reviewer unassigned, decision pending, output inspection
+  pending and reopen check not yet tested.
+
+Use only this fictional information. Do not read unrelated projects,
+connect accounts, invite anyone, create external issues, send messages,
+purchase or publish.
+
+Report the project path and created files; do not claim review or
+persistence was verified. If authentication is missing, explain the
+required connection instead of pretending the project was created.
+```
+
+## Example file contents
+
+These are starting contents to create or adapt. Their presence in this guide
+does not create a project in your workspace.
+
+Open or save the starter files: [README.md](/examples/org-workflow-starter/README.md),
+[brief.md](/examples/org-workflow-starter/brief.md),
+[checklist.md](/examples/org-workflow-starter/checklist.md), and
+[review.md](/examples/org-workflow-starter/review.md).
+
+### README.md
+
+```markdown
+# Team workflow starter
+
+A reusable, fictional example for an XO organization project. Copy it into a
+fresh project for each delivery; replace the sample values before real work.
+
+## Flow
+
+1. Fill in brief.md with the outcome, inputs, owner and acceptance criteria.
+2. Follow checklist.md to prepare and review the draft.
+3. Record the result and review decision in review.md.
+4. Reopen the project and confirm the accepted files are still available.
+
+This starter does not invite people, connect accounts, create external issues
+or grant sharing access. Configure hosting and the AI provider separately.
+Use the workspace's supported project-creation flow; never hand-edit
+service-owned .xo metadata.
+```
+
+### brief.md
+
+```markdown
+# Delivery brief
+
+- Project: Pine Studio sample onboarding
+- Owner: Sample project owner
+- Outcome: A three-item onboarding checklist that a reviewer can inspect
+- Inputs: Fictional brief only; no customer files or credentials
+- Scope: Create a project folder, add a sample brief, review the draft
+- Exclusions: No external messages, account connections, purchases or publishing
+
+## Acceptance criteria
+
+- [ ] The output includes exactly the three requested tasks.
+- [ ] The reviewer can locate and read the output.
+- [ ] The same output can be reopened after leaving the project.
+```
+
+### checklist.md
+
+```markdown
+# Onboarding checklist
+
+- [ ] Create a project folder.
+- [ ] Add a sample brief.
+- [ ] Review the draft.
+
+Next step: assign a reviewer and confirm that each checklist item matches
+the brief.
+```
+
+### review.md
+
+```markdown
+# Review record
+
+- Reviewer: Unassigned
+- Decision: Pending
+- Output inspected: Pending
+- Reopened successfully: Not yet tested
+- Notes: Replace this sample record after the actual review.
+
+Do not mark the delivery complete until the output has been inspected
+and reopened.
+```
+
+## Review and reopen
+
+Start a new conversation targeting `team-workflow-starter`. Ask the agent to
+read `brief.md` and compare `checklist.md` against its acceptance criteria.
+Then inspect the result yourself:
+
+| Check | Passing result |
+| --- | --- |
+| Project creation | Projects Management shows the project and all four files open. |
+| Scope | The brief contains the fictional outcome, inputs, scope, exclusions, and acceptance criteria. |
+| Draft | The checklist contains exactly the three requested unchecked tasks and a next-step sentence. |
+| Review | A reviewer has inspected the files and recorded an actual decision. |
+| Reopen | After leaving and returning to the project, the same files and review result can be read. |
+
+Update `review.md` with the reviewer's name, decision, and checks actually
+completed. If a check fails, record what remains to be fixed. A file created
+successfully can still have a pending review.
+
+<Callout type="info">
+  Reopening verifies that the files remain available for this check. It does
+  not establish a backup, retention period, or another member's access.
+</Callout>
+
+## Reuse for another delivery
+
+Keep the starter unchanged and ask the agent to scaffold a fresh project
+through the same supported flow. Copy only the four template documents into
+that project, replace the brief, and reset the review fields to pending.
+Do not copy service-owned project metadata.
+
+For example, use a second fictional brief with the outcome “a three-item
+release-review checklist” and the tasks “read the release brief,” “inspect the
+draft,” and “record the review decision.” Select the new project in a new
+conversation before asking the agent to draft its checklist.
+
+Run the same inspection and reopen checks on the second project. If a
+teammate will review it, confirm that they can open the intended project and
+files before assigning the review. Organization membership by itself is not
+a completed project-sharing check.

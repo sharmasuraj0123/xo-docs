@@ -1,0 +1,158 @@
+---
+title: Organization Mode
+description: Create or join an organization, connect your agent, and begin work in an organization project.
+icon: Building2
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Callout } from "fumadocs-ui/components/callout";
+
+Open **Org Spaces** on [app.xo.builders](https://app.xo.builders/org) to work
+within an organization. Start by creating an organization or requesting access
+to an existing one, then connect the selected agent and create your first
+project.
+
+## Before you begin
+
+- Sign in with your [XO account](/docs/cloud/create-account).
+- Decide whether to create an organization or join your team's existing one.
+  An account can belong to one organization at a time.
+- Have access to the AI provider required by your chosen agent. Signing in to
+  XO and starting the workspace do not establish that provider connection.
+
+The application determines the hosting access available to your account. If
+you are directed to select a plan, review the current offer in the application.
+Workspace status alone does not establish a trial's duration or included AI
+usage.
+
+## Create an organization
+
+<Steps>
+  <Step>
+    ### Open Org Spaces
+
+    Use the space scope selector to switch from **Personal Spaces** to
+    **Org Spaces**, or open [the organization page](https://app.xo.builders/org).
+    If you do not already belong to an organization, the page offers
+    **Create Organization** and **Join Organization**.
+  </Step>
+  <Step>
+    ### Enter a name and choose an agent
+
+    Choose **Create Organization**. Use a name such as `team-workflow-lab`:
+    start with a letter or number, and use only letters, numbers, and hyphens.
+    Spaces are not accepted.
+
+    Choose **Codex** or **Claude Code**. Codex is the default selection. Use
+    an agent for which you can complete the required provider authentication.
+    Submit the creation form and wait for the organization workspace to open.
+  </Step>
+  <Step>
+    ### Check the workspace
+
+    Wait for **Ready** and **API: Up**. These signals describe the workspace
+    and its backend. Verify the agent connection before relying on chat to
+    create files.
+
+    <Callout type="info">
+      A running workspace can still require model authentication. A completed
+      agent response and an inspectable output confirm that useful work is
+      possible.
+    </Callout>
+  </Step>
+  <Step>
+    ### Connect the agent
+
+    For a Codex workspace, open **Connections → Connect Codex**. The
+    **Connect ChatGPT subscription** dialog provides a device sign-in flow
+    and code. Complete that authorization with the account you intend to use
+    for this workspace. If device-code login is disabled, follow the dialog's
+    instructions to enable it before continuing. For more about Codex
+    authentication, see
+    [Codex OAuth](/docs/setup/models/oauth/codex).
+
+    A Claude Code workspace needs its corresponding model authentication;
+    see [Claude authentication](/docs/setup/models/oauth/claude).
+
+    **Connect GitHub** is a separate connection. The starter below uses
+    fictional local files and does not require a repository connection.
+  </Step>
+</Steps>
+
+## Start your first project
+
+The initial chat targets **Workspace root**. Use it to ask the agent to
+scaffold a project in the workspace's configured projects root. The
+[team workflow template](/docs/cloud/team-workflow-template) provides a
+copyable prompt and four example files.
+
+Open **Open a view → Projects Management** to inspect projects. An empty
+project list directs you to ask the agent to scaffold one; it does not mean
+the organization failed to start.
+
+After the agent reports a project path and created files, refresh the project
+view and inspect those files. For work inside that project, start a new
+conversation and select the project as its target before sending the first
+message. A conversation stays in the location where it started; changing the
+target is not a way to move an existing conversation.
+
+## Join an existing organization
+
+Choose **Join Organization**, search for your team's organization, select an
+agent, and request to join. The owner reviews requests under
+**Settings → Members**. A pending request is not active membership; wait for
+approval before expecting your organization workspace to become available.
+
+Members use their own workspace instances within the organization. Confirm
+project access separately with your team before assuming another member can
+see a project or its files.
+
+## Verify the complete flow
+
+Use a small task with fictional data before adding real project material:
+
+1. Confirm that the workspace and API are available.
+2. Send the [starter creation prompt](/docs/cloud/team-workflow-template).
+3. Read the agent's completed response and inspect every expected file in
+   **Projects Management**.
+4. Start a conversation targeting the project and ask it to explain the
+   acceptance criteria from `brief.md`.
+5. Leave the project, reopen it, and confirm that the same output is available.
+
+Record the review and reopen result only after carrying out those checks.
+An agent message that says it created a project is not a substitute for
+inspecting the saved output.
+
+## If you cannot continue
+
+### Codex returns 401 Unauthorized
+
+A message such as `401 Unauthorized` with `missing bearer/basic auth` means
+the agent request is missing provider authentication. It can occur even while
+the organization shows **Ready** and **API: Up**.
+
+1. Open **Connections → Connect Codex**.
+2. Complete **Connect ChatGPT subscription**, including the device sign-in
+   step. Keep the temporary sign-in code private.
+3. Return to the organization conversation and retry the original request.
+4. After the agent reports success, refresh **Projects Management** and
+   inspect the expected files.
+
+Do not mark the project as created because the prompt was sent. If
+authentication fails or no files appear, the creation task remains incomplete.
+
+### Other checks
+
+| What you see | What to check next |
+| --- | --- |
+| The organization name is rejected | Remove spaces and unsupported characters; start the name with a letter or number. |
+| A plan-selection page | Check the account's current hosting access in the application. |
+| The workspace is not ready or the API is unavailable | Wait for provisioning to finish and recheck status before sending a task. |
+| The workspace is ready, but the agent requests authentication | Complete the selected agent's provider connection, then retry the task. |
+| A message ends without an answer or visible output | Inspect connection status and Projects Management. If no files exist, treat the task as incomplete and retry only after the agent connection works. |
+| The project list is empty | Ask the agent to scaffold the project in the configured projects root, then refresh the view. |
+| A conversation targets the wrong location | Start a new conversation and choose the intended project before sending a message. |
+
+If the problem continues, retain the visible error, agent selection, and
+workspace status when requesting help. Keep credentials out of chat messages
+and screenshots.

@@ -58,6 +58,16 @@ const config = {
         permanent: true,
       },
       {
+        source: "/docs/agents/xo-cowork",
+        destination: "/docs/space/cowork",
+        permanent: true,
+      },
+      {
+        source: "/docs/agents/xo-cowork/:path*",
+        destination: "/docs/space/cowork",
+        permanent: true,
+      },
+      {
         source: "/docs/more/xo-cowork-api/:path*",
         destination: "/api-reference/:path*",
         permanent: true,

@@ -1,0 +1,15 @@
+{
+  "title": "Cowork",
+  "icon": "XoCowork",
+  "pages": [
+    "index",
+    "home",
+    "needs-you",
+    "workspace",
+    "projects-and-threads",
+    "composer",
+    "keyboard",
+    "live-and-demo",
+    "run-locally"
+  ]
+}

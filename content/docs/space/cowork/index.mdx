@@ -1,0 +1,77 @@
+---
+title: Cowork Overview
+description: Cowork (XO Space Cowork) is a Space app for directing AI agents across all your projects from one chat, with a Home that shows only what needs you.
+icon: Info
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  **Cowork** is one of the two **Space Apps**. The other is the [Space UI](/docs/space/space-walk). Cowork is a chat-first web app for one person directing many AI agents across many projects. You message a coordinator, the coordinator starts **threads** of agent work, and Cowork's **Home** shows only the things that need your answer.
+</Lead>
+
+Its full name is **XO Space Cowork**. In the app's sidebar the brand reads **Space Cowork**. These docs call it **Cowork**.
+
+## What Cowork is, and what it is not
+
+Several XO names contain the word "cowork". Only the first row of this table is Cowork the app.
+
+| Name | What it is | Relation to Cowork |
+| --- | --- | --- |
+| **Cowork** (XO Space Cowork) | The Space app documented in this section. Source: [xo-coworker](https://github.com/sharmasuraj0123/xo-coworker). | This section. |
+| **Space UI** | The other Space App: projects, files, agent telemetry, Inbox, and Setup at `/space/`. See [Space UI](/docs/space/space-walk). | A separate app on the same Space. |
+| **`cowork-api`** / **Space API** / **Cowork API** service | The backend server that runs inside every XO Space on port `5002`. See [Space API](/api-reference). | Cowork talks to it. It is not the app. |
+| `~/.xo-cowork/` | A legacy machine-local state folder of the Space API. | Unrelated to the app. |
+
+Cowork is not an agent template, and you do not pick it when you create an XO project. Older documentation described an "XO Cowork" agent template. That page has been removed. Its old addresses now redirect here.
+
+## Open Cowork
+
+| Where your Space runs | How to open Cowork |
+| --- | --- |
+| **XO Managed Cloud (org mode)** | Open your Space, then choose **Space Apps → Cowork**. **Space Apps → Space** opens the Space UI. |
+| **Your own machine** | Run Cowork from its repository next to a running Space. See [Run Cowork locally](/docs/space/cowork/run-locally). The default address is `http://127.0.0.1:5180/`. |
+
+If Cowork shows **Signed out of the workspace. Reopen this app from XO.**, open it again from **Space Apps → Cowork**.
+
+## How Cowork is organised
+
+| Concept | What it means in Cowork |
+| --- | --- |
+| **Project** | A folder in your Space's projects root, for example `~/xo-projects/billing-api`. Each project has its own coordinator chat. |
+| **Workspace** | The coordinator chat that sits **above** all projects. It answers you or routes your message to the right project. Not the same as Space UI's **Setup → Workspace** tab. |
+| **Coordinator** | The agent session that reads a chat and decides what to do: answer directly or start a thread. The Workspace has one, and each project has one. |
+| **Thread agent** | The agent session doing the work in one thread. Messages from it are headed **`{project}` agent**. |
+| **Thread** | One unit of real work inside a project. It has its own agent session, git branch, and live checklist. |
+| **Checklist** | A thread's step list: ✓ done, ✱ doing, ○ to do. Cowork uses it to show progress. |
+| **Ask** | A thread that is waiting for you, because it needs a reply, needs approval, or has stopped. |
+| **Needs you** | The panel that shows asks one at a time. |
+
+## The screens
+
+| Screen | Use it to | Guide |
+| --- | --- | --- |
+| **Home** | See what is worth your time across every project, and your next move | [Home](/docs/space/cowork/home) |
+| **Needs you** panel | Answer asks one at a time | [Needs you](/docs/space/cowork/needs-you) |
+| **Workspace** | Talk to the cross-project coordinator and see where it routed your messages | [Workspace](/docs/space/cowork/workspace) |
+| **Project** and **Thread** | Follow a project's threads, read a thread, and create projects | [Projects and threads](/docs/space/cowork/projects-and-threads) |
+| **Composer** | Write messages, aim them with `@project`, and read the status line | [Composer](/docs/space/cowork/composer) |
+| **Keys** sheet and **Jump** | Use keyboard shortcuts and jump anywhere | [Keyboard](/docs/space/cowork/keyboard) |
+
+The sidebar shows **Home**, **Workspace**, and then **Projects**, with one row per project. Threads never appear in the sidebar. They live inside their project.
+
+## Live and Demo
+
+Cowork has two modes. A badge at the bottom left of the app shows which one is active.
+
+- **Live** (default): reads and writes your real Space. **Sending a message starts real agents.**
+- **Demo**: a simulated, busy Space with made-up projects, running in your browser. Nothing is sent anywhere.
+
+Some features exist only in Demo. See [Live and Demo](/docs/space/cowork/live-and-demo) for the full list. That page also lists the features the backend does not support yet.
+
+<Callout type="info" title="Version">
+  This section follows [xo-coworker at f076036](https://github.com/sharmasuraj0123/xo-coworker/tree/f076036)
+  (October 16, 2026). Cowork needs a Space whose API includes the projects chat
+  (`/api/projects-chat/*`). In xo-space that is the `poc/sessions-router` branch at
+  revision 06c2c21. Without that API, Cowork cannot load chats or send messages.
+</Callout>

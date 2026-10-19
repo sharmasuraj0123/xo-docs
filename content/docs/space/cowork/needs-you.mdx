@@ -1,0 +1,77 @@
+---
+title: Needs You
+description: The Cowork Needs you panel shows asks one at a time; in Live you answer questions in words, approve or send back, retry stopped threads, and undo within 3 seconds.
+icon: ClipboardCheck
+---
+
+<Lead>
+  **Needs you** is a Cowork panel that shows one ask at a time, with the evidence beside it. An ask is a thread that is waiting on you. The panel opens beside the page and does not cover it. On a phone it opens as a bottom sheet.
+</Lead>
+
+## Open the panel
+
+Any of these opens it:
+
+- press **N**;
+- click the button on **Your next move** on [Home](/docs/space/cowork/home), a **Then** row, or **+N more**;
+- click **◆ N worth your time** on the status line above the composer;
+- click **Next move** in the [Workspace](/docs/space/cowork/workspace);
+- click **Decide** on a thread card in a project chat.
+
+Inside a thread that is itself waiting on you, the ask appears as a card above the composer instead. That docked card works the same way as the panel.
+
+## Read an ask
+
+The header reads **Needs you** with a position such as **2 of 5**. Each card shows:
+
+- the effort label;
+- `project › thread title`;
+- the headline;
+- one line of detail;
+- the number of checklist steps left.
+
+**Details** (press **E**) expands, in place:
+
+- the agent's full message;
+- the last two messages in the thread;
+- the checklist as **Checklist x of y**;
+- the thread's branch.
+
+Use **‹** / **›** or **K** / **J** to move between asks. Skipping is always allowed: *Skip freely; nothing here is forced first.*
+
+## Answer an ask in Live
+
+| Ask type | Buttons | What Cowork posts to the thread |
+| --- | --- | --- |
+| A question (needs a reply) | **Reply in words**, which opens **Your answer, in your words**, then **Send** | Your text |
+| An approval (yes/no) | **Allow** · **Send back**. Send back asks *What should it do instead? (optional)* | `Approved.` or `Not approved. {your note}` |
+| A stopped thread | **Try again** · **Tell it what to try** | `Please try again from the failing step.` or your text |
+
+Every answer becomes an ordinary text reply in that thread. The thread's agent reads it and continues. **Allow** does not grant any tool, file, or sandbox permission by itself. It only sends the word `Approved.` to the agent.
+
+An ask is an approval only when the Space API marks the thread as needing approval. Every other waiting thread is a question.
+
+## Undo
+
+After you answer, Cowork waits **3 seconds** before posting. A toast such as **Answered** `{ask}` · **Undo** counts down. Click **Undo** or press **U** to cancel. The toast then reads *Undone. Nothing was sent; the ask is back.*
+
+If posting fails, the ask returns to your list with *Didn't reach the agent: `{title}`. It's back in your list.*
+
+## When the list is empty
+
+The panel ends on **That's everything.** with a summary such as *1 answered · 1 sent back*. It closes on its own after about 2 seconds, and the status line shows **All clear**.
+
+After about 25 minutes of answering asks, the panel offers a pause with **Take a break** or **Keep going**.
+
+## Not available in Live
+
+These panel features exist only in Demo mode, because the Space API does not yet send risk levels, options, or commands with an ask:
+
+- **Hold to allow** for destructive asks;
+- **Allow all N routine**;
+- **Make it a rule**;
+- **Later today**;
+- numbered answer options **1–9**;
+- the coordinator's suggested answer.
+
+See [Live and Demo](/docs/space/cowork/live-and-demo).

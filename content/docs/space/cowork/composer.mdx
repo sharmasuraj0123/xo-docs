@@ -1,0 +1,76 @@
+---
+title: Composer
+description: The Cowork composer sends messages to the Workspace, a project, or a thread; @project aims a message, and the status line and model chip report state.
+icon: MousePointerClick
+---
+
+<Lead>
+  The **composer** is the message field at the bottom of every Cowork screen. Where your message goes depends on the screen you are on, unless you aim it with `@project`. The line above the field always says where your message will go.
+</Lead>
+
+## Where a message goes
+
+| Screen | Placeholder | Goes to |
+| --- | --- | --- |
+| Home | *What should get done? Use @project to aim it* | The [Workspace](/docs/space/cowork/workspace) coordinator |
+| Workspace | *Ask anything across your projects…* | The Workspace coordinator |
+| Project | *Message `{project}`…* | That project's coordinator |
+| Thread | *Reply to the agent…* | That thread's agent |
+
+The target line above the field reads, for example:
+
+- **→ To the Workspace coordinator · @ to aim at a project**
+- **→ To the billing-api coordinator**
+- **→ New work for billing-api** (after `@billing-api`)
+- **Reply in this thread**
+
+## Aim a message with @project
+
+Type `@` to open a list of projects, each marked **N working** or **quiet**. Pick one with **↑ / ↓**, then press **Enter** or **Tab**.
+
+- The `@project` token is removed from the text before sending.
+- `@project` inside a thread sends **new work to that project**, not a reply in the thread.
+- `@workspace` sends to the Workspace coordinator.
+- An unknown name shows **× No project called x**, and nothing is sent.
+
+## Send
+
+Press **Enter** or click the green send button to send. Press **Shift+Enter** for a new line.
+
+Your message appears immediately, first marked **Sending**, then **Sent ✓**. Cowork keeps a separate draft for each screen.
+
+If sending fails, the message bubble shows one of these titles with **Retry** and **Edit**. Your text is kept. The status line and the target line can show a longer wording of the same problem, for example **The router is off**. See [Run locally and troubleshoot](/docs/space/cowork/run-locally#fix-connection-messages).
+
+| Title | Meaning |
+| --- | --- |
+| **Can't reach XO** | The Space API is unreachable |
+| **Router is off** | The Space's projects chat router is off (`XO_ROUTER_MODE=off`) |
+| **Not supported by this backend** | The Space's agent backend has no projects chat |
+| **Refused by the proxy** | The Cowork server rejected the request |
+| **Message not sent** | Any other error |
+
+While a coordinator is answering, a line reads **The coordinator is replying** with a timer.
+
+## The status line
+
+A single line floats above the composer on the Workspace and project screens. It shows one thing at a time:
+
+- **◆ N worth your time · next is a one-minute decision**. Click it to open the [Needs you panel](/docs/space/cowork/needs-you).
+- **✓ Nothing needs you**
+- event lines such as **`{thread}` finished · Open →**, **`{thread}` stopped**, **The coordinator replied**, or **`{project}` · worth a look**
+- **Can't reach XO** · *retrying · what you see may be out of date*, while the Space API is unreachable
+
+## The model chip
+
+The chip to the left of the send button shows how messages are routed, for example **Auto · Router**. Press **M** in an empty composer, or **⌘.**, to open its details:
+
+- the routing mode;
+- the decision model, if one is set;
+- the Space's agent;
+- the maximum number of agent turns per message.
+
+In Live, the chip is **read-only**. Cowork cannot choose a model yet. The panel says *Nothing is changed from this panel yet.*
+
+## No Stop button in Live
+
+Cowork cannot stop a running agent in Live yet, so the send button never turns into **Stop**. The Stop button exists only in Demo.

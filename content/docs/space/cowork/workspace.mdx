@@ -1,0 +1,53 @@
+---
+title: Workspace
+description: The Cowork Workspace is the coordinator chat above all projects; it answers you or routes your message to a project and shows where each message went.
+icon: Network
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  **Workspace** is the Cowork chat with your **cross-project coordinator**. You can ask it anything. It either answers you directly or forwards your message to the right project's coordinator. Open it with **Workspace** in the sidebar or press **W**.
+</Lead>
+
+<Callout type="info" title="Which Workspace?">
+  In Cowork, **Workspace** means this coordinator chat. It is not the
+  [Space UI's **Setup → Workspace** tab](/docs/space/space-walk/setup), which sets
+  your projects root. It is not the remote **workspace machine** in XO Cloud
+  either. In the Space API, this chat is named `workspace`.
+</Callout>
+
+## What the page shows
+
+- The heading **Workspace** and *Your coordinator, across all N projects.*
+- A stats strip:
+
+  | Stat | Counts |
+  | --- | --- |
+  | **Working** | Threads whose agent is busy now |
+  | **Need you** | Asks waiting on you (amber when above 0) |
+  | **Can wait** | Asks held back for later (always 0 in Live) |
+  | **Finished today** | Threads that finished today |
+
+- A **Next move** button that opens your top ask in the [Needs you panel](/docs/space/cowork/needs-you). When there are no asks it reads *Nothing needs you. Ask for anything below.*
+- The coordinator conversation.
+
+## Routing receipts
+
+Under each message you sent, the Workspace shows where it went: **→ Routed to billing-api**, or several project names. Each name is a link to that project.
+
+In the receiving project's chat, the same message carries **→ Forwarded from the Workspace**.
+
+## Send to the Workspace
+
+On the Workspace page, the composer placeholder is *Ask anything across your projects…* and the target line reads **→ To the Workspace coordinator · @ to aim at a project**.
+
+Start a message with `@project` to skip routing and send it straight to that project's coordinator. See [Composer](/docs/space/cowork/composer).
+
+Messages heading these chats come from:
+
+| Heading | Speaker |
+| --- | --- |
+| **Coordinator** | The Workspace coordinator |
+| **`{project}` coordinator** | A project's coordinator |
+| **`{project}` agent** | The agent working in one thread |

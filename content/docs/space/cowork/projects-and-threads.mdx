@@ -1,0 +1,113 @@
+---
+title: Projects and Threads
+description: In Cowork, each project has a coordinator chat, a Now shelf of up to three threads, and an All threads list; each thread has its own agent, branch, and checklist.
+icon: FolderOpen
+---
+
+<Lead>
+  A Cowork **project** is a folder in your Space's projects root, with its own coordinator chat. A **thread** is one unit of agent work inside a project. Each thread has its own agent session, git branch, and live checklist. Open a project from the sidebar, then open a thread from the project page.
+</Lead>
+
+## Project rows in the sidebar
+
+Each project row shows a letter tile and the project's folder name. The row's look tells you its state:
+
+| Look | Meaning |
+| --- | --- |
+| Name only | Nothing is running and nothing needs you |
+| Small **blue dot** on the tile | At least one thread's agent is working |
+| **Amber**, with **◆ N** and a short label | N asks wait on you. The label is the first ask in a few words. |
+| **Red** | Every waiting ask in the project is a stopped thread |
+
+Rows follow the order the Space API returns them in. Cowork does not re-sort them by activity. Threads never appear in the sidebar.
+
+## The project page
+
+| Part | What it shows |
+| --- | --- |
+| **Title and one sentence** | For example *2 need you · 3 working · 5 done*. It reads **All quiet** when nothing is happening and **No threads yet** for a new project. |
+| **All threads N** | Opens a searchable list of every thread. You can also press **T**. |
+| **Now shelf** | Up to **three** thread cards, ordered: needs you, then stopped, then working. Finished threads never appear here. |
+| **Coordinator chat** | Your conversation with this project's coordinator, with inline thread cards |
+
+Each Now shelf card shows:
+
+- a state glyph;
+- the thread title;
+- progress as **x/y**;
+- a segment bar;
+- one line: the ask, the stop reason, or the current step.
+
+When the coordinator starts a thread, the chat shows an inline thread card with:
+
+- the thread's state, for example **Working · 2 of 5**;
+- its current step;
+- its branch;
+- **Open →**;
+- a **Decide** button when the thread needs you.
+
+## All threads
+
+The **All threads** sheet lists every unresolved thread in the project.
+
+- **Search threads** matches the thread title or branch.
+- Filters, each with a count: **All · Needs you · Working · Done · Stopped**.
+- With no filter and no search, finished threads fold into one line, **✓ N done**. Click it to expand.
+
+## A thread
+
+The thread page shows a back link (**‹ project**, **‹ Home**, or **‹ Workspace**), the thread title, and a state badge:
+
+| Badge | Meaning |
+| --- | --- |
+| **Working** | The thread's agent is running now |
+| **Idle** | The thread is not finished, but its agent session is not running right now. Idle threads count under the **Working** filter and on the Now shelf, but not in Home's **Handled** list. |
+| **Needs you** | The agent asked a question or needs approval |
+| **Stopped** | The thread failed at a step. The API state is `failed`. |
+| **Done** | Every step finished |
+| **Resolved** | The thread was closed by its agent or coordinator because nothing more is owed. Cowork cannot resolve threads itself yet. Resolved threads are hidden from the Now shelf, All threads, and Jump. |
+
+### The checklist bar
+
+Below the title, a bar shows the thread's checklist from its `status.md` file:
+
+- a segment bar: green for done, blue for doing, grey for to do;
+- **x of y** steps;
+- the branch;
+- one now-line.
+
+| Now-line | Meaning |
+| --- | --- |
+| **✱** `{step}` | The step in progress |
+| **◆** Paused on you | The thread is waiting for your answer |
+| **■** Stopped at "`{step}`" | The thread failed at this step |
+| **✓** All N steps done | Finished |
+| **■** Resolved at x of y | Closed before the end |
+
+Click the bar or press **C** to expand the full list with its ✓ ✱ ○ marks. A thread without a checklist shows **0 of 0**.
+
+While the agent works, a line above the composer reads **Working · `{step}`** with a timer. An open thread refreshes every 4 seconds while its agent is busy and every 15 seconds otherwise.
+
+### Reply in a thread
+
+In a thread, the composer placeholder is *Reply to the agent…*, and your message goes to that thread's agent. If the thread is waiting on you, its ask is docked above the composer. See [Needs you](/docs/space/cowork/needs-you).
+
+Use **[** and **]** to move to the previous or next thread. You cannot stop or resolve a thread from Cowork yet. See [Live and Demo](/docs/space/cowork/live-and-demo).
+
+## Create a project
+
+Click **+** next to **Projects** in the sidebar, or click **Create XO Project** on Home.
+
+Despite its label, **Create XO Project** creates a **work project**: a folder inside your Space. It does **not** create an **XO project** in the XO Cloud dashboard, and it does not provision a machine. See the [Glossary](/docs/glossary).
+
+1. Enter a **Project name**, for example `Billing API`. The folder name is the project name in lowercase, with spaces and symbols turned into `-`. The dialog shows where the folder will be created, for example *Saved as `~/xo-projects/billing-api`*.
+2. Optionally fill in **What is it for?** with one or two sentences.
+3. Click **Create project**.
+
+Cowork creates the folder in your Space's projects root, with a plan and memory files scaffolded. It then opens the new project with the cursor in the composer. The new project is also visible in the [Space UI](/docs/space/space-walk/files-explorer), because both apps read the same projects root.
+
+| Message | Fix |
+| --- | --- |
+| *There's already a project called "billing-api". Pick another name.* | Choose a different name |
+| *Use at least one letter or number in the name.* | Names need at least one letter or digit |
+| *Can't create yet: the projects folder is unknown. Is the XO API running?* | Check that the Space API is running and reachable |

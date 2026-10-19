@@ -1,0 +1,81 @@
+---
+title: Home
+description: Cowork Home ranks what needs you across every project, shows your next move, and folds running work into one Handled line.
+icon: LayoutDashboard
+---
+
+<Lead>
+  **Home** is the page Cowork opens on. It answers one question: what needs you right now, across every project? Open it with **Home** in the sidebar or press **H**.
+</Lead>
+
+Cowork has no page URLs. Reloading the browser always returns to Home, and the browser's Back button does not move between Cowork screens. Use **Esc**, the sidebar, or [Jump (⌘K)](/docs/space/cowork/keyboard) instead.
+
+## What Home shows
+
+From top to bottom:
+
+| Block | What it shows |
+| --- | --- |
+| **Head** | The date, a greeting, one summary sentence, and a **Create XO Project** button |
+| **Your next move** | One card: the ask that is most worth your time now |
+| **Then** | Up to two more asks, then **+N more** |
+| **Handled** | One line counting running work. Click it to expand. |
+
+The summary sentence is one of:
+
+- **One thing is worth your time.**
+- **Three things are worth your time.** (the number is spelled out up to ten)
+- **Nothing needs you.**
+- **XO can't be reached right now.** This appears when the Space API is unreachable and nothing has loaded yet.
+
+The sidebar's **Home** row shows an amber ◆ and the number of asks. The browser tab title shows the same count (`◆ N`).
+
+## What counts as "needs you"
+
+In Live mode, a thread becomes an **ask** when its state is one of these:
+
+| Thread state | What the card offers | Card button |
+| --- | --- | --- |
+| Needs a reply | A question from the thread's agent. You answer in words. | **Read and reply** |
+| Needs approval | A yes/no request. | **Decide** |
+| Stopped (API state `failed`) | The thread stopped at a step. | **Look and choose** |
+
+The ask's title is the first sentence of the agent's last message, up to 140 characters. If the agent left no message, the title is **It's waiting for your reply**. Done and resolved threads never produce asks.
+
+## Your next move
+
+The card shows:
+
+- an effort label: **Decide ~1 min** for every Live ask;
+- where the ask comes from, as `project › thread title`;
+- the headline, which is the ask in one line;
+- an estimate in the form **N steps left in its checklist**;
+- one button that opens the ask in the [Needs you panel](/docs/space/cowork/needs-you).
+
+Asks are ranked so that the ones unblocking the most remaining checklist work come first. If the same ask is already open in the panel, the card reads **Open in the panel**.
+
+## Handled
+
+The bottom line reads **Handled · three working** or **Handled · nothing running**. Click it to list every busy thread with its project, title, current step, and a small progress bar. Threads in this list do not need you.
+
+## Empty and offline states
+
+| Text | Meaning |
+| --- | --- |
+| **Nothing needs you.** 4 threads working. They'll ask when it's worth it. | Agents are busy, and none is waiting on you. |
+| **Nothing needs you.** Start something below, or enjoy the quiet. | Nothing is running and nothing is waiting. |
+| **Can't reach XO.** Retrying every few seconds. Nothing you write is lost; sending waits until it's back. | Cowork cannot reach the Space API. |
+
+The composer at the bottom of Home sends to the [Workspace](/docs/space/cowork/workspace) coordinator unless you aim it with `@project`. See [Composer](/docs/space/cowork/composer).
+
+## Demo-only blocks
+
+Some Home blocks appear only in Demo mode:
+
+- **Found while working**
+- **End the day** / **Before you go**
+- the morning recap
+- **Clear N glances together**
+- **N can wait**
+
+See [Live and Demo](/docs/space/cowork/live-and-demo).

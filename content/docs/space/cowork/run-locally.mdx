@@ -1,0 +1,82 @@
+---
+title: Run Locally and Troubleshoot
+description: Run Cowork from the xo-coworker repository against a local XO Space, configure PORT, HOST, and XO_API, and fix connection messages such as "Can't reach XO" and "The router is off".
+icon: Play
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  On XO Managed Cloud, open Cowork from **Space Apps → Cowork**, and nothing needs to be installed. To use Cowork with a Space on your own machine, run its small server from the [xo-coworker repository](https://github.com/sharmasuraj0123/xo-coworker). The server serves the app and forwards API calls to your Space.
+</Lead>
+
+## Requirements
+
+- A running XO Space whose API includes the projects chat (`/api/projects-chat/*`). See the version note in the [Cowork overview](/docs/space/cowork).
+- Python 3. The server uses only the standard library, and Cowork needs no build step and no npm.
+
+## Start Cowork
+
+```sh
+git clone https://github.com/sharmasuraj0123/xo-coworker.git
+cd xo-coworker
+python3 serve.py
+```
+
+Open `http://127.0.0.1:5180/`. Cowork starts in **Live** mode, so sending a message starts real agents in your Space. To explore without side effects, open `http://127.0.0.1:5180/?mode=demo`. See [Live and Demo](/docs/space/cowork/live-and-demo).
+
+`start.sh` wraps the same server:
+
+| Command | Effect |
+| --- | --- |
+| `./start.sh` | Run in the foreground. Ctrl+C stops it. |
+| `./start.sh --background` | Run detached. Writes the PID to `.server.pid` and logs to `.server.log`. |
+| `./start.sh --status` | Report whether the detached server is running |
+| `./start.sh --stop` | Stop the detached server |
+
+## Settings
+
+| Variable | Default | Meaning |
+| --- | --- | --- |
+| `PORT` | `5180` | Port Cowork listens on |
+| `HOST` | `127.0.0.1` | Address Cowork binds to |
+| `XO_API` | `http://127.0.0.1:5002` | The Space API that Cowork forwards `/api/*` requests to |
+
+Example: `PORT=5181 XO_API=http://127.0.0.1:5002 python3 serve.py`.
+
+## How Cowork talks to the Space
+
+The Cowork server forwards every request under `/api/` to `XO_API`. In Live, Cowork uses these Space API routes:
+
+| Method and path | Used for |
+| --- | --- |
+| `GET /api/projects-chat/status` | Whether the Space supports projects chat and whether the router is on. Polled every 20 seconds. |
+| `GET /api/projects-chat/chats` | The Workspace and project chats. Polled every 15 seconds. |
+| `GET /api/projects-chat/chats/{chat}/threads` | Threads in a chat |
+| `GET /api/projects-chat/chats/{chat}/threads/{ts}` | One thread's state, checklist, and messages |
+| `GET /api/projects-chat/chats/{chat}/messages` | Chat history |
+| `POST /api/projects-chat/chats/{chat}/messages` | Sending a message, a thread reply, or an answer to an ask |
+| `GET /api/projects-chat/chats/{chat}/stream` | Live updates for the open chat (server-sent events) |
+| `GET /api/config/workspace` | Finding the projects root before creating a project |
+| `POST /api/files/mkdir` | Creating a project folder with scaffolding |
+
+`{chat}` is `workspace` for the Workspace, or a project's folder name.
+
+The server refuses write requests that come from another site, with HTTP 403. It never forwards your browser's `Origin`, `Referer`, or sign-in token to the Space API.
+
+## Fix connection messages
+
+| Message in Cowork | Cause | Fix |
+| --- | --- | --- |
+| **Can't reach XO** · *retrying · what you see may be out of date* | The Space API at `XO_API` is not responding | Start your Space, or set `XO_API` to its address |
+| *Could not reach the XO API at `{address}`* | The Cowork server cannot connect to `XO_API` | Same as above |
+| *Can't reach the UI server. Is serve.py running?* | The Cowork server itself stopped | Start `serve.py` again |
+| **The router is off** · *XO_ROUTER_MODE=off · sending is paused* (on a failed message: **Router is off**) | The Space's projects chat router is off | Restart the Space with `XO_ROUTER_MODE` unset (default `agent`) or set to `agent` |
+| **This backend has no projects chat** · *`{agent}` agent · sending is off* (on a failed message: **Not supported by this backend**) | The Space's active agent backend has no coordinator support | Switch the Space's chat runtime to **Claude Code** in [Space UI → Setup → Intelligence layer](/docs/space/space-walk/setup). At xo-space revision 06c2c21, it is the only backend with projects chat support. |
+| *Signed out of the workspace. Reopen this app from XO.* | On XO Managed Cloud, your sign-in to the Space expired. Here "workspace" means the hosted Space machine, not Cowork's Workspace chat. | Open Cowork again from **Space Apps → Cowork** |
+| *Cross-origin writes are refused by the UI proxy.* | A page on another site tried to send through Cowork | Use Cowork from its own address |
+
+<Callout type="info">
+  `XO_ROUTER_MODE` is a setting of the **Space**, not of Cowork. It accepts `off`,
+  `agent` (default), or `decision`. Any value it does not recognise is treated as `off`.
+</Callout>

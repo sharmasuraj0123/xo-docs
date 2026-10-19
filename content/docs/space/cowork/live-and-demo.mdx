@@ -1,0 +1,65 @@
+---
+title: Live and Demo
+description: Cowork's Live mode uses your real Space and starts real agents; Demo mode is a simulation. Lists Demo-only features and what the Space API does not support yet.
+icon: ShieldAlert
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  Cowork runs in one of two modes. **Live** reads and writes your real Space through the Space API. **Demo** is a simulated, busy Space with made-up projects that runs entirely in your browser. A badge at the bottom left of the app shows **Live** (green) or **Demo**.
+</Lead>
+
+<Callout type="warn">
+  In **Live**, sending a message starts real agents in your Space. Use **Demo** to explore Cowork without side effects.
+</Callout>
+
+## Switch modes
+
+Click the badge, then choose **Live backend** or **Demo world**. The page reloads in the chosen mode, and the browser remembers it.
+
+| Method | Effect |
+| --- | --- |
+| Badge → **Live backend** / **Demo world** | Switches mode and remembers the choice in this browser |
+| `?mode=demo` or `?mode=live` in the address | Opens in that mode. This overrides the remembered choice. |
+
+Demo never calls the Space API. Projects you create in Demo are simulated and are not written to disk.
+
+## Features that exist only in Demo
+
+These appear in Demo and design material but never in Live:
+
+| Feature | Where it would appear |
+| --- | --- |
+| **Found while working** | Home |
+| **End the day** / **Before you go**, sealing the day, and the morning recap | Home |
+| **Clear N glances together** and **N can wait** / **Bring in** | Home |
+| **Hold to allow** for destructive asks | Needs you |
+| **Allow all N routine** | Needs you |
+| **Make it a rule** and the rules summary | Needs you, Workspace |
+| **Later today** | Needs you |
+| Numbered answer options and a suggested answer | Needs you |
+| **Stop** button | Composer |
+| Choosing or pinning a model | Model chip |
+
+## What the Space API does not support yet
+
+Cowork hides or limits these in Live until the Space API supports them:
+
+| Missing capability | Effect in Live |
+| --- | --- |
+| Approvals with risk levels (routine, notable, destructive) | Every ask is answered in words, or with Allow / Send back posted as a thread reply |
+| Stopping a running agent | No Stop button |
+| Resolving a thread from the UI | Threads cannot be resolved from Cowork |
+| Choosing a model per chat | The model chip is read-only |
+| Paging history with a `before` cursor | Older messages load by growing the window: 40, then 80, 160, and so on, up to 1,000 |
+
+## Things that work in both modes
+
+- [Home](/docs/space/cowork/home), the [Needs you panel](/docs/space/cowork/needs-you), and **Undo** within 3 seconds
+- the [Workspace](/docs/space/cowork/workspace), with routing receipts
+- [Projects and threads](/docs/space/cowork/projects-and-threads), with checklists
+- **Create XO Project**. In Live it creates a real folder.
+- [Composer](/docs/space/cowork/composer) and `@project`
+- [Keyboard shortcuts and Jump](/docs/space/cowork/keyboard)
+- light and dark themes, using the slide switch next to the brand

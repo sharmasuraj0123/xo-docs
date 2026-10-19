@@ -23,6 +23,10 @@ Rows follow the order the Space API returns them in. Cowork does not re-sort the
 
 ## The project page
 
+![The billing-api project in Demo mode: the title and sentence, two Now shelf cards, All threads 3, and the coordinator chat with inline thread cards](/images/space/cowork/project.png)
+
+*Demo mode, with fictional projects. The **a small ask can wait** note appears only in Demo.*
+
 | Part | What it shows |
 | --- | --- |
 | **Title and one sentence** | For example *2 need you · 3 working · 5 done*. It reads **All quiet** when nothing is happening and **No threads yet** for a new project. |
@@ -48,6 +52,8 @@ When the coordinator starts a thread, the chat shows an inline thread card with:
 
 ## All threads
 
+![The All threads sheet for billing-api in Demo mode, with search, filters All 3, Needs you 1, Working 1, Done 1, Stopped 0, and one done thread folded](/images/space/cowork/all-threads.png)
+
 The **All threads** sheet lists every unresolved thread in the project.
 
 - **Search threads** matches the thread title or branch.
@@ -55,6 +61,10 @@ The **All threads** sheet lists every unresolved thread in the project.
 - With no filter and no search, finished threads fold into one line, **✓ N done**. Click it to expand.
 
 ## A thread
+
+![A Working thread in Demo mode with its checklist expanded: Draft copy done, Hero animation in progress, Pricing table and SEO meta to do, and the Working line with a timer](/images/space/cowork/thread.png)
+
+*Demo mode. The square Stop button in the composer appears only in Demo.*
 
 The thread page shows a back link (**‹ project**, **‹ Home**, or **‹ Workspace**), the thread title, and a state badge:
 
@@ -103,6 +113,8 @@ Despite its label, **Create XO Project** creates a **work project**: a folder in
 1. Enter a **Project name**, for example `Billing API`. The folder name is the project name in lowercase, with spaces and symbols turned into `-`. The dialog shows where the folder will be created, for example *Saved as `~/xo-projects/billing-api`*.
 2. Optionally fill in **What is it for?** with one or two sentences.
 3. Click **Create project**.
+
+![The Create XO Project dialog with the name Billing API v2 and Saved as ~/xo-projects/billing-api-v2](/images/space/cowork/create-project.png)
 
 Cowork creates the folder in your Space's projects root, with a plan and memory files scaffolded. It then opens the new project with the cursor in the composer. The new project is also visible in the [Space UI](/docs/space/space-walk/files-explorer), because both apps read the same projects root.
 

@@ -10,6 +10,10 @@ import { Callout } from "fumadocs-ui/components/callout";
   **Cowork** is one of the two **Space Apps**. The other is the [Space UI](/docs/space/space-walk). Cowork is a chat-first web app for one person directing many AI agents across many projects. You message a coordinator, the coordinator starts **threads** of agent work, and Cowork's **Home** shows only the things that need your answer.
 </Lead>
 
+![Cowork Home in Demo mode: the sidebar lists Home, Workspace, and six projects; the page shows Your next move, Then, and Found while working](/images/space/cowork/home.png)
+
+*Screenshots in this section are taken in **Demo** mode with fictional projects. Demo shows some features that Live does not, and each caption says which. See [Live and Demo](/docs/space/cowork/live-and-demo).*
+
 Its full name is **XO Space Cowork**. In the app's sidebar the brand reads **Space Cowork**. These docs call it **Cowork**.
 
 ## What Cowork is, and what it is not
@@ -21,18 +25,20 @@ Several XO names contain the word "cowork". Only the first row of this table is 
 | **Cowork** (XO Space Cowork) | The Space app documented in this section. Source: [xo-coworker](https://github.com/sharmasuraj0123/xo-coworker). | This section. |
 | **Space UI** | The other Space App: projects, files, agent telemetry, Inbox, and Setup at `/space/`. See [Space UI](/docs/space/space-walk). | A separate app on the same Space. |
 | **`cowork-api`** / **Space API** / **Cowork API** service | The backend server that runs inside every XO Space on port `5002`. See [Space API](/api-reference). | Cowork talks to it. It is not the app. |
+| **XO Cowork** template | The agent template on [app.xo.builders](https://app.xo.builders) that creates an XO project whose Space opens in Cowork. | One way to get Cowork on XO Cloud. |
 | `~/.xo-cowork/` | A legacy machine-local state folder of the Space API. | Unrelated to the app. |
 
-Cowork is not an agent template, and you do not pick it when you create an XO project. Older documentation described an "XO Cowork" agent template. That page has been removed. Its old addresses now redirect here.
+The **XO Cowork** template used to open a different chat UI, with a five-step setup wizard at `/onboard`. Cowork replaced that UI. The old template guide was removed, and its addresses (`/docs/agents/xo-cowork/…`) now redirect here.
 
 ## Open Cowork
 
 | Where your Space runs | How to open Cowork |
 | --- | --- |
-| **XO Managed Cloud (org mode)** | Open your Space, then choose **Space Apps → Cowork**. **Space Apps → Space** opens the Space UI. |
+| **XO Cloud, XO Cowork template** | On [app.xo.builders](https://app.xo.builders), create a new project from the **XO Cowork** template. Its Space opens in Cowork. See [Choose an agent](/docs/cloud/choose-an-agent). |
+| **XO Cloud, org mode** | Open your Space, then choose **Space Apps → Cowork**. **Space Apps → Space** opens the Space UI. |
 | **Your own machine** | Run Cowork from its repository next to a running Space. See [Run Cowork locally](/docs/space/cowork/run-locally). The default address is `http://127.0.0.1:5180/`. |
 
-If Cowork shows **Signed out of the workspace. Reopen this app from XO.**, open it again from **Space Apps → Cowork**.
+If Cowork shows **Signed out of the workspace. Reopen this app from XO.**, open it again from XO: from your XO Cowork project, or from **Space Apps → Cowork**.
 
 ## How Cowork is organised
 

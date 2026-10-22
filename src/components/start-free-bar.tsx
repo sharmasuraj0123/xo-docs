@@ -71,10 +71,7 @@ export function StartFreeBar() {
           className="inline-flex items-center gap-1.5 rounded-lg border border-fd-border bg-fd-background px-3 py-1.5 text-sm font-semibold text-fd-foreground transition-colors hover:bg-fd-muted"
           tabIndex={showBar ? 0 : -1}
         >
-          <span
-            className="icon-[ph--chat-circle] size-4"
-            aria-hidden="true"
-          />
+          <span className="icon-[ph--chat-circle] size-4" aria-hidden="true" />
           Ask AI
         </button>
         <a

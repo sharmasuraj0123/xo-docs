@@ -27,7 +27,7 @@ Home opens with the date, a greeting that follows the clock ("Working late" befo
 - "One thing is worth your time." / "N things are worth your time."
 - "Nothing needs you now." — some small asks are being held for later.
 - "Nothing needs you."
-- "XO can't be reached right now." — Live mode can't reach the server and no threads are loaded.
+- "XO can't be reached right now." — Cowork can't reach XO Space yet.
 
 A **Create XO Project** button sits in the header too.
 
@@ -38,15 +38,15 @@ A **Create XO Project** button sits in the header too.
 - **Effort** — a small dial with **Glance ~5 s**, **Decide ~1 min** or **Think · needs focus**.
 - **Risk** — a **Destructive** tag (with a lock) or a **Stopped** tag, when either applies.
 - **Where it was asked** — "project › thread". Click it to open the thread.
-- **The headline** — in Live mode, the agent's own words.
-- **What it unblocks** — in Live mode, "N steps left in its checklist". In Demo mode, an estimate such as "About 20 min of agent work waits on this".
+- **The headline** — the agent's own words.
+- **What it unblocks** — for example "N steps left in its checklist".
 
 The buttons depend on the kind of ask:
 
 | Ask | Buttons |
 | --- | --- |
 | A quick glance with options | One button per answer, plus **Details** and **Send back**. |
-| A quick yes/no | **Allow** and **Send back** (or the server's own labels, such as **Allow once** and **Deny**), plus **Details**. |
+| A quick yes/no | **Allow** and **Send back** (or labels such as **Allow once** and **Deny**), plus **Details**. |
 | A stopped thread | **Look and choose** |
 | A destructive ask | **Read it closely** |
 | An action for you to do | **See what it needs** |
@@ -84,7 +84,7 @@ The UI decides quietly what speaks up. There is no daily cap, meter or score.
 - After about 25 minutes of deciding, the panel suggests a break.
 
 <Callout type="info">
-  In Live mode, asks come from threads that are waiting, so they are not held as "can wait". Holding small asks is a Demo-only behaviour today.
+  Holding small asks as "can wait" is available in Demo only for now.
 </Callout>
 
 ## The Needs you panel
@@ -98,9 +98,9 @@ Each card shows:
 - Effort and risk.
 - "project › thread" — opens the thread beside the panel.
 - The headline, a "why" line, and an estimate. Destructive asks also list their facts.
-- **Details** — expands in place. For an agent's request it shows the exact evidence: **Command**, **Change** (a diff), **File(s)**, **Address**, **Tool**, **The plan**, or **From the agent**, plus any notes the coordinator added and the thread's checklist. For a thread waiting on your reply it shows an excerpt and "The rest is in the thread".
+- **Details** — expands in place. For an agent's request it shows exactly what it wants to do: **Command**, **Change** (the lines it would change), **File(s)**, **Address**, **Tool**, **The plan**, or **From the agent**, plus any notes the coordinator added and the thread's checklist. For a thread waiting on your reply it shows an excerpt and "The rest is in the thread".
 
-Asks that are not tied to a thread appear too — an ask from a chat, from your account (such as usage limits), or from a plain chat. If one has no page to open, the card says "It isn't tied to a conversation".
+Asks that are not tied to a thread appear too — an ask from a chat, or from your account (such as usage limits). If one has no page to open, the card says "It isn't tied to a conversation".
 
 ### Answering
 
@@ -127,22 +127,22 @@ When an agent asks permission, you can widen your answer:
 - **Allow for this thread** — the exact same action is allowed for the rest of this thread. The card shows "For this thread only: …".
 - **Make it a rule** — the card shows the exact sentence that will be stored: "Added to your rules, word for word: …". For example, "In billing-api, run `npm test` without asking".
 
-Only you can make rules, and only from a decision. You can revoke any rule in [Settings → Rules](/docs/agents/xo-cowork/using-cowork/settings#rules). How wide a rule may be depends on how risky the action is — see [Permissions and rules](/docs/agents/xo-cowork/permissions-and-rules).
+Only you can make rules, and only from a decision. You can revoke any rule in **Settings → Rules**. How wide a rule may be depends on how risky the action is — see [Permissions and rules](/docs/agents/xo-cowork/permissions-and-rules).
 
 ### Questions and secrets
 
-A question can have options, free text, or several fields. A field marked as secret carries the note "Goes to the agent only; XO keeps it as [secret]." If the agent's call has already ended, XO can't carry a secret to it later. The card explains this and offers **Open the thread** so you can answer there.
+A question can have options, free text, or several fields. A field marked as secret carries the note "Goes to the agent only; XO keeps it as [secret]." If the agent has stopped waiting for the answer, XO can't pass a secret on later. The card explains this and offers **Open the thread** so you can answer there.
 
 ### Threads that replied and wait
 
-When a thread finished its turn and waits for you, the card offers **Reply in words** and **Done**. **Done** marks the thread resolved. It is not offered for paused threads.
+When a thread has replied and waits for you, the card offers **Reply in words** and **Done**. **Done** marks the thread resolved. It is not offered for paused threads.
 
 ### Destructive asks
 
 Destructive asks never get a one-click Allow.
 
-- Press and hold **Hold to allow** (or **Hold to approve**) for 1.2 seconds, with the pointer or the Enter key.
-- The button arms only after the card has been on screen for 300 ms.
+- Press and hold **Hold to allow** (or **Hold to approve**) for about a second, with the pointer or the Enter key.
+- The button only works once the card has been on screen for a moment, so a stray click can't allow it.
 - Let go early and nothing happens: "Released early. Nothing was sent."
 - The card also offers "Later today · or skip to the easier ones".
 
@@ -171,6 +171,6 @@ After about 25 minutes of deciding, a card suggests a pause: "N minutes of decid
 </Callout>
 
 - **End the day** (called **Before you go** in the evening) lets you "Queue up to three things to run overnight…", shows a forecast ("By morning · about X–Y steps", labelled *estimate*), and offers **Seal the day**: "Notifications stay quiet until 9:00. Asks wait safely."
-- At night, Home reads "Nothing needs you until morning." with "Sealed until …", **See the morning (demo)** and **Unseal**.
+- At night, Home reads "Nothing needs you until morning." with "Sealed until …" and **Unseal**.
 - In the morning, a recap — **Last night**, or **While you were away · N nights** — compares the steps done with the forecast.
 - **Found while working** shows up to two things agents noticed along the way.

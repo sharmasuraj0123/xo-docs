@@ -1,214 +1,230 @@
 ---
 title: Troubleshooting
-description: What the messages in XO Cowork mean and how to fix the common problems, from a stopped engine to refused worktrees.
+description: What the messages in XO Cowork mean and what to do about them, from a lost connection to a thread that won't start.
 icon: CircleHelp
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  Most problems show up as one calm line above the composer, or as a short error title on a message you sent. Find the message below to see what caused it and what to do. Error codes in `code` font are what the API returns, if you are calling it directly.
+  Most problems show up as one calm line above the message box, or as a short title on a message you sent. Find the words you see below, then follow what to do. Nothing you've typed is lost while Cowork waits for a problem to clear.
 </Lead>
 
-## Where to look first
-
-| Where | What it tells you |
-| --- | --- |
-| `<state>/logs/quirq.log` | The server's own log. `<state>` is `QUIRQ_STATE_ROOT`: `./.quirq` beside your projects on an installer setup, `~/.quirq` otherwise. |
-| `<state>/inbox/activity/commands.log` | Every external command XO ran, redacted. |
-| `<state>/engine/turns/<turn id>.jsonl` | The raw, redacted output of the agent CLI for one turn. A line can land in the neighbouring file, so check files next to it by time. |
-| `GET /api/chat/status` | Sessions by state, queued work, account pools, memory, open review items. |
-| `GET /api/chat/runtimes` | Which agent CLIs are installed and logged in. |
-| `GET /api/doctor` | Read-only consistency checks across the whole Space. |
-
-## The engine or server
+## Connection
 
 ### "Can't reach XO · retrying · what you see may be out of date"
 
-**Cause:** the Cowork UI can't reach the XO Space server, or its live stream dropped three times in a row. The proxy returns `502 upstream_unreachable` ("Could not reach the XO API at …").
+**What it means:** Cowork can't reach XO Space right now. What's on screen may be a little behind.
 
-**Fix:** check the server is running (`./install.sh` runs it in the foreground; `./cowork-api.sh status` if you used that script). Check the UI's `XO_API` setting points at it (default `http://127.0.0.1:5002`). The UI keeps retrying, and nothing you've typed is lost.
+**What to do:** check your internet connection. Cowork keeps retrying every few seconds and catches up on its own when XO is back. If you run Cowork yourself, see [If you run Cowork yourself](#if-you-run-cowork-yourself).
 
 ### "XO's chat engine isn't running · retrying · nothing you write is lost"
 
-The server is up but storm, its chat engine, isn't. Storm's routes answer `503` with a code that says why:
+**What it means:** XO Space is up, but the part that runs your agents is starting or has stopped.
 
-| Code | Cause | Fix |
-| --- | --- | --- |
-| `engine_elsewhere` | Another XO Space server (the message names its pid) runs the engine for the same state folder. | Stop that server, or use it instead. |
-| `store_refused` | The database `<state>/engine/xo.db` was made by a newer or older storm build. | Run the matching version, or move the file aside and restart. |
-| `store_failed` | The database couldn't be written: disk full, held by another process, or damaged. | Free disk space, wait a moment and retry, or move a damaged file aside. |
-| `engine_failed` | The engine crashed while starting. | Read `quirq.log`, then restart the server. |
-| `engine_not_running` | The engine hasn't started yet. | Retry in a few seconds. |
+**What to do:** wait a few seconds. If the line stays, restart XO Space.
 
-## The agent
+### "Connecting to XO…"
 
-### "Claude isn't connected · connect it in XO · sending waits until then"
+**What it means:** Cowork has just opened and is loading your workspace.
 
-**Cause:** the agent CLI isn't logged in. The API returns `409 auth_required` ("`{agent}` isn't logged in. Connect it, then send again.").
-
-**Fix:** log the CLI in (for Claude Code, run `claude` and sign in, or connect it from Space Setup). Work waiting in the queue starts as soon as it is connected.
-
-### "No agent can run this" (`no_runtime`, or `501 unsupported`)
-
-**Cause:** the chosen agent has no storm runtime. Today only **Claude Code** runs on storm. Codex and Antigravity runtimes are planned; until then chat with them returns `501 unsupported`.
-
-**Fix:** set `AGENT_NAME=claude_code`, or pick Claude Code in the chat setup.
-
-### "Paused until HH:MM · usage limit · running work finishes, new work waits"
-
-**Cause:** the agent's account hit its usage limit. Turns already running finish; nothing new starts until the reset time.
-
-**Fix:** wait for the reset, or log the CLI into another account. Storm releases idle processes on the old account, so work starts on the new account at once.
-
-### "Paused for your choice · your subscription moved onto paid usage · it's in Needs you"
-
-**Cause:** your subscription moved onto paid extra usage, so storm stopped starting new work.
-
-**Fix:** open **Needs you** and choose **Continue** (until the next limit reset) or **Wait**.
-
-### "Couldn't run your message: it was tried 4 times and each try ended …"
-
-**Cause:** the turn failed with a retryable error four times (the CLI died, or the server stopped mid-turn). Storm gives up on that message after three retries.
-
-**Fix:** read the reason in the message, fix it, then send the message again.
-
-### "Couldn't start this session's CLI 5 times in a row (…)"
-
-**Cause:** the CLI process started but never took its input, five times running.
-
-**Fix:** check the CLI works on its own from a terminal, and check `quirq.log`. Then send any message in that chat or thread to try again.
-
-### "The CLI didn't report it was idle; XO ended the input after 120 s."
-
-**Cause:** the CLI finished without saying so. Storm ended the input for it. Nothing is lost.
-
-**Fix:** nothing needed. If it keeps happening, update the CLI.
-
-## Sending messages
-
-### "The router is off"
-
-**Cause:** routing is set to **Off**, so new messages to the Workspace and projects are refused (`409 router_off`). Replies inside a thread still go through.
-
-**Fix:** **Settings → Routing**, pick **The coordinator** or a decision model.
-
-### "The coordinator is busy" (`coordinator_busy`)
-
-**Cause:** the coordinator was being replaced at the moment you sent, and the retry didn't land either.
-
-**Fix:** use **Retry** on the message.
-
-### "This project was removed" (`chat_retired`)
-
-**Cause:** the project was removed through XO. Its conversation is kept read-only.
-
-**Fix:** add the project again to start a new conversation.
-
-### "Sending now stops N background task(s)…" (`would_stop_runs`)
-
-**Cause:** in a chat, **Send now** interrupts the running turn, which also stops its sub-agents or background shells.
-
-**Fix:** choose **Add to the turn instead**, or **Stop them and send**. Over the API, resend with `confirm_stop_runs` set to the count.
-
-### "This message reached no one: …"
-
-**Cause:** a decision model routed your message, but the coordinator it fell back to couldn't start.
-
-**Fix:** fix the reason shown (usually the agent isn't connected), then send the message again.
-
-### Composer error titles
-
-| Title on your message | Meaning |
-| --- | --- |
-| The router is off | Routing is off; see above. |
-| This project was removed | The project's chat is retired. |
-| The agent isn't connected | The CLI isn't logged in. |
-| No agent can run this | The agent has no storm runtime. |
-| The coordinator is busy | Retry the message. |
-| This thread is gone | The thread no longer exists. |
-| XO's chat engine isn't running | Storm is down; see above. |
-| No answer from XO | The request timed out (20 s for writes, 30 s for reads). Retry. |
-| Not supported by this agent | `501`: the agent can't do this. |
-| Refused by the proxy | `403` from the Cowork UI's proxy; see below. |
-| Can't reach XO | Network error or `502`. |
-
-Every failed message has **Retry** and **Edit**. Edit puts the text (and its `@project`) back in the composer.
-
-## Threads and worktrees
-
-### A thread won't start: worktree refused
-
-Storm gives each thread its own git checkout. If it can't, the thread waits for your next message and says why:
-
-| Code | Cause | Fix |
-| --- | --- | --- |
-| `no_commit` | The project's git repository has no commit yet. | Commit once, then send again. |
-| `not_a_repository` | The folder looks like git but isn't a usable repository. | Repair or re-init it. |
-| `worktree_folder_taken` | Something already exists at `.xo/worktrees/thread-<ts>`. | Move that folder away. |
-| `unsafe_worktree_folder` | `.xo` is a symbolic link. | Make `.xo` a plain folder. |
-| `worktree_not_this_threads` | The folder belongs to a different thread. | Move it away. |
-| `branch_names_taken` | No free `xo/thread-*` branch name. | Delete old `xo/thread-*` branches. |
-
-A project that isn't a git repository at all still works: its threads run in the project folder, with a note saying so.
-
-### "Has work not kept anywhere else" when removing a worktree
-
-**Cause:** the checkout has uncommitted changes, untracked files, or commits that exist on no other branch (`409 would_lose_work`).
-
-**Fix:** keep it, or merge or push the work first. To delete anyway, use **Hold to remove**; the UI lists exactly what will be lost.
-
-### "Its agent is still using it" (`session_busy`)
-
-**Fix:** stop the thread, or wait until it goes quiet, then remove the checkout.
-
-### A thread paused itself
-
-**Cause:** the agent hit the same denied step three times in a row, or kept getting denied, so XO paused it.
-
-**Fix:** send the thread a message to resume it, or start a fresh thread.
-
-## Rules and memory
-
-### `rule_sentence_mismatch`
-
-**Cause:** the rule sentence sent with a decision isn't exactly the sentence the server would write for that rule. The response includes the correct `sentence`.
-
-**Fix:** reload the item and decide again. Over the API, send the returned `sentence` as `rule_sentence`.
-
-### `version_conflict` (memory)
-
-**Cause:** an agent tried to update a memory file that changed since it last read it.
-
-**Fix:** none needed; the agent gets the current content and merges. This is how memory stays safe with several writers.
-
-### `looks_like_a_secret` (memory)
-
-**Cause:** the text matched a key pattern (`sk-ant-`, `ghp_`, `AKIA…`, a private key…). Memory never stores secrets.
-
-**Fix:** keep secrets in Space **Setup → Secrets**, not in memory.
-
-## The Cowork UI and its proxy
-
-### "Refused by the proxy" (`403`)
-
-| Code | Cause | Fix |
-| --- | --- | --- |
-| `cross_origin` | The request came from a page the proxy didn't serve. | Open the UI from its own address (default `http://127.0.0.1:5180`). |
-| `not_forwarded` | The route exposes secret values, raw files or file writes, so the UI proxy never forwards it. | Use the XO Space server directly for those. |
-
-Other proxy answers: `400 bad_target` (a path with `#` or `.`/`..` segments), `413 too_large` (a body over 1 MiB).
+**What to do:** nothing. Sending is allowed as soon as it connects.
 
 ### "Signed out of the workspace. Reopen this app from XO."
 
-**Cause:** in a hosted (Coder) workspace, your session token expired and the request was sent to sign-in.
+**What it means:** your sign-in to the hosted workspace expired.
 
-**Fix:** reopen the app from XO.
+**What to do:** go back to XO and open Cowork again from there.
 
-### "Live" is showing but nothing happens
+### The **Live** badge shows, but nothing happens
 
-The **Live** badge only says the UI is using your real workspace rather than the demo. It isn't a connection light. Check the line above the composer for the connection state.
+**What it means:** **Live** only says you're looking at your real workspace rather than the demo. It isn't a connection light.
+
+**What to do:** look at the line above the message box. It tells you whether Cowork is connected.
+
+## Your agent
+
+### "Claude isn't connected · connect it in XO · sending waits until then"
+
+**What it means:** Claude Code isn't signed in, so no agent can start.
+
+**What to do:** sign Claude Code in from XO Space's setup, or by running `claude` in a terminal and logging in. Work that was waiting starts as soon as it's connected.
+
+### "Paused until HH:MM · usage limit · running work finishes, new work waits"
+
+**What it means:** your agent account reached its usage limit. Anything already running is allowed to finish. New work waits until the time shown.
+
+**What to do:** wait for the reset, or sign Claude Code in to another account. Waiting work then starts on the new account right away.
+
+### "Paused for your choice · your subscription moved onto paid usage · it's in Needs you"
+
+**What it means:** your subscription has moved onto paid extra usage. Cowork won't spend that without asking you.
+
+**What to do:** open **Needs you** and choose **Continue** (until your next limit reset) or **Wait**.
+
+### "Couldn't run your message: it was tried 4 times and each try ended …"
+
+**What it means:** the agent kept stopping partway through your message, so Cowork gave up after four tries. The reason follows in the message.
+
+**What to do:** fix what the reason says (often the agent isn't signed in), then send your message again.
+
+### "Couldn't start this session's CLI 5 times in a row"
+
+**What it means:** Claude Code failed to start five times in a row.
+
+**What to do:** check Claude Code works on its own: open a terminal and run `claude`. Then send any message in that thread or chat to try again.
+
+## Sending messages
+
+### "Sending is paused · …"
+
+The message box tells you why it won't send:
+
+| Reason | What to do |
+| --- | --- |
+| "XO's chat engine isn't running" | Wait, or restart XO Space. |
+| "Can't reach XO right now" | Check your connection; Cowork retries on its own. |
+| "Connecting to XO…" | Wait a moment. |
+| "X isn't connected" | Sign the agent in. |
+| "The router is off" | Turn routing back on in **Settings → Routing**. Replies inside a thread still work. |
+| "This chat has ended" | Start a new chat from **Chats**. |
+
+### A message shows an error title
+
+Every message that didn't send has **Retry** and **Edit**. **Edit** puts your words (and any `@project`) back in the box.
+
+| Title | What it means | What to do |
+| --- | --- | --- |
+| "The router is off" | New messages to the Workspace and projects are turned off. | Turn routing on in **Settings → Routing**, or reply inside a thread. |
+| "This project was removed" | The project no longer exists in XO. Its conversation stays readable. | Create or add the project again. |
+| "The agent isn't connected" | Claude Code isn't signed in. | Sign it in, then **Retry**. |
+| "No agent can run this" | No agent that can do this work is set up. Today Cowork works with Claude Code. | Set up Claude Code. |
+| "The coordinator is busy" | The coordinator was in the middle of a handover. | **Retry**. |
+| "This thread is gone" | The thread no longer exists. | Write to the project to start new work. |
+| "XO's chat engine isn't running" | XO Space is starting or stopped. | Wait, then **Retry**. |
+| "No answer from XO" | XO didn't answer in time. | **Retry**. |
+| "Not supported by this agent" | The agent can't do this yet. | Try it another way, or with another agent. |
+| "Refused by the proxy" | The page you used isn't allowed to send this. | Reload Cowork from its own address. |
+| "Can't reach XO" | Your connection or XO Space is down. | Check the connection, then **Retry**. |
+
+### "This message reached no one: …"
+
+**What it means:** your message was routed, but the coordinator it should go to couldn't start. The reason is in the message.
+
+**What to do:** fix the reason (usually Claude Code isn't signed in), then send it again.
+
+### "The coordinator couldn't answer: …"
+
+**What it means:** the coordinator ran into a problem while replying.
+
+**What to do:** read the reason, then send your message again.
+
+### "Sending now stops N background task(s)…"
+
+**What it means:** in a chat, **Send now** would stop work the chat started in the background.
+
+**What to do:** choose **Add to the turn instead** to let that work carry on, or **Stop them and send**.
+
+### "Couldn't stop it"
+
+**What it means:** the stop didn't go through.
+
+**What to do:** press **Retry** on that line.
+
+## Decisions
+
+### "Not sent: …"
+
+**What it means:** your decision couldn't be delivered. The reason follows: it was already decided elsewhere, the agent withdrew the ask, or the ask expired.
+
+**What to do:** nothing in most cases. If the agent still needs something, it will ask again.
+
+### "A beat to read it first."
+
+**What it means:** you pressed Allow very quickly on an ask worth reading.
+
+**What to do:** read the card, then allow it.
+
+### "Released early. Nothing was sent."
+
+**What it means:** a destructive ask needs you to hold the button, and you let go too soon.
+
+**What to do:** hold **Hold to allow** until it completes.
+
+### A secret field says XO can't carry it
+
+**What it means:** the agent asked for a secret, but it isn't waiting on that question any more, so Cowork won't keep your secret.
+
+**What to do:** choose **Open the thread** and answer there when the agent asks again.
+
+## Threads
+
+### A thread won't start and explains why
+
+Each thread in a git project works in its own copy of the project. If Cowork can't make one, the thread says why and waits for your next message:
+
+| What the thread says | What to do |
+| --- | --- |
+| The project has no commit yet | Make one commit in the project, then send again. |
+| The folder isn't a usable git repository | Fix the repository, then send again. |
+| Something is already in the way of the thread's folder | Move that folder away, then send again. |
+| The project's XO folder is a link | Make it a normal folder. |
+
+A project that isn't a git repository at all still works. Its threads work directly in the project folder, and the thread says so.
+
+### A thread paused itself
+
+**What it means:** the agent kept trying something that wasn't allowed, so Cowork paused it rather than let it loop.
+
+**What to do:** send the thread a message to get it going again, ideally with a different approach, or start a fresh thread.
+
+### Working, but nothing seems to change
+
+**What it means:** **Working** means the agent really is busy. Some steps take a while.
+
+**What to do:** open the thread to see its current step and the checklist. To stop it, use **Stop** (it keeps what's done).
+
+## Worktrees
+
+These appear in **Settings → Worktrees** when you remove a thread's copy of the project.
+
+| What you see | What it means | What to do |
+| --- | --- | --- |
+| "Has work not kept anywhere else" | Removing it would delete changes that exist nowhere else. | Keep it, or save the work first. To remove anyway, use **Hold to remove**: Cowork lists exactly what will be lost. |
+| "Its agent is still using it" | The thread's agent is working in it. | Stop the thread, or try again once it has gone quiet. |
+| "XO didn't make this checkout, so it won't remove it" | It was made by something other than Cowork. | Remove it yourself if you no longer need it. |
+| "The checkout is already gone" | It was already deleted. | Nothing. |
+
+## Files and sub-agents
+
+| What you see | What it means |
+| --- | --- |
+| "This file is in a folder XO doesn't serve to the UI yet." | Cowork only opens files inside the thread's project. Use **Copy the path** to open it yourself. |
+| "This file isn't there any more." | The file was moved or deleted after the agent shared it. |
+| "Showing the first X of Y. The rest isn't previewed." | Large files are only partly shown. Open the file itself to see the rest. |
+| "This agent can't show a sub-agent's work." | Your agent doesn't share what its helpers did. |
+| "Its transcript is gone." | The record of that helper's work is no longer available. |
+| "Messaging a sub-agent isn't possible; talk to its thread instead." | Write in the thread; its agent passes it on. |
+
+## Creating a project
+
+| What you see | What to do |
+| --- | --- |
+| "Give the project a name." | Type a name. |
+| "Use at least one letter or number in the name." | Add a letter or number. |
+| "There's already a project called “x”. Pick another name." | Choose a different name. |
+| "Can't create yet: the projects folder is unknown. Is the XO API running?" | Make sure XO Space is running, then try again. |
+
+## If you run Cowork yourself
+
+If you host Cowork on your own machine and it can't connect, or the agent never starts:
+
+1. **Make sure XO Space is running.** Start it again the way you installed it. Keep its terminal open: closing it stops XO Space.
+2. **Make sure Cowork is running** and you opened it from its own address.
+3. **Check Claude Code is installed and signed in.** Open a terminal, run `claude`, and sign in if asked.
+4. **Run only one XO Space per workspace.** A second copy pointed at the same projects can't run your agents. Stop the extra one.
+5. **Restart XO Space.** Most "isn't running" lines clear after a restart.
 
 <Callout type="info">
-  Still stuck? Run `GET /api/doctor`, look at `quirq.log`, and [open an issue](https://github.com/quirq-ai/xo-space/issues) with what you found.
+  Still stuck? See the general [Troubleshooting](/docs/troubleshooting) guides, or use **Ask AI** at the bottom of this page. Include the exact message you see and what you were doing.
 </Callout>

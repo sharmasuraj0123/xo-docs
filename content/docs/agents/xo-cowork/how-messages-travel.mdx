@@ -1,179 +1,103 @@
 ---
-title: How Messages Travel
-description: How a message moves between you, the Workspace coordinator, project coordinators and threads, and how routing, decision models and hops work.
+title: How Your Messages Are Handled
+description: Where a message goes depending on where you write it, what coordinators do with it, and how you can follow it.
 icon: Workflow
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  Every message you write lands in one of three places: the Workspace, a project, or a thread. A thread reply goes straight to its agent. A message to the Workspace or a project is **routed**: its coordinator, or a fast decision model, decides whether to answer, forward the work, or start a thread. Every hand-off between layers is recorded as a **hop**.
+  Where your message goes depends on where you write it. A reply in a thread goes straight to that thread's agent. A message to the Workspace or to a project goes to its coordinator, which decides whether to answer you, pass the work on, or start a thread.
 </Lead>
 
-## The big picture
+## The short version
 
 ```text
-                    You
-         ┌───────────┼──────────────────────┐
-         │           │                      │
-         ▼           ▼                      ▼
-   ┌───────────┐  ┌──────────────────┐  ┌──────────┐
-   │ Workspace │  │ Project          │  │ Thread   │  replies go straight
-   │ coord.    │─▶│ coordinator      │─▶│ agent    │  to the thread's agent
-   └───────────┘  └──────────────────┘  └──────────┘
-     forward_to_    start_thread_session    reply
-     project        message_thread          message_coordinator
-         ▲                │   ▲                 │
-         │  ask_workspace │   │  status hop     │
-         └────────────────┘   └─────────────────┘
-                              after every input
+  You write in…            It goes to…
+  ─────────────            ───────────
+  the Workspace     ──▶    Workspace coordinator ──▶ the right project(s)
+  a project         ──▶    that project's coordinator ──▶ answer, or a thread
+  "@billing-api …"  ──▶    billing-api's coordinator, as new work
+  a thread          ──▶    that thread's agent, directly
 ```
 
-Each layer talks only to its neighbours. A thread reaches only its own coordinator. Only a project coordinator can ask the Workspace. The Workspace reaches threads only through their projects.
+## Writing to the Workspace
 
-## Writing in a thread
+The Workspace coordinator sees all your projects. Write to it when you aren't sure where something belongs, or when it touches several projects.
 
-A reply in a thread goes straight to that thread's agent, as an urgent input. It never passes through the coordinator. The router setting doesn't apply here, so a thread takes your replies even when routing is **Off**.
+It will:
 
-A reply to a **Resolved** or **Paused** thread reopens it. The project coordinator still hears about it: after the thread's next input, the coordinator's status report lists any messages you sent the thread directly. The coordinator is told to treat those as your instructions and never contradict them.
+- **answer you itself**, for questions it can answer by looking around;
+- **pass your message to a project**, once per project it concerns; or
+- **suggest a new project**, if the work fits none of them. You decide whether to create it.
 
-## Writing to the Workspace or a project
+Once it has passed something on, the Workspace coordinator steps back. The project takes it from there.
 
-A message on a chat's timeline is routed by the **router**. The Space has one router setting, and each chat can override it.
+## Writing to a project
 
-| Mode | Shown in Settings as | What happens |
-|---|---|---|
-| `agent` (default) | **The coordinator** | The chat's coordinator reads your message and decides itself: answer, forward, or start a thread. |
-| `decision` | the decision model's name | A small, fast model routes the message. When it isn't sure, the coordinator decides. |
-| `off` | **Off** | New messages to the Workspace and projects are refused with `409 router_off`. Threads still take your replies. |
+A project's coordinator knows that project. It answers quick questions after reading the code. Any change to the project goes to a thread:
 
-### The coordinator routes
+- If a thread is already working on the same thing, the coordinator passes your message to it.
+- Otherwise it starts a new thread, gives it a short title and a brief, and chooses a model for the job.
 
-In the default mode, your message wakes the chat's coordinator, which starts first if it isn't running.
+Coordinators never change files themselves. Every change happens in a thread you can open and follow.
 
-The **Workspace coordinator** answers questions itself, after reading code if needed, and never guesses. For work it takes one of these steps:
+## Aiming with @project
 
-- **`forward_to_project`:** used once per project that should act. Your original messages are copied into the project chat word for word, marked as forwarded from the Workspace. Its own note is added only for what the project needs beyond your words.
-- **`propose_project`:** used when the work fits no existing project. This opens a **Needs you** item. Nothing is created until you allow it.
-- **`no_such_project`:** used when you named a project that doesn't exist.
+Type `@` in the message box to pick a project. The line above the box changes to **New work for billing-api** (for example), and the message goes straight to that project's coordinator.
 
-After forwarding, it stops. It never predicts what the project will do.
+This works from anywhere, even from inside a thread. If you type an `@project` name in a thread, your message goes to that project as new work, not as a reply in the thread.
 
-The **project coordinator** answers quick questions after reading the code. Any change to the repository goes to a thread:
+## Replying in a thread
 
-1. It checks the existing threads first.
-2. A follow-up to existing work goes to that thread with `message_thread`. This reopens it if it was resolved.
-3. New work starts a thread with `start_thread_session`. One transaction creates the thread and its session, posts a short acknowledgement on the timeline and in the thread, records a `brief` hop, and wakes the new thread with the brief followed by your message.
+A message you write inside a thread goes **straight to its agent**. The coordinators aren't involved. Use this to steer the work, answer a question, or add detail.
 
-Unrelated tasks become separate threads. A brief carries only what the thread needs beyond your words. Coordinators never invent deliverables, tests or checklists.
+- Replying to a **Resolved** thread reopens it.
+- Replying to a **Paused** thread lets it continue.
 
-### A decision model routes
+## How threads report back
 
-When a decision model routes, your message is stored first, then routed in the background:
+After each stretch of work, a thread tells its project coordinator how it's going. If a thread needs something only the coordinator knows, it asks. If the coordinator doesn't know either, it can ask the Workspace.
 
-- **In the Workspace**, the model is asked which projects your message concerns, as tags. Each tagged project gets the message forwarded. If several are tagged, each gets a note to act only on its own part. The Workspace then posts "Sent to …".
-- **In a project**, the model picks an intent: `new_task`, `follow_up`, `question` or `chat`.
-  - `new_task` starts a thread. Its title is your first sentence, up to 60 characters, and the thread says "On it, starting a thread."
-  - `follow_up` with a confident match sends the message to that thread and posts "Sent to" with a link.
-  - `question` and `chat` go to the coordinator to answer.
-- **When it isn't sure**, the coordinator takes over with a note explaining why. This happens when the model's confidence is below the **When it isn't sure** threshold (default 50%), when it fails, or when it routes nothing.
+When a thread needs a decision from **you**, it doesn't go through the coordinators. It appears under **Needs you**. Coordinators may add a note to help you decide, but only you decide.
 
-If the server restarts in the middle of routing, the message goes to the coordinator at the next start. If no coordinator can start, the timeline says: "This message reached no one: …. Send it again once that is fixed."
+## Seeing where your message went
 
-#### Decision models
+On the Workspace and in projects, your messages show where they went. A small line under your message reads, for example, **Routed to billing-api**. Click it to jump there. A message passed on from the Workspace shows **Forwarded by the Workspace**.
 
-Two providers are supported: **Sage** (Levanto, default model `sage`) and **Jev** (TypeSafe, default model `jev-latest`). You connect one in **Settings → Routing**:
+If you'd like to see every hand-off inside threads too, turn on **Settings → General → Show how messages travel**. Each time a message passes between the Workspace, a project's coordinator and a thread, a quiet line appears. For example:
 
-- Its API key is saved in `<state>/secrets/router.env` with file mode 0600. It is never shown again and is hidden from agents.
-- A routing call times out after 8 seconds and sends at most 4,000 characters of your message.
-- At most 20 existing threads are offered as follow-up choices.
-- Disconnecting the model the Space uses sets routing back to **The coordinator**.
+- "Forwarded by the Workspace"
+- "The billing-api coordinator passed on your message"
+- "This thread reported back to the billing-api coordinator"
 
-When the Workspace routes with a decision model and its coordinator proposes a new project, the model is also asked whether an existing project already owns that work. A confident match is shown on the proposal as a suggestion. It is never applied for you.
+Lines may end with " · not taken up yet" or " · answered". This setting is off unless you turn it on.
 
-#### Per-chat routing
+## Choosing who routes your messages
 
-Any project or the Workspace can have its own routing, set from the model chip in the composer. **Settings → Routing → Chats with their own routing** lists them, and **Use the Space's** clears an override.
+**Settings → Routing** decides who reads a new message to the Workspace or a project and decides where it goes. A reply inside a thread always goes straight to its agent, whatever you choose here.
 
-## Aiming a message with @project
+| Option | What happens |
+| --- | --- |
+| **The coordinator** | The coordinator reads your message and decides itself: answer, pass it on, or start a thread. This is the default. |
+| A decision model | A small, fast model decides where the message goes. When it isn't sure, the coordinator decides instead. |
+| **Off** | New messages to the Workspace and projects are refused. Threads still take your replies. |
 
-In the Cowork UI composer, type `@` to pick a project, or type `@billing-api`. Only a name that matches a known project, or the Workspace, counts. The token is removed before sending, and your message goes to that project's chat as new work, even if you were in a thread. The line under the composer says where it goes: **New work for billing-api**, or **No project called x** for an unknown name.
+To use a decision model, connect it first in **Settings → Routing → Decision models** with its API key. The key stays on your machine and is never shown again. Then choose how sure it must be under **When it isn't sure**. Below the level you pick, the coordinator decides.
 
-`@project` is a UI shortcut that picks the target chat. The server has no mention syntax: routing inside the Workspace is done by its coordinator or the decision model.
+You can also set routing for one conversation only, from the model chip next to the message box. Conversations with their own routing are listed in **Settings → Routing**, each with **Use the Space's** to go back to the shared setting.
 
-## Threads report back
+## Choosing a model
 
-After every input a thread finishes, XO writes a `status` hop to its project coordinator. The hop carries:
+The chip next to the message box shows what's in effect, such as **Auto · Router**.
 
-- the thread's card;
-- its last reply;
-- any messages you sent the thread directly;
-- any decisions you made on its review items.
+- **In the Workspace or a project**, choose who routes new messages and which model the coordinator uses.
+- **In a thread**, see the model chosen for that thread and pin a different one, along with how much effort it should spend, from **Quick** to **Deepest**.
 
-The coordinator usually notes it and moves on.
+Changes apply from the agent's next step. **Back to Auto** returns to the default.
 
-A thread can also message its coordinator on its own with `message_coordinator`. The coordinator is asked to answer with `message_thread`, and that answer is recorded as an `answer` hop.
+When a coordinator starts a thread, it picks a model and effort that suit the task: more effort for hard work, less for small changes. You can always change it from the thread's chip.
 
-When a thread raises a question or asks permission, its coordinator is woken too. It may add a note to the item, but it is told never to decide it. Only you decide.
+## Long conversations
 
-A project coordinator that needs something from the Workspace uses `ask_workspace`. The answer comes back as a forward carrying only a note.
-
-## The reply gate
-
-Coordinators and threads speak only through XO's tools: `post_message`, `reply`, `react`, `no_reply_needed`, a forward, starting a thread, and so on. Bare text from the agent reaches no one.
-
-If an agent ends an input without answering, XO reminds it once, listing the tools that would count. If it is still silent, the event `turn.unanswered` is recorded and a thread's card turns to failed. Plain Chats have no gate.
-
-## Hops: how messages travel, made visible
-
-Each hand-off is a hop with a kind and a state.
-
-| Kind | Recorded when |
-|---|---|
-| `forward` | The Workspace copies your messages into a project |
-| `relay` | An agent passes a note to another layer |
-| `brief` | A project coordinator starts a thread |
-| `ask` | A project asks the Workspace, or XO tells a coordinator about a thread's question or an integrity change |
-| `status` | A thread finishes an input and reports to its coordinator |
-| `answer` | A relay or ask is answered |
-
-A hop moves one way: `sent` → `delivered`, when the receiver's turn takes it → `answered`. Reporting back up marks the earlier hops that came down as answered.
-
-Turn on **Settings → General → Show how messages travel** to see hops as quiet lines inside a thread. The lines read, for example:
-
-- **Forwarded by the Workspace**
-- **The billing-api coordinator passed on your message**
-- **This thread reported back to the billing-api coordinator**
-
-Some lines end with **· not taken up yet** or **· answered**. The setting is off by default and stored per browser. A message you wrote elsewhere and that was relayed into a thread always shows, whatever the setting, as **You, in the Workspace · passed on by billing-api's coordinator**.
-
-## Model and effort for new threads
-
-When a project coordinator starts a thread, it must choose a model and an effort from the thread agent's catalog: high effort for hard work, lower for small tasks. A decision model is asked the same as two extra questions. A thread gets its own choice; a chat's pin applies only to its coordinator.
-
-If the catalog can't be read within 5 seconds, the choice becomes optional. If the choice isn't valid, the thread runs on the default model and effort, and a note in the thread says why. You can change a thread's model and effort later from its model chip. The change applies from its next turn.
-
-## Coordinators are recycled
-
-A coordinator's conversation can't grow forever. Between inputs, never while busy, XO replaces a coordinator with a fresh one when any of these happens:
-
-| Trigger | Threshold |
-|---|---|
-| Inputs taken | 30 |
-| Age | 24 hours |
-| Context of its last turn | over 120,000 tokens, if the runtime reports it |
-| Its preset changed | prompt, tools, permissions or messaging setup |
-| The chat was pinned to another agent | at the next boundary |
-
-The successor starts from a handoff. The handoff contains:
-
-- the memory index;
-- up to 20 threads with their cards;
-- the last 30 timeline messages;
-- a list of threads that need a reply, need approval, failed or are paused.
-
-Queued messages move to the successor. Threads are never recycled.
-
-<Callout type="info">
-  The tools named on this page are listed with their arguments in [Agent tools](/docs/agents/xo-cowork/agent-tools). The HTTP side, including `/api/chat/router` and `/api/chat/chats/{chat}/hops`, is in the [Chat API](/docs/agents/xo-cowork/api).
-</Callout>
+Coordinators can keep going for days. From time to time Cowork refreshes a busy coordinator behind the scenes, so it stays quick and focused. Nothing is lost: the fresh coordinator picks up its notes, the open threads and the recent conversation, and carries on without greeting you again.

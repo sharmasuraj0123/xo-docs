@@ -1,133 +1,100 @@
 ---
 title: Concepts
-description: The words Cowork uses, from the Workspace and coordinators to threads, hops, review items, rules, worktrees, sessions and pools.
+description: The words you'll meet in Cowork, from the Workspace and coordinators to threads, decisions, rules and worktrees.
 icon: BookOpen
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 
 <Lead>
-  Cowork has a small vocabulary. This page defines each term in a few sentences and links to the page that covers it in depth.
+  Cowork uses a small set of words. Each one is explained here in a few sentences, with a link to the page that covers it in more depth.
 </Lead>
 
 ## Workspace
 
-Your workspace is the folder set by `XO_PROJECTS_ROOT`. Cowork has exactly one **Workspace chat**, whose coordinator works in that folder and sees every project. Write to the Workspace when you don't know, or don't care, which project should take a request. It answers, forwards the work, or proposes a new project.
+Your workspace is the folder that holds all your projects. In the Cowork UI, **Workspace** is also the name of your top-level coordinator. It sees every project, answers questions across them, and passes work to the right project.
+
+Write to the Workspace when you aren't sure where something belongs. See [How your messages are handled](/docs/agents/xo-cowork/how-messages-travel).
 
 ## Project
 
-Every direct, non-hidden sub-folder of the workspace is a project, and each one gets its own **project chat** and coordinator. The chat is created the first time the project is listed. When a project appears later, the Workspace timeline gets a note such as "Project billing-api created."
+Every folder directly inside your workspace is a project. Create one from the sidebar with **Create XO Project**, or add a folder yourself.
 
-A project's `.xo/` folder belongs to XO Space. It holds its identity (`project.json`), todos, work items, peers, and the `worktrees/` folder for threads. `.xo/` is committed with your code, except `worktrees/`. Agents may read `.xo/` but never write it.
+A new project starts with a short `AGENTS.md` file. Add your own instructions below the existing lines, such as how to build, test and run the project, or anything an agent wouldn't guess. Every agent working in the project reads it.
 
-**Create XO Project** in the Cowork UI scaffolds exactly two things: `.xo/` and a short `AGENTS.md`:
-
-```md
-# AGENTS.md
-
-This folder is an XO Space project. For any agent working here:
-
-- `.xo/` belongs to XO Space (identity, todos, work items, peers). Read it if useful; never edit it, except to resolve git conflict markers in a `.xo/` file.
-- Record the project's todos through XO Space, not only in a native todo tool, which nobody else sees.
-- Keep your work inside this folder.
-```
-
-Add your project's own instructions below that: how to build, test and run it, and what an agent wouldn't guess.
+<Callout type="info">
+  Each project also has a hidden `.xo` folder. Cowork manages it for you, so please don't edit it.
+</Callout>
 
 ## Coordinator
 
-A coordinator is the agent that speaks for a chat. There is one for the Workspace and one for each project. Coordinators are **read-only**:
+A coordinator is the agent that speaks for the Workspace or for a project. It reads your message and decides what to do:
 
-- **They can:** read, search and list files, run `git log`, `git show` and `ls`, and use XO's own messaging tools.
-- **They can't:** edit, create or delete files, fetch from the web, search the web, create worktrees, or schedule work. XO enforces this in policy, not only in the prompt.
+- answer you itself;
+- pass the work on, for example from the Workspace to a project; or
+- start a thread for real work.
 
-Any change to a repository goes to a thread. A coordinator ends each of its turns by replying, forwarding or starting a thread, never with silent text. A coordinator is replaced by a fresh one every 30 inputs or 24 hours, handing over its memory and open work. See [How messages travel](/docs/agents/xo-cowork/how-messages-travel).
+Coordinators only read and delegate. They never change your files themselves, so any change to a project always happens in a thread you can follow.
 
 ## Thread
 
-A thread is one task with its own agent. It starts from a message on a project's timeline. It runs in its own git checkout at `<project>/.xo/worktrees/thread-<ts>`, on a branch named `xo/thread-` plus six hex characters. If the project isn't a git repository, the thread works in the project folder itself and is told so.
+A thread is one piece of work. It has its own agent, a live checklist of steps, and its own copy of the project to work in. You can open a thread at any time to read what its agent is doing, reply to it, or stop it.
 
-A thread keeps a checklist, using `○` to do, `✱` in progress and `✓` done, and it replies to you in the thread. It asks you before anything destructive. Its agent is fixed for its whole life, but you can change its model and effort.
+The thread's state appears as a badge:
 
-| Stored state | Meaning | The UI shows |
-|---|---|---|
-| `working` | Its agent is on it, or waiting for its coordinator | **Working** while the session is busy, **Idle** when it has gone quiet |
-| `needs_reply` | It replied with steps left, or its last turn was stopped | **Needs you** (reply in words), or **Stopped** after a stop |
-| `needs_approval` | A permission, question or blocking ask is open | **Needs you** |
-| `done` | It replied and every checklist step is ✓ | **Done** |
-| `failed` | Its input failed, or it ended without replying | **Stopped** |
-| `paused` | XO paused it after repeated denied actions | **Paused** |
-| `resolved` | You or an agent marked it finished | **Resolved** |
+| State | What it means |
+| --- | --- |
+| **Working** | The agent is busy right now. |
+| **Idle** | The thread is open, but its agent isn't doing anything at the moment. |
+| **Needs you** | The agent is waiting for your decision or reply. |
+| **Paused** | XO paused the thread, for example because it kept trying something you'd refused. Send a message to continue. |
+| **Done** | Every step on its checklist is finished. |
+| **Stopped** | The work was stopped, or ended before it could finish. |
+| **Resolved** | You, or its coordinator, marked it finished. Reply to reopen it. |
 
-A new message reopens a resolved or paused thread. See [Threads](/docs/agents/xo-cowork/using-cowork/threads).
+See [Threads](/docs/agents/xo-cowork/using-cowork/threads).
 
-## Chat (plain chat)
+## Chat
 
-Under **Chats** you talk to one agent in one folder, outside the coordinators. A plain chat has no system prompt and no reply gate, so the CLI's own answer is the reply. You choose its folder, agent, model, effort and what it may do. "Bypass" is never offered. See [Chats](/docs/agents/xo-cowork/using-cowork/chats).
+A chat is a direct conversation with one agent in one folder, outside the coordinators. Use it for quick questions or one-off tasks. Chats live under **Chats** in the sidebar. See [Chats](/docs/agents/xo-cowork/using-cowork/chats).
 
-## Card
+## Needs you (decisions)
 
-A card is a thread's one-line status. XO computes it from rules after each input, never from the agent's own claim. It holds a state, a headline, what happened, and what the thread needs from you. Cards drive the thread chips and the **Now** strip in the UI.
+When an agent needs something from you, it asks. Examples:
 
-## Hop
+- permission to run a command;
+- an answer to a question;
+- approval of a plan;
+- approval to create a project or a scheduled job.
 
-A hop is one recorded hand-off between layers: the Workspace forwarding to a project, a coordinator briefing a thread, or a thread reporting back. There are six kinds: `forward`, `relay`, `brief`, `ask`, `status` and `answer`. A hop moves from `sent` to `delivered` to `answered`. Turn on **Show how messages travel** in Settings to see hops as quiet lines inside threads.
-
-## Review item ("Needs you")
-
-A review item is anything that waits on you:
-
-- a permission for an action;
-- a question;
-- an approval of a plan or a risky step;
-- an action only you can take;
-- a proposed project or job;
-- a usage-limit choice;
-- an integrity warning;
-- a suggestion to pause a stuck thread.
-
-Its risk is computed by XO's policy, never claimed by the agent. Items are listed most destructive first, then blocking, then oldest. Each item can be decided once, and only by you. See [Home and decisions](/docs/agents/xo-cowork/using-cowork/home-and-decisions).
+These asks collect under **Needs you**. Home shows the one most worth your time as **Your next move**. You can allow, send back with a note, or answer in words. Risky asks are marked **Destructive** and need you to hold the button to confirm. See [Home and decisions](/docs/agents/xo-cowork/using-cowork/home-and-decisions).
 
 ## Rule
 
-A rule lets agents do one thing without asking. Only you make rules, from a decision (**Make it a rule**), and the rule's sentence is shown to you word for word. XO also ships a few safe default rules, such as reading inside the project and read-only git, and you can revoke any of them. See [Permissions and rules](/docs/agents/xo-cowork/permissions-and-rules).
+A rule lets agents do something without asking you again, such as "In billing-api, run `npm test` without asking". You make a rule while deciding an ask, with **Make it a rule**. The rule is saved word for word as you saw it.
+
+Agents can never create or change rules. You can see and revoke your rules in **Settings → Rules**. See [Permissions and rules](/docs/agents/xo-cowork/permissions-and-rules).
 
 ## Worktree
 
-A worktree is a thread's own git checkout. XO removes one by itself only when nothing would be lost, a week after the thread was resolved. You can remove one sooner from **Settings → Worktrees**, and XO shows exactly what would go first. See [Worktrees](/docs/agents/xo-cowork/worktrees).
+A worktree is a thread's own copy of the project. Each thread works on its own branch in its own copy, so several threads can work on the same project at once without getting in each other's way. Your main copy of the project is untouched until you decide to bring changes in.
+
+Cowork removes a worktree by itself only when nothing would be lost. You can also remove one sooner from **Settings → Worktrees**. See [Worktrees](/docs/agents/xo-cowork/worktrees).
 
 ## Memory
 
-Each coordinator keeps markdown memory files: an index, `MEMORY.md`, plus one file per memory. They live in XO's state folder, not in your project. Coordinators write memory; threads can read their project's. Memory refuses anything that looks like a secret. See [Memory and jobs](/docs/agents/xo-cowork/memory-and-jobs).
+Coordinators keep short notes of what they've learned about you and your projects, such as preferences you've stated. This lets them pick up where they left off, even after a long conversation. Threads can read their project's notes. Memory never holds passwords or keys. See [Memory and scheduled jobs](/docs/agents/xo-cowork/memory-and-jobs).
 
-## Session, turn, input and run
+## Sub-agents
 
-These are the engine's terms. They appear in the API and in the UI's activity views.
+A thread's agent can start helpers of its own, called sub-agents, for parts of the work. They appear in a strip under the thread's checklist. You can watch what each one did and stop any of them.
 
-- **Session:** one agent conversation, on one agent for life. Every coordinator, thread and chat has one.
-- **Turn:** one answer from the CLI. It ends as finished, failed, stopped or interrupted.
-- **Input:** what the agent works on from a message until it goes idle. One input can take several turns.
-- **Run:** a sub-agent or background task inside a session. Runs form a tree you can open, read and stop.
+## Scheduled jobs
 
-An idle agent process is kept for 10 minutes, then released and resumed later from its saved conversation. See [The storm engine](/docs/agents/xo-cowork/engine).
+A scheduled job runs an agent on a schedule, for example "every morning, check for failing tests". Each run opens a new thread in its project. An agent can suggest a job, but nothing is scheduled until you allow it. See [Memory and scheduled jobs](/docs/agents/xo-cowork/memory-and-jobs).
 
-## Pool
+## Usage limits
 
-A pool is one agent account, such as your Claude login. Its state decides what may start:
+Your agent's account has usage limits. When you reach one, Cowork shows a line such as **Paused until 14:00 · usage limit**. Running work finishes and new work waits until the limit resets.
 
-| State | What may start |
-|---|---|
-| `open` | Everything |
-| `warn` | Urgent work only. A window is at least 80% used. |
-| `closed` | Nothing, until the reset. A usage limit was reached. |
-| `paid` | Nothing, until you choose. The account moved onto paid extra usage. |
-
-Turns already running always finish. Cowork shows a closed or paid pool as a line above the composer, such as **Paused until 14:00 · usage limit · running work finishes, new work waits**.
-
-## Job
-
-A job is a scheduled agent run. Each time it fires, it opens a new thread in a project. An agent can propose a job, but nothing is scheduled until you allow it. A job never runs again while its previous run is still working. See [Memory and jobs](/docs/agents/xo-cowork/memory-and-jobs).
-
-<Callout type="info">
-  Storm's chats, threads, sessions and review items use their own API under `/api/chat/*`. See the [Chat API](/docs/agents/xo-cowork/api).
-</Callout>
+If your subscription moves onto paid extra usage, Cowork asks you under **Needs you** whether to continue or wait.

@@ -2,7 +2,6 @@
   "title": "XO Cowork",
   "icon": "XoCowork",
   "pages": [
-    "index",
     "---Get started---",
     "setup",
     "run-locally",
@@ -13,10 +12,7 @@
     "permissions-and-rules",
     "worktrees",
     "memory-and-jobs",
-    "---Under the hood---",
-    "engine",
-    "agent-tools",
-    "api",
+    "---Help---",
     "troubleshooting"
   ]
 }

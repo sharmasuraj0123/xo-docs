@@ -12,14 +12,8 @@ import { Callout } from "fumadocs-ui/components/callout";
 
 ## The short version
 
-```text
-  You write in…            It goes to…
-  ─────────────            ───────────
-  the Workspace     ──▶    Workspace coordinator ──▶ the right project(s)
-  a project         ──▶    that project's coordinator ──▶ answer, or a thread
-  "@billing-api …"  ──▶    billing-api's coordinator, as new work
-  a thread          ──▶    that thread's agent, directly
-```
+<img src="/images/cowork/message-routing-light.svg" alt="Where a message goes: the Workspace goes to the Workspace coordinator, then the right projects. A project goes to its coordinator, which answers or starts a thread. An @project mention goes to that project's coordinator as new work. A thread reply goes straight to that thread's agent." width="960" height="420" className="block w-full h-auto dark:hidden" />
+<img src="/images/cowork/message-routing-dark.svg" alt="Where a message goes: the Workspace goes to the Workspace coordinator, then the right projects. A project goes to its coordinator, which answers or starts a thread. An @project mention goes to that project's coordinator as new work. A thread reply goes straight to that thread's agent." width="960" height="420" className="hidden w-full h-auto dark:block" />
 
 ## Writing to the Workspace
 

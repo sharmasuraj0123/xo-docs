@@ -25,7 +25,17 @@ export function StartFreeBar() {
       const nearBottom =
         window.scrollY + window.innerHeight >=
         doc.scrollHeight - HIDE_NEAR_BOTTOM_PX;
-      setAwayFromFooter(!nearBottom);
+      // The previous/next page links at the end of a docs page sit above the
+      // near-bottom zone, so the bar would cover them; slide it away as soon
+      // as they come into view.
+      const pageNav = document.querySelector(
+        '#nd-page [class^="@container grid"]',
+      );
+      const pageNavVisible =
+        pageNav !== null &&
+        pageNav.getBoundingClientRect().top <
+          window.innerHeight - BAR_HEIGHT_PX;
+      setAwayFromFooter(!nearBottom && !pageNavVisible);
     };
     update();
     window.addEventListener("scroll", update, { passive: true });

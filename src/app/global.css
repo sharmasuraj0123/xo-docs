@@ -100,3 +100,12 @@ aside [data-sidebar-viewport],
   background-color: var(--color-fd-accent);
   color: var(--color-fd-accent-foreground);
 }
+
+/*
+ * Keep the previous/next page links clear of the fixed Ask AI / Start Free
+ * bar: the page ends with room for the bar plus a gap, so the links can
+ * always scroll fully into view above it.
+ */
+#nd-page {
+  padding-bottom: calc(var(--docs-bottom-bar-height, 60px) + 2.5rem);
+}

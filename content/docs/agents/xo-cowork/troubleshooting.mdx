@@ -1,0 +1,214 @@
+---
+title: Troubleshooting
+description: What the messages in XO Cowork mean and how to fix the common problems, from a stopped engine to refused worktrees.
+icon: CircleHelp
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  Most problems show up as one calm line above the composer, or as a short error title on a message you sent. Find the message below to see what caused it and what to do. Error codes in `code` font are what the API returns, if you are calling it directly.
+</Lead>
+
+## Where to look first
+
+| Where | What it tells you |
+| --- | --- |
+| `<state>/logs/quirq.log` | The server's own log. `<state>` is `QUIRQ_STATE_ROOT`: `./.quirq` beside your projects on an installer setup, `~/.quirq` otherwise. |
+| `<state>/inbox/activity/commands.log` | Every external command XO ran, redacted. |
+| `<state>/engine/turns/<turn id>.jsonl` | The raw, redacted output of the agent CLI for one turn. A line can land in the neighbouring file, so check files next to it by time. |
+| `GET /api/chat/status` | Sessions by state, queued work, account pools, memory, open review items. |
+| `GET /api/chat/runtimes` | Which agent CLIs are installed and logged in. |
+| `GET /api/doctor` | Read-only consistency checks across the whole Space. |
+
+## The engine or server
+
+### "Can't reach XO · retrying · what you see may be out of date"
+
+**Cause:** the Cowork UI can't reach the XO Space server, or its live stream dropped three times in a row. The proxy returns `502 upstream_unreachable` ("Could not reach the XO API at …").
+
+**Fix:** check the server is running (`./install.sh` runs it in the foreground; `./cowork-api.sh status` if you used that script). Check the UI's `XO_API` setting points at it (default `http://127.0.0.1:5002`). The UI keeps retrying, and nothing you've typed is lost.
+
+### "XO's chat engine isn't running · retrying · nothing you write is lost"
+
+The server is up but storm, its chat engine, isn't. Storm's routes answer `503` with a code that says why:
+
+| Code | Cause | Fix |
+| --- | --- | --- |
+| `engine_elsewhere` | Another XO Space server (the message names its pid) runs the engine for the same state folder. | Stop that server, or use it instead. |
+| `store_refused` | The database `<state>/engine/xo.db` was made by a newer or older storm build. | Run the matching version, or move the file aside and restart. |
+| `store_failed` | The database couldn't be written: disk full, held by another process, or damaged. | Free disk space, wait a moment and retry, or move a damaged file aside. |
+| `engine_failed` | The engine crashed while starting. | Read `quirq.log`, then restart the server. |
+| `engine_not_running` | The engine hasn't started yet. | Retry in a few seconds. |
+
+## The agent
+
+### "Claude isn't connected · connect it in XO · sending waits until then"
+
+**Cause:** the agent CLI isn't logged in. The API returns `409 auth_required` ("`{agent}` isn't logged in. Connect it, then send again.").
+
+**Fix:** log the CLI in (for Claude Code, run `claude` and sign in, or connect it from Space Setup). Work waiting in the queue starts as soon as it is connected.
+
+### "No agent can run this" (`no_runtime`, or `501 unsupported`)
+
+**Cause:** the chosen agent has no storm runtime. Today only **Claude Code** runs on storm. Codex and Antigravity runtimes are planned; until then chat with them returns `501 unsupported`.
+
+**Fix:** set `AGENT_NAME=claude_code`, or pick Claude Code in the chat setup.
+
+### "Paused until HH:MM · usage limit · running work finishes, new work waits"
+
+**Cause:** the agent's account hit its usage limit. Turns already running finish; nothing new starts until the reset time.
+
+**Fix:** wait for the reset, or log the CLI into another account. Storm releases idle processes on the old account, so work starts on the new account at once.
+
+### "Paused for your choice · your subscription moved onto paid usage · it's in Needs you"
+
+**Cause:** your subscription moved onto paid extra usage, so storm stopped starting new work.
+
+**Fix:** open **Needs you** and choose **Continue** (until the next limit reset) or **Wait**.
+
+### "Couldn't run your message: it was tried 4 times and each try ended …"
+
+**Cause:** the turn failed with a retryable error four times (the CLI died, or the server stopped mid-turn). Storm gives up on that message after three retries.
+
+**Fix:** read the reason in the message, fix it, then send the message again.
+
+### "Couldn't start this session's CLI 5 times in a row (…)"
+
+**Cause:** the CLI process started but never took its input, five times running.
+
+**Fix:** check the CLI works on its own from a terminal, and check `quirq.log`. Then send any message in that chat or thread to try again.
+
+### "The CLI didn't report it was idle; XO ended the input after 120 s."
+
+**Cause:** the CLI finished without saying so. Storm ended the input for it. Nothing is lost.
+
+**Fix:** nothing needed. If it keeps happening, update the CLI.
+
+## Sending messages
+
+### "The router is off"
+
+**Cause:** routing is set to **Off**, so new messages to the Workspace and projects are refused (`409 router_off`). Replies inside a thread still go through.
+
+**Fix:** **Settings → Routing**, pick **The coordinator** or a decision model.
+
+### "The coordinator is busy" (`coordinator_busy`)
+
+**Cause:** the coordinator was being replaced at the moment you sent, and the retry didn't land either.
+
+**Fix:** use **Retry** on the message.
+
+### "This project was removed" (`chat_retired`)
+
+**Cause:** the project was removed through XO. Its conversation is kept read-only.
+
+**Fix:** add the project again to start a new conversation.
+
+### "Sending now stops N background task(s)…" (`would_stop_runs`)
+
+**Cause:** in a chat, **Send now** interrupts the running turn, which also stops its sub-agents or background shells.
+
+**Fix:** choose **Add to the turn instead**, or **Stop them and send**. Over the API, resend with `confirm_stop_runs` set to the count.
+
+### "This message reached no one: …"
+
+**Cause:** a decision model routed your message, but the coordinator it fell back to couldn't start.
+
+**Fix:** fix the reason shown (usually the agent isn't connected), then send the message again.
+
+### Composer error titles
+
+| Title on your message | Meaning |
+| --- | --- |
+| The router is off | Routing is off; see above. |
+| This project was removed | The project's chat is retired. |
+| The agent isn't connected | The CLI isn't logged in. |
+| No agent can run this | The agent has no storm runtime. |
+| The coordinator is busy | Retry the message. |
+| This thread is gone | The thread no longer exists. |
+| XO's chat engine isn't running | Storm is down; see above. |
+| No answer from XO | The request timed out (20 s for writes, 30 s for reads). Retry. |
+| Not supported by this agent | `501`: the agent can't do this. |
+| Refused by the proxy | `403` from the Cowork UI's proxy; see below. |
+| Can't reach XO | Network error or `502`. |
+
+Every failed message has **Retry** and **Edit**. Edit puts the text (and its `@project`) back in the composer.
+
+## Threads and worktrees
+
+### A thread won't start: worktree refused
+
+Storm gives each thread its own git checkout. If it can't, the thread waits for your next message and says why:
+
+| Code | Cause | Fix |
+| --- | --- | --- |
+| `no_commit` | The project's git repository has no commit yet. | Commit once, then send again. |
+| `not_a_repository` | The folder looks like git but isn't a usable repository. | Repair or re-init it. |
+| `worktree_folder_taken` | Something already exists at `.xo/worktrees/thread-<ts>`. | Move that folder away. |
+| `unsafe_worktree_folder` | `.xo` is a symbolic link. | Make `.xo` a plain folder. |
+| `worktree_not_this_threads` | The folder belongs to a different thread. | Move it away. |
+| `branch_names_taken` | No free `xo/thread-*` branch name. | Delete old `xo/thread-*` branches. |
+
+A project that isn't a git repository at all still works: its threads run in the project folder, with a note saying so.
+
+### "Has work not kept anywhere else" when removing a worktree
+
+**Cause:** the checkout has uncommitted changes, untracked files, or commits that exist on no other branch (`409 would_lose_work`).
+
+**Fix:** keep it, or merge or push the work first. To delete anyway, use **Hold to remove**; the UI lists exactly what will be lost.
+
+### "Its agent is still using it" (`session_busy`)
+
+**Fix:** stop the thread, or wait until it goes quiet, then remove the checkout.
+
+### A thread paused itself
+
+**Cause:** the agent hit the same denied step three times in a row, or kept getting denied, so XO paused it.
+
+**Fix:** send the thread a message to resume it, or start a fresh thread.
+
+## Rules and memory
+
+### `rule_sentence_mismatch`
+
+**Cause:** the rule sentence sent with a decision isn't exactly the sentence the server would write for that rule. The response includes the correct `sentence`.
+
+**Fix:** reload the item and decide again. Over the API, send the returned `sentence` as `rule_sentence`.
+
+### `version_conflict` (memory)
+
+**Cause:** an agent tried to update a memory file that changed since it last read it.
+
+**Fix:** none needed; the agent gets the current content and merges. This is how memory stays safe with several writers.
+
+### `looks_like_a_secret` (memory)
+
+**Cause:** the text matched a key pattern (`sk-ant-`, `ghp_`, `AKIA…`, a private key…). Memory never stores secrets.
+
+**Fix:** keep secrets in Space **Setup → Secrets**, not in memory.
+
+## The Cowork UI and its proxy
+
+### "Refused by the proxy" (`403`)
+
+| Code | Cause | Fix |
+| --- | --- | --- |
+| `cross_origin` | The request came from a page the proxy didn't serve. | Open the UI from its own address (default `http://127.0.0.1:5180`). |
+| `not_forwarded` | The route exposes secret values, raw files or file writes, so the UI proxy never forwards it. | Use the XO Space server directly for those. |
+
+Other proxy answers: `400 bad_target` (a path with `#` or `.`/`..` segments), `413 too_large` (a body over 1 MiB).
+
+### "Signed out of the workspace. Reopen this app from XO."
+
+**Cause:** in a hosted (Coder) workspace, your session token expired and the request was sent to sign-in.
+
+**Fix:** reopen the app from XO.
+
+### "Live" is showing but nothing happens
+
+The **Live** badge only says the UI is using your real workspace rather than the demo. It isn't a connection light. Check the line above the composer for the connection state.
+
+<Callout type="info">
+  Still stuck? Run `GET /api/doctor`, look at `quirq.log`, and [open an issue](https://github.com/quirq-ai/xo-space/issues) with what you found.
+</Callout>

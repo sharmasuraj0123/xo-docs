@@ -1,22 +1,132 @@
 ---
 title: XO Cowork
-description: Run the XO Coworker — a chat-first AI agent space with per-project memory and multi-channel reach.
+description: Direct many AI agents across many projects from one calm screen. A Workspace coordinator, a coordinator per project, and threads that each work in their own git checkout.
 icon: Building2
 ---
 
+import { Callout } from "fumadocs-ui/components/callout";
 import { Cards, Card } from "@/components/card";
 
-XO Cowork is a chat-first AI agent space you deploy on XO. Spin up a project, pick a model provider and a channel, and your agent is live — with per-project memory files (AGENTS.md, OBJECTIVES.md, …) and reach into Discord, Telegram, and Slack.
+<Lead>
+  XO Cowork is how one person directs many AI agents across many projects. You write to a coordinator. It answers you itself, or it hands the work to a **thread**: an agent with its own git branch, its own checkout and a live checklist. The screen shows only what is worth your time and your next move. Work that only needs an agent stays quiet.
+</Lead>
 
----
+<Callout type="info">
+  These pages follow xo-space revision `8e95212` and xo-coworker revision `0d31f81` (October 22, 2026).
+</Callout>
 
-## Get XO Cowork Running
+## The idea: protect your attention
+
+When ten agents work at once, the hard part is no longer the work. It is knowing what needs you. Cowork is built around that.
+
+- Agents never decide for you. Cowork only shapes *when* and *how* a decision reaches you.
+- One decision at a time arrives in **Needs you**, with the evidence and what it unblocks. Saying no is as cheap as saying yes.
+- Destructive actions are never approved by a rule you didn't make, and never by another agent.
+- Everything an agent does is kept: what it ran, what it changed, and why it stopped.
+
+## Three layers of agents
+
+| Layer | Who it is | What it does |
+|---|---|---|
+| **Workspace** | One coordinator across all your projects | Answers questions about any project, forwards work to the right project, and proposes a new project when work fits none. |
+| **Project** | One coordinator per project folder | Reads the code, answers quick questions, and starts or follows up threads for any change to the repository. It never edits files itself. |
+| **Thread** | One agent per task | Works in its own git checkout on a branch named `xo/thread-…`. It keeps a checklist, replies to you, and asks before anything risky. |
+
+You can talk to any layer directly. A message in a thread goes straight to its agent. A message to the Workspace or a project goes through that coordinator. [How messages travel](/docs/agents/xo-cowork/how-messages-travel) explains the routing.
+
+Cowork also has **Chats**: a plain chat with one agent in one folder, outside the coordinators.
+
+## Two parts
+
+Cowork has two parts: the **XO Space server** (the xo-space repo), whose chat engine is called **storm**, and the **Cowork UI** (the xo-coworker repo), a web page whose sidebar reads **Space**.
+
+```text
+ Browser
+   │
+   ▼
+ Cowork UI  (xo-coworker, serve.py, :5180)
+   │  serves the page and forwards /api/* to the server,
+   │  refusing routes that expose secrets or raw files
+   ▼
+ XO Space server  (xo-space, FastAPI, :5002)
+   │  /api/chat/*  chats, threads, review, rules, router, stream
+   ▼
+ storm  (the chat engine)
+   │  sessions, turns, admission, review policy, SQLite store
+   ▼
+ Agent CLI processes  (claude today)
+   │
+   ▼
+ Your project folders
+   └── .xo/worktrees/thread-<ts>   one git checkout per thread
+```
+
+The server runs on your machine or in an XO cloud workspace. It drives the agent CLIs you already have, through their own logins. It doesn't run models itself.
+
+<Callout type="warn">
+  Only Claude Code has a storm runtime today, so threads, coordinators and Chats run on Claude Code. Codex and Antigravity answer chat requests with `501 unsupported` until their storm runtimes ship. OpenClaw and Hermes keep their older chat path, which Cowork doesn't use.
+</Callout>
+
+## What you can do
+
+- Write one request and let the Workspace send it to the right project, or aim it yourself with `@project`.
+- Run many threads in parallel. Each one works on its own branch without touching your main checkout.
+- Decide approvals, questions and plans in one queue, and turn a decision into a **rule** word for word.
+- Watch every step a thread takes: commands, file changes, sub-agents and their transcripts.
+- Stop a thread or a coordinator at any time. What it already did is kept.
+- Pin a model and effort per project or per thread, or let a fast decision model route new messages.
+- Schedule agent jobs that open a thread on a timer, after you approve them.
+- Remove a thread's checkout safely: XO tells you exactly what would be lost first.
+
+## Explore
 
 <Cards>
 	<Card
 		icon={<span className="icon-[ph--rocket] size-4.5 text-green-400" />}
-		title="Setup"
-		description="Create a project, run the in-space onboarding, and start chatting with your agent."
+		title="Set up on XO Cloud"
+		description="Create an XO Cowork project on app.xo.builders and run the in-space onboarding."
 		href="/docs/agents/xo-cowork/setup"
+	/>
+	<Card
+		icon={<span className="icon-[ph--terminal-window] size-4.5 text-green-400" />}
+		title="Run it locally"
+		description="Install the XO Space server and the Cowork UI on your own machine."
+		href="/docs/agents/xo-cowork/run-locally"
+	/>
+	<Card
+		icon={<span className="icon-[ph--book-open] size-4.5 text-green-400" />}
+		title="Concepts"
+		description="Workspace, projects, coordinators, threads, hops, review items, rules and more."
+		href="/docs/agents/xo-cowork/concepts"
+	/>
+	<Card
+		icon={<span className="icon-[ph--cursor-click] size-4.5 text-green-400" />}
+		title="Using the Cowork UI"
+		description="Home, Needs you, the Workspace, projects, threads, Chats, Settings and keys."
+		href="/docs/agents/xo-cowork/using-cowork"
+	/>
+	<Card
+		icon={<span className="icon-[ph--flow-arrow] size-4.5 text-green-400" />}
+		title="How messages travel"
+		description="Routing between the Workspace, project coordinators and threads."
+		href="/docs/agents/xo-cowork/how-messages-travel"
+	/>
+	<Card
+		icon={<span className="icon-[ph--shield-warning] size-4.5 text-green-400" />}
+		title="Permissions and rules"
+		description="What agents may do unasked, what always needs you, and what is never allowed."
+		href="/docs/agents/xo-cowork/permissions-and-rules"
+	/>
+	<Card
+		icon={<span className="icon-[ph--cpu] size-4.5 text-green-400" />}
+		title="The storm engine"
+		description="Sessions, turns, admission, storage, streaming and recovery."
+		href="/docs/agents/xo-cowork/engine"
+	/>
+	<Card
+		icon={<span className="icon-[ph--code] size-4.5 text-green-400" />}
+		title="Chat API"
+		description="Every /api/chat endpoint, with request and response shapes."
+		href="/docs/agents/xo-cowork/api"
 	/>
 </Cards>

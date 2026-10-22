@@ -1,0 +1,13 @@
+{
+  "title": "Using the Cowork UI",
+  "icon": "MousePointerClick",
+  "pages": [
+    "index",
+    "home-and-decisions",
+    "workspace-and-projects",
+    "threads",
+    "chats",
+    "settings",
+    "keyboard"
+  ]
+}

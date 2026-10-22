@@ -1,0 +1,176 @@
+---
+title: Home and decisions
+description: How Home ranks what is worth your time, and how to answer agents in the Needs you panel — allow, send back, make a rule, or answer a question.
+icon: LayoutDashboard
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  Home answers one question: what deserves your attention right now, across every project? Agents that only need each other stay quiet. When an agent needs you, its ask arrives as a decision you can check quickly and undo.
+</Lead>
+
+## The idea behind Home
+
+The Cowork UI is built for one person directing many agents. Some principles shape every screen:
+
+- **Decisions are never automated away.** The UI shapes *when* and *how* a decision reaches you, never *whether*.
+- **"No" is as cheap as "yes."** Send back is always one press away.
+- **Position is memory.** The card in front of you stays put until you deal with it; nothing reshuffles under your cursor.
+- **Honest numbers only.** Estimates are labelled as estimates, and waits are shown as they really are.
+- **Absence is free.** Asks wait safely while you are away.
+
+## The header
+
+Home opens with the date, a greeting that follows the clock ("Working late" before 5:00, then "Good morning", "Good afternoon", "Good evening"), and a one-line summary:
+
+- "One thing is worth your time." / "N things are worth your time."
+- "Nothing needs you now." — some small asks are being held for later.
+- "Nothing needs you."
+- "XO can't be reached right now." — Live mode can't reach the server and no threads are loaded.
+
+A **Create XO Project** button sits in the header too.
+
+## Your next move
+
+**Your next move** (or **Your first move** in the morning) is a single card for the most valuable ask. It shows:
+
+- **Effort** — a small dial with **Glance ~5 s**, **Decide ~1 min** or **Think · needs focus**.
+- **Risk** — a **Destructive** tag (with a lock) or a **Stopped** tag, when either applies.
+- **Where it was asked** — "project › thread". Click it to open the thread.
+- **The headline** — in Live mode, the agent's own words.
+- **What it unblocks** — in Live mode, "N steps left in its checklist". In Demo mode, an estimate such as "About 20 min of agent work waits on this".
+
+The buttons depend on the kind of ask:
+
+| Ask | Buttons |
+| --- | --- |
+| A quick glance with options | One button per answer, plus **Details** and **Send back**. |
+| A quick yes/no | **Allow** and **Send back** (or the server's own labels, such as **Allow once** and **Deny**), plus **Details**. |
+| A stopped thread | **Look and choose** |
+| A destructive ask | **Read it closely** |
+| An action for you to do | **See what it needs** |
+| A thread that waits for your reply | **Read and reply** |
+| Anything else | **Decide** |
+
+Asks that need focus also offer **Later today**. **Send back** opens a short note, "What should it do instead? (optional)", with **Send back** and **Cancel**.
+
+With the card focused, you can answer from the keyboard: **1–9** picks an answer, **A** allows, **D** sends back, and **E** or **Enter** opens the full decision. If the same ask is already open in the panel, the card says **Open in the panel**.
+
+When nothing needs you, the card is replaced by "Nothing needs you." with either "N threads working. They'll ask when it's worth it." or "Start something below, or enjoy the quiet." If XO is down, it reads "Can't reach XO." and "Retrying every few seconds. Nothing you write is lost; sending waits until it's back."
+
+## Then
+
+**Then** lists up to two more asks with their effort, title and project. Its footer can offer:
+
+- **+N more** — opens the decision panel.
+- **Clear N glances together** — when two or more routine glances are waiting.
+- **N later today · bring back** — returns the asks you put off.
+
+## Handled
+
+The last line on Home is **Handled · N working · N can wait** (or "nothing running"). Expand it to see:
+
+- **Working threads** — project, title, current step and a progress bar.
+- **Can wait** — small asks held back for now. Each one reads "project · Small, and its agent works around it." with a **Bring in** button.
+
+### How asks are paced
+
+The UI decides quietly what speaks up. There is no daily cap, meter or score.
+
+- Asks are ranked by how much agent work they unblock for each second of your effort.
+- A small ask (under 30 agent-minutes of blocked work) whose agent keeps working around it can be held as **can wait**. Destructive asks and stopped threads are never held.
+- Only a new ask that frees at least an hour of agent work may ping you, and only once.
+- After about 25 minutes of deciding, the panel suggests a break.
+
+<Callout type="info">
+  In Live mode, asks come from threads that are waiting, so they are not held as "can wait". Holding small asks is a Demo-only behaviour today.
+</Callout>
+
+## The Needs you panel
+
+The decision panel opens beside the conversation (a bottom sheet on phones). Its title is **Needs you**, or **Quick glances** when you are clearing glances. The header shows **i of N** and a rail of dots coloured by risk, with destructive asks set apart.
+
+### The card
+
+Each card shows:
+
+- Effort and risk.
+- "project › thread" — opens the thread beside the panel.
+- The headline, a "why" line, and an estimate. Destructive asks also list their facts.
+- **Details** — expands in place. For an agent's request it shows the exact evidence: **Command**, **Change** (a diff), **File(s)**, **Address**, **Tool**, **The plan**, or **From the agent**, plus any notes the coordinator added and the thread's checklist. For a thread waiting on your reply it shows an excerpt and "The rest is in the thread".
+
+Asks that are not tied to a thread appear too — an ask from a chat, from your account (such as usage limits), or from a plain chat. If one has no page to open, the card says "It isn't tied to a conversation".
+
+### Answering
+
+The answers come from the ask itself:
+
+| Kind of ask | Answers |
+| --- | --- |
+| Permission (an agent wants to run something) | **Allow once**, **Allow for this thread**, a rule option, or **Deny** |
+| Question | Option buttons, **Answer in words**, or a short form ending in **Send answer(s)** |
+| Approval (for example a plan) | **Approve** or **Send back** |
+| Action for you | **Done** or **Can't** |
+| New project the coordinator proposes | **Allow** with a **Project name** field you can edit, or **Send back** |
+| New scheduled job | **Allow** or **Send back** |
+| Usage moved onto paid | **Continue** or **Wait** |
+| Files that can make agents run code changed | **Seen** |
+| A thread stuck on denied steps | **Pause it** (hold to confirm) or **Dismiss** |
+
+Some "no" answers take an optional note, which the agent receives.
+
+### Make it a rule, or allow for this thread
+
+When an agent asks permission, you can widen your answer:
+
+- **Allow for this thread** — the exact same action is allowed for the rest of this thread. The card shows "For this thread only: …".
+- **Make it a rule** — the card shows the exact sentence that will be stored: "Added to your rules, word for word: …". For example, "In billing-api, run `npm test` without asking".
+
+Only you can make rules, and only from a decision. You can revoke any rule in [Settings → Rules](/docs/agents/xo-cowork/using-cowork/settings#rules). How wide a rule may be depends on how risky the action is — see [Permissions and rules](/docs/agents/xo-cowork/permissions-and-rules).
+
+### Questions and secrets
+
+A question can have options, free text, or several fields. A field marked as secret carries the note "Goes to the agent only; XO keeps it as [secret]." If the agent's call has already ended, XO can't carry a secret to it later. The card explains this and offers **Open the thread** so you can answer there.
+
+### Threads that replied and wait
+
+When a thread finished its turn and waits for you, the card offers **Reply in words** and **Done**. **Done** marks the thread resolved. It is not offered for paused threads.
+
+### Destructive asks
+
+Destructive asks never get a one-click Allow.
+
+- Press and hold **Hold to allow** (or **Hold to approve**) for 1.2 seconds, with the pointer or the Enter key.
+- The button arms only after the card has been on screen for 300 ms.
+- Let go early and nothing happens: "Released early. Nothing was sent."
+- The card also offers "Later today · or skip to the easier ones".
+
+Notable asks need a short reading beat. Press Allow too fast and the card says "A beat to read it first."
+
+### Moving through the panel
+
+- Previous and next arrows move between asks. Nothing is forced first: "Skip freely; nothing here is forced first."
+- **Allow all N routine** clears every routine ask at once. It confirms first: "Allow all N routine asks? Read-only or reversible. Never includes notable or destructive asks."
+
+### After you decide
+
+- An **Undo** toast stays for 3 seconds.
+- In a thread, the docked decision reads "**Allowed.** It's back at work." or "**Sent back.** It's taking another route."
+- At the end: "That's everything." (or "Glances cleared.") with a summary such as "2 allowed · 1 sent back".
+- If the ask was already settled — decided elsewhere, withdrawn or expired — your answer is refused: "Not sent: …".
+
+### Breaks
+
+After about 25 minutes of deciding, a card suggests a pause: "N minutes of deciding. Attention dips after about 25. N left, nothing urgent; they'll hold." Choose **Take a break** or **Keep going**.
+
+## End of the day
+
+<Callout type="info" title="Demo only">
+  These features run in Demo mode only.
+</Callout>
+
+- **End the day** (called **Before you go** in the evening) lets you "Queue up to three things to run overnight…", shows a forecast ("By morning · about X–Y steps", labelled *estimate*), and offers **Seal the day**: "Notifications stay quiet until 9:00. Asks wait safely."
+- At night, Home reads "Nothing needs you until morning." with "Sealed until …", **See the morning (demo)** and **Unseal**.
+- In the morning, a recap — **Last night**, or **While you were away · N nights** — compares the steps done with the forecast.
+- **Found while working** shows up to two things agents noticed along the way.

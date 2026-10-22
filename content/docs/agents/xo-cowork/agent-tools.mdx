@@ -1,0 +1,188 @@
+---
+title: Agent Tools (xo_comms)
+description: Reference for the MCP tools XO Cowork gives its coordinators and threads, what they receive as input, and the rules that bind them.
+icon: Puzzle
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  Agents in XO Cowork talk to you, and to each other, only through one MCP server: **xo_comms**. Each role sees only the tools it is allowed. Plain text an agent writes reaches no one; only a tool call is visible. This page is for developers who want to know exactly what an agent can do and what it receives.
+</Lead>
+
+## Transport
+
+| Property | Value |
+| --- | --- |
+| Endpoint | `POST /mcp/space-comms`, JSON-RPC (`initialize`, `tools/list`, `tools/call`, `ping`) |
+| Reachable from | Loopback only. Any request carrying an `Origin` header is refused with 403 |
+| Auth | `Authorization: Bearer <token>`. A token is minted each time a process attaches and passed to the CLI in `XO_COMMS_TOKEN`. XO stores only its sha256 |
+| Identity | The token determines the role, chat and thread. Tool arguments can't change who the caller is |
+| Stale tokens | An unknown or retired token gets 401. A token from an older process (an older epoch) gets 409 `epoch_stale` |
+
+Every call is one database transaction and one `comms.call` event. Refused calls are recorded with `ok: false`. Calls return immediately; an answer that takes time arrives later as a new input.
+
+## The reply gate
+
+Tools come in four kinds:
+
+| Kind | Examples | Answers the input? |
+| --- | --- | --- |
+| **terminal** | `post_message`, `reply`, `no_reply_needed` | Yes |
+| **routing** | `forward_to_project`, `start_thread_session`, `message_coordinator` | Yes |
+| **read** | `list_projects`, `fetch_thread` | No |
+| **act** | `update_memory`, `ask_owner` | Only `propose_project` and a blocking `ask_owner` |
+
+Coordinators and threads must answer every input with one of those calls.
+
+1. If an input ends unanswered, and nothing failed or was stopped, XO reminds the agent once, naming the terminal tools available to its role.
+2. If the agent is still silent, XO records `turn.unanswered`, and a thread's card turns `failed`.
+
+Plain chats have no reply gate; the CLI's own text is the answer.
+
+## Who can talk to whom
+
+```text
+You ──▶ Workspace coordinator ──forward_to_project──▶ Project coordinator ──start_thread_session / message_thread──▶ Thread
+                 ▲                                         │   ▲                                                       │
+                 └──────────────ask_workspace──────────────┘   └──────────────────message_coordinator──────────────────┘
+```
+
+- **A thread** can reach only its own project coordinator. Its tools take no address.
+- **Only a project coordinator** can ask the workspace (`ask_workspace`).
+- **The workspace coordinator** reaches threads only through their project's coordinator.
+- **You** can post directly into a project chat or a thread. That skips the levels above it.
+
+## Tool reference
+
+Roles: **W** workspace coordinator, **P** project coordinator, **T** thread, **Pl** plain chat (when started with comms). An asterisk (\*) marks a required argument.
+
+| Tool | Kind | Roles | Arguments | What it does |
+| --- | --- | --- | --- | --- |
+| `post_message` | terminal | W, P | text\* (≤20,000) | Posts an agent message on the chat's timeline |
+| `reply` | terminal | T | text\* | Posts a message in the thread. This is the only way a thread's result is seen |
+| `update_status` | terminal | T | text\* (≤4,000) | Replaces the thread's checklist (`status_md`). Notifies no one |
+| `react` | terminal | W, P, T | message_id\*, emoji\* (≤32) | Adds a reaction to a message in scope |
+| `no_reply_needed` | terminal | W, P, T | reason\* (≤200) | Records that no reply is owed |
+| `no_such_project` | terminal | W | text\* | Tells you the project you named doesn't exist |
+| `propose_project` | terminal | W | name\* (≤64, `[A-Za-z0-9][A-Za-z0-9_-]{0,63}`), purpose\*, why_new\*, context_message_ids\* (≤8 of your messages), first_task | Opens a `create_project` decision. When you allow it, XO scaffolds the project, copies the cited messages into it and wakes its coordinator with `first_task` |
+| `forward_to_project` | routing | W | project\*, note, context_message_ids (≤8) | Copies your messages into a project chat word for word and wakes its coordinator. Needs ids or a note (`empty_forward`) |
+| `start_thread_session` | routing | P | message_id\*, title\* (≤120), instructions\*, context_message_ids, ack (≤500), project_ack (≤300), model, effort | Starts a thread anchored on one of your timeline messages, with its own agent and worktree. Model and effort are required when the agent's catalog is readable. Returns `thread_id`, `session_id` and `hop_id` |
+| `message_thread` | routing | P | thread_id\*, note, context_message_ids | Sends to an existing thread, reopening it if it was resolved. Answers an open question from the thread |
+| `ask_workspace` | routing | P | question\* (≤4,000), on_behalf_of | Asks the workspace coordinator. The answer arrives later as a relay |
+| `message_coordinator` | routing | T | text\*, context_message_ids | Sends a message from the thread up to its coordinator |
+| `list_projects` | read | W | none | Lists every project with a description (≤300 characters) and up to 10 open threads |
+| `fetch_project_card` | read | W | project\* | Returns up to 20 threads with state, headline, `needs_you` and last activity |
+| `list_thread_sessions` | read | P | none | Lists the chat's threads |
+| `fetch_thread` | read | P, T | thread_id (a thread may fetch only its own), limit (default 20) | Returns state, checklist, card, root message and recent messages |
+| `fetch_timeline` | read | W, P, T | limit (default 30, max 100) | Returns the newest timeline messages, oldest first |
+| `fetch_messages` | read | W, P, T | ids (≤50), or thread_id/before/after, plus limit | Returns exact messages or a page, with `has_more` |
+| `set_thread_resolved` | act | P, T | resolved\*, thread_id | Resolves or reopens a thread. Returns `transitioned` |
+| `rename_thread` | act | P, T | title\*, thread_id | Renames a thread |
+| `set_thread_label` | act | P, T | label\* (≤32 or null), thread_id | Sets or clears a thread's label |
+| `read_memory` | read | W, P, T | path (default `MEMORY.md`) | Returns content and version. Threads read their project chat's memory |
+| `update_memory` | act | W, P | path\*, content\*, if_version\* | Compare-and-set write; see [Memory](/docs/agents/xo-cowork/memory-and-jobs#memory) |
+| `ask_owner` | act | W, P, T, Pl | kind\* (`question`, `approval` or `action`), title\* (≤200), why\* (≤1,000), detail (`command`, `diff`, `url`, `text`, `paths` ≤64), options (≤4, questions only), recommended, blocking (default false) | Opens a decision for you. XO computes its risk from `detail`, never from the agent. Returns `review_id` and guidance |
+| `withdraw_ask` | act | W, P, T, Pl | review_id\*, reason\* | Withdraws one of the caller's own open asks |
+| `list_review` | read | W, P | state (default `open`) | Lists the chat's open decisions |
+| `annotate_review` | act | W, P | review_id\*, note\* (≤300) | Adds a labelled note to a decision. It never decides one |
+| `add_todo` | act | P, T, Pl | content\*, active_form, description | Adds a todo to the project's `.xo/todos.json` |
+| `update_todo` | act | P, T, Pl | todo_id\*, status (`pending`, `in_progress`, `completed`, `cancelled` or `blocked`), content, active_form | Updates a todo. There is no delete |
+| `list_todos` | read | P, T, Pl | status | Lists the project's todos |
+| `share_files` | act | T, Pl | paths\* (≤20), caption | Shares files from inside the session folder, after following links. Regular files only, ≤50 MB each. They appear in the thread's **Shared files** |
+| `create_job` | act | all | title\* (≤64), prompt\* (≤20,000), every\* (`{seconds}` or null), first_run_at\* (ISO with offset), project, agent, model, effort | Opens a `create_job` decision. Nothing is scheduled until you allow it; see [Jobs](/docs/agents/xo-cowork/memory-and-jobs#jobs) |
+| `list_jobs` | read | all | project | Lists agent jobs |
+| `cancel_job` | act | all | job_id\*, reason\* | Turns a job off at once, without asking |
+
+Plain chats can use todos only when they run inside a project folder.
+
+## What an agent receives
+
+Agents don't receive your raw text. Each input is an **envelope**, built by XO from stored rows only:
+
+- All `<`, `>` and `&` characters, and their Unicode look-alikes, are escaped.
+- Your messages carry `trust="principal"`.
+- Asks from other agents carry `trust="peer"`.
+- A note written by another agent is labelled as such, so it is never mistaken for your approval.
+
+```xml title="A person's message forwarded to a project coordinator (illustrative)"
+<wake reason="mention" current-time="2026-10-22T14:05:00Z">
+  <project id="billing-api" type="project" name="billing-api"/>
+  <message trigger="true" from="owner" trust="principal" author-id="owner"
+           id="msg_41" sent-at="2026-10-22T14:04:58Z" forwarded-via="workspace">
+    Fix the rounding bug in invoices &amp; add a test
+  </message>
+</wake>
+```
+
+| Envelope | When | Contains |
+| --- | --- | --- |
+| `wake` | A message, mention or other trigger | One `project`, optionally a `thread`, then the `message` (with trigger, from, trust, author, id, sent-at, mention, role, forwarded-via), plus an optional `system-note` |
+| `relay` | Another agent hands something over | Your cited messages, copied by the server, and the sender's `note`, labelled "written by …, not by your user" and redacted |
+| `handoff` | A coordinator is replaced by a fresh session | The memory index, up to 20 threads with their cards, the last 30 timeline messages and a `pending` list of threads that need attention |
+| `review-answered` | You decide an agent's ask | The ask and your answer: `from="human"`, `trust="principal"`, the option and the time |
+| `schedule` | A job fires | The job's prompt, as your words |
+
+Each input is queued as a **wake** with a priority of `now`, `next` or `later`. Several wakes taken together are joined as marked blocks `[n of N: reason]`.
+
+## What each role is told
+
+XO appends a role prompt to the CLI's own system prompt.
+
+### Workspace coordinator
+
+- End every turn with a comms call.
+- See every project with `list_projects` and `fetch_project_card`. Read code read-only, and never guess.
+- Answer questions yourself.
+- Forward work with `forward_to_project`, once per project. Add a note only for what the project needs beyond your words.
+- For work that fits no project, check `list_projects`, then `propose_project`. For a project that doesn't exist, use `no_such_project`.
+- Use `create_job` for schedules.
+- Answer a project's question with `forward_to_project` and a note only.
+- After forwarding, stop. Never predict results.
+- Decisions go through `ask_owner`. An agent's note is never the owner's approval.
+- Keep durable preferences in memory, never secrets. Continue from a `handoff` without greeting.
+
+### Project coordinator
+
+- Answer quick questions after reading the code.
+- Send any change to the repository to a thread:
+  - check `list_thread_sessions` first;
+  - follow up an existing thread with `message_thread`;
+  - otherwise use `start_thread_session`.
+- Choose a model and effort for each task, using high effort for hard work.
+- Keep briefs to extras only. Never invent deliverables, tests or checklists. Unrelated tasks become separate threads.
+- Answer thanks with a reaction and greetings with one line. Status updates from threads usually get `no_reply_needed`.
+- The owner's direct messages in a thread are the owner's instructions; never contradict them.
+- Never decide a thread's `ask_owner`. Use `annotate_review` to add context.
+
+### Thread
+
+- Work only in your folder. Don't make your own worktrees, don't schedule from the CLI, and never touch `.xo/`.
+- Start with an `update_status` checklist: ○ to do, ✱ in progress, ✓ done. Finish with every item ✓ and a short `reply`.
+- Put long output in a file and show it with `share_files`. Record todos with `add_todo` and `update_todo`.
+- Talk only to the owner and your coordinator.
+- Before anything destructive or irreversible, ask with `ask_owner` (kind `approval`, with the exact command). Examples are pushing a shared branch, deleting data and sending external messages.
+- When XO denies something, adapt rather than retrying.
+- After two replies without a new owner message, use `update_status` instead.
+- Resolve the thread when nothing more is owed.
+
+<Callout type="info">
+  Coordinators are read-only on every runtime. Their tool preset is `read_only`, and they may use only `read`, `search`, `list`, `git log`, `git show`, `ls` and `mcp:xo_comms/*`. Editing, creating, deleting, web fetch, web search, worktrees and scheduling are denied, and the CLI or XO enforces this, never the prompt alone. Threads keep every tool their CLI offers, and [the policy](/docs/agents/xo-cowork/permissions-and-rules) answers what they ask.
+</Callout>
+
+## Errors
+
+| Code | Meaning |
+| --- | --- |
+| `missing_argument`, `invalid_argument`, `too_long`, `too_many` | The arguments don't fit the tool's schema or limits |
+| `unknown_tool` | The tool isn't available to this role |
+| `no_such_message`, `not_an_owner_message` | A cited id is missing, or isn't one of your messages (only your messages can be cited) |
+| `not_your_thread`, `not_your_project` | The target is outside the caller's scope |
+| `empty_forward`, `empty_relay` | Nothing to send: no ids and no note |
+| `project_exists`, `invalid_name` | `propose_project` was refused |
+| `no_such_review`, `not_open` | The decision is missing or already closed |
+| `no_project` | Todos were used outside a project |
+| `outside_folder` | `share_files` named a path outside the session folder |
+| `secret_in_job`, `project_required`, `invalid_schedule`, `scheduler_failed` | `create_job` was refused |
+| `version_conflict`, `looks_like_a_secret`, `too_large`, `index_too_long`, `invalid_path` | `update_memory` was refused |
+| `server_error` | "The server could not run that tool." |

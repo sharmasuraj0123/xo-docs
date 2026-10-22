@@ -1,0 +1,136 @@
+---
+title: Threads
+description: Follow a thread's agent as it works — its checklist, turns, sub-agents and shared files — then reply, stop, resolve or reopen it.
+icon: Workflow
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  A thread is one task. It has its own agent session, its own git branch and checkout, and a live checklist. Open one from a thread card, the Now strip, Jump, or a decision.
+</Lead>
+
+Threads are started by a project's coordinator, by a decision model, or by a scheduled job. To learn how a thread is created and how its checkout works, see [How messages travel](/docs/agents/xo-cowork/how-messages-travel) and [Worktrees](/docs/agents/xo-cowork/worktrees).
+
+## The top bar
+
+- A back button returns you exactly where you came from (**Back (Esc)**).
+- The title and an optional label.
+- A state badge, with a thin coloured line across the header:
+
+| Badge | Line | Meaning |
+| --- | --- | --- |
+| **Working** | blue | The agent's session is busy right now. |
+| **Idle** | — | The thread is open but its session is not doing anything. |
+| **Needs you** | amber | It waits on a decision or your reply. |
+| **Paused** | — | XO paused it, for example after the same step was denied three times. |
+| **Done** | green | Every checklist item is done. |
+| **Stopped** | red | Its last turn was stopped or failed. |
+| **Resolved** | — | Marked finished; nothing more is owed. |
+
+In Live mode, "Working" means the session is really busy (queued, starting, running or stopping) — never a guess from a timer.
+
+### Resolve, reopen, rename, label
+
+Live mode adds these to the top bar:
+
+- **Resolve** — "Mark it resolved: nothing more is owed".
+- **Reopen** — "Reopen it: its agent can pick it up again". A new message to a resolved thread reopens it too.
+- An edit menu with **Rename** (up to 120 characters), **Add a label** or **Change label** (up to 32 characters), and **Remove the label**. **Enter** saves, **Esc** cancels, and clicking away saves.
+
+Resolving or reopening shows a short line with **Undo**.
+
+## The checklist
+
+The agent keeps a checklist as it works: ○ to do, ✱ in progress, ✓ done. The bar under the header shows progress segments, "N of M" and the branch, with a status line:
+
+- "✱ current step" — while it works.
+- "◆ Paused on you" — when it waits on you.
+- "■ Stopped at “step”" — when it stopped.
+- "All N steps done".
+- "Resolved at N of M".
+
+A step that just finished flashes its ✓. Click the bar to see the full list.
+
+## Sub-agents
+
+In Live mode, a strip under the checklist shows sub-agents (the agent's own helpers and background tasks). It shows a chip for each sub-agent working now, marked "waiting on you" where that applies, or "N sub-agents ran". Click it to open the **Sub-agents** sheet.
+
+- **The list** groups them into **Working now**, **Earlier** and **What they did**. Each row shows state, kind, steps, tokens and duration.
+- **Stop** stops one sub-agent, where the agent supports it. **Stop all N** appears when more than one is running. It stops every sub-agent; the thread's own agent keeps working.
+- **One sub-agent** opens with its path (Workspace › Project › Thread › Sub-agent), a state badge and **Stop**. Its transcript shows "Its task", its text, "Thought for Ns" and tool calls with their results. It refreshes every 2.5 seconds while the sub-agent runs. Below it are its own sub-agents, if any.
+
+You can't message a sub-agent: "Messaging a sub-agent isn't possible; talk to its thread instead." If the agent can't show sub-agent work, the sheet says "This agent can't show a sub-agent's work." If the transcript has been cleaned up, it says "Its transcript is gone. …"
+
+## Messages and turns
+
+The conversation shows your messages, the agent's replies (labelled with the branch), and **turn blocks** that show what the agent did:
+
+- "Thought for 32s" — its thinking, folded.
+- Activity groups such as "Created 2 files, ran a command". Expand one to see each step and its command output.
+- Plans, such as "Plan · 2 of 5 done".
+- Narration and the final answer.
+- **Shared files**, with an **Open** button for each file.
+
+A turn can end with a note:
+
+- "■ Stopped after “…”"
+- "This turn failed: …"
+- "Interrupted by a restart; it picks up again"
+
+### Messages relayed into the thread
+
+If you wrote something in the Workspace or the project and a coordinator passed it on to this thread, it shows as your own message with "You, in the **Workspace** · passed on by X's coordinator". Click it to go to where you wrote it. These copies always show. For a line every time a message passes between levels, turn on **Show how messages travel** in [Settings → General](/docs/agents/xo-cowork/using-cowork/settings#general).
+
+An empty thread reads "No messages in this thread yet."
+
+### The typing line
+
+While the agent works, a line above the composer reads "Working · current step" with a running timer.
+
+## The thread's decision
+
+When the thread needs you, its decision docks above the composer. It works exactly like a card in the [Needs you panel](/docs/agents/xo-cowork/using-cowork/home-and-decisions#the-needs-you-panel).
+
+- **Read the thread first** folds it into a slim line (title, effort, **Open**), so you can read the conversation.
+- After you decide, it reads "**Allowed.** It's back at work." or "**Sent back.** It's taking another route." with **Undo**, then folds away.
+
+## Replying
+
+Type in the composer to reply straight to the thread's agent. It never passes through the coordinator. The placeholder is "Reply to the agent…", or "Reply to reopen it…" on a resolved thread. Typing an `@project` sends new work to that project instead.
+
+## Stopping the agent
+
+With the composer empty and the agent running, the send button becomes **Stop** — "Stop the agent (it keeps what's done)".
+
+1. Nothing is sent for 3 seconds. A line shows "Stopping · …" with **Undo**.
+2. Then the turn is stopped. Its sub-agents are stopped first, and the agent gets up to 10 seconds to stop cleanly.
+3. The line reports "Stopped · … · what it did is kept", "It had already finished", or "Couldn't stop it" with **Retry**.
+
+Stopping keeps everything the agent already did. The thread waits for your next message.
+
+## The file viewer
+
+Click **Open** on a shared file to view it in a panel beside the conversation (full screen on a phone).
+
+- **Markdown** is rendered.
+- **Code and text** are highlighted, with line numbers.
+- **HTML** shows in a sandboxed frame with no scripts. **Preview** and **Source** switch views.
+- **Copy** copies the contents. **Esc** closes the viewer.
+- A large file shows "Showing the first X of Y. The rest isn't previewed."
+
+The viewer only opens files inside the thread's project folder or its own checkout under `.xo/worktrees/`. It reads them through `GET /api/xo-projects/<project>/file`.
+
+| Message | Meaning |
+| --- | --- |
+| "This file is in a folder XO doesn't serve to the UI yet." | The file is elsewhere. **Copy the path** to open it yourself. |
+| "This file isn't there any more." | It was moved or deleted. |
+| "Files open from live threads. Demo threads don't have real files." | You are in Demo mode. |
+
+## The thread's model
+
+The model chip in a thread shows the model the router chose for it. You can pin a different model and effort from the next turn, or go back to the CLI's default. See [Model chip](/docs/agents/xo-cowork/using-cowork/workspace-and-projects#model-chip-intelligence).
+
+<Callout type="info">
+  A thread's agent (Claude Code, for example) is fixed for its whole life. Only the model and effort can change.
+</Callout>

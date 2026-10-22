@@ -1,5 +1,5 @@
 {
   "title": "AI Agent Guides",
   "icon": "Bot",
-  "pages": ["openclaw", "claude-code", "hermes", "antigravity"]
+  "pages": ["xo-cowork", "openclaw", "claude-code", "hermes", "antigravity"]
 }

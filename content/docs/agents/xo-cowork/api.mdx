@@ -1,0 +1,243 @@
+---
+title: Cowork API reference
+description: Every HTTP route XO Cowork uses, from plain chat and streams to chats, threads, routing, review, rules, runs, worktrees and jobs.
+icon: Code
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  XO Cowork is served by the XO Space server. Everything the Cowork UI does goes through the routes on this page, all under `/api/chat/*` except project creation and schedules. You can drive the same features from any HTTP client.
+</Lead>
+
+<Callout type="warn">
+  There is no `/api/projects-chat/*` route; older notes that mention it are out of date. The [Chat API](/api-reference/chat-api) page in the Space API reference describes the older two-call flow (`prompt` → `stream/{stream_id}`), which now applies only to agents without a storm runtime (OpenClaw, Hermes, Grok Bot).
+</Callout>
+
+## Basics
+
+| Item | Value |
+| --- | --- |
+| Base URL | `http://127.0.0.1:5002` (set by `HOST` and `PORT`) |
+| Authentication | None. The server binds to loopback by default. `HOST=0.0.0.0` exposes everything to your network. |
+| Browser writes | Every POST/PUT/PATCH/DELETE must have no `Origin`, a same-origin or allow-listed `Origin`, or come through a loopback proxy that sets `X-Forwarded-Host`. |
+| Bodies | Strict: unknown keys return `422`. |
+| Idempotency | Writes that create something take a `client_id` (or `idempotency_key`). A retry with the same body returns the same result; the same key with a different body returns `409 client_id_reused`. |
+
+Errors always look like this, sometimes with extra fields such as `feature`, `count`, `sentence`, `what`, `confirm` or `summary`:
+
+```json
+{ "detail": { "code": "router_off", "message": "…" } }
+```
+
+## Walkthrough: ask the Workspace and watch it work
+
+```bash
+# 1. Find the Workspace chat (it is listed first)
+curl -s http://127.0.0.1:5002/api/chat/chats
+
+# 2. Open the global stream in another terminal
+curl -N http://127.0.0.1:5002/api/chat/stream
+
+# 3. Post a message to the Workspace coordinator
+curl -s -X POST http://127.0.0.1:5002/api/chat/chats/<workspace chat id>/messages \
+  -H 'Content-Type: application/json' \
+  -d '{"text":"Add a health check to billing-api","client_id":"c-1"}'
+```
+
+The stream shows the stored message, the coordinator's turn as blocks, the `hop` that forwards it to the project, the thread it starts and that thread's work.
+
+## Plain chat
+
+A plain chat is one agent in one folder, outside the coordinators.
+
+| Method | Path | Body | Response |
+| --- | --- | --- | --- |
+| POST | `/api/chat/prompt` | `text` (1–100000), `client_id` (required), `session_id?`, `agent?`, `model?`, `effort?`, `permission_mode?`, `comms?`, `cwd?`, `delivery?` (`add` \| `now`), `confirm_stop_runs?` | `{session_id, turn_id}` |
+| POST | `/api/chat/abort` | `{session_id}` (storm) or `{stream_id}` (older path); exactly one, else `400 one_target` | `{session_id, stopped, turn_id}` |
+| GET | `/api/chat/active` | — | `{turns: [{session_id, agent, role, chat_id, thread_ts, turn_id, origin, started_at}]}` |
+
+```json
+POST /api/chat/prompt
+{ "text": "hi", "client_id": "c1", "agent": "claude_code" }
+
+→ { "session_id": "cse_ab12cd34ef56ab78", "turn_id": null }
+```
+
+Without `session_id`, a new session starts on preset `plain_chat`. `permission_mode` defaults to `auto`; `bypass` is always refused. Then read the session with `GET /api/chat/sessions/{id}/stream`. See [How storm runs agents](/docs/agents/xo-cowork/engine#send-now-add-and-stop) for `delivery` and `would_stop_runs`.
+
+For agents **without** a storm runtime, `POST /api/chat/prompt` returns `{stream_id, session_id}` and you read `GET /api/chat/stream/{stream_id}`. Codex and Antigravity currently return `501 unsupported` (feature `chat`).
+
+## Status and runtimes
+
+| Method | Path | Response |
+| --- | --- | --- |
+| GET | `/api/chat/status` | Sessions by state, queue by priority and pool, pools, memory reading, open and parked review counts, latency percentiles. |
+| GET | `/api/chat/runtimes` | `{runtimes: [{name, cli: {version, logged_in, account, limits}, error?, features}]}`. Works even when the engine isn't running. |
+| GET | `/api/chat/runtimes/{name}/models` | `{name, models: [{id, name, efforts, default_effort, context_window, is_default, takes_effort, family, description}]}`. `404 unknown_runtime`, `503 runtime_unavailable`. |
+
+## Sessions
+
+| Method | Path | Query / body | Response |
+| --- | --- | --- | --- |
+| GET | `/api/chat/sessions` | `chat`, `thread`, `role`, `state`, `after_seq`, `before_seq`, `limit` (≤500) | `{sessions: [view], next_after_seq}` |
+| GET | `/api/chat/sessions/{id}` | — | Session view |
+| PATCH | `/api/chat/sessions/{id}` | `{model?, effort?, permission_mode?}` | Session view |
+
+```json
+{
+  "id": "cse_…", "role": "plain", "preset": "plain_chat", "agent": "claude_code",
+  "pool": "claude_code:<account>", "model": null, "effort": null,
+  "permission_mode": "auto", "cwd": "/…", "native_id": "uuid",
+  "state": "warm", "epoch": 3, "recycle_pending": false, "paused": null,
+  "current_turn": null, "live_runs": 0, "held": 0, "held_items": [],
+  "waiting_for_decision": null, "created_at": "…Z", "updated_at": "…Z"
+}
+```
+
+PATCH errors: `501 unsupported` (with `feature`), `400 unsupported_model`, `unsupported_effort`, `unsupported_permission_mode`, `mode_refused`, `spec_refused`, `update_refused`; `503 runtime_unavailable`.
+
+## Streams and events
+
+| Method | Path | Query |
+| --- | --- | --- |
+| GET | `/api/chat/stream` | `chat`, `session`, `kinds`, `after_seq`; header `Last-Event-ID` |
+| GET | `/api/chat/sessions/{id}/stream` | `kinds`, `after_seq`; header `Last-Event-ID` |
+| GET | `/api/chat/events` | `chat`, `session`, `kinds`, `after_seq`, `before_seq`, `limit` (1–500, default 100) |
+
+```text
+id: 1234
+event: message
+data: {"type":"message","id":"1234","seq":1234,"ts":"…","chat_id":"…","session_id":null,"thread_ts":null,"turn_id":null,"run_id":null,"data":{…}}
+```
+
+`/api/chat/events` returns `{events: [frame], next_after_seq, next_before_seq}`. Frame types, resume and `reset` reasons are in [How storm runs agents](/docs/agents/xo-cowork/engine#streaming).
+
+## Chats, messages and threads
+
+| Method | Path | Query / body | Response |
+| --- | --- | --- | --- |
+| GET | `/api/chat/chats` | — | `{chats: [{id, kind, project_pid, project, created_at, settings, retired_at, routing, pin}]}`; the Workspace first. Listing also picks up new project folders. |
+| GET | `/api/chat/chats/{chat}` | — | One chat |
+| PATCH | `/api/chat/chats/{chat}` | `routing?` (`{mode, decision_model?}` or `null`), `agent?`, `model?`, `effort?` (`low` \| `medium` \| `high` \| `xhigh` \| `max`) | Chat |
+| GET | `/api/chat/chats/{chat}/messages` | `thread`, `after_seq`, `before_seq`, `limit` (≤500, default 100) | `{messages: [...], next_after_seq, next_before_seq?}` |
+| POST | `/api/chat/chats/{chat}/messages` | `{text, thread_ts?, client_id}` | The stored message |
+| GET | `/api/chat/chats/{chat}/threads` | — | `{threads: [...]}` |
+| GET | `/api/chat/chats/{chat}/threads/{ts}` | — | One thread |
+| PATCH | `/api/chat/chats/{chat}/threads/{ts}` | `resolved?`, `paused?` (only `false`), `title?` (≤120), `label?` (≤32 or `null`), `intelligence?` (`{agent?, model?, effort?}`) | Thread |
+| GET | `/api/chat/chats/{chat}/hops` | `thread`, `after_seq`, `before_seq`, `limit` | `{hops: [...]}` |
+| GET | `/api/chat/chats/{chat}/memory` | — | `{files: [{path, bytes, version}]}` |
+| GET | `/api/chat/chats/{chat}/memory/{path}` | — | `{path, content, version}`; `404 memory_not_found` |
+
+A message: `{id, seq, chat_id, thread_ts, author_kind, author_id, author_session_id, text, reply_to, extra, created_at}`. `author_kind` is `owner`, `agent` or `system`.
+
+A thread includes `title`, `label`, `state`, `branch`, `worktree_path`, `base_commit`, `status_md` (the checklist), `outputs` (shared files), `card`, `pin`, `runs` and `session` (`{state, agent, model, effort, live_runs, paused}`). Thread states: `working`, `needs_reply`, `needs_approval`, `done`, `failed`, `resolved`, `paused`.
+
+A hop: `{id, kind, from_role, to_role, from_session, to_session, via, cause, message_ids, note, wake_id, state, created_at, delivered_at, answered_at}`. Kinds: `forward`, `relay`, `brief`, `ask`, `status`, `answer`. States: `sent` → `delivered` → `answered`.
+
+```json
+PATCH /api/chat/chats/<chat>/threads/<ts>
+{ "intelligence": { "model": "<model id>", "effort": "high" } }
+```
+
+Common errors: `404 chat_not_found`, `thread_not_found`; `409 router_off`, `coordinator_busy`, `chat_retired`, `agent_locked`, `no_runtime`, `auth_required`; `400 unsupported_model`, `unsupported_effort`; `503 catalog_slow`, `runtime_unavailable`.
+
+## Router and decision models
+
+| Method | Path | Body | Response |
+| --- | --- | --- | --- |
+| GET | `/api/chat/router` | — | `{mode, decision_model, abstain_below}` |
+| PUT | `/api/chat/router` | `{mode, decision_model?, abstain_below}` (0–1, default 0.5). Full replace. | Router |
+| GET | `/api/chat/router/models` | — | `{models: [{id, provider, label, docs_url, model, connected}]}` |
+| POST | `/api/chat/router/models` | `{provider, model?, api_key}` | Models |
+| DELETE | `/api/chat/router/models/{provider}` | — | Models |
+
+`mode` is `agent` (the coordinator decides, the default), `decision` (a decision model routes) or `off`. Providers are `sage` and `jev`. Keys are saved in `<state>/secrets/router.env` and never returned. Errors: `bad_mode`, `model_not_connected`, `bad_threshold`, `invalid_key`, `404 unknown_provider`.
+
+## Review and decisions
+
+| Method | Path | Query / body | Response |
+| --- | --- | --- | --- |
+| GET | `/api/chat/review` | `state`, `kind`, `chat`, `thread`, `session`, `after_seq`, `before_seq`, `limit` | `{items: [...], next_after_seq}` |
+| GET | `/api/chat/review/{id}` | — | Item |
+| POST | `/api/chat/review/{id}/decision` | `decision`, `scope?` (`once` \| `thread` \| `rule`), `option?`, `answer?`, `note?`, `rule_sentence?`, `idempotency_key` | Item |
+
+An item has `kind`, `state` (`open`, `decided`, `expired`, `withdrawn`), `risk` with `risk_reasons`, `blocking`, `title`, `why`, `detail`, `options`, where it came from (`chat_id`, `thread_ts`, `session_id`, `run_id`, `turn_id`, `origin`), `parked`, `expires_at`, the decision and `annotations`.
+
+| Kind | Decisions |
+| --- | --- |
+| `permission` | `allow`, `deny` |
+| `question` | `answer` |
+| `approval` | `approve`, `send_back` |
+| `action` | `done`, `cant` |
+| `create_project` | `allow` (answer is the name), `send_back` |
+| `create_job` | `allow`, `send_back` |
+| `usage` | `continue`, `wait` |
+| `integrity` | `done` |
+| `suggestion` | `approve`, `deny` |
+
+```json
+POST /api/chat/review/rv_9f/decision
+{
+  "decision": "allow",
+  "option": "rule:project",
+  "rule_sentence": "In billing-api, run exactly `npm test` without asking",
+  "idempotency_key": "k1"
+}
+```
+
+Errors: `bad_decision`, `bad_option`, `bad_answer`, `scope_not_allowed`, `rule_sentence_mismatch` (returns the correct `sentence`), `edit_not_supported`, `secret_needs_a_call`; `409 already_decided`, `idempotency_key_reused`, `withdrawn`; `410 expired`. Details in [Permissions and rules](/docs/agents/xo-cowork/permissions-and-rules).
+
+## Rules
+
+| Method | Path | Body | Response |
+| --- | --- | --- | --- |
+| GET | `/api/chat/rules` | `after_seq`, `limit` (default 100) | `{rules: [rule], defaults: [default view], next_after_seq}` |
+| POST | `/api/chat/rules` | `{scope, project?, thread?, kind, match, effect, sentence, client_id}` | Rule |
+| DELETE | `/api/chat/rules/{id}` | — | Rule (revoked). Works on `default:*` rules too. |
+
+`match` holds exactly one of `command`, `prefix`, `path_glob`, `host` or `mcp` (`{server, tool}`). The Cowork UI creates rules only from a decision; it never calls `POST /api/chat/rules` directly.
+
+## Sub-agent runs
+
+| Method | Path | Query | Response |
+| --- | --- | --- | --- |
+| GET | `/api/chat/sessions/{id}/runs` | `state`, `kind`, `tree`, `depth`, `after_seq`, `before_seq`, `limit` | `{session_id, runs, counts: {running, waiting, done, failed, stopped, lost, total, tokens}}`; each run has `can_stop` |
+| GET | `/api/chat/runs/{run}` | — | Run with `child_counts` and `ancestry` |
+| GET | `/api/chat/runs/{run}/transcript` | `after`, `limit` (≤500) | `{run_id, items, next}`; tool output cut to 2 KB; `410 transcript_gone` |
+| POST | `/api/chat/runs/{run}/stop` | — | `202 {run, stopping: true}`; `409 run_not_live` |
+| POST | `/api/chat/sessions/{id}/runs/stop` | — | `202 {stopping: [run ids]}` |
+
+## Worktrees
+
+| Method | Path | Query | Response |
+| --- | --- | --- | --- |
+| GET | `/api/chat/worktrees` | `chat` | `{worktrees: [{chat_id, thread_ts, path, branch, base_commit, thread_state, session_state, exists, xo, would_lose, removable, error}], reported: [...]}` |
+| DELETE | `/api/chat/worktrees/{chat}/{ts}` | `confirm` | `{removed: true, forced, lost, note}` |
+
+If removing would lose work, the first DELETE returns `409 would_lose_work` with `what` (the commits and files) and a `confirm` token; repeat with `?confirm=<token>` to remove anyway. Other errors: `409 session_busy`, `not_xo_worktree`, `removal_refused`; `404 no_worktree`. See [Worktrees](/docs/agents/xo-cowork/worktrees).
+
+## Schedules (agent jobs)
+
+| Method | Path | Body |
+| --- | --- | --- |
+| GET / POST | `/api/schedules` | `{kind: "agent", name, chat, prompt, agent?, model?, effort?, every_seconds?, first_run_at?, enabled}` |
+| GET / PUT / DELETE | `/api/schedules/{id}` | Same body for PUT |
+| POST | `/api/schedules/{id}/run` | Run now (503 until storm is up) |
+| GET | `/api/schedules/{id}/runs` | `limit` |
+
+Writes and runs are accepted only from loopback and same-origin. `chat` must be a project chat. Each fire opens a thread in that project. Errors: `invalid_job`, `no_such_chat`, `not_a_project_chat`, `job_not_found`, `scheduler_failed`. See [Memory and jobs](/docs/agents/xo-cowork/memory-and-jobs).
+
+## Projects
+
+| Method | Path | Body / query | Notes |
+| --- | --- | --- | --- |
+| GET | `/api/config/workspace` | — | `{roots: {<agent>: path}, default}`: where projects live. |
+| POST | `/api/files/mkdir` | `{path, scaffold: true, display_name?, description?}` | Creates and scaffolds a project. `path` must be a direct child of the projects root (`400` otherwise); `409` if it exists; `403` outside `$HOME`. |
+| GET | `/api/xo-projects/{id}/file` | `relative_path` | Reads a file in a project. The Cowork UI uses it for its file viewer. |
+
+A scaffolded project gets exactly `AGENTS.md` and `.xo/`. The workspace chat notices a new project folder the next time chats are listed.
+
+## Agent tools
+
+Agents talk to each other through an MCP server at `POST /mcp/space-comms` (loopback only, per-session bearer token). It isn't meant for your own clients. See [Agent tools](/docs/agents/xo-cowork/agent-tools).

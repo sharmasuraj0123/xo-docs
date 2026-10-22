@@ -1,0 +1,257 @@
+---
+title: Permissions & Rules
+description: How XO Cowork decides what an agent may do on its own, what it asks you about, and what it never allows.
+icon: ShieldAlert
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  Agents in XO Cowork run real commands on your machine. Before each action, XO checks it against a fixed policy and your rules. Routine work goes ahead, and anything riskier becomes a decision in **Needs you**. A few things are never allowed. Rules are made only by you, word for word, from a decision you took.
+</Lead>
+
+## What you see
+
+- **Most work runs without asking.** Reading inside the project, read-only git and XO's own tools are covered by XO's default rules.
+- **Riskier actions arrive as decisions.** They show in **Needs you** on [Home](/docs/agents/xo-cowork/using-cowork/home-and-decisions), with the exact command, diff, file or address as evidence. The agent's call waits until you answer.
+- **"Make it a rule"** on a decision turns your answer into a rule. The rule's sentence is shown to you before you confirm, and it is stored exactly as shown.
+- **Settings → Rules** lists your rules, XO's defaults, and the defaults you revoked. See [Settings](/docs/agents/xo-cowork/using-cowork/settings#rules).
+- **Some actions are always refused**, whatever you allow. Examples are writing into `.xo/`, `.git`, an agent's own config folder, or XO's state folder.
+
+The tier of an action is computed by XO from the action itself. An agent can never claim that an action is safe.
+
+## The decision order
+
+Every tool call, shell command or MCP call an agent makes passes through the policy. The first answer wins:
+
+| Step | Check | Result |
+| --- | --- | --- |
+| 1 | A **deny rule** matches any part of the action | Deny |
+| 2 | The action writes a **protected path** | Deny, always ("XO never allows writing …") |
+| 3 | The caller is a **coordinator** | Read-only work and XO's comms tools are allowed. A read that may touch secrets is asked as destructive. Anything else is denied ("A coordinator only reads and delegates") |
+| 4 | The action is **unverifiable**: an unknown flag, an environment change, or a git option that redirects git | Always ask. No grant or rule can cover it |
+| 5 | A matching single-use **grant** exists | Allow, and the grant is spent |
+| 6 | **Every** part of the command is covered by one of your allow rules or by a default rule | Allow |
+| 7 | Anything else | Ask you |
+
+<Callout type="warn">
+  The policy fails closed. If the check itself raises an error, the answer is deny: "XO could not check this action (host error), so it was not allowed."
+</Callout>
+
+## Risk tiers
+
+XO grades every action as **routine**, **notable** or **destructive**. A compound command such as `a && b | c` is split into simple commands, and the riskiest part sets the tier.
+
+| Tier | Examples |
+| --- | --- |
+| **Routine** | Allowlisted reads and flags. Git reads. `git add`, `git commit`, `git checkout -b`. Edits inside the session's folder |
+| **Notable** | Reads or writes outside the session folder. Running repository code (`make`, `pytest`, `npm test`). Installs. `git push` to the thread's own `xo/thread-*` branch. `gh pr create`. Fetches from unknown hosts. Web search. Plans ("Approve this plan?") |
+| **Destructive** | Reading or printing the environment. `sudo` and `su`. Docker, ssh, kill, systemctl and similar. Reading credentials or XO/CLI state. Writing XO state, another thread's worktree, a CLI home or a credentials file. Deleting the session folder. `git push` to a shared branch, or a force, delete or tags push. `git reset --hard`, history rewrites, `git config`. Inline interpreter code (`python -c`, `bash -c`). Publishing packages. Machine-wide or alternate-registry installs. MCP tools whose names send, create or delete. Commands that name XO's own routes or tokens (`/mcp/space-comms`, `/api/chat/`, `XO_COMMS_TOKEN`). Non-GET network sends |
+
+### What the parser refuses
+
+Some shell constructs are too hard to judge safely. The parser refuses them, so XO asks you and never allows them on its own:
+
+- command or process substitution
+- heredocs
+- `eval`
+- control flow
+- unbalanced quotes
+- lines longer than 10,000 characters
+
+A refused command is always at least **notable**.
+
+## Places and secrets
+
+XO also grades where an action touches. From best to worst:
+
+1. **Inside** the session folder
+2. **Outside** it
+3. Home config
+4. Another thread's worktree
+5. A CLI's home folder
+6. XO's state root
+7. A **secret**
+
+Both the path as written and the path after following symlinks are judged, and the worse result wins.
+
+These count as secrets:
+
+- **By name:** `.env`, `.env.*`, `*.pem`, `id_*`.
+- **By location in your home folder:** `.ssh`, `.aws`, `.config/gh`, `.netrc`, `.git-credentials`, `.docker/config.json`, `.npmrc`, `.pypirc`, `.kube/config`, `.config/gcloud`, `.azure`, `.gnupg`, `.pgpass`, cargo, gem and terraform credentials, `.vault-token` and `.config/hub`.
+- **Process environments:** `/proc/*/environ`.
+- **Recursive reads:** a recursive read of a folder that contains a secret location counts as a secret read.
+
+## Protected paths
+
+Writes to these paths are always denied. No rule or decision can allow them:
+
+- XO's state root (`QUIRQ_STATE_ROOT`, by default `~/.quirq`)
+- every agent CLI's home folder, as declared in its manifest
+- git's own `config`, `hooks/` and `config.worktree` in the repository's common git dir
+- in every checkout (the thread's own worktree, other worktrees and the project folder):
+  - `.xo/**` and `.git/**`
+  - the project config of **every** agent: `.claude/**` and `.mcp.json` (Claude Code), `.codex/**` (Codex) and `.agents/**` (Antigravity)
+
+Each agent's config folder is protected **whichever agent is running**. A Claude Code thread cannot plant a `.codex/` file that Codex would later load.
+
+## XO's default rules
+
+The defaults ship turned on. You can revoke each one separately:
+
+| Rule | Its sentence, and what it covers |
+| --- | --- |
+| `default:read-inside` | "Read, search and list files in the session's own folder without asking" |
+| `default:git-read` | "Run read-only git commands without asking" |
+| `default:git-local` | "Run git add, git commit and git checkout -b in the worktree without asking" |
+| `default:comms` | "Use XO's own comms tools without asking" |
+| `default:known-hosts` | "Read from package registries and documentation sites without asking": package registries and documentation hosts, such as npmjs, pypi, crates, docs.python.org, MDN and docs.github.com |
+| `default:xo-routes` | "Read the Inbox and backups through XO's API without asking": `GET /api/inbox` and `/api/xo-projects-sync` |
+
+The project's test command is deliberately not a default rule.
+
+## Your rules
+
+### Who makes them
+
+Only you make rules. No agent tool can create or change one. A rule is created when you answer a decision with **Make it a rule** (or **Allow for this thread**). It is stored in XO's own database, never in a CLI's settings file.
+
+The decision card shows the exact sentence before you confirm, for example "Added to your rules, word for word: In billing-api, run `npm test` without asking." When the request arrives, the server renders the sentence again from the rule itself. If the two differ, the request fails with `400 rule_sentence_mismatch`, and the response includes the correct sentence.
+
+### Shape
+
+| Field | Values |
+| --- | --- |
+| `scope` | `thread`, `project` or `workspace` |
+| `effect` | `allow` or `deny` |
+| `match` | Exactly one of: `command` (exact words), `prefix` (leading words), `path_glob`, `host`, or `mcp` (`server` plus a `tool`, or `*`) |
+| `sentence` | The sentence you saw |
+| `tier` | The tier the rule was made for |
+| optional | `project_pid`, `thread_ts`, `from_item` (the decision it came from), `expires_at` |
+
+### Scope limits by tier
+
+| Tier | Widest scope allowed |
+| --- | --- |
+| Routine | Workspace (every project) |
+| Notable | Project |
+| Destructive | Thread only, and only as an exact command |
+
+An allow rule never covers anything riskier than the tier it was made for. A workspace rule therefore only ever covers routine work.
+
+### How matching works
+
+Rules match parsed words, never raw text:
+
+- **Short flags are folded and sorted.** `rm -rf`, `rm -fr` and `rm --recursive --force` are the same command.
+- **Git's global options are dropped** before matching.
+- **Allow rules** need the same short flags exactly, but tolerate extra long flags.
+- **Deny rules** match any command that has *at least* their flags.
+- **Path globs** are relative to the session folder. `dir/**` means the whole folder.
+
+Some commands are only ever offered as exact-command rules, never as prefix rules:
+
+- `cp`, `mv`, `ln`, `install`, `sed`, `gh`
+- `python` and `pip`, package managers, `npx` and system package managers
+- `git clone`, `init`, `worktree`, `submodule`, `apply`, `am`, `checkout`, `restore`, `rebase`, `fetch`, `pull`, `archive` and a few others
+
+### Revoking
+
+**Revoke** in Settings → Rules sends `DELETE /api/chat/rules/{id}`. Agents ask again from then on.
+
+- A revoked rule stays stored, so its history remains.
+- A revoked default is recorded separately and cannot be brought back from the UI ("A default can't be brought back.").
+
+## Review items
+
+Every question an agent cannot settle on its own becomes a **review item**. These items are what the Cowork UI shows as **Needs you**.
+
+| Kind | Raised when | Your answers |
+| --- | --- | --- |
+| `permission` | The policy asks about an action | Allow (once, for this thread, or as a rule) or Deny |
+| `question` | An agent asks you something | An option, free text, or a form with several answers |
+| `approval` | An agent asks for a go-ahead, such as a plan or a destructive step | Approve or Send back |
+| `action` | An agent needs you to do something | Done or Can't |
+| `create_project` | The workspace coordinator proposes a project | Allow (you can rename it) or Send back |
+| `create_job` | An agent asks to schedule a job | Allow or Send back |
+| `usage` | Your subscription moved onto paid extra usage | Continue or Wait |
+| `integrity` | Protected files changed (see below) | Seen |
+| `suggestion` | The loop breaker suggests pausing a thread | Pause it (hold to confirm) or Dismiss |
+
+### Permission options
+
+A permission item can offer:
+
+- **Allow once**
+- **Allow for this thread**, an exact match
+- **Rule options** at project or workspace scope, within the tier limits above. Some include a two-word prefix variant where that is allowed.
+- **Deny**
+
+Rule options appear only when exactly one part of the command is not yet covered. They never appear for:
+
+- coordinators
+- unverifiable or refused actions
+- anything that would store a secret in a rule. Only **Allow once** is offered then.
+
+### Order, expiry and delivery
+
+- **Order.** Destructive items come first, then blocking items, then the oldest.
+- **Expiry.** Questions, approvals and actions with no waiting call expire after **7 days**. A parked call expires 7 days after it was parked. A held call never expires. Usage items expire when the limit resets. The agent that asked is told when its item expires.
+- **Deciding.** Only `POST /api/chat/review/{id}/decision` decides an item. The server records `decided_by` as you, through the UI. Each item can be decided once:
+  - A retry with the same `idempotency_key` returns the item.
+  - A different key returns `409 already_decided`.
+  - The same key with a different body returns `409 idempotency_key_reused`.
+- **Binding.** A decision applies to the exact action it was asked about. XO keeps a fingerprint of the canonical action, and editing the action is refused (`edit_not_supported`).
+- **Delivery.** If the agent's call is still waiting, the answer goes straight into that call. Otherwise XO creates a single-use **grant**, valid for 30 minutes, and wakes the agent with "The person allowed `cmd`. Run it again."
+- **Secret answers** go only into a waiting call. XO keeps them as `[secret]`. If no call is waiting, the decision is refused with `secret_needs_a_call`, and the card offers to open the thread.
+
+## The loop breaker
+
+If an agent keeps hitting denials, XO steps in:
+
+- **The same denied action three times in a row** pauses the thread ("stuck on a denied step").
+- **Every 20 denials in a thread** open a `suggestion` item. **Pause it** (hold to confirm) pauses the thread and tells its coordinator to start a fresh thread. **Dismiss** leaves it running.
+
+Only XO pauses a thread. You resume one by sending it a message, or with `PATCH …/threads/{ts}` and `{"paused": false}`. Your own denials count toward the loop breaker too.
+
+## Integrity check
+
+Some files can make an agent or git run code the next time they load. XO watches those files for changes.
+
+- **What is watched:**
+  - every agent's project config paths
+  - `.xo/**`, except worktrees and files XO rewrites itself
+  - git's own config and hooks
+  - for worktrees, the files in the main checkout that a CLI reads
+- **When:** before every turn of a thread, job or plain chat, and at the end of every input. Coordinators are not checked, because they cannot write.
+- **What happens:** the check only reports. If a watched file changed, XO opens a non-blocking `integrity` item titled "Files that can make agents or git run code changed: …" or "XO's project files changed: …", with redacted diffs. The thread's coordinator is told. The turn still runs and nothing is undone. Each state is reported once, and **Seen** does not move the baseline.
+- **How the check stays safe:**
+  - It never follows symlinks.
+  - It never runs `git diff` or `git status`, which could trigger filters.
+  - It compares git objects with `git ls-tree`, or a hash snapshot outside git, and keeps only hashes.
+  - It reports entries it cannot read.
+  - It walks at most 5,000 entries, then checks the most important files first.
+  - A turn waits at most 2 seconds for the check, or 15 seconds while a baseline is being taken.
+
+## API
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| GET | `/api/chat/review` | List items (`state`, `kind`, `chat`, `thread`, `session`, cursors) |
+| GET | `/api/chat/review/{id}` | One item |
+| POST | `/api/chat/review/{id}/decision` | Decide: `decision`, `scope`, `option`, `answer`, `note`, `rule_sentence`, `idempotency_key` |
+| GET | `/api/chat/rules` | Your rules and XO's defaults |
+| POST | `/api/chat/rules` | Create a rule (with the exact `sentence` and a `client_id`) |
+| DELETE | `/api/chat/rules/{id}` | Revoke a rule or a default |
+
+```json title="Allow a command as a project rule"
+POST /api/chat/review/rv_9f/decision
+{
+  "decision": "allow",
+  "option": "rule:project",
+  "rule_sentence": "In billing-api, run exactly `npm test` without asking",
+  "idempotency_key": "k1"
+}
+```
+
+The full reference is on the [API page](/docs/agents/xo-cowork/api).

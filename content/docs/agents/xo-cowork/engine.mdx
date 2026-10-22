@@ -1,0 +1,357 @@
+---
+title: How storm runs agents
+description: Storm, the session engine inside XO Space. Sessions, wakes, turns, admission, storage, streaming and redaction, for developers.
+icon: Cpu
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+<Lead>
+  **Storm** is the engine inside the XO Space server that runs agent CLI sessions from start to finish. It queues inputs, starts and stops CLI processes, holds risky calls until a person decides, stores every event in one SQLite file, and streams it all to the Cowork UI. This page covers the engine core. The conversation layer (workspace, coordinators, threads) is covered in [How messages travel](/docs/agents/xo-cowork/how-messages-travel).
+</Lead>
+
+<Callout type="info">
+  This page follows xo-space revision `8e95212` (October 22, 2026). Code lives in `services/cowork_agent/storm/`. Core storm code never names an agent: differences between CLIs reach it only through each runtime's **feature list**.
+</Callout>
+
+## Boot
+
+Storm starts with the server (`server.py`). In order, it:
+
+1. takes the **engine lock**, an exclusive `flock` on `<state>/run/engine.lock`;
+2. opens the **store** at `<state>/engine/xo.db`;
+3. runs **boot recovery** (see [Recovery after a crash](#recovery-after-a-crash));
+4. starts the `Engine`, which begins admitting work.
+
+`<state>` is `QUIRQ_STATE_ROOT`, which defaults to `~/.quirq` (the installer uses `./.quirq` beside your projects).
+
+If boot fails, the server keeps running and storm's routes answer **503** with one of these codes:
+
+| Code | Meaning |
+| --- | --- |
+| `engine_elsewhere` | Another XO Space server holds the engine lock for this state root. |
+| `store_refused` | `xo.db` was written by a newer or unknown build, or its tables differ from this build. |
+| `store_failed` | The store couldn't be opened or written (disk full, held, damaged). |
+| `engine_failed` | The engine raised while starting; see the server log. |
+| `engine_not_running` | The engine isn't running in this server (yet). |
+
+## Vocabulary
+
+| Term | What it is |
+| --- | --- |
+| **Runtime** | One agent CLI's driver (`contract.Runtime`). Methods: `describe`, `check`, `open`, `models`, `usage`, `list_sessions`, `read_session`, `list_runs`, `read_run`, `features`. |
+| **SessionSpec** | What a session needs, stated as intent: `cwd`, `model`, `effort`, `system_prompt`, `tools`, `permissions`, `mcp_servers`, `agents`, `resume`/`fork`, `persist`, `limits`, `env`. Stored as JSON and **never holds a secret**: the comms token and the Composio URL are only filled in when a process opens. |
+| **Feature list** | Per feature: `native`, `emulated` or `unsupported`, with optional `behaviour` and `values`. Examples: `send_while_running` = `steered`, `interrupt` = `stops_runs`, `update.effort`, `runs.stop`, `auth_env`, `project_config_paths`. Served at `GET /api/chat/runtimes`. |
+| **Session** | One agent conversation, id `cse_` plus 16 hex. Bound to one agent for life. Role is `plain`, `thread`, `project-coordinator` or `workspace-coordinator`; preset is e.g. `plain_chat`, `thread`, `job`. |
+| **Status** | `cold` (no process), `queued`, `starting`, `running`, `warm` (idle process), `waiting_on_person` (a held call), `parked` (closed while holding a call), `stopping`. |
+| **Epoch** | Increments each time a process attaches. Every write is compare-and-set on the epoch, so a write from a stale process is dropped and that process is closed. |
+| **Wake** | One queued input. Its `id` is an idempotency key (`msg:<id>`, `msg:prompt:<client_id>`, `review:<item>:<seq>`, `sched:<job>:<fire time>`…). Fields: `priority` (`now`, `next`, `later`), `delivery` (`add` or `now`, used while a turn runs), `origin` (`person`, `wake`, `system`), `context`, `kept` (redacted text kept after delivery), `confirmed_runs`. States: `queued`, `taken`, `consumed`, `requeued`, `dropped`. |
+| **Turn** | One CLI result. Origin `person`, `wake`, `system` or `injected` (the CLI woke itself). Ends `finished`, `failed`, `stopped` or `interrupted`. |
+| **Input** | Everything the CLI works on from one send until the runtime reports `SessionIdle`. One input can span several turns. |
+| **Run** | A sub-agent or background task of a session, kept as a tree. States: `running`, `waiting`, `finished`, `failed`, `stopped`, `lost`. |
+| **Pool** | One agent account, id `<agent>:<account>`. Its state gates admission (below). |
+| **Catalog** | The agent's models and the efforts each takes. Every model or effort passed to a CLI is checked against it. |
+| **Grant** | A single-use permission (30 min TTL) created when a person allows a call after its process has gone. |
+
+### Pools
+
+| State | When | Admits |
+| --- | --- | --- |
+| `open` | Normal | Everything |
+| `warn` | A warning, or a usage window at least 80% used | `now` and `next`; holds `later` |
+| `closed` | Rate-limited until the reset time | Nothing new |
+| `paid` | The subscription moved onto paid extra usage | Nothing until the person chooses |
+
+Turns that are already running always finish.
+
+### Admission and pacing
+
+Admission picks which ready session goes next. It is driven by events, not polling. Order: priority class first, then round-robin across projects, then oldest first. A `later` wake older than 600 s counts as `next`.
+
+New processes start about two a second (0.5 s apart), with at most 4 starting at once. There is no cap on how much work runs.
+
+### Memory guard
+
+Before each new process starts (and every 5 s), storm checks the machine. A new process may not start if:
+
+- headroom (cgroup v2 or `/proc/meminfo`) is below the reserve (the larger of 1 GiB or 10% of the limit) plus the expected process size (512 MiB by default, learned from observed peak RSS);
+- `/proc/pressure/memory` `some avg10` is above 10%;
+- open file descriptors or cgroup processes are above 80% of their limits.
+
+The session then waits as `queued` with the reason "waiting for memory". Storm releases the least-recently-used idle process, or failing that parks the oldest held approval. These values are fixed, not settings.
+
+## A turn, end to end
+
+<Steps>
+  <Step>
+    ### Prompt
+    `POST /api/chat/prompt` (plain chat) or a message posted to a chat creates a **wake**. For a plain chat with no `session_id`, a new session on preset `plain_chat` is created first; the CLI must report it is logged in, otherwise `409 auth_required`. The person's text becomes wake `msg:prompt:<client_id>` with `priority=now` and `kept` set to the redacted text. The response is `{session_id, turn_id}`; `turn_id` stays `null` until a turn takes the wake.
+  </Step>
+  <Step>
+    ### Deliver
+    `Engine.deliver` inserts the wake (idempotent), clears any "wait for the person" hold and kicks admission.
+  </Step>
+  <Step>
+    ### Admit
+    The admission pass skips sessions that are paused, already being admitted, holding a parked decision (unless a new person message is waiting), store-failed, backing off, or that may still have a process from before a restart. Then: pool gate, memory guard, pacing.
+  </Step>
+  <Step>
+    ### Attach
+    A new epoch starts with status `starting`. If the spec uses comms, a token is minted; only its sha-256 is stored, and the process gets it as `XO_COMMS_TOKEN`. The spec is re-checked against the runtime and the preset's `requires` (which must be enforced by the CLI or by XO, never only by the prompt). Preparers run (for example the thread's worktree), then integrity checks. `runtime.open()` starts the process, resuming by native id when the session persists. Status becomes `warm`.
+  </Step>
+  <Step>
+    ### Send
+    All queued wakes go into one input. Several wakes are joined as marked blocks `[n of N: reason]`. A `turn.started` event names them, and they become `taken`.
+  </Step>
+  <Step>
+    ### Events
+    One pump per process reads the runtime's events. Durable steps are stored as `step.*` events (tool, tool_done, text, thinking, plan, permission, question, notice, error), plus `run.*`, `turn.*`, `session` and `pool`. Deltas, run progress, usage and rate-limit readings are live-only. Raw tool inputs are never stored.
+  </Step>
+  <Step>
+    ### Turn end
+    One transaction records usage, cost, wall time, time waiting on the person, steps, tool calls and peak RSS, and settles the wakes (see the table below).
+  </Step>
+  <Step>
+    ### Idle
+    On the runtime's `SessionIdle`, the input ends and status goes to `warm`. If no idle arrives within 120 s while nothing is running, storm ends the input and records the notice `idle_missing`. An idle process is **held for 10 minutes**, then released to `cold`; the next input resumes it by native id.
+  </Step>
+</Steps>
+
+| How the turn ended | What happens to its wakes |
+| --- | --- |
+| Completed | Consumed |
+| Stopped by a person | Consumed |
+| Interrupted by "send now" | Consumed |
+| Interrupted because the server closed the process | Handed back, with a resume note |
+| Retryable failure, or the CLI died | Handed back and counted; the session backs off 1, 2, 4 … 60 s (±20% jitter) |
+| Any other failure | Consumed |
+
+A wake handed back more than **3** times is dropped, and the person is told "Couldn't run your message: it was tried 4 times and each try ended …". The resume note reads: "Your previous turn was interrupted after `{step}` `{why}`; check the state before redoing anything."
+
+If a process fails to take its input **5** times in a row, the session waits for the person: "Couldn't start this session's CLI 5 times in a row (…). Fix that, then send a message to try again." A non-retryable open failure (such as a worktree refusal) waits for the next message at once.
+
+## Send now, add and stop
+
+**`delivery: "add"`** joins the running turn only when the runtime reports `send_while_running` = `steered` (Claude Code does). Otherwise it waits for the next turn.
+
+**`delivery: "now"`** interrupts the running turn first. When the runtime's interrupt `stops_runs` and the session has live background runs, the request must confirm their exact count, or it gets:
+
+```json
+{
+  "detail": {
+    "code": "would_stop_runs",
+    "message": "Sending now stops this session's 2 background task(s) (sub-agents or shells). Send again confirming 2 to go ahead, or add to the turn instead.",
+    "count": 2
+  }
+}
+```
+
+Resend with `"confirm_stop_runs": 2`. The count is checked again at the moment of interrupting; if it changed, the wake is demoted to `add` and a `session` event with reason `now_became_add` lets the UI say so.
+
+**Stop** (`POST /api/chat/abort`) records `stopping`, stops sub-agents one by one where `runs.stop` is native, then interrupts the turn with a 10 s grace (or closes the process if the runtime has no interrupt). Status goes `stopping` → `warm`, and `turn.stopped {by, last_step}` is recorded. The Cowork UI's 3-second Undo happens in the browser, before this call is sent.
+
+## Accounts, re-login and paid usage
+
+- At each turn boundary the Claude Code runtime compares a login fingerprint. If the credentials changed, it emits `credentials_changed`, and every process of that agent started on the old login is marked for recycle at its next idle point. New processes read the account at start, so they join the new account's pool.
+- An idle process whose pool is `closed` or `paid` and that has a wake waiting is released immediately. The session waits cold with the reason (for example "pool closed until …"), so reconnecting or re-logging runs it at once.
+- A pool reopens at its `resets_at` time. A `rate_limited` send failure closes the pool; an overload error sets `warn`, which clears on a completed turn.
+- Moving to `paid` opens a `usage` review item: "Your `{agent}` subscription has moved onto paid extra usage. Continue until the next limit reset, or wait?"
+
+## Permissions: the host
+
+When a CLI asks permission for a tool call, storm's host runs the review policy:
+
+- **allow**: runs (spending a one-time grant if one matches);
+- **deny**: refused;
+- **otherwise**: a review item opens and the call is **held with no timeout** until the person decides.
+
+Questions use the same hold. If deciding throws, the answer is deny: "XO could not check this action (host error), so it was not allowed." The policy itself is described in [Permissions and rules](/docs/agents/xo-cowork/permissions-and-rules).
+
+If the process is gone by the time the person allows the call, storm creates a single-use grant and a `now` wake telling the agent "The person allowed `cmd`. Run it again."
+
+## Storage
+
+### The store
+
+| Item | Value |
+| --- | --- |
+| File | `<state>/engine/xo.db` (plus `-wal`, `-shm`), mode 0600 |
+| Journal | WAL, `synchronous=NORMAL`, `journal_size_limit=0` |
+| Safety | `foreign_keys=ON`, `secure_delete=ON` (deleted text is overwritten), `busy_timeout=5000` |
+| Schema version | 1 (`PRAGMA user_version`) |
+| Writes | One connection on one thread; every write is `BEGIN IMMEDIATE` … `COMMIT`; listeners hear events only after commit, in seq order |
+
+The store refuses a file written by a newer XO Space, an unknown version, or one whose tables differ from this build ("Move it aside … restart").
+
+### Tables
+
+| Table | Holds |
+| --- | --- |
+| `events` | The global log and change feed. `seq` never reused. All data redacted when appended. |
+| `chats`, `messages`, `threads`, `cards`, `hops`, `router_decisions`, `space_settings`, `intelligence`, `memory_versions` | The conversation layer. |
+| `sessions` | Role, preset, agent, pool, spec, native id, status, epoch, incarnation, predecessor, recycle flag, paused, retired. |
+| `comms_tokens` | sha-256 of each epoch's comms token. |
+| `turns` | Status, usage, cost, wall/wait ms, steps, tool calls, peak RSS, rate limit. |
+| `wakes` | Queued inputs. |
+| `prompt_requests` | Plain-chat `client_id` → session, wake and an HMAC of the request. |
+| `pools` | State, reset time, paid-usage choice. |
+| `procs` | Process registry: pid, start ticks, session, epoch. |
+| `runs` | Sub-agent tree. |
+| `review_items`, `rules`, `default_rule_revocations`, `loop_breaker`, `grants` | Review and policy. |
+| `integrity_baselines` | Integrity-check hashes. |
+
+### Raw turn logs
+
+Every stdout line of a CLI is redacted and appended to `<state>/engine/turns/<turn id>.jsonl` (folder 0700, files 0600). Nothing reads them back; they exist for debugging. Lines are filed by when they were read, so a boundary line can land in a neighbouring file: check files next to it by modification time. Lines before the first turn are held (up to 1 MiB); the write queue holds up to 8 MiB before dropping and counting lines. A write failure never fails the turn.
+
+### Retention
+
+A prune runs daily (first run 1 h after boot), in batches of 500, then empties the write-ahead log.
+
+| Data | Kept for |
+| --- | --- |
+| `step.*`, `progress.*`, `run.*` events | 30 days |
+| Other events, messages, threads, cards, review items, rules | Always |
+| Sessions | Always |
+| Used or expired grants | 30 days |
+| Consumed or dropped wakes | 30 days |
+| Raw turn logs | 14 days |
+
+The newest event, events of a running turn, and events of a turn with an open review item are never pruned.
+
+**Scrub.** When a wake is consumed or dropped, its text is replaced by its redacted `kept` copy. The person's words, as typed, live in the queue only until they are delivered. A transaction that scrubs or deletes text then truncates the write-ahead log, without waiting on another process's reader; if that is blocked, the next scrub or prune retries.
+
+### Recovery after a crash
+
+Under the engine lock, at boot:
+
+1. Orphan processes are reaped, but only when both pid **and** start ticks match. A process that may still be running holds its session back.
+2. In one transaction: running turns become `interrupted` (reason `restart`), working runs become `lost`, taken wakes are handed back with the note "…because the server restarted" (not counted toward the redelivery limit), held review items are parked, and every touched session gets a new epoch and status `parked` or `cold`.
+3. Sessions with queued wakes are re-admitted, 4 at a time.
+
+**Shutdown** has a 6 s budget: park held calls, close every process (handing turns back), close the store, release the lock. Open SSE streams are ended first on SIGINT/SIGTERM.
+
+If a write fails while running, that process is closed and its session held; storm retries settling it every 10 s.
+
+## Streaming
+
+| Method | Path | Notes |
+| --- | --- | --- |
+| GET | `/api/chat/stream` | Global SSE. Filters: `chat`, `session`, `kinds`, `after_seq`. |
+| GET | `/api/chat/sessions/{id}/stream` | One session. 404 if unknown. |
+| GET | `/api/chat/events` | The same frames as JSON pages: `after_seq`, `before_seq`, `limit` (1–500, default 100). |
+
+`kinds` filters by exact type or family prefix (`turn`, `block`). Control frames always pass.
+
+### Wire format
+
+```text
+id: 1234
+event: block.finished
+data: {"type":"block.finished","id":"1234","seq":1234,"ts":"…","chat_id":"…","session_id":"cse_…","thread_ts":null,"turn_id":"…","run_id":null,"data":{"block":{…}}}
+```
+
+One stored event can produce several frames: the non-last ones have ids `N:0`, `N:1` …, the last has plain `N`. Live-only frames have no id.
+
+### Resume
+
+Resume with the `Last-Event-ID` header (wins) or `after_seq`. A malformed id returns `400 bad_last_event_id`. The server subscribes, replays stored frames after that point, goes live (dropping frames it already sent), sends a `snapshot`, then live frames.
+
+A `reset {from_seq, reason}` frame ends the stream when:
+
+| Reason | Meaning |
+| --- | --- |
+| `ahead` | The resume point is beyond the store's head (the store was replaced). |
+| `retention` | The resume point is older than 30 days or already pruned. |
+| `slow` | The subscriber's 1000-frame queue overflowed with stored frames. |
+
+A slow subscriber loses live-only frames first and then gets a fresh snapshot. A `heartbeat` frame is sent after 15 s of silence.
+
+### Frame types
+
+- **Control**: `snapshot` (the running turns with their held items and blocks), `reset`, `heartbeat`.
+- **Blocks**: `block.started` and `block.finished` are durable; `block.updated` is live-only, coalesced over 75 ms. Block types: `thinking`, `text`, `narration`, `answer`, `activity`, `plan`, `shared_files`. Activity rows carry `call_id`, `kind`, `tool`, `line`, `status`, `target`, `summary`, `bytes`, plus a live command-output tail of up to 16 KB. Row wording comes from one place (`stream/wording.py`), for example "Created `x.py`", "Ran 2 commands", "Thought for 32s", "Plan · 2 of 5 done".
+- **`runs`**: live sub-agent counts, at most once a second per session.
+- **Stored events passed through**: `session`, `turn.started`, `turn.finished`, `turn.stopped`, `pool`, `run.*`, `thread`, `worktree.*`, `job.*`, `review.*`, `message`, `hop`, `chat`, `card`, `share`, `settings`, `rule.*`, `comms.call`, `input.ended`, `turn.unanswered`, `reaction`.
+
+Live frames, replayed frames and `/api/chat/events` pages come from the same fold, so history matches what was shown live.
+
+## Redaction
+
+Replaced with `[redacted]`:
+
+- every value in the Space secrets store, and the live env value of each of its keys;
+- the live values of each runtime's `auth_env` variables (for Claude Code: `ANTHROPIC_API_KEY`, `ANTHROPIC_OAUTH_API_KEY`, `CLAUDE_CODE_OAUTH_TOKEN`, `ANTHROPIC_AUTH_TOKEN`);
+- every live session's comms token, and the Composio proxy token;
+- common token shapes: `sk-ant-…`, `sk-…` with a key-like body, GitHub `ghp_` `gho_` `ghu_` `ghs_` `ghr_` `github_pat_`, GitLab `glpat-`, Hugging Face `hf_`, AWS `AKIA`/`ASIA` and `aws_secret_access_key` values, Google `AIza…`, Slack `xox?-` tokens and webhook URLs, JWTs, PEM private keys, URL passwords, and the credential after `Bearer` or `Authorization: Basic|token`.
+
+Values are matched both as written and JSON-escaped; exact values shorter than 12 characters are never matched. Labels stay (`Bearer [redacted]`). If the secrets store can't be read, its last-read values are still matched.
+
+**Applies to:** every stored event; message, hop, thread, review and run rows; raw turn logs; storm's and each runtime's server log lines.
+
+**Does not apply to:** the CLI's own transcripts, the live (ephemeral) stream, and sub-agent transcripts read through the API.
+
+## Which agents have a runtime
+
+| Agent | Storm runtime | Chat today |
+| --- | --- | --- |
+| Claude Code | Yes | On storm |
+| Codex | Planned (fake-CLI fixtures exist) | `501 unsupported` |
+| Antigravity | Planned (fake-CLI fixtures exist) | `501 unsupported` |
+| OpenClaw, Hermes, Grok Bot | No | The older two-call chat path |
+
+The Claude Code runtime keeps one long-lived process per session:
+
+```bash
+claude -p --input-format stream-json --output-format stream-json --verbose \
+  --include-partial-messages --permission-prompt-tool stdio \
+  --session-id <id> | --resume <native id> \
+  --model … --effort … --permission-mode … \
+  --mcp-config <state>/run/<cse_id>/mcp.json --settings <state>/run/<cse_id>/settings.json
+```
+
+Per-session files live in `<state>/run/<cse_id>/` (folder 0700, files 0600). Its features include `send_while_running=steered`, `interrupt=stops_runs`, `update.effort` emulated (restart and resume), and native `runs.stop` / `runs.read`. Messaging a sub-agent is unsupported. The session env is built from the env whitelist plus auth, always sets `DISABLE_AUTOUPDATER=1`, and strips inherited `CLAUDE_CODE_*` variables. `CLAUDE_CLI_PATH` overrides the binary.
+
+## Adding a runtime
+
+<Steps>
+  <Step>
+    ### Add the capability
+    Create `services/cowork_agent/adapters/<name>/runtime/` whose `runtime()` returns a `contract.Runtime`. The capability loader finds it; no core edits.
+  </Step>
+  <Step>
+    ### Follow the contract
+    The contract module is stdlib-only. After `open`, failures are events, not exceptions. Processes start only through `Host.launcher`. Prompts never go in argv. Unknown data becomes a `Notice`. `SessionIdle` is mandatory after the input's last `TurnFinished`.
+  </Step>
+  <Step>
+    ### Declare every feature
+    Include `auth_env` (so its credentials are redacted) and `project_config_paths` (so its project config is protected from writes for every agent).
+  </Step>
+  <Step>
+    ### Test against fake CLIs
+    Add a binding in `tests/test_runtime_conformance.py` and wire builders in `tests/fakes/<cli>/`. Never test against a real CLI. Keep the modularity rule: core never names the agent.
+  </Step>
+</Steps>
+
+## Fixed constants
+
+None of these are settings.
+
+| Constant | Value |
+| --- | --- |
+| Idle process held | 10 min |
+| Retry backoff | 1 s → 60 s, ±20% |
+| Max redeliveries of a wake | 3 |
+| Max failed starts | 5 |
+| Stop grace | 10 s |
+| Idle-missing safety net | 120 s |
+| Grant lifetime | 30 min |
+| Pool `warn` threshold | 80% |
+| `later` → `next` aging | 600 s |
+| Process start pacing | 0.5 s apart, 4 at once |
+| Heartbeat | 15 s |
+| Subscriber queue | 1000 frames |
+| Block update coalescing | 75 ms |
+| Worktree grace after resolve | 7 days |
+| Shutdown budget | 6 s |

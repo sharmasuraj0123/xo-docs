@@ -1,0 +1,164 @@
+---
+title: Memory & Jobs
+description: How coordinators remember across conversations, and how agent work runs on a schedule.
+icon: Database
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  Each chat's coordinator keeps a small set of markdown memory files, so durable preferences survive a fresh session. **Jobs** run agent work on a schedule. Each run opens a new thread in a project, as if you had asked for it at that moment.
+</Lead>
+
+## Memory
+
+### Where it lives
+
+Each chat (the Workspace, or one project) has its own memory folder:
+
+```text
+<state root>/engine/chats/<chat_id>/memory/
+  MEMORY.md          the index
+  release-notes.md   one memory per file
+  …
+```
+
+The state root is `QUIRQ_STATE_ROOT`, by default `~/.quirq`. Memory sits outside the project's `.xo/` folder and is never synced or backed up with the project.
+
+### Format
+
+- **`MEMORY.md` is the index.** It has one line per memory:
+
+  ```md
+  - [Release notes style](release-notes.md) — short, past tense, link the PR
+  ```
+
+- **Other memories are sibling files.** Their names must match `^[A-Za-z0-9][A-Za-z0-9._-]{0,80}\.md$`. Subfolders are not allowed.
+
+### Who reads and writes it
+
+| Role | Access |
+| --- | --- |
+| Workspace and project coordinators | Read with `read_memory`, write with `update_memory` |
+| Threads | Read only, from their project chat's memory |
+| You | Read only, over HTTP (see below) |
+
+The coordinator prompts say to keep only durable preferences there, never secrets.
+
+### Writing safely
+
+- **Versions.** A file's version is the first 12 hex characters of the sha256 of its content. A missing file has version `new`.
+- **Compare-and-set.** Every write must pass `if_version`. If the file changed in the meantime, the write fails with `409 version_conflict` and returns the current content to merge.
+- **One write at a time.** Writes are serialised per chat, and `memory_versions` records who wrote each file last.
+
+The size limits are:
+
+| Limit | Value |
+| --- | --- |
+| Any memory file | 100 KB |
+| `MEMORY.md` | 25 KB and 200 lines |
+
+**Secrets are refused.** Content that looks like a key is rejected with `looks_like_a_secret`. That covers `sk-ant-`, `sk-`, `ghp_`, `gho_`, `AKIA…`, PEM private keys and Slack `xox?-` tokens.
+
+### Memory across a coordinator's sessions
+
+A coordinator is replaced by a fresh session from time to time. That happens after 30 inputs, after 24 hours, when its context passes 120,000 tokens, when its preset changes, or when you pin the chat to another agent. The new session starts from a handoff that includes the memory index, redacted, so it carries on where the old one stopped. See [How the engine works](/docs/agents/xo-cowork/engine).
+
+### HTTP routes
+
+| Method | Path | Response |
+| --- | --- | --- |
+| GET | `/api/chat/chats/{chat}/memory` | `{"files": [{"path", "bytes", "version"}]}` |
+| GET | `/api/chat/chats/{chat}/memory/{path}` | `{"path", "content", "version"}`, or 404 `memory_not_found` |
+
+There is no HTTP route for writing memory. Only coordinators write it, through their tools.
+
+## Jobs
+
+A job is agent work that runs on a schedule. Each time it fires, it opens a new thread in a project chat. That thread runs on the `job` preset, which works like any other thread.
+
+### Two ways to create a job
+
+**1. You create it through the scheduler API.** These requests are accepted from localhost only:
+
+```json title="POST /api/schedules"
+{
+  "kind": "agent",
+  "name": "nightly-deps",
+  "description": "Check for outdated dependencies",
+  "chat": "<project chat id>",
+  "prompt": "List outdated dependencies and open a thread if any are security fixes.",
+  "agent": "claude_code",
+  "model": "sonnet",
+  "effort": "medium",
+  "every_seconds": 86400,
+  "first_run_at": "2026-10-23T02:00:00+02:00",
+  "enabled": true
+}
+```
+
+| Field | Notes |
+| --- | --- |
+| `chat` | Must be a **project** chat |
+| `agent`, `model`, `effort` | Optional. They are checked against the agent's catalog before saving |
+| `every_seconds` | Repeat interval. It must be at least the scheduler's tick |
+| `first_run_at` | An ISO time with a UTC offset. The offset is kept |
+
+How `every_seconds` and `first_run_at` combine:
+
+- With `every_seconds` set, the job repeats.
+- With `every_seconds` null and `first_run_at` set, it runs once.
+- With neither, it runs only when you press **Run now**.
+
+Errors are `invalid_job`, `no_such_chat`, `not_a_project_chat`, `job_not_found` and `scheduler_failed`.
+
+**2. An agent asks for one with its `create_job` tool.**
+
+1. The request opens a `create_job` decision in **Needs you**, with risk *notable*.
+2. **Nothing is scheduled until you allow it.**
+3. When you allow it, the job is registered, and the agent is told whether that worked. At boot, XO registers any allowed jobs that were never registered.
+
+Some limits apply to agent requests:
+
+- Threads and project coordinators can only schedule jobs in their own project.
+- The workspace coordinator and plain chats must name a project.
+- A title or prompt that contains a secret is refused (`secret_in_job`).
+
+### What happens when a job fires
+
+Each fire has the key `sched:<job>:<fire time>`. In one transaction, XO:
+
+1. posts a system message in the project chat, "*title* · HH:MM";
+2. opens a thread on that message, on the `job` preset;
+3. queues the job's prompt as the thread's first input.
+
+The prompt reaches the agent as a `wake` with `reason="schedule"`, carrying your words.
+
+Some cases are handled specially:
+
+| Situation | What happens |
+| --- | --- |
+| The same fire is delivered twice | It finds the thread it already opened (`already: true`) |
+| The previous run's thread is still working, or its session is busy | The fire is skipped: "the previous run is still working" |
+| The job's model or effort is no longer offered | The thread runs on the defaults and says so |
+| The project chat is retired or missing, or the project folder is gone | XO turns the job off and records the reason |
+
+### Managing jobs
+
+- **Agents** can see jobs with `list_jobs` and stop one with `cancel_job`. `cancel_job` takes effect at once and needs no approval.
+- **You** can manage jobs through `/api/schedules`: `GET`, `PUT /{id}`, `DELETE /{id}`, `POST /{id}/run` and `GET /{id}/runs`. Writes and runs are accepted from loopback, same-origin requests only.
+- **Run now** returns 503 until the engine is up.
+- **Concurrency.** `XO_SCHEDULER_MAX_CONCURRENT` limits how many jobs run at once. A busy scheduler answers 409.
+
+### Where job data lives
+
+```text
+<state root>/scheduler/jobs.json         job definitions
+<state root>/scheduler/state.json        next fire times and state
+<state root>/scheduler/runs/<id>.jsonl   run history
+<state root>/logs/scheduler/<id>.log     per-job output log
+```
+
+<Callout type="info">
+  Job runs are threads, so they follow the same [permissions and rules](/docs/agents/xo-cowork/permissions-and-rules) and get their own [worktree](/docs/agents/xo-cowork/worktrees). A job run that hits a decision waits in **Needs you** like any other thread.
+</Callout>

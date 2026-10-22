@@ -1,0 +1,142 @@
+---
+title: Worktrees
+description: Every thread works in its own git checkout of the project. How XO creates them, keeps them safe and removes them.
+icon: GitFork
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  Each thread in a git project works in its own checkout, on its own branch. Two threads never edit the same files, and your main checkout stays as you left it. XO removes a checkout on its own only when nothing would be lost. You can remove one sooner from **Settings → Worktrees**.
+</Lead>
+
+## What a thread's worktree is
+
+| Property | Value |
+| --- | --- |
+| Folder | `<project>/.xo/worktrees/thread-<ts>` |
+| Branch | `xo/thread-<6 hex>` |
+| Lock | Locked in git with the reason `XO Space thread <ts>` |
+| Marker | An `XO_THREAD` file in git's admin folder for the worktree, holding the thread, chat and `base_commit` |
+
+XO acts on a worktree only when the marker and its own thread record agree. The branch is shown on the thread's checklist bar and card in the [thread view](/docs/agents/xo-cowork/using-cowork/threads).
+
+**Projects that aren't git repositories** have no worktrees. Their threads work in the project folder itself, and each such thread gets a note saying so.
+
+## How a worktree is made
+
+XO prepares the worktree just before the thread's agent process starts:
+
+- **First start.** It creates the worktree and records `worktree_path`, `branch` and `base_commit` on the thread. The agent's first input tells it where it works.
+- **Later starts.** It reuses the existing worktree.
+- **Missing worktree.** If the folder is gone, it is recreated at the same path:
+  - from the recorded branch, if that branch still exists;
+  - otherwise from `HEAD` on a new branch. The agent is then told "Uncommitted changes from before are gone."
+- **Ignore entries.** XO adds `worktrees/` to `.xo/.gitignore`, but only if the project has no such file yet. It also adds `/.xo/worktrees/` to `.git/info/exclude`, so worktrees never show up in your git status.
+- **Relative paths.** On git 2.48 or newer, worktrees use `--relative-paths`.
+
+Worktrees are also excluded from project backups: the backup API (`/api/xo-projects-sync`) always leaves `.xo/worktrees` out of its encrypted snapshots.
+
+### When XO refuses
+
+If XO can't make a safe worktree, the thread does not start. It waits for your next message, so you can fix the cause and try again.
+
+| Code | Meaning | What to do |
+| --- | --- | --- |
+| `no_commit` | The repository has no commit yet | Commit once, then send again |
+| `not_a_repository` | The folder isn't a usable git repository | Check the project folder |
+| `unsafe_worktree_folder` | `.xo` is a symlink | Replace the symlink with a real folder |
+| `worktree_folder_taken` | Something else already sits at the worktree path | Move it aside |
+| `worktree_not_this_threads` | The folder belongs to another thread's worktree | Remove the stray worktree |
+| `branch_names_taken` | No free `xo/thread-*` branch name was found | Delete old `xo/thread-*` branches |
+
+A failure inside git itself (`GitFailed`) is treated differently: it is retried with backoff.
+
+## How XO runs git safely
+
+An agent can write to the repository, including its config. So every git command XO runs ignores anything an agent could have planted. Each call is run with:
+
+```bash
+git --no-optional-locks -c core.hooksPath=/dev/null -c core.fsmonitor=false …
+# environment
+GIT_TERMINAL_PROMPT=0
+GIT_NO_LAZY_FETCH=1
+GIT_ALLOW_PROTOCOL=""          # no transport at all
+GIT_CEILING_DIRECTORIES=<parent of the project>
+```
+
+Every call also has a 60-second timeout.
+
+- **No hooks, fsmonitor command or transport run.** These are exactly the settings an agent could put into repository config. With no transport allowed, an older git can't fetch lazily either.
+- **New branches use `-b`, never `-B`.** XO never overwrites an existing branch.
+- **Only `xo/thread-*` branches are ever deleted.**
+- **Agents can't change git's config.** The repository's git `config`, `hooks/` and `config.worktree` are [protected paths](/docs/agents/xo-cowork/permissions-and-rules#protected-paths).
+
+## What "would lose work" means
+
+Before removing a worktree, XO checks whether anything in it exists nowhere else. Removing it would lose work if any of these are true:
+
+- **Tracked files are changed.**
+- **Untracked files exist.**
+- **Ignored files exist outside rebuildable folders.** Rebuildable folders are `node_modules`, `.venv`, `__pycache__`, `.pytest_cache`, `dist`, `build`, `target` and `.next`.
+- **Commits exist that are on no other branch or remote.**
+
+## Automatic cleanup
+
+Once a day, starting one hour after the server boots, XO sweeps old worktrees. A worktree is removed when all of these hold:
+
+- its thread was resolved more than **7 days** ago;
+- its session is cold, with no registered process;
+- removing it would lose nothing.
+
+Otherwise the worktree is kept, and XO records a `worktree.kept` event with the reason.
+
+Removal unlocks the worktree, runs `git worktree remove`, then deletes the branch with `git branch -d`. If git refuses at any step, the worktree stays locked.
+
+<Callout type="info">
+  Worktrees that an agent made with its own tools are reported once, as a `worktree.reported` event. XO never touches them. They are listed separately in Settings as **Made by an agent's own tool**.
+</Callout>
+
+## Removing a worktree yourself
+
+**Settings → Worktrees** groups worktrees by project. Each row shows the thread title, the branch or path, and one of these states:
+
+| State | Meaning |
+| --- | --- |
+| Nothing would be lost | Safe to remove |
+| Has work not kept anywhere else | Removing it deletes work |
+| Its agent is still using it | The session is busy; it can't be removed now |
+| The checkout is already gone | The folder no longer exists |
+| XO didn't make this checkout, so it won't remove it | It isn't an XO worktree |
+| Can't be read: … | XO couldn't inspect it |
+
+**Remove** then works like this:
+
+- **Nothing would be lost:** a confirm asks "Remove this checkout? Nothing would be lost." with Keep it and Remove.
+- **Work would be lost:** the UI lists exactly what would go (commits, changed files and new files) and says "Removing it deletes that work. It can't be undone." You remove it with **Hold to remove**, a 1.2-second hold.
+- **Agent busy:** the UI says "Its agent is still using it. Stop the thread, or try again once it has gone quiet."
+
+See [Settings](/docs/agents/xo-cowork/using-cowork/settings#worktrees) for the screen itself.
+
+## API
+
+| Method | Path | Notes |
+| --- | --- | --- |
+| GET | `/api/chat/worktrees?chat=` | Lists XO's worktrees and the ones agents reported |
+| DELETE | `/api/chat/worktrees/{chat}/{ts}` | Removes a worktree. Add `?confirm=<token>` to remove one that would lose work |
+
+`GET` returns `worktrees` and `reported`:
+
+- each entry in `worktrees` has `chat_id`, `thread_ts`, `path`, `branch`, `base_commit`, `thread_state`, `resolved_at`, `session_id`, `session_state`, `exists`, `xo`, `would_lose`, `error` and `removable`;
+- each entry in `reported` has `seq`, `chat_id`, `thread_ts`, `path`, `reported_at` and `managed: false`.
+
+`DELETE` returns `{"removed": true, "forced", "lost", "note"}`. The errors are:
+
+| Status | Code | Meaning |
+| --- | --- | --- |
+| 409 | `would_lose_work` | Work would be lost. The response carries `what` and a `confirm` token. Send the DELETE again with `?confirm=<token>` |
+| 409 | `session_busy` | The thread's agent is using the worktree |
+| 409 | `not_xo_worktree` | XO didn't create it |
+| 409 | `removal_refused` | git refused the removal |
+| 404 | `thread_not_found` | No such thread |
+| 404 | `no_worktree` | The thread has no worktree |

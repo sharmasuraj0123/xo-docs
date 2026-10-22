@@ -1,0 +1,89 @@
+---
+title: Chats
+description: Start a plain chat with one agent in one folder, choose its model, effort and what it may do, and add to or interrupt a running turn.
+icon: Terminal
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  A chat is one agent in one folder, outside your projects' coordinators. Nothing routes it, and no thread or checklist is created. Use it for a quick question or one-off task when you don't need the coordinators.
+</Lead>
+
+<Callout type="info">
+  Chats run in Live mode only. Demo shows "Chats run in Live…".
+</Callout>
+
+Open **Chats** from the sidebar. The header reads "Chats · One agent, one folder, outside your projects' coordinators".
+
+## The list
+
+Each chat shows:
+
+- **A title** — your first prompt, or "A chat in folder".
+- **A meta line** — folder · agent (for example Claude) · model · effort · what it may do.
+- **A state** — **Needs you**, **Working**, or how long ago it last moved.
+
+With no chats yet, the page says "No chats yet." and "Ask anything below. A chat is one agent in one folder, outside your projects' coordinators."
+
+## Start a chat
+
+The composer line describes the next new chat, for example "New chat in **your projects folder** · Claude · its default model · Auto". Click **Change** to open the **New chat** settings:
+
+| Setting | Choices |
+| --- | --- |
+| **Folder** | Your projects folder, or one project. |
+| **Agent** | Shown only when more than one agent with a runtime is available. |
+| **Model** | "The agent's default", or a model from the agent's catalog. |
+| **Effort** | **Default**, **Quick**, **Balanced**, **Deep**, **Deeper**, **Deepest**. |
+| **What it may do** | See below. |
+
+**What it may do** sets the agent's permission mode:
+
+| Choice | Description |
+| --- | --- |
+| **Auto** | "Its own safety check decides; most actions run unasked." |
+| **Ask first** | "It asks you before each action." |
+| **Edits** | "It edits files freely and asks for the rest." |
+| **Plan only** | "It plans and changes nothing." |
+| **Rules only** | "Only what your rules allow; the rest is refused." |
+
+A mode that skips every check is never offered; the server refuses it too.
+
+The footer reads "Used for your next new chat." Your choices are kept in this browser.
+
+Type your message and send it. If starting the chat fails, your words go back in the box: "Your message is back in the box", or a **Put my message back** button.
+
+## Inside a chat
+
+- Your prompts and the agent's turn blocks appear in order, the same blocks as in a [thread](/docs/agents/xo-cowork/using-cowork/threads#messages-and-turns).
+- The badge reads **Working**, **Needs you**, **Idle** or **Ended**.
+- The placeholder is "Reply in this chat…".
+- When the agent asks for something, the ask appears in your [Needs you panel](/docs/agents/xo-cowork/using-cowork/home-and-decisions#the-needs-you-panel) like any other.
+
+### Writing while a turn runs
+
+What happens to a message you send mid-turn depends on the agent:
+
+- "Adds to the turn in progress" — the agent can take new input while it works (Claude Code can). Your message joins the current turn.
+- "Waits for the turn in progress" — your message is queued for the next turn.
+
+A message that joined a running turn is labelled "Added to the turn in progress, not sent now", with **Stop the turn**.
+
+### Send now
+
+When the agent supports interrupting, a **Send now** toggle appears in a running chat. The line then reads "Sends now: **stops the turn in progress**", and your message starts a fresh turn right away.
+
+If interrupting would also stop background work, the UI asks first: "**Sending now stops N background task(s)** (sub-agents or shells) this chat started." Choose **Add to the turn instead** or **Stop them and send**. If the number of background tasks changes before the interrupt, your message joins the turn instead of stopping it.
+
+### Stop
+
+As in threads, with the composer empty the send button becomes **Stop**. You get 3 seconds to **Undo**, then the turn stops and keeps what it did.
+
+### Ended chats
+
+An ended chat reads "Ended. Start a new one from Chats." and its placeholder becomes "This chat has ended".
+
+## Chats and projects
+
+A chat doesn't use a project's coordinator, memory or threads. Changes it makes land directly in that folder, not in a separate checkout. For work that needs its own branch and a checklist, write to the project instead.

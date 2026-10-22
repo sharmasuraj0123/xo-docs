@@ -1,5 +1,22 @@
 {
   "title": "XO Cowork",
   "icon": "XoCowork",
-  "pages": ["setup"]
+  "pages": [
+    "index",
+    "---Get started---",
+    "setup",
+    "run-locally",
+    "concepts",
+    "---Use Cowork---",
+    "using-cowork",
+    "how-messages-travel",
+    "permissions-and-rules",
+    "worktrees",
+    "memory-and-jobs",
+    "---Under the hood---",
+    "engine",
+    "agent-tools",
+    "api",
+    "troubleshooting"
+  ]
 }

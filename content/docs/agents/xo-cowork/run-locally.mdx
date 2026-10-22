@@ -1,0 +1,165 @@
+---
+title: Run Cowork Locally
+description: Install the XO Space server, connect Claude Code, and start the Cowork UI on your own machine.
+icon: Terminal
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+<Lead>
+  A local Cowork setup is two processes. The **XO Space server** (port 5002) runs the storm chat engine and drives your agent CLIs. The **Cowork UI** (port 5180) serves the web page and forwards its API calls to the server. Both bind to `127.0.0.1` by default.
+</Lead>
+
+## Requirements
+
+| Tool | Needed for |
+|---|---|
+| `git` | Required. Every thread works in its own git worktree. |
+| Python 3 | The Cowork UI's `serve.py` uses only the standard library. The installer builds the server's Python 3.12 venv with `uv`. |
+| Claude Code CLI (`claude`) | Running coordinators, threads and Chats. It is the only agent with a storm runtime today. |
+| `node` / `npm` | Optional: installing an agent CLI. |
+| `gh`, `rclone`, `gpg` | Optional: backup, Drive and OneDrive. |
+
+Use Linux or macOS. Windows runs under WSL.
+
+## Install and start
+
+<Steps>
+  <Step>
+    ### Install the XO Space server
+
+    Run the installer from the directory you want as your workspace. Each sub-folder becomes a project.
+
+    ```bash
+    curl -fsSL https://quirq.ai/install | sh
+    ```
+
+    The installer clones the server into `./xo-space`, creates a Python 3.12 venv, writes `./xo-space/.env` once, and starts the server **in the foreground**. Ctrl-C stops it. Running the command again updates and restarts it.
+
+    To see each step instead:
+
+    ```bash
+    git clone https://github.com/quirq-ai/xo-space && cd xo-space
+    ./install.sh        # first run writes .env and starts the server
+    # edit .env, then run ./install.sh again
+    ```
+  </Step>
+  <Step>
+    ### Check the server settings
+
+    `.env` is written once and never rewritten, so your edits survive updates. Values exported in your shell win over the file. These keys matter for Cowork:
+
+    | Key | What it does | Installer default |
+    |---|---|---|
+    | `AGENT_NAME` | The active agent. Set `claude_code` for Cowork, since storm chat needs a storm runtime. | `claude_code` |
+    | `XO_PROJECTS_ROOT` | Your workspace. Each direct, non-hidden sub-folder is a project with its own coordinator. | the directory you ran the installer from |
+    | `QUIRQ_STATE_ROOT` | Machine-local state, including storm's database. Must not be inside a project. | `./.quirq` |
+    | `HOST`, `PORT` | Where the server listens. | `127.0.0.1`, `5002` |
+    | `STAGE` | `local` finds agent CLIs with `which`. | `local` |
+
+    <Callout type="warn">
+      The server API has no login. `HOST=0.0.0.0` lets every device on your network read and change your files, and start agents. Keep the loopback default unless you trust the network.
+    </Callout>
+  </Step>
+  <Step>
+    ### Log in to Claude Code
+
+    Storm runs the `claude` CLI with its own login. Sign in once in a terminal, or connect it from Space's **Setup → Intelligence layer**. If the CLI isn't logged in, Cowork shows **Claude isn't connected · connect it in XO · sending waits until then**, and new sessions answer `409 auth_required`.
+
+    `ANTHROPIC_API_KEY` or `CLAUDE_CODE_OAUTH_TOKEN` in `.env` are used only when the CLI has no login of its own. Leave them commented out rather than blank. Set `CLAUDE_CLI_PATH` if `claude` isn't on your `PATH`.
+  </Step>
+  <Step>
+    ### Start the Cowork UI
+
+    In the xo-coworker folder:
+
+    ```bash
+    python3 serve.py                 # foreground, http://127.0.0.1:5180
+    ./start.sh                       # the same, in the foreground
+    ./start.sh --background          # detached (also -d): pid in .server.pid, log in .server.log
+    ./start.sh --status              # "running (pid N)" or "not running" (exit 1)
+    ./start.sh --stop
+    ```
+
+    | Variable | Default | Meaning |
+    |---|---|---|
+    | `PORT` | `5180` | Port to listen on |
+    | `HOST` | `127.0.0.1` | Bind address |
+    | `XO_API` | `http://127.0.0.1:5002` | The XO Space server to forward to. Must be an http(s) URL, or the UI server exits. |
+    | `XO_UI_QUIET_STREAM` | `1` | Leaves `/stream` requests out of the log |
+
+    Open `http://127.0.0.1:5180`. Cowork opens in **Live** mode on **Home**.
+  </Step>
+  <Step>
+    ### Check that it works
+
+    Ask the server directly:
+
+    ```bash
+    curl -s http://127.0.0.1:5002/api/chat/status     # engine status: sessions, queue, pools, review counts
+    curl -s http://127.0.0.1:5002/api/chat/runtimes   # agent CLIs, login state, feature lists
+    ```
+
+    `/api/chat/runtimes` should list `claude_code` with `logged_in: true`. If storm didn't start, storm routes answer `503` with a code such as `engine_elsewhere` or `store_refused`. See [Troubleshooting](/docs/agents/xo-cowork/troubleshooting).
+  </Step>
+</Steps>
+
+## What the UI server forwards, and what it refuses
+
+The UI server serves static files and forwards `/api` and `/api/*` to `XO_API`, for every method. It adds a few protections, because the server API itself has no login.
+
+- **Same origin only, reads included.** A request from another web page gets `403 cross_origin`. If `Sec-Fetch-Site` is present it must be `same-origin` or `none`. Otherwise an `Origin` header must match the host. Requests with no `Origin` header, such as curl or the address bar, are allowed.
+- **Routes it never forwards** (`403 not_forwarded`, "This UI never uses this route: it exposes secret values or raw files."):
+  - `GET /api/secrets/env`, `PUT /api/secrets/env`, `PUT /api/secrets`, `GET /api/secrets/*/reveal`
+  - `POST /api/files/content`, `content-binary`, `list-directory`, `save`, `upload`
+  - any method on `/api/agents/*/*/secrets`
+
+  Paths are checked after double URL-decoding and collapsing slashes, so other spellings of these routes are refused too.
+- **Odd paths:** a path containing `#` or a `.` / `..` segment gets `400 bad_target`.
+- **Large bodies:** over 1 MiB gets `413 too_large`.
+- **Headers stripped:** `Origin`, `Referer`, `Sec-Fetch-*`, hop-by-hop headers and `Coder-Session-Token` are removed before forwarding.
+- **Server down:** `502 upstream_unreachable`.
+- **Streams:** server-sent events are relayed unbuffered and never time out. Other requests time out after 120 s.
+
+### Opening Cowork from a Coder workspace
+
+If the page opens with `?coder_session_token=…`, the UI moves the token into `sessionStorage` (`xo-coder-token`), removes it from the address, and sends it as a `Coder-Session-Token` header on each request. If Coder redirects to its sign-in page, Cowork shows **Signed out of the workspace. Reopen this app from XO.**
+
+## Live and Demo
+
+The badge at the bottom-left shows the data mode. It is not a connection light.
+
+| Mode | How to choose it | What happens |
+|---|---|---|
+| **Live** (default) | `/` or `/?mode=live` | Reads and writes your real workspace. **Sending a message starts real agents.** |
+| **Demo** | `/?mode=demo`, or click the badge and choose **Demo world** | A simulated, busy workspace that runs in the browser. Nothing is sent anywhere. |
+
+The choice is remembered per browser in `localStorage` under `xo-mode`. Some features only exist in one mode: Chats, Routing, Rules, Worktrees, sub-agents and the file viewer are Live only; the end-of-day seal, the morning recap and **Found while working** are Demo only.
+
+Demo accepts extra parameters for trying out the design:
+
+| Parameter | Effect |
+|---|---|
+| `?at=day`, `evening`, `night` or `morning` | Places the story at a moment of the day |
+| `?away=N` | Back after N days away (2–14) |
+| `?many=1` | One project with many threads |
+| `?finds` | Finds arrive at once |
+| `?review=N` | Starts with N minutes of deciding already done |
+| `?keys=sage,jev` | Enables the demo decision models |
+
+## Where state lives
+
+All of Cowork's state stays on your machine, under the state root (`QUIRQ_STATE_ROOT`).
+
+| Path | What it holds |
+|---|---|
+| `<state>/engine/xo.db` | Storm's SQLite store: chats, messages, threads, sessions, turns, events, review items, rules |
+| `<state>/engine/turns/` | Redacted raw output of each turn, for debugging (kept 14 days) |
+| `<state>/engine/chats/<chat>/memory/` | Each coordinator's memory files |
+| `<state>/run/engine.lock` | Makes sure only one server runs the engine for this state root |
+| `<state>/secrets/router.env` | Decision-model API keys |
+| `<state>/logs/quirq.log` | Server log |
+| `<project>/.xo/worktrees/thread-<ts>` | Each thread's git checkout, never committed or backed up |
+
+[The storm engine](/docs/agents/xo-cowork/engine) covers storage, retention and recovery in detail.

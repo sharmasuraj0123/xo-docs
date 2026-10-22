@@ -1,0 +1,172 @@
+---
+title: Settings
+description: Every Settings tab in the Cowork UI — travel lines, routing and decision models, your rules, worktrees, sounds and keyboard — and where each choice is kept.
+icon: Settings
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  Open **Settings** from the gear at the foot of the sidebar. Settings covers the main area; close it with ✕ or **Esc**, and you return to where you were. Use the arrow keys to move between tabs.
+</Lead>
+
+![Settings → General with the Show how messages travel switch](/images/cowork/settings-general.png)
+
+Some settings live in your XO Space server and apply to everyone using it. Others are kept in this browser only. Each section below says which.
+
+| Tab | Kept in | Live / Demo |
+| --- | --- | --- |
+| [General](#general) | This browser | Both |
+| [Appearance](#appearance) | — | Nothing to set yet |
+| [Routing](#routing) | The server | Live only |
+| [Rules](#rules) | The server | Live only |
+| [Worktrees](#worktrees) | The server | Live only |
+| [Night mode](#night-mode) | — | Nothing to set yet |
+| [Sounds](#sounds) | This browser | Both |
+| [Keyboard](#keyboard) | This browser | Both |
+
+## General
+
+"How the conversation shows what happens behind it."
+
+### Show how messages travel
+
+| | |
+| --- | --- |
+| **Description** | "Inside a thread, a quiet line each time a message passes between the workspace, a project's coordinator and the thread. Off unless you turn it on." |
+| **Default** | Off |
+| **Kept in** | This browser (`cv-hops`) |
+
+Turn it on to see each hand-off as a line inside threads, for example:
+
+- "Forwarded by the Workspace"
+- "The billing-api coordinator passed on your message"
+- "This thread reported back to the billing-api coordinator"
+
+A line ends with " · not taken up yet" or " · answered" where that applies. The lines are read from `GET /api/chat/chats/{chat}/hops`.
+
+Copies of your own messages that a coordinator relayed into a thread always show, whether this is on or off. To learn what the hops are, see [How messages travel](/docs/agents/xo-cowork/how-messages-travel).
+
+## Appearance
+
+"How XO looks on this device." This tab shows "**Nothing to set yet.** Appearance settings arrive here once the backend can keep them."
+
+The light and dark theme is the switch beside the **Space** brand at the top of the sidebar, not this tab.
+
+## Routing
+
+Routing decides where a new message to the Workspace or a project goes. It is saved on the server (`GET` and `PUT /api/chat/router`) and updates live if someone else changes it.
+
+<Callout type="info">
+  In Demo mode this tab reads "**Live only.** Routing and decision models come from your XO Space; Demo has none."
+</Callout>
+
+### Who routes a new message
+
+"When you write to the Workspace or a project, this decides where it goes. A reply inside a thread always goes straight to its agent."
+
+| Choice | Description |
+| --- | --- |
+| **The coordinator** (default) | "Reads your message and decides itself: answer, forward, or start a thread." |
+| A decision model, such as Sage or Jev | "A decision model routes it; when it isn't sure, the coordinator decides." Disabled until connected: "Connect it below to use it." |
+| **Off** | "New messages to the Workspace and projects are refused. Threads still take your replies." |
+
+### When it isn't sure
+
+Shown when a decision model routes. "Below this confidence, the coordinator decides instead." Choose 50%, 60%, 70%, 80% or 90%. The default is 50%.
+
+### Decision models
+
+"A small model that routes quickly. Its key is saved on this machine and never shown again."
+
+Each model shows "Connected · model X" or "Not connected", and a link about it.
+
+- **Connect** asks for an **API key** and an optional **Model**. The key is sent once with `POST /api/chat/router/models`, stored on the server machine, and cleared from the form. An empty key or a key with spaces is refused: "That doesn't look like a key: no spaces, not blank."
+- **Disconnect** asks first: "Disconnect X? Its key is removed from this machine." If the Space routes with it, routing goes back to the coordinator. If chats have their own routing with it, they go back to the Space's setting. Choose **Keep it** or **Disconnect**.
+
+### Chats with their own routing
+
+A Workspace or project can override the Space's routing from its [model chip](/docs/agents/xo-cowork/using-cowork/workspace-and-projects#model-chip-intelligence). This list shows each override, with **Use the Space's** to remove it.
+
+For the full routing flow, see [How messages travel](/docs/agents/xo-cowork/how-messages-travel).
+
+## Rules
+
+"What agents may do without asking you. A rule is only ever made by you: from a decision ("Make it a rule"), word for word. Revoke one and agents ask again."
+
+The list comes from `GET /api/chat/rules`. In Demo mode the tab reads "Live only".
+
+| Group | What it holds |
+| --- | --- |
+| **Your rules** | The rules you made, with a count. Each one shows its sentence, its scope ("Every project", a project name, or "Only in “thread”"), its risk tier, "answered N asks", and "since date". With none: "None yet. When you allow something with "Make it a rule", it appears here." |
+| **XO's defaults** | "Safe, routine things: reading inside the project, read-only git, XO's own tools." |
+| **Revoked** | Defaults you revoked. "agents ask for this". |
+
+**Revoke** asks first — "Agents will ask again." or, for a default, "A default can't be brought back." — with **Keep** and **Revoke**.
+
+You can't type a rule here. Rules are only made from a decision in the [Needs you panel](/docs/agents/xo-cowork/using-cowork/home-and-decisions#make-it-a-rule-or-allow-for-this-thread). To learn what each tier allows and what is never allowed, see [Permissions and rules](/docs/agents/xo-cowork/permissions-and-rules).
+
+## Worktrees
+
+"Each thread works in its own checkout of the project. XO removes one by itself only when nothing would be lost; here you can remove one sooner."
+
+The list comes from `GET /api/chat/worktrees`, grouped by project. In Demo mode the tab reads "Live only". Each row shows the thread title, the branch or path, and one state:
+
+| State | Meaning |
+| --- | --- |
+| "Nothing would be lost" | Safe to remove. |
+| "Has work not kept anywhere else" | Changed files, new files or commits exist only here. |
+| "Its agent is still using it" | The thread's session is busy. |
+| "The checkout is already gone" | The folder no longer exists. |
+| "XO didn't make this checkout, so it won't remove it" | Not XO's checkout. |
+| "Can't be read: …" | XO couldn't check it. |
+
+### Remove a worktree
+
+- **When nothing would be lost** — "Remove this checkout? Nothing would be lost." Choose **Keep it** or **Remove**.
+- **When work would be lost** — the UI lists exactly what would go (commits, changed and new files): "Removing it deletes that work. It can't be undone." Press and hold **Hold to remove** for 1.2 seconds to confirm.
+- **When the agent is busy** — "Its agent is still using it. Stop the thread, or try again once it has gone quiet."
+
+**Made by an agent's own tool** lists checkouts an agent created by itself: "XO didn't create these, so it never removes them."
+
+See [Worktrees](/docs/agents/xo-cowork/worktrees) for how checkouts are made and when XO cleans them up.
+
+## Night mode
+
+"What happens while you're away for the night." This tab shows "**Nothing to set yet.** Night mode settings arrive here once the backend can keep them."
+
+## Sounds
+
+"Quiet sounds that confirm a decision."
+
+### Soft sounds
+
+| | |
+| --- | --- |
+| **Description** | "On Allow, Send back and “That's everything”. Off unless you turn them on." |
+| **Default** | Off |
+| **Kept in** | This browser (`cv-sound`) |
+
+When on, short soft tones play for allow, send back, done, a confirmed hold, and send.
+
+## Keyboard
+
+"Click a key to change it. Keys that work anywhere need ⌘ or Ctrl, or a symbol like / or ?, so typing never sets them off. Your keys are kept in this browser."
+
+Reset one key, or choose **Reset all to defaults**. Only the keys you changed are stored (`cv-keys`). The full list of shortcuts and rebinding rules is on [Keyboard](/docs/agents/xo-cowork/using-cowork/keyboard).
+
+## What this browser keeps
+
+| Key | Storage | Holds |
+| --- | --- | --- |
+| `xo-mode` | localStorage | Live or Demo |
+| `cv-theme` | localStorage | Light or dark |
+| `cv-hops` | localStorage | Show how messages travel |
+| `cv-sound` | localStorage | Soft sounds |
+| `cv-keys` | localStorage | Keys you rebound |
+| `cv-chat-prefs` | localStorage | Your choices for the next new chat |
+| `cv-drafts:live` / `cv-drafts` | localStorage | Unsent drafts per view (Live / Demo) |
+| `cv-iq` | localStorage | Model pins in Demo mode |
+| `xo-coder-token` | sessionStorage | A Coder workspace session token, when the UI is opened from XO |
+
+Clearing site data resets all of these. Routing, rules and worktrees live on the server and are not affected.

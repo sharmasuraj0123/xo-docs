@@ -5,7 +5,7 @@
     "install-space",
     "first-space",
     "space-walk",
-    "[XoCowork][XO Cowork](/docs/agents/xo-cowork)",
+    "../agents/xo-cowork",
     "observability",
     "auto-detection",
     "install-space-as-a-skill",

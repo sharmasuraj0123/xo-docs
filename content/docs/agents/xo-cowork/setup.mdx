@@ -1,6 +1,6 @@
 ---
 title: XO Cowork Quickstart
-description: Create an XO Cowork space on XO, hand off your first piece of work, and answer your first decision.
+description: Create a space on XO, open Cowork, hand off your first piece of work, and answer your first decision.
 icon: Rocket
 ---
 
@@ -10,7 +10,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 import { Cards, Card } from "@/components/card";
 
 <Lead>
-  XO Cowork lets one person direct many AI agents across many projects. You say what should get done, agents do the work in the background, and Cowork shows you only what needs you. This quickstart gets a Cowork space running on XO, then walks you through your first session.
+  XO Cowork lets one person direct many AI agents across many projects. You say what should get done, agents do the work in the background, and Cowork shows you only what needs you. This quickstart gets Cowork running in a space on XO, then walks you through your first session.
 </Lead>
 
 ## Watch the tour
@@ -22,13 +22,17 @@ import { Cards, Card } from "@/components/card";
 - An [XO account](https://app.xo.builders)
 - A Claude account to sign in to **Claude Code**. Cowork runs its agents on Claude Code today.
 
-## Create your Cowork space
+## Create a space and open Cowork
+
+Cowork comes with your XO space. You can create the space from either the **Claude Code** or the **XO Cowork** template, because both include Cowork. Once the space is running, Cowork is one of the apps on its home screen.
+
+![A space's home screen, with the Cowork icon highlighted](/images/cowork/xo-cowork-quickstart-00-space-home.webp)
 
 <Steps>
   <Step>
     ### Create a new project
 
-    Go to [app.xo.builders](https://app.xo.builders). Click **New Project** in the left sidebar, then click **Create Agent** on the **XO Cowork** template card.
+    Go to [app.xo.builders](https://app.xo.builders) and click **New Project** in the left sidebar. On the **Claude Code** or **XO Cowork** template card, click **Create Agent**.
   </Step>
   <Step>
     ### Name it
@@ -38,16 +42,23 @@ import { Cards, Card } from "@/components/card";
   <Step>
     ### Wait for startup
 
-    Your space takes about **5–6 minutes** to start. When it's ready, XO opens Cowork in a new browser tab. If you close the tab, open Cowork again from your project on XO.
+    Your space takes about **5–6 minutes** to start. When it's ready, open your space. You'll see its home screen, like the one above.
+  </Step>
+  <Step>
+    ### Open Cowork
+
+    On the home screen, click the **Cowork** icon.
 
     <Callout type="info">
-      In your browser the app is called **XO Space**: the tab reads "XO Space" and the sidebar reads **Space**.
+      Cowork's browser tab reads "XO Space" and its sidebar reads **Space**.
     </Callout>
   </Step>
   <Step>
     ### Connect Claude Code
 
     If the line above the message box reads "Claude isn't connected · connect it in XO · sending waits until then", sign in to Claude Code from XO Space's setup, under **Setup → Intelligence layer**. Anything you send waits, then starts as soon as Claude Code is connected.
+
+    If you used the **Claude Code** template, you can also connect Claude from its setup checklist. See [Connect Claude](/docs/agents/claude-code/setup#connect-claude).
   </Step>
 </Steps>
 

@@ -3,19 +3,32 @@
 interface VideoEmbedProps {
   id: string;
   title?: string;
-  type?: "loom" | "youtube";
+  type?: "loom" | "youtube" | "drive";
+}
+
+// Accepts a Drive share link (".../file/d/<id>/view") or a bare file ID.
+function getDriveFileId(id: string) {
+  return (
+    id.match(/\/file\/d\/([^/?#]+)/)?.[1] ??
+    id.match(/[?&]id=([^&#]+)/)?.[1] ??
+    id
+  );
 }
 
 export function VideoEmbed({ id, title, type }: VideoEmbedProps) {
+  const isDrive = type === "drive" || id.includes("drive.google.com");
   const isYouTube =
-    type === "youtube" ||
-    id.includes("youtube.com") ||
-    id.includes("youtu.be") ||
-    (type !== "loom" && id.length === 11);
+    !isDrive &&
+    (type === "youtube" ||
+      id.includes("youtube.com") ||
+      id.includes("youtu.be") ||
+      (type !== "loom" && id.length === 11));
 
   let embedUrl = `https://www.loom.com/embed/${id}`;
 
-  if (isYouTube) {
+  if (isDrive) {
+    embedUrl = `https://drive.google.com/file/d/${getDriveFileId(id)}/preview`;
+  } else if (isYouTube) {
     let videoId = id;
     if (id.includes("youtu.be/")) {
       videoId = id.split("youtu.be/")[1]?.split("?")[0] || id;

@@ -67,6 +67,7 @@ aside [data-sidebar-viewport],
 #nd-sidebar [data-radix-scroll-area-viewport],
 #nd-sidebar-mobile [data-radix-scroll-area-viewport],
 [data-sidebar] [data-radix-scroll-area-viewport] {
+  /* biome-ignore lint/complexity/noImportantStyles: must override Fumadocs' own sidebar viewport padding */
   padding-bottom: calc(var(--docs-bottom-bar-height, 60px) + 3.5rem) !important;
 }
 

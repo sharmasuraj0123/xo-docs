@@ -1,0 +1,141 @@
+---
+title: Using the Cowork UI
+description: A tour of the Cowork screen — the sidebar, creating projects, jumping around, connection messages, and Live and Demo modes.
+icon: MousePointerClick
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+import { Cards, Card } from "@/components/card";
+
+<Lead>
+  The Cowork UI shows you what is worth your time across every project, and keeps everything that only needs an agent quiet. This page tours the layout; the pages below go screen by screen.
+</Lead>
+
+<Callout type="info">
+  In your browser the app is called **XO Space**: the tab reads "XO Space" and the sidebar reads **Space**. To run it on your own machine, see [Run Cowork locally](/docs/agents/xo-cowork/run-locally).
+</Callout>
+
+## The sidebar
+
+From top to bottom:
+
+| Item | What it does |
+| --- | --- |
+| **Space** and the theme switch | The switch flips between dark (the default) and light. The choice is remembered in this browser. |
+| **Create XO Project** | Opens the new-project dialog (below). |
+| **Home** | What is worth your time, ranked. Shows a dot and a count when something needs you. |
+| **Workspace** | Your coordinator across all projects. See [Workspace and projects](/docs/agents/xo-cowork/using-cowork/workspace-and-projects). |
+| **Chats** | Plain chats: one agent in one folder. See [Chats](/docs/agents/xo-cowork/using-cowork/chats). |
+| **Projects** | One row per project. |
+| **Live** / **Demo** badge | Bottom left. Shows which data you are looking at (below). |
+| **Settings** | The gear at the bottom. Opens **Settings**. |
+
+### Project rows
+
+Each project row shows its state at a glance:
+
+- **Working** — a small busy indicator on the project icon.
+- **Needs you** — a count and a short label for the most important ask. The row is amber, or red when the ask is destructive or a thread stopped.
+- **A new ask arriving** — a brief highlight across the row.
+
+Once you have more than 8 projects, a **Find a project** box appears above the list. It shows "N of M" (or "None") as you type. Arrow keys move through matches, **Enter** opens one and **Esc** clears the box. With no match it says "No project called “x”."
+
+### On a phone
+
+On a narrow screen, a top bar holds a menu button and a gear. The sidebar becomes a drawer; tap outside it to close it. The decision panel opens as a sheet from the bottom.
+
+## Jump anywhere
+
+Press **⌘K** (**Ctrl+K** on Windows and Linux) to open Jump: "Jump to Home, the Workspace, a project or a thread". It lists Home, Workspace, Chats, every project, and every thread with its project and state.
+
+Press **?** to see every shortcut.
+
+## Create a project
+
+**Create XO Project** (in the sidebar, and on Home) opens a dialog: "Its own coordinator, plan and memory."
+
+| Field | Limit | Notes |
+| --- | --- | --- |
+| **Project name** | 80 characters | For example "Billing API". Required. |
+| **What is it for?** *optional* | 600 characters | "One or two sentences for the project brief." |
+
+As you type, the dialog shows where the project folder will be saved.
+
+You may see:
+
+- "Give the project a name."
+- "Use at least one letter or number in the name."
+- "There's already a project called “x”. Pick another name."
+- "Can't create yet: the projects folder is unknown. Is the XO API running?"
+
+Press create and the button reads **Creating…**. You get a new project folder with a short `AGENTS.md` file — a place for your own instructions to agents, such as how to build and test the project. The project opens with "X created" and the note "X is ready". Write to it to get started.
+
+## Connection messages
+
+When something is wrong, a line above the message box tells you what, and Cowork keeps retrying:
+
+| Message | What it means |
+| --- | --- |
+| "XO's chat engine isn't running · retrying · nothing you write is lost" | XO Space is starting up or had a problem. Wait a moment. |
+| "Can't reach XO · retrying · what you see may be out of date" | Your browser can't reach XO Space. |
+| "Claude isn't connected · connect it in XO · sending waits until then" | Sign in to your agent (Claude Code) again. |
+| "The router is off · new messages to the Workspace and projects are refused · threads still take replies" | Routing is set to **Off** in **Settings**. |
+| "Paused until HH:MM · usage limit · running work finishes, new work waits" | Your agent account reached a usage limit. New work starts when it resets. |
+| "Paused for your choice · your subscription moved onto paid usage · it's in Needs you" | Choose whether to keep going on paid usage. The question is in Needs you. |
+
+When you can't send, the message box reads **Sending is paused** with the reason:
+
+- "XO's chat engine isn't running"
+- "Can't reach XO right now"
+- "Connecting to XO…"
+- "Claude isn't connected"
+- "The router is off" (replies inside threads still go through)
+- "This chat has ended"
+
+Your unsent text is kept in this browser, so nothing you type is lost while you wait. More help: [Troubleshooting](/docs/agents/xo-cowork/troubleshooting).
+
+## Live and Demo
+
+The badge at the bottom left shows which data you are looking at. It is not a connection light.
+
+| Mode | What it shows |
+| --- | --- |
+| **Live** (default) | Your real workspace. "Live: your real workspace. Sending starts real agents." |
+| **Demo** | A simulated, busy workspace in your browser. "Demo: a simulated workspace. Nothing is sent anywhere." |
+
+Click the badge to switch between **Demo world** and **Live backend**. Your choice is remembered in this browser.
+
+Demo is a safe way to explore. A few features exist only in one mode:
+
+| Only in Live | Only in Demo |
+| --- | --- |
+| Chats, sub-agents, opening shared files | End the day, Seal, the night and morning recap |
+| Settings → Routing, Rules and Worktrees | Found while working |
+| Resolve, Reopen, Rename and Label in a thread | Small asks held as "can wait" |
+
+## The tab title
+
+While asks wait for you, the browser tab reads **◆ N · XO Space**, so you can see it from another tab.
+
+## Screen by screen
+
+<Cards>
+	<Card
+		icon={<span className="icon-[ph--buildings-fill] size-4.5 text-green-400" />}
+		title="Workspace and projects"
+		description="Your coordinators, the Now strip, thread cards and the model chip."
+		href="/docs/agents/xo-cowork/using-cowork/workspace-and-projects"
+	/>
+	<Card
+		icon={<span className="icon-[ph--flow-arrow-fill] size-4.5 text-green-400" />}
+		title="Threads"
+		description="One task's agent, checklist, helpers, files and stop controls."
+		href="/docs/agents/xo-cowork/using-cowork/threads"
+	/>
+	<Card
+		icon={<span className="icon-[ph--terminal-window-fill] size-4.5 text-green-400" />}
+		title="Chats"
+		description="Plain chats with one agent in one folder."
+		href="/docs/agents/xo-cowork/using-cowork/chats"
+	/>
+</Cards>

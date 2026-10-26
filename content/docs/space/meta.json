@@ -2,10 +2,10 @@
   "title": "XO Space",
   "icon": "Blocks",
   "pages": [
-    "index",
     "install-space",
     "first-space",
     "space-walk",
+    "../agents/xo-cowork",
     "observability",
     "auto-detection",
     "install-space-as-a-skill",

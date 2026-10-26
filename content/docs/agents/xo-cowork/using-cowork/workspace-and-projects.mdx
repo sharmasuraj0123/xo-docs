@@ -1,0 +1,173 @@
+---
+title: Workspace and projects
+description: Talk to the Workspace coordinator and each project's coordinator, aim messages with @project, read thread cards, and choose which model routes and answers.
+icon: Building2
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  The **Workspace** is your coordinator across all projects. Each **project** has its own coordinator, which answers you or starts threads to do the work. Both views are conversations, with the work they started shown inline.
+</Lead>
+
+For how a message moves from the Workspace to a project and into a thread, see [How messages travel](/docs/agents/xo-cowork/how-messages-travel).
+
+## The Workspace
+
+The header shows the XO mark, **Workspace**, and "Your coordinator, across all N projects." Below it is a row of counts:
+
+| Count | Meaning |
+| --- | --- |
+| **Working** | Threads whose agent is busy. |
+| **Need you** (amber) | Threads waiting on you. |
+| **Can wait** | Small asks held for later. |
+| **Idle** | Open threads with nothing running right now (shown only when there are any). |
+| **Finished today** (green) | Threads finished today. |
+
+Then either a **Next move** button (how long it takes, and its title), which opens that decision, or "Nothing needs you. Ask anything below."
+
+### Messages
+
+- **Your messages** can show where they went: "Routed to **billing-api**" (click it to open the project) or "Forwarded by the **Workspace**".
+- **Coordinator messages** are labelled **Coordinator** with the time.
+- **Thread cards** appear in the conversation when work starts.
+- An empty Workspace reads "No messages yet. Ask the coordinator anything below."
+- Scroll to the top to load **Earlier messages**. You see "Loading earlier messages…" while it loads, and "Beginning of the conversation" when there is nothing older.
+
+<Callout type="info" title="Demo only">
+  In Demo mode the Workspace also shows "N rules answered N asks for you".
+</Callout>
+
+## A project
+
+Open a project from the sidebar. The header shows:
+
+- The project name.
+- A summary: "N need(s) you · N working · N done this week · N resolved", "All quiet", or "No threads yet".
+- The description you gave when you created it (shown only until you close the browser tab).
+- An **All threads** button with a count.
+
+### The Now strip
+
+Under the header, the **Now** strip holds one slim chip for each thread in progress, in this order: needs you, then stopped, then working. Each chip shows a state mark, the title and progress. The strip scrolls sideways, and your mouse wheel scrolls it too.
+
+### The conversation
+
+A project's conversation is your exchange with its coordinator, with thread cards in between. Short lines record what happened:
+
+- "X finished" and "X stopped".
+- Your decisions, such as "You allowed · …".
+- "Not sent · … · why", when a decision could not reach the agent.
+
+An empty project reads "No messages yet. Tell this project's coordinator what you'd like done."
+
+### Thread cards
+
+A thread card shows:
+
+- The title.
+- Where it stands: "Needs you · ~1 min", "Working · 2 of 4", "Done · 3 of 3", or **Idle**, **Paused**, **Stopped** or **Resolved**.
+- Its checklist as progress segments.
+- What it's doing: "◆ ask" when it waits on you, "✱ current step" while it works, or why it stopped.
+- The branch it works on, "a small ask can wait" when one is held back, and how long ago it last moved.
+- **Open →**, plus a **Decide** button when it needs you.
+
+### All threads
+
+**All threads** opens a sheet titled "All threads · project":
+
+- **Search threads** matches a title or branch.
+- Filters: **All**, **Needs you**, **Working**, **Done**, **Stopped**, each with a count. A filter with nothing in it is greyed out.
+- Each row shows the state, title, label, progress and age.
+- Under **All** with no search, finished and resolved threads fold into "**N done** or resolved".
+- With no match: "Nothing matches “q”."
+
+## The composer
+
+The composer sits at the bottom of every conversation. Its placeholder tells you where you are:
+
+| Where | Placeholder |
+| --- | --- |
+| Home (desktop) | "What should get done? Use @project to aim it" |
+| Home (phone) | "What should get done?" |
+| Workspace | "Ask anything across your projects…" |
+| A project | "Message project…" |
+| A thread | "Reply to the agent…" |
+| A resolved thread | "Reply to reopen it…" |
+
+The line beside it, **Aim at a project (@)**, says where your message will go:
+
+- "To the **Workspace** coordinator · @ to aim at a project" on Home and in the Workspace.
+- "To the **X** coordinator" in a project.
+- "Reply in **this thread**" in a thread.
+- "New work for **X**" when you have typed `@` and a project name.
+- "No project called **x**" when the name doesn't match a project.
+
+### Aim with @project
+
+Type `@` to open a list of your projects, each marked "N working" or "quiet". Use ↑ and ↓ to move, **Enter** or **Tab** to pick, and **Esc** to close. Only a real project name (or the Workspace) counts. The `@project` part is taken out of your text before it's sent.
+
+In a thread, `@project` sends your words to that project as new work instead of replying in the thread.
+
+### Sending
+
+- **Enter** sends, **Shift+Enter** starts a new line, and **Esc** leaves the box.
+- Your message appears at once marked **Sending**. If you retry, it is never posted twice.
+- Once it arrives, the last message shows **Sent ✓**. If you sent it from another view, a line says "Sent to X · open to follow the reply".
+- When a coordinator answers while you are looking elsewhere, a line says "The coordinator replied" or "X coordinator replied".
+- Whatever you were typing is kept as a draft for each view.
+
+If a message can't be sent, it shows a short title with **Retry** and **Edit**. **Edit** puts the text back in the box, `@project` included.
+
+| Title | What it means |
+| --- | --- |
+| "The router is off" | New messages to the Workspace and projects are turned off in **Settings → Routing**. |
+| "This project was removed" | The project no longer exists in XO. |
+| "The agent isn't connected" | Claude Code isn't signed in. |
+| "No agent can run this" | No agent that can work here is set up. |
+| "The coordinator is busy" | The coordinator was in the middle of a handover. Send again. |
+| "This thread is gone" | The thread no longer exists. |
+| "XO's chat engine isn't running" | XO Space is starting up or has stopped. |
+| "No answer from XO" | XO didn't answer in time. |
+| "Not supported by this agent" | The agent can't do this yet. |
+| "Refused by the proxy" | The page you're using isn't allowed to send this. Reload Cowork. |
+| "Can't reach XO" | Your connection or XO Space is down. |
+
+If a coordinator runs into a problem while answering, a line says "The coordinator couldn't answer: …".
+
+For what to do about each one, see [Troubleshooting](/docs/agents/xo-cowork/troubleshooting).
+
+### Stop
+
+When the box is empty and something is running, the send button turns into **Stop**: "Stop the coordinator" or "Stop the agent (it keeps what's done)".
+
+1. For 3 seconds nothing happens yet. A line shows "Stopping · …" with **Undo**.
+2. Then the work stops.
+3. The line reports "Stopped · … · what it did is kept", "It had already finished", or "Couldn't stop it" with **Retry**.
+
+## Model chip
+
+The chip beside the composer shows which model routes or answers in this conversation. Click it, or press **⌘.** (**Ctrl+.** on Windows and Linux). It isn't shown in Chats.
+
+### In the Workspace or a project
+
+The chip reads **Auto · Router**, **Auto · Off**, the name of a decision model, or a model you chose, with dots for how deeply it thinks.
+
+The popover has two parts:
+
+1. **Who routes a new message**: **The Space's** (whatever is set in **Settings → Routing**), **Coordinator**, any decision model you've connected, or **Off**. This choice applies to this conversation only.
+2. **What the coordinator runs**: "Its coordinator runs on its default. New threads still get their own choice from the router." Pick a model, and a depth from **Quick** to **Deepest**, to keep the coordinator on it.
+
+The footer reads "Applies to … from its next turn." with **Back to Auto**.
+
+### In a thread
+
+The chip reads **Auto ·** and the model the thread runs on, or the model you chose. The popover says "The router chose X for it." You can pick another model and depth, or choose **Back to the CLI's default**.
+
+### What a change does
+
+A change applies from the agent's next reply. A quiet line records it, such as "This thread now runs X · Deep, from its next turn", with a 3-second **Undo**. If it doesn't save, the line reads "Nothing changed: …".
+
+Choosing a model for a coordinator doesn't change the threads it starts: each thread keeps its own choice.
+
+In the popover, **A** goes back to Auto; ↑ and ↓ choose the model, ← and → the depth, and **Enter** keeps your choice.

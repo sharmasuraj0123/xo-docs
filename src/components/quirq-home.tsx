@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { BrandIcon } from "@/components/brand-icon";
+import { FlutedGlassShader } from "@/components/fluted-glass-shader";
 import { SystemSequence } from "@/components/system-sequence";
 import { socialLinks } from "@/lib/layout.shared";
 
@@ -74,6 +75,7 @@ export function QuirqHome() {
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_-20%,rgba(22,110,29,0.15),transparent_65%)] dark:bg-[radial-gradient(ellipse_at_50%_-20%,rgba(21,110,29,0.25),transparent_65%)]"
         />
+        <FlutedGlassShader className="pointer-events-none absolute inset-0 size-full" />
         <div className="relative mx-auto max-w-4xl text-center">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-fd-border bg-fd-background/80 px-3.5 py-1 text-xs font-medium text-fd-foreground shadow-sm">
             <span className="size-2 rounded-full bg-green-500 animate-pulse" />
@@ -112,7 +114,9 @@ export function QuirqHome() {
                 {copied ? (
                   <>
                     <span className="icon-[ph--check-bold] size-3.5 text-fd-primary" />
-                    <span className="text-fd-primary font-semibold">Copied</span>
+                    <span className="text-fd-primary font-semibold">
+                      Copied
+                    </span>
                   </>
                 ) : (
                   <>

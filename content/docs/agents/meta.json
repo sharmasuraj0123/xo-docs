@@ -1,5 +1,11 @@
 {
   "title": "AI Agent Guides",
   "icon": "Bot",
-  "pages": ["openclaw", "claude-code", "hermes", "antigravity"]
+  "pages": [
+    "[XoCowork][XO Cowork](/docs/agents/xo-cowork)",
+    "openclaw",
+    "claude-code",
+    "hermes",
+    "antigravity"
+  ]
 }

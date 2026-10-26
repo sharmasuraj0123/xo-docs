@@ -28,3 +28,6 @@ yarn-error.log*
 # others
 .vercel
 next-env.d.ts
+
+# XO Space project metadata (created by a local XO Space server)
+.xo/

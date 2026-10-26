@@ -1,5 +1,18 @@
 {
   "title": "XO Cowork",
   "icon": "XoCowork",
-  "pages": ["setup"]
+  "pages": [
+    "---Get started---",
+    "setup",
+    "run-locally",
+    "concepts",
+    "---Use Cowork---",
+    "using-cowork",
+    "how-messages-travel",
+    "permissions-and-rules",
+    "worktrees",
+    "memory-and-jobs",
+    "---Help---",
+    "troubleshooting"
+  ]
 }

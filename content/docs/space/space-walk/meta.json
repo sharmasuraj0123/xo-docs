@@ -2,7 +2,6 @@
   "title": "Space UI",
   "icon": "Map",
   "pages": [
-    "index",
     "dashboard",
     "files-explorer",
     "graph",

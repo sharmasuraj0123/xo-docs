@@ -1,0 +1,97 @@
+---
+title: How Your Messages Are Handled
+description: Where a message goes depending on where you write it, what coordinators do with it, and how you can follow it.
+icon: Workflow
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  Where your message goes depends on where you write it. A reply in a thread goes straight to that thread's agent. A message to the Workspace or to a project goes to its coordinator, which decides whether to answer you, pass the work on, or start a thread.
+</Lead>
+
+## The short version
+
+<img src="/images/cowork/message-routing-light.svg" alt="Where a message goes: the Workspace goes to the Workspace coordinator, then the right projects. A project goes to its coordinator, which answers or starts a thread. An @project mention goes to that project's coordinator as new work. A thread reply goes straight to that thread's agent." width="960" height="420" className="block w-full h-auto dark:hidden" />
+<img src="/images/cowork/message-routing-dark.svg" alt="Where a message goes: the Workspace goes to the Workspace coordinator, then the right projects. A project goes to its coordinator, which answers or starts a thread. An @project mention goes to that project's coordinator as new work. A thread reply goes straight to that thread's agent." width="960" height="420" className="hidden w-full h-auto dark:block" />
+
+## Writing to the Workspace
+
+The Workspace coordinator sees all your projects. Write to it when you aren't sure where something belongs, or when it touches several projects.
+
+It will:
+
+- **answer you itself**, for questions it can answer by looking around;
+- **pass your message to a project**, once per project it concerns; or
+- **suggest a new project**, if the work fits none of them. You decide whether to create it.
+
+Once it has passed something on, the Workspace coordinator steps back. The project takes it from there.
+
+## Writing to a project
+
+A project's coordinator knows that project. It answers quick questions after reading the code. Any change to the project goes to a thread:
+
+- If a thread is already working on the same thing, the coordinator passes your message to it.
+- Otherwise it starts a new thread, gives it a short title and a brief, and chooses a model for the job.
+
+Coordinators never change files themselves. Every change happens in a thread you can open and follow.
+
+## Aiming with @project
+
+Type `@` in the message box to pick a project. The line above the box changes to **New work for billing-api** (for example), and the message goes straight to that project's coordinator.
+
+This works from anywhere, even from inside a thread. If you type an `@project` name in a thread, your message goes to that project as new work, not as a reply in the thread.
+
+## Replying in a thread
+
+A message you write inside a thread goes **straight to its agent**. The coordinators aren't involved. Use this to steer the work, answer a question, or add detail.
+
+- Replying to a **Resolved** thread reopens it.
+- Replying to a **Paused** thread lets it continue.
+
+## How threads report back
+
+After each stretch of work, a thread tells its project coordinator how it's going. If a thread needs something only the coordinator knows, it asks. If the coordinator doesn't know either, it can ask the Workspace.
+
+When a thread needs a decision from **you**, it doesn't go through the coordinators. It appears under **Needs you**. Coordinators may add a note to help you decide, but only you decide.
+
+## Seeing where your message went
+
+On the Workspace and in projects, your messages show where they went. A small line under your message reads, for example, **Routed to billing-api**. Click it to jump there. A message passed on from the Workspace shows **Forwarded by the Workspace**.
+
+If you'd like to see every hand-off inside threads too, turn on **Settings → General → Show how messages travel**. Each time a message passes between the Workspace, a project's coordinator and a thread, a quiet line appears. For example:
+
+- "Forwarded by the Workspace"
+- "The billing-api coordinator passed on your message"
+- "This thread reported back to the billing-api coordinator"
+
+Lines may end with " · not taken up yet" or " · answered". This setting is off unless you turn it on.
+
+## Choosing who routes your messages
+
+**Settings → Routing** decides who reads a new message to the Workspace or a project and decides where it goes. A reply inside a thread always goes straight to its agent, whatever you choose here.
+
+| Option | What happens |
+| --- | --- |
+| **The coordinator** | The coordinator reads your message and decides itself: answer, pass it on, or start a thread. This is the default. |
+| A decision model | A small, fast model decides where the message goes. When it isn't sure, the coordinator decides instead. |
+| **Off** | New messages to the Workspace and projects are refused. Threads still take your replies. |
+
+To use a decision model, connect it first in **Settings → Routing → Decision models** with its API key. The key stays on your machine and is never shown again. Then choose how sure it must be under **When it isn't sure**. Below the level you pick, the coordinator decides.
+
+You can also set routing for one conversation only, from the model chip next to the message box. Conversations with their own routing are listed in **Settings → Routing**, each with **Use the Space's** to go back to the shared setting.
+
+## Choosing a model
+
+The chip next to the message box shows what's in effect, such as **Auto · Router**.
+
+- **In the Workspace or a project**, choose who routes new messages and which model the coordinator uses.
+- **In a thread**, see the model chosen for that thread and pin a different one, along with how much effort it should spend, from **Quick** to **Deepest**.
+
+Changes apply from the agent's next step. **Back to Auto** returns to the default.
+
+When a coordinator starts a thread, it picks a model and effort that suit the task: more effort for hard work, less for small changes. You can always change it from the thread's chip.
+
+## Long conversations
+
+Coordinators can keep going for days. From time to time Cowork refreshes a busy coordinator behind the scenes, so it stays quick and focused. Nothing is lost: the fresh coordinator picks up its notes, the open threads and the recent conversation, and carries on without greeting you again.

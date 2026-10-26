@@ -1,0 +1,5 @@
+{
+  "title": "Using the Cowork UI",
+  "icon": "MousePointerClick",
+  "pages": ["workspace-and-projects", "threads", "chats"]
+}

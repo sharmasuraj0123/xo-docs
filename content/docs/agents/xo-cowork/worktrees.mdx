@@ -1,0 +1,66 @@
+---
+title: Worktrees
+description: Every thread works in its own copy of the project, so threads never clash and your main folder stays as you left it.
+icon: GitFork
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  When a thread starts in a git project, XO gives it its own copy of the project on its own branch, called a worktree. Several threads can work at once without stepping on each other, and your main project folder stays exactly as you left it.
+</Lead>
+
+## How it works
+
+- **One copy per thread.** Each thread gets its own copy of the project, kept inside the project, and a branch named after the thread.
+- **It starts from your latest commit.** Changes you haven't committed in your main folder aren't in the thread's copy.
+- **The thread works only there.** It edits files, commits to its branch and runs commands in its copy. Merging the branch into your own work is up to you, or you can ask the thread to open a pull request.
+- **It survives restarts.** When a thread picks up again later, it uses the same copy and branch.
+- **It stays out of your history and backups.** Thread copies are never added to your project's git history or to project backups.
+
+<Callout type="info">
+  If a project folder isn't a git repository, threads work directly in the project folder, and the thread tells you so. Threads then share that folder, so it's best to run one at a time there.
+</Callout>
+
+## When a thread can't start its copy
+
+The thread tells you what's wrong. The usual causes:
+
+| What you see | What to do |
+| --- | --- |
+| The project has no commit yet | Commit once in the project, then send the thread a message again. |
+| The folder isn't a git repository (or is damaged) | Repair it, or run `git init` and make a first commit. |
+| Something else is already in the way where the copy goes | Move that folder aside, then try again. |
+| XO's folder in the project is a link to somewhere else | Replace it with an ordinary folder. XO won't create copies through a link. |
+
+After fixing the cause, send the thread a message to try again.
+
+## Automatic clean-up
+
+XO removes a thread's copy by itself only when **nothing would be lost**. That happens about a week after you resolve the thread, once its agent has gone quiet.
+
+Work would be lost if the copy has:
+- changed or new files that aren't committed;
+- commits that aren't on any other branch or remote.
+
+Build output such as `node_modules` or `dist` doesn't count. If something would be lost, the copy is kept.
+
+## Removing a copy yourself
+
+Open **Settings → Worktrees** to see every thread's copy, grouped by project. Each one shows the thread, its branch and its state:
+
+| State | Meaning |
+| --- | --- |
+| **Nothing would be lost** | Safe to remove. |
+| **Has work not kept anywhere else** | Removing it deletes that work. |
+| **Its agent is still using it** | Stop the thread, or wait until it has gone quiet. |
+| **The checkout is already gone** | The folder was removed outside XO. |
+| **XO didn't make this checkout, so it won't remove it** | It was created some other way. |
+
+Click **Remove**:
+- If nothing would be lost, confirm and the copy is removed.
+- If work would be lost, XO lists exactly what would go (commits, changed files, new files) and warns that it can't be undone. To go ahead, **hold** the remove button.
+
+## Copies an agent makes itself
+
+Sometimes an agent creates its own extra copy using its own tools. These are listed under **Made by an agent's own tool**. XO didn't create them, so it never removes them.

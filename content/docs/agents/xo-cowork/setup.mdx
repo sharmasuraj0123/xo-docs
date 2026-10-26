@@ -1,119 +1,196 @@
 ---
 title: XO Cowork Quickstart
-description: Deploy your XO Coworker space on XO in under 10 minutes.
+description: Create a space on XO, open Cowork, hand off your first piece of work, and answer your first decision.
 icon: Rocket
 ---
 
-import { VideoEmbed } from '@/components/video-embed';
-import { Step, Steps } from 'fumadocs-ui/components/steps';
-import { Callout } from 'fumadocs-ui/components/callout';
+import { VideoEmbed } from "@/components/video-embed";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Callout } from "fumadocs-ui/components/callout";
+import { Cards, Card } from "@/components/card";
 
-XO Cowork is the chat-first AI agent space on XO. Create a project, configure your agent through the in-space onboarding wizard, and start chatting with per-project memory — no infrastructure to manage.
+<Lead>
+  XO Cowork lets one person direct many AI agents across many projects. You say what should get done, agents do the work in the background, and Cowork shows you only what needs you. This quickstart gets Cowork running in a space on XO, then walks you through your first session.
+</Lead>
 
-## Setup Walkthrough
+## Watch the tour
 
-<VideoEmbed id="772e6a1e0d144f6cbde09c16f63cc2ec" title="XO Cowork Setup on XO Builders" />
+<VideoEmbed id="https://drive.google.com/file/d/1SGXtcv4lFQmQ7VZ6BOIDieWSLrzTaGrw/view" title="XO Cowork: a tour" />
 
-## What You'll Need
+## What you'll need
 
 - An [XO account](https://app.xo.builders)
-- *(Preferred)* a **model provider** — an Anthropic API key (recommended), an OpenAI API key, or an OpenRouter key
-- *(Preferred)* a **channel** — Discord, Telegram (from [@BotFather](https://t.me/botfather)), or Slack
+- A Claude account to sign in to **Claude Code**. Cowork runs its agents on Claude Code today.
 
-Both are optional at project creation — you can add them later in the in-space onboarding or from **Settings**.
+## Create a space and open Cowork
 
-## Deploy XO Cowork
+Cowork comes with your XO space. You can create the space from either the **Claude Code** or the **XO Cowork** template, because both include Cowork. Once the space is running, Cowork is one of the apps on its home screen.
+
+![A space's home screen, with the Cowork icon highlighted](/images/cowork/xo-cowork-quickstart-00-space-home.webp)
 
 <Steps>
   <Step>
-    ### Create a New Project
-    Go to [app.xo.builders](https://app.xo.builders).
+    ### Create a new project
 
-    ![XO Builders dashboard](/images/xo-cowork-setup-01-new-project.jpeg)
-
-    Click **New Project** in the left sidebar. On the **XO Cowork** template card, click **Create Agent**.
-
-    ![Select the XO Cowork template](/images/xo-cowork-setup-02-template.jpeg)
+    Go to [app.xo.builders](https://app.xo.builders) and click **New Project** in the left sidebar. On the **Claude Code** or **XO Cowork** template card, click **Create Agent**.
   </Step>
   <Step>
-    ### Configure Project Details
-    Fill in the project creation form:
+    ### Name it
 
-    | Field | Value |
-    |---|---|
-    | **Project Name** | A unique name — e.g. `xo` |
-    | **AI Provider** | *(Optional)* Anthropic, OpenAI, or OpenRouter |
-    | **Notification Channel** | *(Optional)* Telegram, WhatsApp, or Slack |
-    | **Volume Size** | Default 2 GB is fine for most setups |
-
-    All fields except Project Name are optional — you can configure them later in the in-space onboarding.
-
-    ![XO Cowork creation form](/images/xo-cowork-setup-03-form.jpeg)
-
-    Click **Create Project**.
+    Enter a unique **Project Name**, for example `xo`. The other fields are optional, and the default volume size is fine for most setups. Click **Create Project**.
   </Step>
   <Step>
-    ### Wait for Startup
-    Your space takes about **5–6 minutes** to provision.
+    ### Wait for startup
+
+    Your space takes about **5–6 minutes** to start. When it's ready, open your space. You'll see its home screen, like the one above.
+  </Step>
+  <Step>
+    ### Open Cowork
+
+    On the home screen, click the **Cowork** icon.
 
     <Callout type="info">
-      When provisioning completes, a new browser tab opens at `xo-cowork--<project>--<user>.space.helloxo.nl/onboard` with the in-space setup wizard.
+      Cowork's browser tab reads "XO Space" and its sidebar reads **Space**.
     </Callout>
   </Step>
   <Step>
-    ### Name Your Space
-    In the **XO-Coworker Setup** wizard (step 1 of 5), enter the name that will appear throughout your space — this is what your agent will use.
+    ### Connect Claude Code
 
-    ![Wizard step 1 — name your space](/images/xo-cowork-setup-04-company.jpeg)
+    If the line above the message box reads "Claude isn't connected · connect it in XO · sending waits until then", sign in to Claude Code from XO Space's setup, under **Setup → Intelligence layer**. Anything you send waits, then starts as soon as Claude Code is connected.
 
-    Click **Continue**.
-  </Step>
-  <Step>
-    ### Add an AI Model
-    Select a provider and paste your API key. **Anthropic** is recommended.
-
-    ![Wizard step 2 — add an AI model](/images/xo-cowork-setup-05-ai-model.jpeg)
-
-    Click **Save Key**, then **Continue** (or **Skip for now**).
-  </Step>
-  <Step>
-    ### Connect Channels
-    Connect your assistant to **Discord**, **Telegram**, or **Slack** so messages flow to the apps your team already uses.
-
-    ![Wizard step 3 — connect channels](/images/xo-cowork-setup-06-channels.jpeg)
-
-    <Callout type="info">
-      After saving a channel, restart the Gateway from **Settings → Channels** to apply the changes.
-    </Callout>
-
-    Click **Continue** (or **Skip for now**).
-  </Step>
-  <Step>
-    ### Shape Your Agent
-    Four markdown files define your agent's identity, voice, space rules, and what it knows about you — **Agents**, **Soul**, **Identity**, and **User**. Tweak them now or leave the defaults; you can revisit them anytime.
-
-    ![Wizard step 4 — shape your agent](/images/xo-cowork-setup-07-shape-agent.jpeg)
-
-    Click **Continue** (or **Skip for now**).
-  </Step>
-  <Step>
-    ### Create Your First Project
-    Name your first project — e.g. `Helix`. This scaffolds a project folder with starter markdown files (`AGENTS.md`, `CLAUDE.md`, `OBJECTIVES.md`, `PLAN.md`, `PROGRESS.md`, `PROJECT.md`).
-
-    ![Wizard step 5 — create your first project](/images/xo-cowork-setup-08-first-project.jpeg)
-
-    Click **Create Project**.
-  </Step>
-  <Step>
-    ### Start Working
-    Your project opens with the file tree on the left and a chat panel on the right. Describe what you want to work on and the agent uses your project context to help.
-
-    ![XO Coworker project view](/images/xo-cowork-setup-09-project-view.jpeg)
-
-    Your agent is live. You can also reach it from any connected channel (Telegram, Discord, Slack).
+    If you used the **Claude Code** template, you can also connect Claude from its setup checklist. See [Connect Claude](/docs/agents/claude-code/setup#connect-claude).
   </Step>
 </Steps>
 
-## Next Steps
+## Start on Home
 
-Add more projects from the **Projects** sidebar, customize the agent's `AGENTS.md` / Soul / Identity / User files, or hop into the [XO Cowork API](/api-reference/overview) reference to drive the space programmatically.
+![Home in XO Cowork, with the sidebar on the left and Your next move on the right](/images/cowork/xo-cowork-quickstart-01-home.webp)
+
+Home answers one question: what is worth your time right now, across every project? It opens with the date, a greeting and a count, such as "Six things are worth your time." When something needs you, **Your next move** shows the one most worth doing first.
+
+The sidebar holds:
+
+- **Create XO Project**: start a new project.
+- **Home**: what is worth your time, with a count when something needs you.
+- **Workspace**: your coordinator across all projects.
+- **Chats**: direct chats with one agent in one folder.
+- **Projects**: one row per project. When a project needs you, its row shows a count and its most important ask.
+
+<Callout type="info">
+  The screenshots on this page come from **Demo** mode, so the projects in them are examples. To explore safely yourself, switch the badge at the bottom-left of the sidebar to **Demo**. Nothing you do there reaches a real agent.
+</Callout>
+
+## Ask: hand off work
+
+Say what you want once, where it belongs. Cowork gets it to the right agent.
+
+<Steps>
+  <Step>
+    ### Create your first project
+
+    Click **Create XO Project**. Give it a **Project name** and, if you like, a sentence or two under **What is it for?** Cowork creates a project folder with a short `AGENTS.md` file. Add your own instructions for agents there, such as how to build and test the project.
+  </Step>
+  <Step>
+    ### Write to the Workspace
+
+    Not sure where something belongs? Open **Workspace** and write to it. Its coordinator sees every project, answers questions across them, and passes work to the right project. Try "What projects do I have?" to check that everything is connected.
+
+    ![The Workspace coordinator answering a question across projects](/images/cowork/xo-cowork-quickstart-02-workspace.webp)
+  </Step>
+  <Step>
+    ### Aim at a project with @
+
+    Or aim it yourself. Type `@` and pick a project from the list. The line under the message box changes to **New work for** and the project's name, and your message goes straight there as new work.
+
+    ![Typing @ in the message box to pick a project](/images/cowork/xo-cowork-quickstart-03-aim.webp)
+  </Step>
+  <Step>
+    ### Let the project start a thread
+
+    Each project has its own coordinator. It answers quick questions itself and starts a **thread** for any change. A thread card appears in the conversation with its progress, current step, branch and **Open →**.
+
+    ![A project's coordinator starting a thread for a change](/images/cowork/xo-cowork-quickstart-04-project.webp)
+  </Step>
+  <Step>
+    ### Follow the thread
+
+    A thread is one piece of work, with its own agent, its own branch and a live checklist: ✓ done, ✱ in progress, ○ to do. Open it to see what the agent is doing, or reply to talk to the agent directly.
+
+    ![A thread with its checklist, branch and agent messages](/images/cowork/xo-cowork-quickstart-05-thread.webp)
+  </Step>
+</Steps>
+
+## Decide: answer only what needs you
+
+Agents keep working on their own. When one needs a decision, it waits for you in one place.
+
+<Steps>
+  <Step>
+    ### Take your next move
+
+    Home ranks what is waiting and leads with **Your next move**. Each ask shows how long it takes (**Glance ~5 s** or **Decide ~1 min**), where it came from, how much agent work waits on it, and what the agent suggests. Pick an answer, open **Details**, or **Send back** with a note.
+  </Step>
+  <Step>
+    ### Work through Needs you
+
+    Decisions come one at a time in the **Needs you** panel. **Allow** each one, or **Send back** with a note. Skip freely: nothing in the panel has to be answered first.
+
+    ![The Needs you panel beside Home, showing one decision at a time](/images/cowork/xo-cowork-quickstart-06-needs-you.webp)
+
+    <Callout type="warn">
+      Risky asks are marked **Destructive**. To allow one, you hold the button instead of clicking, so a stray click never allows it.
+    </Callout>
+  </Step>
+  <Step>
+    ### Make it a rule
+
+    Answer the same thing often? Turn on **Make it a rule**, and **Allow** becomes **Allow + rule**. Choose how far the rule reaches, such as **Exactly this command** or any `npm install`. Cowork shows the exact sentence it will save, word for word.
+
+    ![Make it a rule, showing the exact rule that will be saved](/images/cowork/xo-cowork-quickstart-07-rule.webp)
+
+    Only you can make rules. See and revoke them in **Settings → Rules**.
+  </Step>
+</Steps>
+
+Each answer clears one ask from Home. Everything else keeps working without you.
+
+## Next steps
+
+<Cards>
+	<Card
+		icon={<span className="icon-[ph--book-open] size-4.5 text-green-400" />}
+		title="Concepts"
+		description="The words you'll meet in Cowork, in plain language."
+		href="/docs/agents/xo-cowork/concepts"
+	/>
+	<Card
+		icon={<span className="icon-[ph--cursor-click] size-4.5 text-green-400" />}
+		title="Using the Cowork UI"
+		description="A tour of Home, the Workspace, projects, threads, chats and Settings."
+		href="/docs/agents/xo-cowork/using-cowork"
+	/>
+	<Card
+		icon={<span className="icon-[ph--flow-arrow] size-4.5 text-green-400" />}
+		title="How your messages are handled"
+		description="Where a message goes, depending on where you write it."
+		href="/docs/agents/xo-cowork/how-messages-travel"
+	/>
+	<Card
+		icon={<span className="icon-[ph--shield-warning] size-4.5 text-green-400" />}
+		title="Permissions and rules"
+		description="What agents may do on their own, and how you stay in control."
+		href="/docs/agents/xo-cowork/permissions-and-rules"
+	/>
+	<Card
+		icon={<span className="icon-[ph--terminal-window] size-4.5 text-green-400" />}
+		title="Run Cowork locally"
+		description="Install Cowork on your own machine instead of XO."
+		href="/docs/agents/xo-cowork/run-locally"
+	/>
+	<Card
+		icon={<span className="icon-[ph--question] size-4.5 text-green-400" />}
+		title="Troubleshooting"
+		description="Common messages and how to fix them."
+		href="/docs/agents/xo-cowork/troubleshooting"
+	/>
+</Cards>

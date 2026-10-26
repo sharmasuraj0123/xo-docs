@@ -1,22 +1,96 @@
 ---
 title: XO Cowork
-description: Run the XO Coworker — a chat-first AI agent space with per-project memory and multi-channel reach.
+description: Direct many AI agents across many projects from one calm screen, and step in only when a decision needs you.
 icon: Building2
 ---
 
+import { Callout } from "fumadocs-ui/components/callout";
 import { Cards, Card } from "@/components/card";
 
-XO Cowork is a chat-first AI agent space you deploy on XO. Spin up a project, pick a model provider and a channel, and your agent is live — with per-project memory files (AGENTS.md, OBJECTIVES.md, …) and reach into Discord, Telegram, and Slack.
+<Lead>
+  XO Cowork lets one person direct many AI agents across many projects. You say what should get done. Coordinators work out who should do it, and agents do the work in the background. The screen shows only what is worth your time and your next move.
+</Lead>
 
----
+## Who it's for
 
-## Get XO Cowork Running
+Cowork is for anyone who wants agents working on several projects at once without watching every step. You might be a developer with a few repositories, a team lead juggling many tasks, or someone who just wants work to keep moving while they do something else.
+
+The idea is simple: **your attention is the scarce thing**. Agents keep going on their own. When one needs a decision from you, it waits politely in one place until you're ready.
+
+## How it's organised
+
+Cowork has three levels:
+
+<img src="/images/cowork/cowork-levels-light.svg" alt="You talk to the Workspace coordinator, which sees every project. Each project has its own coordinator and starts threads; each thread has its own agent and its own copy of the project." width="960" height="600" className="block w-full h-auto dark:hidden" />
+<img src="/images/cowork/cowork-levels-dark.svg" alt="You talk to the Workspace coordinator, which sees every project. Each project has its own coordinator and starts threads; each thread has its own agent and its own copy of the project." width="960" height="600" className="hidden w-full h-auto dark:block" />
+
+- **The Workspace** is your coordinator across all projects. Ask it anything, or tell it what you need. It passes work to the right project.
+- **Each project** has its own coordinator. It answers questions about the project, or starts a thread for real work.
+- **A thread** is one piece of work with its own agent and a live checklist. Each thread works in its own copy of the project, so threads never step on each other.
+
+You can talk at any level. Writing in a thread goes straight to its agent.
+
+## What you can do
+
+- **Hand off work in plain words.** Write "Fix the login bug in billing-api" and Cowork routes it to the right place.
+- **Aim a message at a project** by typing `@` and the project's name.
+- **Decide only what matters.** Requests that need you appear under **Needs you**, easiest first. Allow, send back, or answer in words.
+- **Follow progress at a glance.** Each thread shows a checklist, its state, and what it's doing now.
+- **Make your own rules.** When you allow something, you can turn it into a rule so agents stop asking. Only you can make rules.
+- **Chat directly** with one agent in one folder, outside the coordinators.
+- **Create projects** from the sidebar with **Create XO Project**.
+
+## Which agents work today
+
+Cowork runs its agents on **Claude Code** today. Make sure Claude Code is installed and signed in. Support for more agents, such as Codex and Antigravity, is on the way.
+
+<Callout type="info">
+  Want to look around first? Switch the badge at the bottom-left of the sidebar to **Demo**. It shows a simulated, busy workspace. Nothing you do in Demo reaches a real agent.
+</Callout>
+
+## Where to go next
 
 <Cards>
 	<Card
 		icon={<span className="icon-[ph--rocket] size-4.5 text-green-400" />}
-		title="Setup"
-		description="Create a project, run the in-space onboarding, and start chatting with your agent."
+		title="Quickstart on XO"
+		description="Create a Cowork space on XO in a few minutes."
 		href="/docs/agents/xo-cowork/setup"
+	/>
+	<Card
+		icon={<span className="icon-[ph--terminal-window] size-4.5 text-green-400" />}
+		title="Run Cowork locally"
+		description="Install Cowork on your own machine and open it in your browser."
+		href="/docs/agents/xo-cowork/run-locally"
+	/>
+	<Card
+		icon={<span className="icon-[ph--book-open] size-4.5 text-green-400" />}
+		title="Concepts"
+		description="The words you'll meet in Cowork, in plain language."
+		href="/docs/agents/xo-cowork/concepts"
+	/>
+	<Card
+		icon={<span className="icon-[ph--cursor-click] size-4.5 text-green-400" />}
+		title="Using the Cowork UI"
+		description="A tour of Home, the Workspace, projects, threads, chats and Settings."
+		href="/docs/agents/xo-cowork/using-cowork"
+	/>
+	<Card
+		icon={<span className="icon-[ph--flow-arrow] size-4.5 text-green-400" />}
+		title="How your messages are handled"
+		description="Where a message goes, depending on where you write it."
+		href="/docs/agents/xo-cowork/how-messages-travel"
+	/>
+	<Card
+		icon={<span className="icon-[ph--shield-warning] size-4.5 text-green-400" />}
+		title="Permissions and rules"
+		description="What agents may do on their own, and how you stay in control."
+		href="/docs/agents/xo-cowork/permissions-and-rules"
+	/>
+	<Card
+		icon={<span className="icon-[ph--question] size-4.5 text-green-400" />}
+		title="Troubleshooting"
+		description="Common messages and how to fix them."
+		href="/docs/agents/xo-cowork/troubleshooting"
 	/>
 </Cards>

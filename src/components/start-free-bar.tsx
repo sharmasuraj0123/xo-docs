@@ -68,17 +68,25 @@ export function StartFreeBar() {
   return (
     <section
       className={cn(
-        "fixed inset-x-0 bottom-0 z-40 border-t border-fd-border bg-fd-background/95 px-4 py-2.5 shadow-[0_-4px_24px_rgba(0,0,0,0.08)] backdrop-blur-md transition-transform duration-300 dark:shadow-[0_-4px_24px_rgba(0,0,0,0.35)]",
-        showBar ? "translate-y-0" : "pointer-events-none translate-y-full",
+        // Canopy: a capsule that sprouts up from the bottom edge and settles.
+        "pointer-events-none fixed inset-x-0 bottom-0 z-40 px-4 pb-2.5 origin-bottom transition-[translate,scale,opacity] duration-500 ease-grow",
+        showBar
+          ? "translate-y-0 scale-100 opacity-100"
+          : "translate-y-full scale-y-50 opacity-0",
       )}
       aria-label="Quick actions"
       aria-hidden={!showBar}
     >
-      <div className="mx-auto flex max-w-5xl items-center justify-end gap-2.5">
+      <div
+        className={cn(
+          "ms-auto flex w-fit items-center gap-1.5 rounded-full bg-pine p-1.5 shadow-[0_-10px_30px_-6px_rgba(5,31,32,0.45)] motion-safe:animate-[canopy-sprout_520ms_var(--ease-grow)]",
+          showBar && "pointer-events-auto",
+        )}
+      >
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-fd-border bg-fd-background px-3 py-1.5 text-sm font-semibold text-fd-foreground transition-colors hover:bg-fd-muted"
+          className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-semibold text-mist ring-2 ring-inset ring-spruce transition-colors hover:bg-fir active:translate-y-px"
           tabIndex={showBar ? 0 : -1}
         >
           <span className="icon-[ph--chat-circle] size-4" aria-hidden="true" />
@@ -88,7 +96,7 @@ export function StartFreeBar() {
           href={SIGN_UP_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center rounded-lg bg-fd-primary px-4 py-1.5 text-sm font-semibold text-fd-primary-foreground transition-opacity hover:opacity-90"
+          className="inline-flex items-center rounded-full bg-mist px-4 py-1.5 text-sm font-semibold text-understorey transition-colors hover:bg-[#c3e0cb] active:translate-y-px"
           tabIndex={showBar ? 0 : -1}
         >
           Start Free

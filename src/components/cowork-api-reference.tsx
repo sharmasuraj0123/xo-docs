@@ -95,7 +95,7 @@ export function CoworkApiReference() {
       searchHotKey: "l",
       customCss: `
         .scalar-app {
-          --scalar-color-accent: ${colorMode === "dark" ? "#f2a2d5" : "#8e3574"};
+          --scalar-color-accent: ${colorMode === "dark" ? "#a9d1b5" : "#235347"};
           --scalar-font: inherit;
         }
       `,

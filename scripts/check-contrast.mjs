@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Checks that every text/surface token pair in src/app/global.css meets
-// WCAG 2.1 AA, in light and dark. Text needs 4.5:1; focus rings need 3:1
+// WCAG 2.1 AA, in light, dark and the sidebar's layer stack. Text needs 4.5:1; focus rings need 3:1
 // (non-text contrast). Run: npm run check:contrast
 import { readFileSync } from "node:fs";
 
@@ -42,6 +42,9 @@ const surfaces = [
   "fd-muted",
   "fd-secondary",
   "fd-accent",
+  // Canopy's front capsule (the article) and the cards raised inside it.
+  "front",
+  "front-raised",
 ];
 const pairs = [
   // Text colours on every surface they can sit on.
@@ -58,11 +61,15 @@ const pairs = [
 ];
 
 let failed = 0;
-for (const [mode, tokens] of [
+// The sidebar's layer stack holds no front capsule, so it skips those.
+const frontOnly = ["front", "front-raised"];
+for (const [mode, tokens, skip = []] of [
   ["light", block("@theme")],
   ["dark", block(".dark")],
+  ["stack", block(":is(#nd-sidebar, #nd-sidebar-mobile)"), frontOnly],
 ]) {
   for (const [fg, bg, min] of pairs) {
+    if (skip.includes(bg)) continue;
     if (!tokens[fg] || !tokens[bg]) {
       console.error(`✗ ${mode}: missing --color-${!tokens[fg] ? fg : bg}`);
       failed++;

@@ -12,72 +12,104 @@
 @source not "../../.claude/**";
 
 /*
- * quirq design tokens, from the research repo's design topic
- * (research/design/output/report/2026-10-06-design-systems.md):
+ * Canopy: the docs as layers of a forest. From the research repo's design
+ * topic, research/design/output/app/docs/src/themes/canopy/ (spec.ts holds
+ * the rules this file follows, one layer at a time):
  *
- * - One palette: the quirq palette of the infra-map app (research commit
- *   1beb404, infra/output/app/infra-map/src/index.css), mapped onto
- *   Fumadocs' --color-fd-* tokens. Brand purple #b0478c, #f2a2d5 in dark.
- * - Dark mode follows the OS unless the viewer picks a theme. The choice is
- *   written to <html> as both class="dark" (what Fumadocs styles against)
- *   and data-theme="dark|light" (the convention the report recommends).
- * - Every text/surface pair meets WCAG 2.1 AA (4.5:1). #b0478c is only
- *   3.97:1 on the accent surface, so in light mode the primary token, which
- *   Fumadocs also uses for text, is the deeper quirq purple #8e3574 (the
- *   research hub's --link). #b0478c stays available as --color-quirq for
- *   fills, dots and gradients. `npm run check:contrast` checks the pairs.
+ * - Colour: six shades from the darkest understorey to mist, mapped onto
+ *   Fumadocs' --color-fd-* tokens. Light mode reads in the clearing (mist);
+ *   dark mode reads under the canopy (pine on understorey).
+ * - Architecture: the sidebar is the layer stack, dark at the back, and the
+ *   open page is drawn forward into the light as a pale capsule; the article
+ *   (#nd-page) is the large front capsule that holds the doc.
+ * - Shape: capsules for controls, soft deep shadows cast upward, edges made
+ *   by a change of shade rather than hairlines.
+ * - Type: Figtree 17px / 1.6 to read, Bricolage Grotesque (slightly
+ *   condensed) to display, JetBrains Mono for code and the hex label the
+ *   front layer wears. Loaded in src/app/layout.tsx.
+ * - Motion: growth, not travel. 500ms ease-out; the page unfurls upward, the
+ *   reading progress fills like a stem. Nothing bounces.
+ * - Voice: quiet and growing ("Nothing growing here yet.").
+ *
+ * Dark mode follows the OS unless the viewer picks a theme. The choice is
+ * written to <html> as both class="dark" (what Fumadocs styles against) and
+ * data-theme="dark|light".
+ *
+ * Every text/surface pair meets WCAG 2.1 AA (4.5:1); `npm run
+ * check:contrast` checks them, including the front capsule (--color-front)
+ * and the cards raised inside it (--color-front-raised). Sage text on spruce
+ * is only 3.88:1, so dark mode uses fir, not spruce, for hover and accent.
  *
  * Keep these as plain hex values: scripts/check-contrast.mjs reads them.
  */
 @theme {
-  --color-quirq: #b0478c;
+  /* The palette, from the back of the stack to the front. */
+  --color-understorey: #051f20;
+  --color-pine: #0b2b26;
+  --color-fir: #163832;
+  --color-spruce: #235347;
+  --color-sage: #8eb69b;
+  --color-mist: #daf1de;
 
-  --color-fd-background: #f7f3f6;
-  --color-fd-foreground: #1d1822;
-  --color-fd-card: #ffffff;
-  --color-fd-card-foreground: #1d1822;
-  --color-fd-popover: #ffffff;
-  --color-fd-popover-foreground: #1d1822;
-  --color-fd-primary: #8e3574;
-  --color-fd-primary-foreground: #ffffff;
-  --color-fd-secondary: #f0e9ef;
-  --color-fd-secondary-foreground: #1d1822;
-  --color-fd-muted: #f0e9ef;
-  --color-fd-muted-foreground: #6b5f72;
-  --color-fd-accent: #f6dcec;
-  --color-fd-accent-foreground: #1d1822;
-  --color-fd-border: #ddd0da;
-  --color-fd-ring: #b0478c;
+  --color-front: #daf1de;
+  --color-front-raised: #eef8f0;
+
+  --color-fd-background: #c9e4cf;
+  --color-fd-foreground: #051f20;
+  --color-fd-card: #eef8f0;
+  --color-fd-card-foreground: #051f20;
+  --color-fd-popover: #eef8f0;
+  --color-fd-popover-foreground: #051f20;
+  --color-fd-primary: #235347;
+  --color-fd-primary-foreground: #daf1de;
+  --color-fd-secondary: #c9e4cf;
+  --color-fd-secondary-foreground: #051f20;
+  --color-fd-muted: #c9e4cf;
+  --color-fd-muted-foreground: #2f5a4c;
+  --color-fd-accent: #b4d6bd;
+  --color-fd-accent-foreground: #051f20;
+  --color-fd-border: #b4d6bd;
+  --color-fd-ring: #235347;
+
+  /* Capped radii: a control up to twice the radius tall becomes a full
+     capsule, a taller box gets soft corners instead of a squashed pill. */
+  --radius-sm: 0.75rem;
+  --radius-md: 1.25rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 1.75rem;
+  --radius-2xl: 2.25rem;
 }
 
 .dark {
-  --color-quirq: #f2a2d5;
+  --color-front: #0b2b26;
+  --color-front-raised: #163832;
 
-  --color-fd-background: #100f14;
-  --color-fd-foreground: #f3ece4;
-  --color-fd-card: #19161e;
-  --color-fd-card-foreground: #f3ece4;
-  --color-fd-popover: #19161e;
-  --color-fd-popover-foreground: #f3ece4;
-  --color-fd-primary: #f2a2d5;
-  --color-fd-primary-foreground: #100f14;
-  --color-fd-secondary: #231e2a;
-  --color-fd-secondary-foreground: #f3ece4;
-  --color-fd-muted: #231e2a;
-  --color-fd-muted-foreground: #b1a2b4;
-  --color-fd-accent: #3a2535;
-  --color-fd-accent-foreground: #f3ece4;
-  --color-fd-border: #39303f;
-  --color-fd-ring: #f2a2d5;
+  --color-fd-background: #051f20;
+  --color-fd-foreground: #daf1de;
+  --color-fd-card: #0b2b26;
+  --color-fd-card-foreground: #daf1de;
+  --color-fd-popover: #0b2b26;
+  --color-fd-popover-foreground: #daf1de;
+  --color-fd-primary: #a9d1b5;
+  --color-fd-primary-foreground: #051f20;
+  --color-fd-secondary: #163832;
+  --color-fd-secondary-foreground: #daf1de;
+  --color-fd-muted: #163832;
+  --color-fd-muted-foreground: #8eb69b;
+  --color-fd-accent: #163832;
+  --color-fd-accent-foreground: #daf1de;
+  --color-fd-border: #163832;
+  --color-fd-ring: #8eb69b;
   color-scheme: dark;
 }
 
-/* Fumadocs' neutral preset gives the dark sidebar its own grey surfaces;
-   put it back on the quirq palette. */
-.dark #nd-sidebar {
-  --color-fd-muted: #231e2a;
-  --color-fd-secondary: #231e2a;
-  --color-fd-muted-foreground: #b1a2b4;
+@theme inline {
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-display:
+    var(--font-bricolage), var(--font-figtree), ui-sans-serif, system-ui,
+    sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --ease-grow: cubic-bezier(0.16, 0.84, 0.3, 1);
 }
 
 html {
@@ -90,7 +122,8 @@ html {
  * those back to the inherited face. Scoped to the flagged article, so docs and
  * API-reference code blocks keep the monospace they need for alignment.
  */
-[data-single-font] :is(code, kbd, samp, pre, .font-mono, svg text) {
+[data-single-font]
+  :is(code, kbd, samp, pre, .font-mono, svg text, h1, h2, h3, h4, h5, h6) {
   font-family: inherit;
 }
 
@@ -146,4 +179,275 @@ aside [data-sidebar-viewport],
  */
 #nd-page {
   padding-bottom: calc(var(--docs-bottom-bar-height, 60px) + 2.5rem);
+}
+
+/* ------------------------------------------------------------------ */
+/* Canopy: architecture, shape, type and motion                        */
+/* ------------------------------------------------------------------ */
+
+/*
+ * The layer stack. The sidebar is the forest behind the page, in both modes:
+ * darkest at the back (top), one shade lighter per layer towards the front.
+ * The open page is drawn forward into the light as a mist capsule.
+ * Same rules as the main tokens: every pair here meets AA (the contrast
+ * script checks this block too).
+ */
+:is(#nd-sidebar, #nd-sidebar-mobile) {
+  --color-fd-background: #051f20;
+  --color-fd-foreground: #daf1de;
+  --color-fd-card: #0b2b26;
+  --color-fd-card-foreground: #daf1de;
+  --color-fd-popover: #0b2b26;
+  --color-fd-popover-foreground: #daf1de;
+  --color-fd-primary: #daf1de;
+  --color-fd-primary-foreground: #051f20;
+  --color-fd-secondary: #163832;
+  --color-fd-secondary-foreground: #daf1de;
+  --color-fd-muted: #163832;
+  --color-fd-muted-foreground: #8eb69b;
+  --color-fd-accent: #163832;
+  --color-fd-accent-foreground: #daf1de;
+  --color-fd-border: #163832;
+  --color-fd-ring: #8eb69b;
+  --radius-md: 999px;
+  --radius-lg: 999px;
+  border-color: transparent;
+  background: linear-gradient(
+    to bottom,
+    var(--color-understorey),
+    var(--color-pine) 40%,
+    var(--color-fir)
+  );
+  color: var(--color-fd-foreground);
+  color-scheme: dark;
+}
+#nd-sidebar {
+  border-start-end-radius: 2.5rem;
+  border-end-end-radius: 2.5rem;
+  box-shadow: 14px 0 34px -18px rgb(5 31 32 / 0.55);
+}
+:is(#nd-sidebar, #nd-sidebar-mobile) :is(a, button) {
+  transition:
+    background-color 500ms var(--ease-grow),
+    color 500ms var(--ease-grow),
+    transform 400ms var(--ease-grow);
+}
+:is(#nd-sidebar, #nd-sidebar-mobile) :is(a, button):hover {
+  transform: translateY(-2px);
+}
+:is(#nd-sidebar, #nd-sidebar-mobile) :is(a, button):active {
+  transform: translateY(0);
+}
+/* The open page: the pale layer in front. */
+:is(#nd-sidebar, #nd-sidebar-mobile) a[data-active="true"] {
+  background-color: var(--color-mist);
+  color: var(--color-understorey);
+  font-weight: 600;
+  box-shadow: 0 -8px 18px -8px rgb(0 0 0 / 0.55);
+  transform-origin: bottom center;
+  animation: canopy-draw-forward 500ms var(--ease-grow);
+}
+:is(#nd-sidebar, #nd-sidebar-mobile) a[data-active="true"]::before {
+  display: none;
+}
+/* Section names in the stack are small mono labels, like a swatch's hex. */
+:is(#nd-sidebar, #nd-sidebar-mobile) [data-radix-scroll-area-viewport] p {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-fd-muted-foreground);
+}
+
+/*
+ * The front capsule. The article is the large pale layer that holds the doc;
+ * it wears its own hex like the swatch it came from, and unfurls upward from
+ * its top edge when a page opens.
+ */
+#nd-page {
+  --canopy-hex: "#DAF1DE";
+  --color-fd-card: var(--color-front-raised);
+  --color-fd-border: color-mix(in srgb, var(--color-sage) 45%, transparent);
+  background-color: var(--color-front);
+  border-radius: 3.5rem 3.5rem 2.5rem 2.5rem;
+  /* A gutter on each side, so the capsule floats clear of the stack. */
+  width: calc(100% - 2.5rem);
+  margin-block: 1.25rem 2rem;
+  padding-inline: clamp(1.25rem, 4vw, 3.5rem);
+  box-shadow:
+    0 -18px 44px -14px rgb(5 31 32 / 0.3),
+    0 30px 60px -28px rgb(5 31 32 / 0.4);
+  transform-origin: top center;
+  animation: canopy-unfurl 520ms var(--ease-grow);
+}
+.dark #nd-page {
+  --canopy-hex: "#0B2B26";
+  box-shadow:
+    0 -18px 44px -14px rgb(0 0 0 / 0.55),
+    0 30px 60px -28px rgb(0 0 0 / 0.6);
+}
+#nd-page::before {
+  content: var(--canopy-hex) / "";
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--color-fd-muted-foreground);
+}
+@media (max-width: 767px) {
+  #nd-page {
+    border-radius: 2rem 2rem 1.5rem 1.5rem;
+    margin-inline: 0.5rem;
+    width: auto;
+  }
+}
+
+/* Reading: Figtree 17px / 1.6; display faces large and slightly condensed. */
+#nd-page .prose {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+:is(h1, h2, h3, h4) {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+}
+h1 {
+  font-stretch: 90%;
+  letter-spacing: -0.02em;
+}
+h2 {
+  font-stretch: 94%;
+}
+
+/* Controls are capsules: pebbles, pills and rings, never hard corners. */
+#nd-page .prose :not(pre) > code {
+  border: 0;
+  border-radius: 999px;
+  padding-inline: 0.5em;
+  background-color: color-mix(in srgb, var(--color-sage) 32%, transparent);
+}
+#nd-page :is(figure.shiki, [class*="callout-color"]) {
+  border-color: transparent;
+}
+#nd-page figure.shiki {
+  background-color: var(--color-front-raised);
+}
+/* Cards and callouts are raised by shade and shadow, not outlined. */
+#nd-page .bg-fd-card.border {
+  border-color: transparent;
+}
+#nd-page .prose div:has(> table) {
+  border: 0;
+  background: none;
+}
+.dark #nd-page figure.shiki {
+  background-color: var(--color-understorey);
+}
+#nd-page .prose img {
+  border-radius: 1.75rem;
+}
+
+/* Tables: each row is its own thin capsule, alternating two greens. */
+#nd-page .prose table {
+  border-collapse: separate;
+  border-spacing: 0 6px;
+  border: 0;
+  background: none;
+}
+#nd-page .prose :is(th, td) {
+  border: 0;
+  padding: 0.55rem 1rem;
+}
+#nd-page .prose thead th {
+  background: none;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-fd-muted-foreground);
+}
+#nd-page .prose tbody tr > * {
+  background-color: color-mix(in srgb, var(--color-sage) 30%, transparent);
+}
+#nd-page .prose tbody tr:nth-child(even) > * {
+  background-color: color-mix(in srgb, var(--color-spruce) 14%, transparent);
+}
+#nd-page .prose tbody tr > :first-child {
+  border-start-start-radius: 1.5rem;
+  border-end-start-radius: 1.5rem;
+  padding-inline-start: 1.25rem;
+}
+#nd-page .prose tbody tr > :last-child {
+  border-start-end-radius: 1.5rem;
+  border-end-end-radius: 1.5rem;
+  padding-inline-end: 1.25rem;
+}
+
+/* Progress fills like a stem growing: a reading bar tied to the scroll. */
+@supports (animation-timeline: scroll()) {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 60;
+    height: 3px;
+    border-radius: 0 999px 999px 0;
+    background: linear-gradient(
+      90deg,
+      var(--color-fir),
+      var(--color-spruce) 60%,
+      var(--color-sage)
+    );
+    transform-origin: left;
+    animation: canopy-stem linear both;
+    animation-timeline: scroll(root);
+    pointer-events: none;
+  }
+}
+
+/* Growth, not travel. Nothing bounces. */
+@keyframes canopy-unfurl {
+  from {
+    transform: scaleY(0.96) translateY(14px);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+}
+@keyframes canopy-draw-forward {
+  from {
+    transform: scaleY(0.6);
+    background-color: var(--color-sage);
+  }
+}
+@keyframes canopy-stem {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes canopy-sprout {
+  from {
+    transform: translateY(40px) scaleY(0.2) scaleX(0.6);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #nd-page,
+  :is(#nd-sidebar, #nd-sidebar-mobile) a[data-active="true"] {
+    animation: none;
+  }
+  :is(#nd-sidebar, #nd-sidebar-mobile) :is(a, button):hover {
+    transform: none;
+  }
+}
+
+/* The theme toggle: the active mode is a solid pebble, so the switch reads
+   at a glance in both themes. */
+[data-theme-toggle] .bg-fd-accent {
+  background-color: var(--color-fd-primary);
+  color: var(--color-fd-primary-foreground);
 }

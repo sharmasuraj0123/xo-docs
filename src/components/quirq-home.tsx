@@ -73,12 +73,12 @@ export function QuirqHome() {
       <section className="relative isolate overflow-hidden border-y border-fd-border bg-fd-muted/30 px-5 py-20 sm:px-8 sm:py-28">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_-20%,rgba(176,71,140,0.15),transparent_65%)] dark:bg-[radial-gradient(ellipse_at_50%_-20%,rgba(242,162,213,0.18),transparent_65%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_-20%,rgba(35,83,71,0.18),transparent_65%)] dark:bg-[radial-gradient(ellipse_at_50%_-20%,rgba(142,182,155,0.16),transparent_65%)]"
         />
         <FlutedGlassShader className="pointer-events-none absolute inset-0 size-full" />
         <div className="relative mx-auto max-w-4xl text-center">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-fd-border bg-fd-background/80 px-3.5 py-1 text-xs font-medium text-fd-foreground shadow-sm">
-            <span className="size-2 rounded-full bg-quirq animate-pulse" />
+            <span className="size-2 rounded-full bg-spruce dark:bg-sage animate-pulse" />
             <span>One-Click Agentic Environments</span>
             <span className="text-fd-muted-foreground">•</span>
             <span className="text-fd-muted-foreground">

@@ -7,6 +7,10 @@ const withMDX = createMDX();
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  // Dev only: the workspace preview proxies the dev server through
+  // *.dev.workspace.xo.builders; without this, Next 16 blocks hot reload
+  // from that origin and edits never reach the browser.
+  allowedDevOrigins: ["*.dev.workspace.xo.builders"],
   turbopack: {
     root: dirname(fileURLToPath(import.meta.url)),
   },

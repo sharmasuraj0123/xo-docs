@@ -35,8 +35,8 @@ export async function GET(
           }}
         />
       }
-      primaryColor="rgba(131, 214, 58, 0.3)"
-      primaryTextColor="#83d63a"
+      primaryColor="rgba(176, 71, 140, 0.3)"
+      primaryTextColor="#f2a2d5"
     />,
     {
       width: 1200,

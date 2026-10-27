@@ -95,7 +95,7 @@ export function CoworkApiReference() {
       searchHotKey: "l",
       customCss: `
         .scalar-app {
-          --scalar-color-accent: ${colorMode === "dark" ? "#83d63a" : "#4d8c16"};
+          --scalar-color-accent: ${colorMode === "dark" ? "#f2a2d5" : "#8e3574"};
           --scalar-font: inherit;
         }
       `,
@@ -131,7 +131,7 @@ export function CoworkApiReference() {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-2xl">
               <div className="mb-2 flex flex-wrap gap-2 text-xs font-medium">
-                <span className="rounded-full border border-green-600/25 bg-green-500/10 px-2.5 py-1 text-green-700 dark:text-green-300">
+                <span className="rounded-full border border-fd-primary/25 bg-fd-accent px-2.5 py-1 text-fd-primary">
                   Curated read-only API
                 </span>
                 <span className="rounded-full border px-2.5 py-1 text-fd-muted-foreground">
@@ -224,7 +224,7 @@ export function CoworkApiReference() {
               type="checkbox"
               checked={liveRequestsEnabled}
               onChange={(event) => setLiveRequestsEnabled(event.target.checked)}
-              className="mt-1 size-4 accent-[hsl(92,60%,28%)]"
+              className="mt-1 size-4 accent-fd-primary"
             />
             <span>
               <span className="block text-sm font-medium">

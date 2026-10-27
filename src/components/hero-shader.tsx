@@ -64,9 +64,9 @@ export function ShaderBackground({ opacity = 1 }: { opacity?: number }) {
         visible={true}
       />
       <Tritone
-        colorA={dark ? "#1a1c38" : "#f4faf4"}
-        colorB={dark ? "#156e1d" : "#9ad4a0"}
-        colorC={dark ? "#6a9191" : "#d8efd4"}
+        colorA={dark ? "#100f14" : "#f7f3f6"}
+        colorB={dark ? "#7a2f63" : "#e0a3c9"}
+        colorC={dark ? "#8f808d" : "#f6dcec"}
         visible={true}
       />
       <Dither

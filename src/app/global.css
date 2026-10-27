@@ -12,35 +12,72 @@
 @source not "../../.claude/**";
 
 /*
- * Brand: #83d63a — hsl(92, 66%, 53%)
+ * quirq design tokens, from the research repo's design topic
+ * (research/design/output/report/2026-10-06-design-systems.md):
  *
- * Color theory note: #83d63a has relative luminance ~0.53 (very bright),
- * so it fails contrast on white backgrounds. Light mode uses a darkened
- * variant (hsl 92, 60%, 28%) which achieves ~7:1 on white. Dark mode
- * uses the full brand color which achieves ~10:1 on dark backgrounds.
+ * - One palette: the quirq palette of the infra-map app (research commit
+ *   1beb404, infra/output/app/infra-map/src/index.css), mapped onto
+ *   Fumadocs' --color-fd-* tokens. Brand purple #b0478c, #f2a2d5 in dark.
+ * - Dark mode follows the OS unless the viewer picks a theme. The choice is
+ *   written to <html> as both class="dark" (what Fumadocs styles against)
+ *   and data-theme="dark|light" (the convention the report recommends).
+ * - Every text/surface pair meets WCAG 2.1 AA (4.5:1). #b0478c is only
+ *   3.97:1 on the accent surface, so in light mode the primary token, which
+ *   Fumadocs also uses for text, is the deeper quirq purple #8e3574 (the
+ *   research hub's --link). #b0478c stays available as --color-quirq for
+ *   fills, dots and gradients. `npm run check:contrast` checks the pairs.
+ *
+ * Keep these as plain hex values: scripts/check-contrast.mjs reads them.
  */
 @theme {
-  /* Light mode: darkened brand for text/button contrast on white */
-  --color-fd-primary: hsl(92, 60%, 28%);
-  --color-fd-primary-foreground: hsl(0, 0%, 98%);
-  --color-fd-accent: hsl(92, 45%, 93%);
-  --color-fd-accent-foreground: hsl(92, 50%, 20%);
-  --color-fd-border: hsla(92, 35%, 40%, 22%);
-  --color-fd-ring: hsl(92, 60%, 28%);
-  --color-fd-muted: hsl(92, 18%, 96%);
-  --color-fd-muted-foreground: hsl(92, 8%, 44%);
+  --color-quirq: #b0478c;
+
+  --color-fd-background: #f7f3f6;
+  --color-fd-foreground: #1d1822;
+  --color-fd-card: #ffffff;
+  --color-fd-card-foreground: #1d1822;
+  --color-fd-popover: #ffffff;
+  --color-fd-popover-foreground: #1d1822;
+  --color-fd-primary: #8e3574;
+  --color-fd-primary-foreground: #ffffff;
+  --color-fd-secondary: #f0e9ef;
+  --color-fd-secondary-foreground: #1d1822;
+  --color-fd-muted: #f0e9ef;
+  --color-fd-muted-foreground: #6b5f72;
+  --color-fd-accent: #f6dcec;
+  --color-fd-accent-foreground: #1d1822;
+  --color-fd-border: #ddd0da;
+  --color-fd-ring: #b0478c;
 }
 
 .dark {
-  /* Dark mode: full brand color — high contrast on dark backgrounds */
-  --color-fd-primary: hsl(92, 66%, 53%);
-  --color-fd-primary-foreground: hsl(92, 8%, 7%);
-  --color-fd-accent: hsla(92, 40%, 30%, 28%);
-  --color-fd-accent-foreground: hsl(92, 10%, 90%);
-  --color-fd-border: hsla(92, 35%, 55%, 12%);
-  --color-fd-ring: hsl(92, 66%, 53%);
-  --color-fd-muted: hsl(92, 8%, 13%);
-  --color-fd-muted-foreground: hsla(92, 10%, 70%, 80%);
+  --color-quirq: #f2a2d5;
+
+  --color-fd-background: #100f14;
+  --color-fd-foreground: #f3ece4;
+  --color-fd-card: #19161e;
+  --color-fd-card-foreground: #f3ece4;
+  --color-fd-popover: #19161e;
+  --color-fd-popover-foreground: #f3ece4;
+  --color-fd-primary: #f2a2d5;
+  --color-fd-primary-foreground: #100f14;
+  --color-fd-secondary: #231e2a;
+  --color-fd-secondary-foreground: #f3ece4;
+  --color-fd-muted: #231e2a;
+  --color-fd-muted-foreground: #b1a2b4;
+  --color-fd-accent: #3a2535;
+  --color-fd-accent-foreground: #f3ece4;
+  --color-fd-border: #39303f;
+  --color-fd-ring: #f2a2d5;
+  color-scheme: dark;
+}
+
+/* Fumadocs' neutral preset gives the dark sidebar its own grey surfaces;
+   put it back on the quirq palette. */
+.dark #nd-sidebar {
+  --color-fd-muted: #231e2a;
+  --color-fd-secondary: #231e2a;
+  --color-fd-muted-foreground: #b1a2b4;
 }
 
 html {

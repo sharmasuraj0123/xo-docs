@@ -31,7 +31,15 @@ export default function Layout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={raleway.className} suppressHydrationWarning>
       <body className="flex flex-col min-h-screen">
-        <RootProvider>
+        {/* Follow the OS by default; a picked theme is written to <html> as
+            class="dark" for Fumadocs and data-theme for the quirq convention. */}
+        <RootProvider
+          theme={{
+            attribute: ["class", "data-theme"],
+            defaultTheme: "system",
+            enableSystem: true,
+          }}
+        >
           <GoogleAnalyticsProvider />
           <PostHogProvider>
             <PostHogPageView />

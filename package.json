@@ -10,7 +10,8 @@
     "prepare": "husky",
     "postinstall": "fumadocs-mdx",
     "lint": "biome check .",
-    "format": "biome format --write ."
+    "format": "biome format --write .",
+    "check:contrast": "node scripts/check-contrast.mjs"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.71",

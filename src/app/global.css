@@ -67,5 +67,46 @@ aside [data-sidebar-viewport],
 #nd-sidebar [data-radix-scroll-area-viewport],
 #nd-sidebar-mobile [data-radix-scroll-area-viewport],
 [data-sidebar] [data-radix-scroll-area-viewport] {
+  /* biome-ignore lint/complexity/noImportantStyles: must override Fumadocs' own sidebar viewport padding */
   padding-bottom: calc(var(--docs-bottom-bar-height, 60px) + 3.5rem) !important;
+}
+
+/*
+ * Full-width docs layout (like Chargebee's docs). Fumadocs caps the page at
+ * 1400px and centres it, which leaves empty bands on both sides on wide
+ * screens. Letting the layout use the whole viewport pins the sidebar to the
+ * left edge and "On this page" to the right; the article stays centred
+ * between them at its own readable width. Scoped to pages with a docs
+ * sidebar, so the home and research pages keep their layout.
+ */
+#nd-home-layout:has(#nd-docs-layout) {
+  --fd-layout-width: 100%;
+}
+
+/*
+ * Sidebar folder arrows. For a folder that has its own page, Fumadocs puts
+ * the arrow inside the link and only toggles when the click lands exactly on
+ * the 16px icon; a click a few pixels off opens the page instead of
+ * collapsing the folder. Padding grows the arrow's own hit area (to 28px)
+ * without moving it, and the hover tint shows it is a separate button.
+ */
+:is(#nd-sidebar, #nd-sidebar-mobile) a > svg[data-icon] {
+  box-sizing: content-box;
+  padding: 6px;
+  margin: -6px -6px -6px auto;
+  border-radius: 6px;
+  cursor: pointer;
+}
+:is(#nd-sidebar, #nd-sidebar-mobile) a > svg[data-icon]:hover {
+  background-color: var(--color-fd-accent);
+  color: var(--color-fd-accent-foreground);
+}
+
+/*
+ * Keep the previous/next page links clear of the fixed Ask AI / Start Free
+ * bar: the page ends with room for the bar plus a gap, so the links can
+ * always scroll fully into view above it.
+ */
+#nd-page {
+  padding-bottom: calc(var(--docs-bottom-bar-height, 60px) + 2.5rem);
 }

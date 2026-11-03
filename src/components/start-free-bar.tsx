@@ -25,7 +25,17 @@ export function StartFreeBar() {
       const nearBottom =
         window.scrollY + window.innerHeight >=
         doc.scrollHeight - HIDE_NEAR_BOTTOM_PX;
-      setAwayFromFooter(!nearBottom);
+      // The previous/next page links at the end of a docs page sit above the
+      // near-bottom zone, so the bar would cover them; slide it away as soon
+      // as they come into view.
+      const pageNav = document.querySelector(
+        '#nd-page [class^="@container grid"]',
+      );
+      const pageNavVisible =
+        pageNav !== null &&
+        pageNav.getBoundingClientRect().top <
+          window.innerHeight - BAR_HEIGHT_PX;
+      setAwayFromFooter(!nearBottom && !pageNavVisible);
     };
     update();
     window.addEventListener("scroll", update, { passive: true });
@@ -71,10 +81,7 @@ export function StartFreeBar() {
           className="inline-flex items-center gap-1.5 rounded-lg border border-fd-border bg-fd-background px-3 py-1.5 text-sm font-semibold text-fd-foreground transition-colors hover:bg-fd-muted"
           tabIndex={showBar ? 0 : -1}
         >
-          <span
-            className="icon-[ph--chat-circle] size-4"
-            aria-hidden="true"
-          />
+          <span className="icon-[ph--chat-circle] size-4" aria-hidden="true" />
           Ask AI
         </button>
         <a

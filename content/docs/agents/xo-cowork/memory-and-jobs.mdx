@@ -1,0 +1,70 @@
+---
+title: Memory & Jobs
+description: How coordinators remember your preferences between conversations, and how to have agent work run on a schedule.
+icon: Database
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  Coordinators keep short notes so they remember how you like things done. And you can ask a coordinator to run a task on a schedule, such as every morning or once next Tuesday.
+</Lead>
+
+## Memory
+
+### What it is
+
+The Workspace coordinator and each project's coordinator keep their own notes, called memory. These notes hold lasting things that matter to you, for example:
+
+- how you like updates written;
+- which branch to treat as the main one;
+- who to ask about a part of the code.
+
+Memory doesn't hold the conversation itself. The conversation stays in the chat.
+
+### Who uses it
+
+- **Coordinators** read and update their own notes as they learn your preferences.
+- **Threads** can read their project's notes, so they follow the same preferences. They can't change them.
+- **Long conversations:** when a coordinator has been running for a long time, XO starts a fresh one. The new coordinator picks up from the notes and a summary of what's in progress, so you don't need to repeat yourself.
+
+### What's never kept
+
+Memory never holds secrets. XO refuses to save anything that looks like a password, API key, token or private key.
+
+<Callout type="info">
+  Memory is kept on your machine, separate from your project files, so it's never included in your project's git history or shared with collaborators. You can't edit memory from the Cowork UI. If a coordinator remembers something wrong, tell it in the chat and it will update its notes.
+</Callout>
+
+## Scheduled jobs
+
+### Setting one up
+
+Ask a coordinator in plain words, for example:
+
+> Every weekday at 9:00, check the open issues in billing-api and summarise anything new.
+
+The coordinator turns this into a job request, and it appears in **Needs you**. Nothing is scheduled until you allow it. Before you decide, the request shows:
+- what will run;
+- how often;
+- when it first runs;
+- in which project.
+
+<Callout type="warn">
+  Don't put passwords or keys in a job's description. XO refuses jobs that contain secrets.
+</Callout>
+
+### Each run is a thread
+
+Each time a job runs, a new thread appears in its project, titled with the job's name and the time. It works like any other thread:
+- it has its own copy of the project ([Worktrees](/docs/agents/xo-cowork/worktrees));
+- it asks you for anything risky;
+- it reports back when done.
+
+If the previous run is still working when the next one is due, that run is skipped, so runs never pile up.
+
+### Changing or stopping a job
+
+- **Stop a job:** ask the coordinator to cancel it. It stops at once, with no approval needed.
+- **Change a job:** ask for the change in words. The coordinator sets up the new version, and you approve it in **Needs you**.
+- **Project removed:** if the project is removed, or its folder is gone, XO turns the job off and tells you why.

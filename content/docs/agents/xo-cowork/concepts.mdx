@@ -1,0 +1,100 @@
+---
+title: Concepts
+description: The words you'll meet in Cowork, from the Workspace and coordinators to threads, decisions, rules and worktrees.
+icon: BookOpen
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  Cowork uses a small set of words. Each one is explained here in a few sentences, with a link to the page that covers it in more depth.
+</Lead>
+
+## Workspace
+
+Your workspace is the folder that holds all your projects. In the Cowork UI, **Workspace** is also the name of your top-level coordinator. It sees every project, answers questions across them, and passes work to the right project.
+
+Write to the Workspace when you aren't sure where something belongs. See [How your messages are handled](/docs/agents/xo-cowork/how-messages-travel).
+
+## Project
+
+Every folder directly inside your workspace is a project. Create one from the sidebar with **Create XO Project**, or add a folder yourself.
+
+A new project starts with a short `AGENTS.md` file. Add your own instructions below the existing lines, such as how to build, test and run the project, or anything an agent wouldn't guess. Every agent working in the project reads it.
+
+<Callout type="info">
+  Each project also has a hidden `.xo` folder. Cowork manages it for you, so please don't edit it.
+</Callout>
+
+## Coordinator
+
+A coordinator is the agent that speaks for the Workspace or for a project. It reads your message and decides what to do:
+
+- answer you itself;
+- pass the work on, for example from the Workspace to a project; or
+- start a thread for real work.
+
+Coordinators only read and delegate. They never change your files themselves, so any change to a project always happens in a thread you can follow.
+
+## Thread
+
+A thread is one piece of work. It has its own agent, a live checklist of steps, and its own copy of the project to work in. You can open a thread at any time to read what its agent is doing, reply to it, or stop it.
+
+The thread's state appears as a badge:
+
+| State | What it means |
+| --- | --- |
+| **Working** | The agent is busy right now. |
+| **Idle** | The thread is open, but its agent isn't doing anything at the moment. |
+| **Needs you** | The agent is waiting for your decision or reply. |
+| **Paused** | XO paused the thread, for example because it kept trying something you'd refused. Send a message to continue. |
+| **Done** | Every step on its checklist is finished. |
+| **Stopped** | The work was stopped, or ended before it could finish. |
+| **Resolved** | You, or its coordinator, marked it finished. Reply to reopen it. |
+
+See [Threads](/docs/agents/xo-cowork/using-cowork/threads).
+
+## Chat
+
+A chat is a direct conversation with one agent in one folder, outside the coordinators. Use it for quick questions or one-off tasks. Chats live under **Chats** in the sidebar. See [Chats](/docs/agents/xo-cowork/using-cowork/chats).
+
+## Needs you (decisions)
+
+When an agent needs something from you, it asks. Examples:
+
+- permission to run a command;
+- an answer to a question;
+- approval of a plan;
+- approval to create a project or a scheduled job.
+
+These asks collect under **Needs you**. Home shows the one most worth your time as **Your next move**. You can allow, send back with a note, or answer in words. Risky asks are marked **Destructive** and need you to hold the button to confirm. See [Permissions and rules](/docs/agents/xo-cowork/permissions-and-rules#how-you-answer).
+
+## Rule
+
+A rule lets agents do something without asking you again, such as "In billing-api, run `npm test` without asking". You make a rule while deciding an ask, with **Make it a rule**. The rule is saved word for word as you saw it.
+
+Agents can never create or change rules. You can see and revoke your rules in **Settings → Rules**. See [Permissions and rules](/docs/agents/xo-cowork/permissions-and-rules).
+
+## Worktree
+
+A worktree is a thread's own copy of the project. Each thread works on its own branch in its own copy, so several threads can work on the same project at once without getting in each other's way. Your main copy of the project is untouched until you decide to bring changes in.
+
+Cowork removes a worktree by itself only when nothing would be lost. You can also remove one sooner from **Settings → Worktrees**. See [Worktrees](/docs/agents/xo-cowork/worktrees).
+
+## Memory
+
+Coordinators keep short notes of what they've learned about you and your projects, such as preferences you've stated. This lets them pick up where they left off, even after a long conversation. Threads can read their project's notes. Memory never holds passwords or keys. See [Memory and scheduled jobs](/docs/agents/xo-cowork/memory-and-jobs).
+
+## Sub-agents
+
+A thread's agent can start helpers of its own, called sub-agents, for parts of the work. They appear in a strip under the thread's checklist. You can watch what each one did and stop any of them.
+
+## Scheduled jobs
+
+A scheduled job runs an agent on a schedule, for example "every morning, check for failing tests". Each run opens a new thread in its project. An agent can suggest a job, but nothing is scheduled until you allow it. See [Memory and scheduled jobs](/docs/agents/xo-cowork/memory-and-jobs).
+
+## Usage limits
+
+Your agent's account has usage limits. When you reach one, Cowork shows a line such as **Paused until 14:00 · usage limit**. Running work finishes and new work waits until the limit resets.
+
+If your subscription moves onto paid extra usage, Cowork asks you under **Needs you** whether to continue or wait.

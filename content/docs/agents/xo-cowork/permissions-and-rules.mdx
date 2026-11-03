@@ -1,0 +1,108 @@
+---
+title: Permissions & Rules
+description: What agents do on their own, what they ask you about, what they are never allowed to do, and how your rules work.
+icon: ShieldAlert
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  Agents get on with routine work by themselves and ask you before anything riskier. You stay in charge: only you can allow something, and only you can turn an answer into a rule.
+</Lead>
+
+## How agents decide whether to ask
+
+Before an agent does something, XO checks it:
+
+- **Routine and covered by a rule:** the agent goes ahead without bothering you.
+- **Not covered:** the agent's request appears in **Needs you**, and that piece of work waits for your answer. The agent can carry on with other parts of the task meanwhile.
+- **Never allowed:** XO refuses outright, and the agent is told to find another way.
+
+XO judges the action itself, not what the agent says about it. An agent can't make a risky action look routine by describing it differently.
+
+## How risk is shown
+
+Each request is marked with how much is at stake:
+
+| Level | What it means | Everyday examples |
+| --- | --- | --- |
+| **Routine** | Read-only or easy to undo, inside the project | Reading and searching files, looking at git history, editing files in the thread's own copy, committing to its own branch |
+| **Notable** | Worth a look, but not dangerous | Running the project's tests or build, installing packages, pushing the thread's own branch, opening a pull request, reading files outside the project, searching the web |
+| **Destructive** | Hard or impossible to undo, or reaches outside your machine | Deleting data, force-pushing or pushing to a shared branch, rewriting git history, running commands as administrator, reading credentials, sending something to an outside service |
+
+Destructive requests carry a **Destructive** tag in Needs you. To allow one, you **hold** the button for a moment instead of clicking. That way a stray click or key press never allows it.
+
+When a command is unusual, XO can't always tell what it would do, for example a command that changes its own environment. Then it always asks you, and no rule can cover it.
+
+## What agents are never allowed to do
+
+Some things are off-limits whatever you or an agent asks:
+
+- **Change XO's own files**, including XO's folder inside each project.
+- **Change any agent's settings folders** in a project, such as Claude Code's, Codex's or Antigravity's. These are protected whichever agent is running.
+- **Change git's own settings or hooks** for the project.
+- **Write into another thread's copy** of the project, or into the agents' own setup folders on your machine.
+
+Credentials and secret files (such as `.env` files, SSH keys and cloud-provider credentials) are treated as destructive. An agent always has to ask before reading them.
+
+## Coordinators only read and delegate
+
+The Workspace coordinator and each project's coordinator can read your code and answer questions. They can't edit files, browse the web or run commands that change anything. Real work always goes to a **thread**, which has its own copy of the project. See [Worktrees](/docs/agents/xo-cowork/worktrees).
+
+## How you answer
+
+When a request reaches **Needs you**, you can choose:
+
+| Answer | What happens |
+| --- | --- |
+| **Allow once** | The agent does exactly this, this one time. |
+| **Allow for this thread** | The same action is allowed again in this thread without asking. |
+| **Make it a rule** | XO shows the exact sentence it will save, for example "In billing-api, run `npm test` without asking". Your rules hold exactly that sentence, word for word. |
+| **Deny** or **Send back** | The agent doesn't do it. You can add a note saying what to do instead. |
+
+Some requests are questions, approvals of a plan, or things only you can do, such as signing in somewhere. Those show the matching choices, for example **Approve**, an answer list, or **Done**.
+
+If you'd like to read more before deciding, open **Details**. It shows the exact command, change or file involved.
+
+## Your rules
+
+A rule lets agents do something without asking you again. Some things are true of every rule:
+
+- **Only you make rules**, and only from a decision ("Make it a rule"). Agents can't create or change rules.
+- **The sentence is the rule.** What you saw when you made it is exactly what it allows.
+- **Riskier things get narrower rules:**
+  - Destructive actions can only be allowed for a single thread, and only as that exact command.
+  - Notable actions can be allowed for at most one project.
+  - Rules for your whole workspace cover routine work only.
+- A rule never covers anything riskier than what it was made for.
+
+### XO's default rules
+
+These ship turned on so agents don't ask about everyday, safe things:
+
+- "Read, search and list files in the session's own folder without asking"
+- "Run read-only git commands without asking"
+- "Run git add, git commit and git checkout -b in the worktree without asking"
+- "Use XO's own comms tools without asking", which is how agents talk to each other and to you
+- "Read from package registries and documentation sites without asking"
+- "Read the Inbox and backups through XO's API without asking"
+
+Running your project's tests is deliberately not a default. You decide that per project.
+
+### Seeing and revoking rules
+
+Open **Settings → Rules** to see your rules, XO's defaults and anything you've revoked. Each rule shows where it applies, how many requests it has answered and when you made it. Click **Revoke** and agents will ask again.
+
+<Callout type="warn">
+  Revoking one of XO's default rules can't be undone.
+</Callout>
+
+## When an agent keeps getting refused
+
+If a thread tries the same refused action several times in a row, XO pauses it and tells you it's stuck. If a thread is refused many times overall, XO suggests pausing it in **Needs you**. To get it going again, send the thread a message.
+
+## Warnings about sensitive files
+
+Some files can make agents or git run code, such as agent settings folders and git hooks. Before each piece of thread work, XO checks whether any of these, or XO's own project files, have changed. If they have, you get a notice in **Needs you** listing what changed.
+
+The notice is a heads-up only. Nothing is undone, and the work carries on. Mark it **Seen** once you've checked.

@@ -1,5 +1,5 @@
 {
   "title": "Observability",
   "icon": "Activity",
-  "pages": ["index", "storage", "collection", "reading-data"]
+  "pages": ["storage", "collection", "reading-data"]
 }

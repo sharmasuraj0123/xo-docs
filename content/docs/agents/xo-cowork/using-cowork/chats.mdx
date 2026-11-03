@@ -1,0 +1,89 @@
+---
+title: Chats
+description: Start a plain chat with one agent in one folder, choose its model, depth and what it may do, and add to or interrupt a reply in progress.
+icon: Terminal
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  A chat is one agent in one folder, outside your projects' coordinators. Nothing routes it, and no thread or checklist is created. Use it for a quick question or a one-off task when you don't need the coordinators.
+</Lead>
+
+<Callout type="info">
+  Chats work in Live mode only. In Demo mode the page says "Chats run in Live…".
+</Callout>
+
+Open **Chats** from the sidebar. The header reads "Chats · One agent, one folder, outside your projects' coordinators".
+
+## The list
+
+Each chat shows:
+
+- **A title**: your first message, or "A chat in" and the folder name.
+- **A details line**: folder · agent (for example Claude) · model · depth · what it may do.
+- **Where it stands**: **Needs you**, **Working**, or how long ago it last moved.
+
+With no chats yet, the page says "No chats yet." and "Ask anything below. A chat is one agent in one folder, outside your projects' coordinators."
+
+## Start a chat
+
+The line above the box describes your next new chat, for example "New chat in **your projects folder** · Claude · its default model · Auto". Click **Change** to open the **New chat** settings:
+
+| Setting | Choices |
+| --- | --- |
+| **Folder** | Your projects folder, or one project. |
+| **Agent** | Shown only when you have more than one agent set up. |
+| **Model** | "The agent's default", or one of the agent's models. |
+| **Effort** | **Default**, **Quick**, **Balanced**, **Deep**, **Deeper**, **Deepest**. |
+| **What it may do** | See below. |
+
+**What it may do** sets how freely the agent acts:
+
+| Choice | Description |
+| --- | --- |
+| **Auto** | "Its own safety check decides; most actions run unasked." |
+| **Ask first** | "It asks you before each action." |
+| **Edits** | "It edits files freely and asks for the rest." |
+| **Plan only** | "It plans and changes nothing." |
+| **Rules only** | "Only what your rules allow; the rest is refused." |
+
+There is no option that skips every safety check.
+
+The footer reads "Used for your next new chat." Cowork remembers your choices in this browser.
+
+Type your message and send it. If the chat can't start, your words go back in the box: "Your message is back in the box", or a **Put my message back** button.
+
+## Inside a chat
+
+- Your messages and the agent's work appear in order, shown the same way as in a [thread](/docs/agents/xo-cowork/using-cowork/threads): what it thought about, what it changed, and its answer.
+- The badge reads **Working**, **Needs you**, **Idle** or **Ended**.
+- The placeholder is "Reply in this chat…".
+- When the agent needs your permission or an answer, the ask appears on Home and in **Needs you** like any other. See [How you answer](/docs/agents/xo-cowork/permissions-and-rules#how-you-answer).
+
+### Writing while the agent is replying
+
+What happens to a message you send while the agent is still working depends on the agent:
+
+- "Adds to the turn in progress": the agent reads your message as it works and takes it into account in the reply it's already writing. Claude Code works this way.
+- "Waits for the turn in progress": your message is held until the current reply is finished, then the agent answers it.
+
+A message that joined the reply in progress is labelled "Added to the turn in progress, not sent now", with **Stop the turn** if you'd rather stop it.
+
+### Send now
+
+Some agents can be interrupted. For those, a **Send now** switch appears while the agent is working. The line then reads "Sends now: **stops the turn in progress**": the agent stops what it was doing and starts on your new message straight away.
+
+If stopping would also end work the chat started in the background, Cowork asks first: "**Sending now stops N background task(s)** (sub-agents or shells) this chat started." Choose **Add to the turn instead** to let that work carry on, or **Stop them and send**. If the background work changes before your message goes, Cowork plays it safe and adds your message to the reply in progress instead.
+
+### Stop
+
+As in threads, when the box is empty the send button becomes **Stop**. You have 3 seconds to **Undo**. Then the agent stops and keeps what it already did.
+
+### Ended chats
+
+An ended chat reads "Ended. Start a new one from Chats." and its placeholder becomes "This chat has ended".
+
+## Chats and projects
+
+A chat doesn't use a project's coordinator, memory or threads. Changes it makes land directly in the folder you picked, not in a separate copy of the project. For work that should get its own branch and a checklist, write to the project instead.

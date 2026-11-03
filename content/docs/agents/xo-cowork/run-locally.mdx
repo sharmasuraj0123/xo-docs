@@ -1,0 +1,125 @@
+---
+title: Run Cowork Locally
+description: Install Cowork on your own machine, connect Claude Code, and open the Cowork UI in your browser.
+icon: Terminal
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+<Lead>
+  You can run Cowork entirely on your own computer. You install XO Space, point it at a folder of projects, sign in to Claude Code, and open the Cowork UI in your browser. Everything stays on your machine.
+</Lead>
+
+## Before you start
+
+You'll need:
+
+- **Linux or macOS.** On Windows, use WSL.
+- **git**.
+- **Python 3** to start the Cowork UI.
+- **Claude Code**, installed and signed in with your own account. Cowork runs its agents on Claude Code today.
+
+<Callout type="info">
+  Don't want to install anything? Use the [XO Cloud quickstart](/docs/agents/xo-cowork/setup) instead.
+</Callout>
+
+## Set it up
+
+<Steps>
+  <Step>
+    ### Choose your workspace folder
+
+    Pick or create the folder that should hold your projects. Every folder directly inside it becomes a project in Cowork.
+
+    ```bash
+    mkdir -p ~/xo-workspace && cd ~/xo-workspace
+    ```
+  </Step>
+
+  <Step>
+    ### Install XO Space
+
+    From inside your workspace folder, run:
+
+    ```bash
+    curl -fsSL https://quirq.ai/install | sh
+    ```
+
+    The installer sets everything up and starts XO Space in your terminal. Keep that terminal open while you use Cowork, and press **Ctrl-C** to stop it.
+
+    To update later, run the same command again.
+  </Step>
+
+  <Step>
+    ### Sign in to Claude Code
+
+    If you haven't already, sign in:
+
+    ```bash
+    claude
+    ```
+
+    Follow the prompts to sign in with your account. You can also connect it from XO Space's own page at `http://localhost:5002/space/`, under **Setup → Intelligence layer**.
+  </Step>
+
+  <Step>
+    ### Start the Cowork UI
+
+    In a second terminal, go to the Cowork UI folder and start it:
+
+    ```bash
+    python3 serve.py
+    ```
+
+    To keep it running in the background instead, use `./start.sh --background`. Stop it with `./start.sh --stop`.
+  </Step>
+
+  <Step>
+    ### Open Cowork
+
+    Open **http://127.0.0.1:5180** in your browser. You'll see Home, the Workspace, and your projects in the sidebar.
+
+    Write something to the Workspace, such as "What projects do I have?", to check that everything is connected.
+  </Step>
+</Steps>
+
+## Live and Demo
+
+The badge at the bottom-left of the sidebar shows which mode you're in. Click it to switch.
+
+| Mode | What it does |
+| --- | --- |
+| **Live** | Your real workspace. Sending a message starts real agents. This is the default. |
+| **Demo** | A simulated, busy workspace that runs only in your browser. Nothing is sent anywhere. |
+
+Your browser remembers the choice. Some features, such as Chats and parts of Settings, only work in Live.
+
+## If something doesn't connect
+
+Cowork shows a calm line above the message box when something is wrong. For example:
+
+- **Can't reach XO**: XO Space isn't running. Start it again with the install command.
+- **Claude isn't connected**: sign in to Claude Code, then try again.
+
+See [Troubleshooting](/docs/agents/xo-cowork/troubleshooting) for more.
+
+## Keep it on your machine
+
+Cowork has no login of its own. Anyone who can open it can read and change your projects and start agents. By default it only listens on your own computer, and that's the safe way to use it.
+
+<Callout type="warn">
+  Don't make Cowork or XO Space reachable from a shared or public network. If you need to reach it from another device, use a private connection you control, such as an SSH tunnel.
+</Callout>
+
+## Change the defaults
+
+Most people never need to change anything. If you do:
+
+| What | Default | How to change it |
+| --- | --- | --- |
+| Workspace folder | The folder you ran the installer in | Run the installer from a different folder |
+| XO Space port | `5002` | Start it with `PORT=8080` in front of the install command |
+| Cowork UI port | `5180` | Start it with `PORT=5200 python3 serve.py` |
+
+If you change XO Space's port, tell the Cowork UI where to find it: `XO_API=http://127.0.0.1:8080 python3 serve.py`.

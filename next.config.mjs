@@ -7,6 +7,9 @@ const withMDX = createMDX();
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  // Let the dev server work when opened through an XO workspace URL
+  // (e.g. 3100--main--docs--you.dev.workspace.xo.builders), not just localhost.
+  allowedDevOrigins: ["*.dev.workspace.xo.builders"],
   turbopack: {
     root: dirname(fileURLToPath(import.meta.url)),
   },

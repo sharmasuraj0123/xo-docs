@@ -12,6 +12,7 @@ Each agent runs in an isolated XO space, but the interface, setup requirements, 
 
 | Agent | Best fit | Primary interface | Initial setup |
 |---|---|---|---|
+| **XO Cowork** | One person directing many agents across many projects, with coordinators, threads and approvals | The Cowork web UI (Home, Workspace, Chats, Projects) | Claude Code logged in; projects in your workspace folder |
 | **OpenClaw** | A long-running messaging agent with skills and external integrations | OpenClaw dashboard and connected messaging apps | At least one model provider and one channel |
 | **Claude Code** | Software development in a remote coding environment | Browser IDE and the `claude` terminal interface | Anthropic API key or Claude OAuth |
 | **Hermes** | A messaging-first assistant with a dedicated monitoring dashboard | Hermes dashboard and connected messaging apps | Provider and channel recommended; both can be added later |
@@ -22,6 +23,12 @@ If you still are not sure, follow the short [Choose an Agent](/docs/cloud/choose
 ## Explore the Agents
 
 <Cards>
+	<Card
+		icon={<BrandIcon name="xo-cowork" size={20} />}
+		title="XO Cowork"
+		description="Direct coordinators and threads across all your projects, and decide only what needs you."
+		href="/docs/agents/xo-cowork"
+	/>
 	<Card
 		icon={<BrandIcon name="openclaw" size={20} />}
 		title="OpenClaw"

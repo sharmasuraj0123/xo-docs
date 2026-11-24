@@ -1,5 +1,7 @@
 import { metaSchema, pageSchema } from "fumadocs-core/source/schema";
 import { defineConfig, defineDocs } from "fumadocs-mdx/config";
+import rehypeKatex from "rehype-katex";
+import remarkMath from "remark-math";
 import { z } from "zod";
 
 // You can customize Zod schemas for frontmatter and `meta.json` here
@@ -49,6 +51,8 @@ const researchPageSchema = pageSchema.extend({
   // Opt in to a single typeface for the whole article — neutralizes the
   // preflight monospace on code/kbd/samp/pre inside this page only.
   singleFont: z.boolean().optional(),
+  // Leads the research hub. At most one page sets it.
+  featured: z.boolean().optional(),
 });
 
 export const researchDocs = defineDocs({
@@ -66,6 +70,8 @@ export const researchDocs = defineDocs({
 
 export default defineConfig({
   mdxOptions: {
-    // MDX options
+    // LaTeX: $inline$ and $$display$$ math, typeset by KaTeX at build time.
+    remarkPlugins: [remarkMath],
+    rehypePlugins: (v) => [rehypeKatex, ...v],
   },
 });

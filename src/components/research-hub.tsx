@@ -15,6 +15,8 @@ export type ResearchPageItem = {
   track: "speed-trials" | "from-the-desk" | "proving-grounds";
   num: string;
   readTime: string;
+  /** Set by the page's `featured: true` frontmatter. */
+  featured?: boolean;
 };
 
 const TRACKS = {
@@ -52,15 +54,18 @@ export function ResearchHub({ items }: { items: ResearchPageItem[] }) {
     };
   }, [items]);
 
-  // Featured article (first Speed Trial / Observational Data)
+  // Featured article: the page flagged `featured` in its frontmatter, else the
+  // earlier default (the observational-data Speed Trial).
   const featured = useMemo(() => {
     return (
+      items.find((n) => n.featured) ||
       items.find(
         (n) =>
           n.url.includes("observational-data") ||
           n.title.toLowerCase().includes("workspace context") ||
           n.title.toLowerCase().includes("observational data"),
-      ) || items[0]
+      ) ||
+      items[0]
     );
   }, [items]);
 
@@ -72,11 +77,11 @@ export function ResearchHub({ items }: { items: ResearchPageItem[] }) {
     return items.filter(
       (n) =>
         n.track === activeTab &&
-        n.url !== (activeTab === "speed-trials" ? featured?.url : ""),
+        n.url !== (activeTab === featured?.track ? featured?.url : ""),
     );
   }, [items, activeTab, featured]);
 
-  const showFeatured = activeTab === "all" || activeTab === "speed-trials";
+  const showFeatured = activeTab === "all" || activeTab === featured?.track;
   const showProvingGrounds =
     activeTab === "all" || activeTab === "proving-grounds";
 
@@ -149,7 +154,10 @@ export function ResearchHub({ items }: { items: ResearchPageItem[] }) {
               <div className="flex flex-col justify-center">
                 <div className="mb-3 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-widest text-fd-primary">
                   <span className="size-2 rounded-full bg-fd-primary" />
-                  <span>Speed Trials · Featured Experiment</span>
+                  <span>
+                    {TRACKS[featured.track].label} · Featured
+                    {featured.track === "speed-trials" ? " Experiment" : ""}
+                  </span>
                 </div>
 
                 <h2 className="text-2xl font-bold tracking-tight text-fd-foreground sm:text-3xl lg:text-4xl leading-tight">

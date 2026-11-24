@@ -69,3 +69,11 @@ aside [data-sidebar-viewport],
 [data-sidebar] [data-radix-scroll-area-viewport] {
   padding-bottom: calc(var(--docs-bottom-bar-height, 60px) + 3.5rem) !important;
 }
+
+/* Research math: a display equation wider than the column scrolls inside
+   its own line rather than pushing the page sideways. */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0;
+}

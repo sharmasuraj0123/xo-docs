@@ -59,8 +59,8 @@ sessions and watcher events without having a provider for this aggregate view.
    and MCP usage. Its **Export CSV** controls export the current sources/window.
 5. Use **Configure** to enable or pause telemetry collection and edit supported
    source paths. These controls change collection, while Sources only filters
-   the displayed data. **Refresh** retrieves another aggregate snapshot; it does
-   not clear the browser's cached prompt details.
+   the displayed data. **Refresh** in the top bar reloads the page and retrieves
+   another aggregate snapshot.
 
 Session identity includes its runtime, so similarly named sessions from different
 sources remain distinct. Parent/subagent information is only as complete as the
@@ -109,7 +109,7 @@ ordinary session telemetry does not automatically certify it.
 
 Space materializes workspace views on disk. The watcher refreshes those views at
 most every `XO_VIEWS_REFRESH_S` (default 30 seconds). A request can rebuild a
-missing or stale view; `XO_VIEW_MAX_AGE_S` defaults to 120 seconds. The UI's Refresh
+missing or stale view; `XO_VIEW_MAX_AGE_S` defaults to 120 seconds. The top bar's Refresh
 button can therefore retrieve a cached aggregate rather than force an immediate
 rescan of every store.
 

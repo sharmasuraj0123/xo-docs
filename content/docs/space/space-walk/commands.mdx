@@ -1,134 +1,142 @@
 ---
-title: Commands & Schedules
-description: Save commands, run them manually or on an interval, and inspect results in Setup or Inbox Jobs.
+title: Jobs
+description: Save commands as repeating or one-time jobs, run them now or on a schedule, and read their results in Setup or Inbox Jobs.
 icon: Terminal
 ---
 
 <Lead>
-  **Setup → Commands** saves commands that run on the Space server's machine.
-  Run them on demand, or add an interval and optional first run time. Results
-  remain available in each command's **Inbox** drawer.
+  **Setup → Jobs** saves commands that run on the Space server's machine. A
+  **Repeating** job runs on a schedule you choose in words; a **One time** job
+  runs once at a time you pick, or whenever you click **Run now**. Each job keeps
+  its recent results and a full log on this machine.
 </Lead>
 
-Open `/space/#/setup/commands`. An empty installation shows **No commands yet**;
-opening this page does not create or execute an example.
+Open **Setup** and choose **Jobs** in the sidebar, or go to
+`/space/#/setup/commands` (the address kept its earlier name). Opening the page
+does not create or run anything.
 
-![Saved manual and interval commands with their latest results](/images/space/setup-commands.png)
+![Setup Jobs with two one-time jobs and one repeating job, each with Run now, Results, Edit and Delete](/images/space/setup-commands.png)
 
-## Add and run a command
+**Your jobs** lists every saved job. Each row shows its name and a **Repeating**
+or **One time** badge, the description, the command, the folder it runs in
+(**Runs in**), its latest status in words with how long ago it ran, and its
+schedule, such as **Every hour** or **Runs when you click Run now**. Below that,
+**Latest result** shows the exit code and the end of the output.
 
-1. Click **Add command** and enter a name and optional description.
-2. Enter **Command line or argv JSON**, such as `git status --short` or
-   `["git", "status", "--short"]`.
-3. Set **Working directory** when the command needs a particular checkout.
-   Leaving it blank uses the server's working directory.
-4. Set **Timeout (seconds)**. A timeout is required; the form starts at 30
-   seconds.
-5. Leave **Interval** blank for manual runs, then click **Save command**.
-6. Click **Run** when you want to execute it.
+## Create a job
 
-Commands execute with the server's permissions and inherited environment,
-without a shell. Shell operators in a command line are rejected; put multi-step
-work in a script and invoke the script explicitly. Definitions and output can
-contain sensitive data, so keep secrets out of command arguments.
+![New job form with Repeating selected, Daily chosen, a November calendar and the next three runs](/images/space/setup-job-editor.png)
 
-While a command runs, its row shows the start time and disables **Run**. The row
-updates automatically for an active run and shows the latest status, duration,
-and output preview after completion. A command cannot overlap itself; all jobs
-also share the server's concurrency limit. A conflict message means another
-run could not be started.
+1. Click **New job**. The **New job** card opens above **Your jobs**.
+2. Under **What kind of job is this?**, choose **Repeating** (runs again and
+   again, on a schedule you choose) or **One time** (runs once on the day and
+   time you pick, or whenever you click **Run now**).
+3. Under **When should it run?**:
+   - For **Repeating**, pick how often: **Every…** (a number of minutes, hours,
+     days or seconds, with a first-run time), **Hourly** (at a minute past each
+     hour), **Daily** (at a time each day) or **Weekly** (on one day each week at
+     a time). Optionally pick a start date on the calendar; with no date, the
+     job starts right away. Days with runs get a dot.
+   - For **One time**, set the time and pick the day on the calendar. With no
+     day picked, the job waits until you click **Run now**.
+4. Check the green summary line and **Next runs** below the calendar, for
+   example *Every day at 09:00. First run: Nov 25, 2026, 9:00 AM.* Times are in
+   your browser's time zone.
+5. Under **What should it run?**, fill in:
+   - **Name**: up to 64 letters, numbers, spaces, dots, dashes or underscores.
+   - **Description (optional)**.
+   - **Command**: the program and its arguments, such as `git status --short`.
+     It runs directly, without a shell, so `|`, `&&`, `;` and `>` are not
+     allowed. For an argument that contains spaces, write a JSON list:
+     `["git", "commit", "-m", "Two words"]`.
+   - **Run in folder (optional)**: an absolute path on the Space machine. Leave
+     it blank to use the server's own folder.
+   - **Stop it if a run takes longer than**: a number with seconds, minutes or
+     hours. A run still going at that point is stopped and marked **Timed out**.
+6. Click **Save job**. **Cancel** or the **✕** button closes the card without
+   saving. If something is wrong, the error appears in the card and nothing is
+   saved.
 
-## Add a schedule
+Jobs run with the server's permissions and environment. Job definitions and
+output can contain sensitive data, so keep secrets out of command arguments.
 
-Set **Interval (seconds)** to a positive whole number at least as long as the
-watcher tick. Optionally set **First run at** using the date and time in your
-browser's time zone. The form includes the UTC offset when it sends the start
-time to Space.
+A repeating job keeps a fixed interval, so a daily time can move by an hour when
+daylight saving starts or ends. Timed jobs run only while **Update activity
+automatically** is on in **Setup → Intelligence layer**, and only while the
+server is running. Missed runs are not replayed; the job moves on to its next
+time.
 
-For example, an interval of `3600` with a first run at 09:00 schedules hourly
-slots from 09:00. A first run time in the past preserves that schedule and uses
-its next future slot. Leaving the first run time blank schedules the initial
-run one interval after creation. This is a fixed interval, not a recurring
-calendar-time rule.
+## Run a job now
 
-After saving, check the **next** time on the command's row. **First run at** is
-only available when the command has an interval. Invalid intervals or start
-times leave the form open with an error.
-
-Automatic launches require **Intelligence layer → Update activity
-automatically** and the server scheduler (`XO_SCHEDULER_ENABLED`) to be enabled.
-The server must be running. Missed slots advance to the next interval instead
-of replaying every missed run.
-
-Manual **Run** still works when automatic collection is off or the job is
-disabled. It does not move the next scheduled time. Disabling automatic
-scheduling does not cancel a command already running.
-
-## Ask an agent to manage commands
-
-Click **Copy agent prompt**, paste it into your agent, and describe the command
-you want. The prompt gives the agent the `/api/schedules` API contract and your
-current UTC offset. It asks the agent to check for duplicates, use a working
-directory and timeout, keep commands manual unless you request a schedule, and
-verify the next run time.
-
-The page shows the full **Create job** endpoint for this Space. The agent must
-be able to reach that server; commands run there. The copied prompt directs the
-agent to use the API rather than editing scheduler files.
+Click **Run now** on the job's row, in Setup or in **Inbox → Jobs**. This works
+for both kinds of job, including when automatic runs are off. It does not move a
+repeating job's next scheduled time. While a job runs, its row shows that it is
+running and updates when the run finishes. A job cannot overlap itself, and all
+jobs share the server's limit on how many run at once; a conflict message means
+the run could not start.
 
 ## Read results and history
 
-Click a command's **Inbox** button to open its newest **20 runs**, newest first.
-Each result includes start and finish, manual/interval trigger, status, exit
-code, duration, and the recorded output tail. While the selected command is
-running, results refresh automatically; **Refresh** also reads them on demand.
+Click **Results** on a job to open **Command results**: its newest **20 runs**,
+newest first. Each run shows its status and duration, start and finish times,
+whether it was manual or scheduled, the exit code, and the end of its output.
+While the job is running, results update on their own.
 
-![Command results with status, duration, output, and local log path](/images/space/setup-command-runs.png)
+![Command results with the command, its folder, the full log path with Copy log path, and one run](/images/space/setup-command-runs.png)
 
-The drawer shows **Full log on this machine** and a **Copy log path** button.
-Under the configured Space data folder, the locations are:
+**Full log on this machine** shows where the complete output is kept, with a
+**Copy log path** button. With the default Space data folder, the files are:
 
 ```text
-<state root>/logs/scheduler/<command-id>.log
-<state root>/scheduler/runs/<command-id>.jsonl
+~/.quirq/logs/scheduler/<job-id>.log
+~/.quirq/scheduler/runs/<job-id>.jsonl
 ```
 
-Use the path in the drawer; the Commands introduction can still show the older
-`scheduler/logs/` layout. Results are rendered as text. Opening a results drawer neither runs the command nor
-creates a triage item under **Inbox → Items**.
+Use the path shown in the drawer for your installation. Opening results never
+runs the job and does not create an item under **Inbox → Items**.
 
-| Result | Meaning |
+| Status on the row | Meaning |
 | --- | --- |
-| `ok` | The process completed with exit code zero. |
-| `failed` | The process returned a nonzero exit code. |
-| `timed_out` | The command exceeded its timeout. |
-| `missing_binary` | Its executable could not be found. |
-| `error` | The executor could not launch or complete the command normally. |
-| `lost` | An in-flight run could not be recovered after a server restart. |
-| `skipped` | An automatic run was due while the previous run was still active. |
+| **Succeeded** | The command finished with exit code zero. |
+| **Failed** | The command returned a nonzero exit code. |
+| **Timed out** | The run took longer than the time limit and was stopped. |
+| **Command not found** | Its program could not be found. |
+| **Could not start** | Space could not launch or finish the command normally. |
+| **Interrupted** | A run in progress could not be recovered after a server restart. |
+| **Skipped (still running)** | A scheduled run came due while the previous run was still going. |
 
-## Monitor scheduled jobs
+The results drawer shows the same results with their short codes (`ok`,
+`failed`, `timed_out`, `missing_binary`, `error`, `lost`, `skipped`).
 
-Open **Inbox → Jobs** (`#/inbox/jobs`) to see commands that have an interval.
-Each row shows its cadence, enabled state, next due time, and latest result or
-running status. Manual-only commands remain in Setup.
+## Watch jobs from Inbox
 
-![Inbox Jobs with cadence, next due time, and result controls](/images/space/jobs.png)
+Open **Inbox → Jobs** (`#/inbox/jobs`) to see every saved job, repeating and
+one-time. Each row shows the badge, description, schedule and whether it is
+enabled, and its latest result with the date and duration.
 
-**Results** opens the same command drawer. **Open Setup** takes you to Commands
-to edit or run a job. Jobs refreshes every 30 seconds, or every three seconds
-while a displayed job is running. This page monitors saved schedules; it does
-not add schedules or mark their runs seen/done.
+![Inbox Jobs listing three saved jobs with Run now and Results on each](/images/space/jobs.png)
 
-## Edit or delete a command
+**Run now** starts the job; **Results** opens the same drawer as in Setup.
+**Open Setup** takes you to **Setup → Jobs** to create, edit or delete jobs.
+The list updates every 30 seconds, and every three seconds while a job is
+running.
 
-**Edit** updates the saved definition. Existing environment overrides, project
-association, and enabled state are preserved even though the form does not
-expose those fields. **Delete** removes the definition after confirmation and
-keeps its history and logs on disk. Deleting does not cancel an active process;
-its completion can still be collected on a later read or tick.
+## Edit or delete a job
+
+**Edit** reopens the job in the same card, as the choice that produced it, and
+lets you switch its kind. Saving an unchanged **Every…** schedule keeps its run
+times. **Delete** removes the job after confirmation and keeps its history and
+logs on disk. Deleting does not stop a run already in progress.
+
+## Ask an agent to manage jobs
+
+Click **Copy agent prompt**, paste it into your agent, and describe the job you
+want. The prompt gives the agent the Space jobs API and your time zone, and asks
+it to check for duplicates, set a folder and a time limit, and confirm the next
+run time. The card shows the **Create job** address of this Space; the agent
+must be able to reach it.
 
 See [Setup → Server](/docs/space/space-walk/setup#restart-the-server) for local
-and HTTPS proxy access requirements, and the
+and HTTPS proxy access, and the
 [storage guide](/docs/space/observability/storage#saved-commands-and-schedules)
-for scheduler files.
+for where job files live.

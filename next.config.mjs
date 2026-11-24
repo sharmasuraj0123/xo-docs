@@ -38,18 +38,58 @@ const config = {
         permanent: true,
       },
       {
+        source: "/docs/cloud/overview",
+        destination: "/docs/cloud",
+        permanent: true,
+      },
+      {
+        source: "/docs/cloud/choose-an-agent",
+        destination: "/docs/cloud/create-a-space",
+        permanent: true,
+      },
+      {
+        source: "/docs/cloud/launch-first-agent",
+        destination: "/docs/cloud/create-a-space",
+        permanent: true,
+      },
+      {
+        source: "/docs/cloud/manage-space",
+        destination: "/docs/cloud/your-space",
+        permanent: true,
+      },
+      {
+        source: "/docs/setup",
+        destination: "/docs/cloud/setup",
+        permanent: true,
+      },
+      {
+        source: "/docs/setup/:path*",
+        destination: "/docs/cloud/setup/:path*",
+        permanent: true,
+      },
+      {
+        source: "/docs/agents/xo-cowork/setup",
+        destination: "/docs/cowork/open-cowork",
+        permanent: true,
+      },
+      {
+        source: "/docs/agents/xo-cowork",
+        destination: "/docs/cowork",
+        permanent: true,
+      },
+      {
         source: "/docs/cloud/core-concepts",
         destination: "/docs/glossary",
         permanent: true,
       },
       {
         source: "/docs/getting-started/manage-workspace",
-        destination: "/docs/cloud/manage-space",
+        destination: "/docs/cloud/your-space",
         permanent: true,
       },
       {
         source: "/docs/cloud/manage-workspace",
-        destination: "/docs/cloud/manage-space",
+        destination: "/docs/cloud/your-space",
         permanent: true,
       },
       {

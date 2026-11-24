@@ -30,11 +30,24 @@ Click a project row to expand the **Files** drawer beneath it. Click again to co
 
 ![Expanded project row with folders and files](/images/space/projects-detail.png)
 
-Folders appear on the left and files on the right. Click a folder, the `..` row, or a breadcrumb to navigate. File rows show sizes and modified times. Space remembers the current folder for each project while the page remains open; filtering, sorting, and closing the drawer preserve its browsing state. **Refresh files** rereads the open folder.
+Folders appear on the left and files on the right. Click a folder, the `..` row, or a breadcrumb to navigate. File rows show sizes and modified times. Space remembers the current folder for each project while the page remains open; filtering, sorting, and closing the drawer preserve its browsing state. **Refresh** in the top bar reloads the page and rereads the open folder.
+
+### Copy a file or folder path
+
+![Copy path menu on README.md offering Copy relative path and Copy full path](/images/space/files-copy-path.png)
+
+Each file and folder row has a **Copy path** button at its right end; right-clicking the row opens the same menu. Choose:
+
+- **Copy relative path**: the path from the project's root, such as `README.md`.
+- **Copy full path**: the absolute path on the Space machine, such as `/demo/xo-projects/aurora-console/README.md`.
+
+Each choice shows the path it will copy beneath it. **Copy full path** needs the projects folder; while Space is still reading it, the choice reads **Loading…**.
 
 Project metadata and GitHub issues are in [Projects → Manage](/docs/space/space-walk/manage). Its **View activity** action opens project todos, open sessions, and recent events in [Inbox → Activity](/docs/space/space-walk/inbox). Historical aggregate session telemetry is in [Agents → Sessions](/docs/space/space-walk/sessions).
 
 ## Preview a file
+
+{/* VIDEO PLACEHOLDER space-file-history (about 21 s, silent): Data, open a project, open README.md, pick an earlier version. Rendered to docs-studio run/2026-11-24/videos/space-file-history.mp4; embed here once hosting is decided. The steps are written out below. */}
 
 Click a file in the drawer or [Tree](/docs/space/space-walk/tree-lens), or choose **Preview file** from a [Graph](/docs/space/space-walk/graph) file's detail panel. A single floating window opens above the current view; opening another file replaces it.
 
@@ -59,4 +72,4 @@ The preview stays mounted while switching between **Overview**, **Data**, **Time
 
 **No projects yet** means the configured projects folder has no discoverable projects. **Manage projects** opens the clone and management page; **Getting started** opens Wiki. A filter with no matches is a separate state: use **Show all projects** before changing the workspace root.
 
-The project catalog, file index, and activity sources load independently. A failed activity read does not hide files. **Refresh** rereads the page's available data; **Refresh files** updates an expanded folder. For sharing access and incoming commits, open [Inbox → Sharing](/docs/space/space-walk/sharing).
+The project catalog, file index, and activity sources load independently. A failed activity read does not hide files. **Refresh** in the top bar reloads the page and rereads everything, including an expanded folder. For sharing access and incoming commits, open [Inbox → Sharing](/docs/space/space-walk/sharing).

@@ -1,0 +1,59 @@
+---
+title: Setup
+description: Connect a space's models, data sources and channels from its Setup page.
+icon: Settings
+---
+
+import { Cards, Card } from "@/components/card";
+
+<Lead>
+  A space's **Setup** page is where you connect what its agent uses: the **Models**
+  it thinks with, the **Data** sources it can read, and, for messaging agents, the
+  **Channels** it talks on. Which options appear depends on the space's agent.
+</Lead>
+
+![Setup › Overview in a space: the Models and Data cards, each with Open](/images/cloud/space-setup-overview.png)
+
+**Setup › Overview** has two cards:
+
+- **Models**: the intelligence layer for your agent, how it reasons, writes and
+  uses tools.
+- **Data**: connect external accounts so this agent can read from them.
+  Credentials live in this space's workspace, not on the platform.
+
+Choose **Open** on a card.
+
+## Models
+
+**OAUTH SUBSCRIPTIONS** connect a subscription you already pay for: **Claude**,
+**OpenAI** and **Google AI**. An option the space's agent can't use shows **NOT
+SUPPORTED**. **API KEYS** take a key from **OpenRouter** or **Anthropic**; each
+shows **Not connected** until you add one.
+
+![Setup › Models in a Claude Code space: Claude connected, OpenAI and Google AI not supported, and the OpenRouter and Anthropic keys](/images/cloud/space-setup-models-pane.png)
+
+## Data
+
+**DATA SOURCES** lists **Google Drive**, **OneDrive**, **GitHub** and **Vercel**.
+Choose **Connect** to add one; a connected source shows **Connected** and
+**Disconnect**.
+
+![Setup › Data with Google Drive and GitHub connected, and OneDrive and Vercel ready to connect](/images/cloud/space-setup-data-pane.png)
+
+## Channels
+
+Agents that talk on messaging apps, such as OpenClaw, have **Channels**: **Active
+Channels** counts the connected ones, and **NOTIFICATION CHANNELS** lists
+**Telegram** and **Slack** with their state. Coding agents such as Claude Code say
+"Channels not supported".
+
+![Setup › Channels in an OpenClaw space: one of two channels active, Telegram connected and Slack not connected](/images/cloud/space-setup-channels-pane.png)
+
+## Guides
+
+<Cards>
+	<Card title="Compatibility" description="Which model connections, interfaces and channels each agent supports." href="/docs/cloud/setup/compatibility" />
+	<Card title="Models" description="Connect with OAuth or an API key." href="/docs/cloud/setup/models" />
+	<Card title="Data sources" description="Google Drive, OneDrive, GitHub and Vercel." href="/docs/cloud/setup/data" />
+	<Card title="Channels" description="Connect Telegram or Slack to an OpenClaw space." href="/docs/cloud/setup/channels" />
+</Cards>

@@ -1,0 +1,105 @@
+---
+title: Decide what needs you
+description: Use Home and the Needs you panel to answer an agent's permission request, question or approval, one at a time.
+icon: ClipboardCheck
+---
+
+<Lead>
+  When an agent needs you, Cowork puts it on **Home** and in the **Needs you**
+  panel. You handle one decision at a time, in any order, and the agent goes on
+  with your answer.
+</Lead>
+
+## Read Home
+
+**Home** is the first item in the sidebar. Its count is the number of asks
+waiting. From top to bottom it shows:
+
+- The date, a greeting and how many things are worth your time, for example
+  "Four things are worth your time." **Create XO Project** is at the top right.
+- **Your next move**: the most useful decision to make now. The card says what
+  kind of ask it is and roughly how long it takes ("Decide ~1 min"), which project
+  and thread it comes from, its title, and how many steps are left in that
+  thread's checklist. **Decide** opens it.
+- **Then**: the other asks, one row each, with their project. **+1 more** (or
+  however many) shows the rest.
+- **Handled**: folded by default. It lists what is running without you, with
+  each thread's current step.
+- **Recently made**: the newest files your threads made.
+- A composer at the bottom that writes to the **Workspace** coordinator (see
+  [Give work to a coordinator](/docs/cowork/coordinators)).
+
+![Handled opened: two working threads, each with its project and current step](/images/cowork/home-handled.png)
+
+## Open the Needs you panel
+
+Choose **Decide** on Home, on a row under **Then**, or on a thread card. The
+**Needs you** panel opens on the right with the first decision. Its header says
+which one you are on ("Needs you 1 of 4"), and the progress marks show how many
+are left.
+
+![Home with the Needs you panel open beside it on the first of four decisions](/images/cowork/needs-you.png)
+
+Every card shows:
+
+- What kind of ask it is and an estimate of the time it takes.
+- **project › thread**. Choose it (or press **O**) to open the thread beside the panel.
+- The title and the agent's reason for asking.
+- How many steps are left in the thread's checklist.
+- **Details** (**E**): the full request, for example the exact command and why
+  the agent wants it, and the thread's branch.
+
+At the bottom, **‹** (**K**) and **›** (**J**) move between decisions. "Skip
+freely; nothing here is forced first." You can leave a decision and come back.
+**Close** (**Esc**) puts the panel away.
+
+## Answer a permission request
+
+An agent asks before it does something it may not do on its own, such as
+installing a package.
+
+1. Read the title and, if you need to, open **Details** to see the exact command.
+2. Choose **Allow once** (**A**) to let it run this time, or **Deny** (**D**).
+3. To stop being asked about the same thing, turn on **Make it a rule** (**T**)
+   first. The main button becomes **Allow for this thread**, and Cowork lists the
+   rules you can make, for example **Always allow `npm install csv-stringify@6`
+   in Aurora Console**, or the same permission for this thread only. Choose one.
+
+![A permission request with Make it a rule turned on, showing Allow for this thread and an Always allow rule for the project](/images/cowork/decision-permission.png)
+
+Rules you make appear in [Settings › Rules](/docs/cowork/settings#rules), where you can revoke them.
+
+## Answer a question
+
+When an agent needs a choice, the card lists the answers it thinks fit, each with
+a short description. Choose one (or press its number, **1**–**9**), or choose
+**Answer in words** to write your own answer.
+
+![A question card asking how sync conflicts should resolve, with three answers and Answer in words](/images/cowork/decision-question.png)
+
+## Approve or send back
+
+When a thread has something ready for your sign-off, such as a draft, the card
+says what is ready. Choose **Approve**, or **Send back** to return it to the agent.
+
+![An approval card for a launch announcement with Approve and Send back](/images/cowork/decision-approval.png)
+
+## Reply to a waiting thread
+
+Some threads are simply waiting for a reply. Their card offers **Reply in words**,
+**Done** and **Open the thread**.
+
+## Keyboard
+
+| Key | On a decision |
+|---|---|
+| **A** | Allow once |
+| **D** | Deny |
+| **T** | Turn **Make it a rule** on or off |
+| **1**–**9** | Choose an answer |
+| **E** | Details |
+| **O** | Open the thread |
+| **J** / **K** | Next / previous decision |
+| **Esc** | Close the panel |
+
+Settings › **Keyboard** lists every shortcut and lets you change them.

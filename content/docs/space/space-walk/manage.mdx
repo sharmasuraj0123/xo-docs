@@ -32,7 +32,7 @@ The card's actions include:
 | **Share** | Opens an inline **Space ID** field. Enter the recipient's Space ID and submit **Share**. |
 | **Pin project** | Saves the project to the browser's pins for **Data → List → Pinned**. Click again to unpin. |
 | **Copy GitHub URL** | Copies the recorded GitHub repository URL when available. |
-| **Remove project** | Opens an access review and local-deletion confirmation. |
+| **Remove project** | Opens a safety review and local-deletion confirmation. |
 
 Pins are browser preferences. If browser storage is unavailable, the page explains that the change applies only to the current session. Sharing results appear in the card; use [Inbox → Sharing](/docs/space/space-walk/sharing) to inspect members, incoming repositories, and pending commits.
 
@@ -40,7 +40,7 @@ Pins are browser preferences. If browser storage is unavailable, the page explai
 
 Expanded cards include the local GitHub issue mirror. Use **Open**, **Closed**, or **All**, then **Filter issues…** to narrow the rows. An issue links to GitHub and can show labels, assignee, and tracking state. **In progress** means work is claimed; **tracked** means the issue was adopted as a workitem.
 
-The header reports the last poll. **Refresh** polls GitHub again; changing the issue filter does not. A project without a GitHub origin, a repository with issues disabled, and a failed poll each show their own explanation.
+The header reports the last poll. **Check GitHub** polls GitHub again; changing the issue filter does not. A project without a GitHub origin, a repository with issues disabled, and a failed poll each show their own explanation.
 
 <Callout type="info">
   The mirror polls open issues and retains those it later observes closing. It is not a complete archive of issues closed before Space watched the repository. Open GitHub for that history.
@@ -48,12 +48,14 @@ The header reports the last poll. **Refresh** polls GitHub again; changing the i
 
 ## Remove a local project
 
-Choose **Remove project** on the card. Space checks access and lists any blockers, sharing members, and local collaborators. Where allowed, **Revoke access** and **Remove collaborator** each require their own confirmation. Use **Check access again** to refresh the review.
+Choose **Remove project** on the card. Removing deletes only this Space's own copy, so it does not check or change sharing: other workspaces keep their access. To stop sharing, revoke members in [Inbox → Sharing](/docs/space/space-walk/sharing#manage-members).
 
-Once access checks allow removal, type the exact project ID and choose **Delete local project**. **Cancel** closes the removal panel.
+Space checks that the folder is safe to delete and lists any blockers and local collaborators. Each other collaborator must be removed first with **Remove collaborator**, which needs its own confirmation. Use **Check access again** to refresh the review.
+
+Once the checks allow removal, type the exact project ID and choose **Delete local project**. **Cancel** closes the removal panel. A shared repository is not cloned back on its own after you remove it; to get it again, use **Clone project** in [Inbox → Sharing](/docs/space/space-walk/sharing#clone-a-project-you-removed).
 
 <Callout type="warning">
-  **Delete local project** deletes this project's local folder and all its files. Remote repositories and backups remain. Copy or commit any work you need before using this action; the access review does not replace your own check for uncommitted files.
+  **Delete local project** deletes this project's local folder and all its files. Remote repositories and backups remain. Copy or commit any work you need before using this action; the safety review does not replace your own check for uncommitted files.
 </Callout>
 
 Cloning, sharing, and removal are explicit actions. Browsing project cards and issue lists does not run them. The page preserves open forms and drafts when you move between sections or refresh the catalog.

@@ -1,0 +1,70 @@
+---
+title: Cowork
+description: The chat-first web UI for XO Space. See what needs you, talk to the coordinators, and follow every thread your agents work on.
+icon: XoCowork
+---
+
+import { Cards, Card } from "@/components/card";
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  **Cowork** is a web UI for XO Space built around your attention. Home shows the
+  few things worth your time across every project; everything that only needs an
+  agent stays quiet. You talk to a coordinator, it starts threads, and each thread
+  has its own agent, branch and checklist.
+</Lead>
+
+![Cowork Home: the next decision, a list of further asks, Handled work and recently made files](/images/cowork/home.png)
+
+*Screenshots in this section use fictional workspace data.*
+
+{/* VIDEO PLACEHOLDER cowork-overview (about 35 s, silent): Home, Needs you, the Workspace, a project, a thread and its changes, then a feature grid. Rendered to docs-studio run/2026-11-24/videos/cowork-overview.mp4; embed here once hosting is decided. Everything it shows is described on this page and the pages it links to. */}
+
+<Callout type="info" title="Version">
+  This section follows [xo-coworker revision eab19eb](https://github.com/sharmasuraj0123/xo-coworker/tree/eab19eb)
+  from November 2026. Cowork reads and writes your real XO workspace:
+  **sending a message starts real agents.**
+</Callout>
+
+## How Cowork is organised
+
+| Area | Where | What it is for |
+|---|---|---|
+| **Home** | First item in the sidebar | What is worth your time across every project, ranked, with **Your next move** on top. |
+| **Needs you** | Opens beside Home when you choose **Decide** | One decision at a time: a permission, a question or an approval. |
+| **Workspace** | Sidebar | Your coordinator across all projects. Tell it what should get done; it routes the work. |
+| **Projects** | Sidebar, under **Projects** | Each project's own coordinator conversation, its threads in progress and every thread it has had. |
+| **Threads** | Opened from a project | One agent working on one task, with its checklist, its branch and the files it changed. |
+| **Artifacts** | Sidebar | Everything your threads made: documents, pictures and branches. |
+| **Shells** | Sidebar foot | Terminals in a project folder or a thread's worktree, kept in a dock. |
+| **Settings** | Sidebar foot | Shape, routing, runtimes, rules and the rest. |
+
+The sidebar also lists **Chats**: a chat is one agent in one folder, outside your
+projects' coordinators. Press **Ctrl K** (**⌘K** on macOS) anywhere to jump to a
+place, a project, a thread or a file a thread made.
+
+The sidebar shows your workspace's name (**Space** by default) and a theme switch.
+Cowork opens in its dark theme.
+
+## Words Cowork uses
+
+| Word | Meaning |
+|---|---|
+| **Coordinator** | The agent you talk to in the Workspace or in a project. It answers, forwards your message or starts a thread. |
+| **Thread** | One task given to one agent. It runs on one runtime for its whole life and works in its own checkout of the project (a worktree) on its own branch. |
+| **Checklist** | The steps a thread's agent plans, with the current step marked. |
+| **Ask** | Something a thread or coordinator needs from you: a decision, an answer or an approval. |
+| **Runtime** | The agent program a thread runs on, for example Claude Code or Codex. |
+
+## Guides
+
+<Cards>
+	<Card title="Open Cowork" description="Run Cowork next to XO Space and open it in your browser." href="/docs/cowork/open-cowork" />
+	<Card title="Decide what needs you" description="Use Home and the Needs you panel to answer permissions, questions and approvals." href="/docs/cowork/decide" />
+	<Card title="Give work to a coordinator" description="Write to the Workspace or a project, aim with @project, and create a project." href="/docs/cowork/coordinators" />
+	<Card title="Follow a thread" description="Read a thread's checklist and turns, reply, choose its model and stop or resolve it." href="/docs/cowork/threads" />
+	<Card title="Review changes and files" description="See what a thread changed, open any file, and watch agents on the Map." href="/docs/cowork/changes-and-files" />
+	<Card title="Find what agents made" description="Browse Artifacts and search everything with Ctrl K." href="/docs/cowork/artifacts-and-search" />
+	<Card title="Use shells" description="Open terminals in a project or a thread's worktree." href="/docs/cowork/shells" />
+	<Card title="Settings" description="Every Cowork setting, from Shape to Rules." href="/docs/cowork/settings" />
+</Cards>

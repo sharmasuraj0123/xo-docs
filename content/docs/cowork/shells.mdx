@@ -1,0 +1,41 @@
+---
+title: Use shells
+description: Open terminals in a project folder or a thread's worktree, and keep them in the Shells dock.
+icon: Terminal
+---
+
+<Lead>
+  A shell is a terminal on the machine your Space runs on. Cowork keeps your
+  shells in a dock under the main column; they keep running when you close their
+  tab or move elsewhere.
+</Lead>
+
+Shells appear only when your Space has them turned on. Otherwise Cowork shows no
+shell controls at all.
+
+## Open a shell
+
+- In a project: **Shell** beside **All threads** opens one in the project's folder.
+- In the Workspace: **Shell** opens one in your projects folder.
+- In a thread: **✎ → Open a shell in its worktree** opens one in the thread's
+  own copy of the project.
+- In the dock: **+ New shell in the workspace**.
+
+Where shells already run, the button shows how many and opens their list.
+
+## Use the Shells dock
+
+**Shells** in the sidebar foot (or **Ctrl `**) shows or hides the dock. Its count
+is the number of running shells. The dock holds your shells as tabs; **Every
+shell** lists them all with their name, project, the program in front, whether
+someone is watching or it is detached, and when a detached shell closes.
+
+From the list you can **Open**, rename or close a shell, or **Close all
+detached**. Closing a tab only detaches it: the shell keeps running, and a reload
+reattaches it with its recent output. Cowork asks before closing a shell that is
+running something.
+
+![The Shells dock listing two detached shells, each closing in four hours, with Close all detached and New shell in the workspace](/images/cowork/shells.png)
+
+Inside a shell every key goes to the shell, except **Ctrl `**. **Ctrl Shift C** and
+**Ctrl Shift V** copy and paste.

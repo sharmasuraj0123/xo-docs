@@ -1,0 +1,64 @@
+---
+title: Open Cowork
+description: Run Cowork next to your XO Space and open it in a browser.
+icon: Rocket
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+<Lead>
+  Cowork is a small web server that serves the UI and passes its requests to your
+  XO Space. When it runs, open **http://127.0.0.1:5180** and Cowork shows Home for
+  the workspace your Space manages.
+</Lead>
+
+## What you need
+
+- A running [XO Space](/docs/space/install-space). Cowork talks to it at
+  `http://127.0.0.1:5002` unless you say otherwise.
+- Python 3 and a copy of the
+  [xo-coworker repository](https://github.com/sharmasuraj0123/xo-coworker). Cowork
+  has no build step and no packages to install.
+
+## Start Cowork on your machine
+
+1. In the `xo-coworker` folder, run:
+
+   ```sh
+   python3 serve.py
+   ```
+
+   To keep it running in the background instead, run `./start.sh --background`.
+   `./start.sh --status` and `./start.sh --stop` check and stop it.
+2. Open **http://127.0.0.1:5180** in your browser.
+3. Cowork opens on **Home**. The sidebar lists your projects; projects that need
+   you show an amber count and their first ask.
+
+To change where it listens or which Space it uses, set these before starting it:
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `PORT` | `5180` | The port Cowork listens on. |
+| `XO_API` | `http://127.0.0.1:5002` | The XO Space to use. |
+| `HOST` | `127.0.0.1` | The address Cowork binds to. |
+
+```sh
+PORT=5181 XO_API=http://127.0.0.1:5002 python3 serve.py
+```
+
+<Callout type="warn" title="Cowork works on your real workspace">
+  Everything you do in Cowork happens in the XO Space it points at. Sending a
+  message starts real agents, and allowing a request lets an agent carry it out.
+</Callout>
+
+## If Cowork can't reach your Space
+
+Cowork checks your Space when it loads and then every 20 seconds. If the Space is
+unreachable, its message router is off, or it doesn't support Cowork, Cowork
+says so in one line and disables sending, with the reason. Start or update your
+Space, and Cowork picks it up again on its next check.
+
+## Next
+
+- [Decide what needs you](/docs/cowork/decide), starting from **Your next move** on Home.
+- [Give work to a coordinator](/docs/cowork/coordinators).

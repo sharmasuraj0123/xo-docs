@@ -13,8 +13,8 @@ import { Callout } from "fumadocs-ui/components/callout";
 ![Space opens to Overview inside Projects](/images/space/dashboard.png)
 
 <Callout type="info" title="Version and screenshots">
-  This guide follows [xo-space development at 4b1a580](https://github.com/quirq-ai/xo-space/tree/4b1a580)
-  from September 15, 2026. Screenshots show the real UI with fictional workspace
+  This guide follows [xo-space development at 9bc003e](https://github.com/quirq-ai/xo-space/tree/9bc003e)
+  from November 16, 2026. Screenshots show the real UI with fictional workspace
   data. The public installer's release branch can differ; check your running
   version in **Setup → Server**.
 </Callout>
@@ -30,7 +30,7 @@ The primary tabs are **Projects · Agents · Inbox · Setup**. Press **1–4** t
 | [Inbox](/docs/space/space-walk/inbox) | Handle incoming items, scheduled jobs, project activity, and sharing | `#/inbox/items` |
 | [Setup](/docs/space/space-walk/setup) | Configure the workspace, intelligence layer, connectors, secrets, and server | `#/setup/workspace` |
 
-**Wiki** sits at the top right beside **GitHub**. It opens the local quick start and topic directory at `#/wiki`. **Open docs** within Wiki opens a detailed guide in a new tab; **GitHub** opens the [source repository](https://github.com/quirq-ai/xo-space). Keep the full URL when bookmarking, including any access query parameters your deployment requires.
+**Refresh**, at the top right, reloads the whole page and its data; unsaved form edits are discarded. **Wiki** sits beside it, next to **GitHub**. It opens the local quick start and topic directory at `#/wiki`. **Open docs** within Wiki opens a detailed guide in a new tab; **GitHub** opens the [source repository](https://github.com/quirq-ai/xo-space). Keep the full URL when bookmarking, including any access query parameters your deployment requires.
 
 ## Projects: Overview, Data, Timeline, Manage
 
@@ -58,8 +58,7 @@ Click **Press ⌘K to search**, or press **⌘K** on macOS / **Ctrl+K** elsewher
 ![Command palette showing a matching project](/images/space/command-palette.png)
 
 - Choosing a project opens its file drawer in **Projects → Data → List**.
-- **Refresh this page** refreshes views that support it. Otherwise use the
-  page’s own **Refresh** or **Refresh status** control.
+- **Refresh this page** reloads the page, like **Refresh** in the top bar.
 - **New project** opens **Projects → Manage**, where **Add project** starts a clone.
 - **Copy link to this page** copies the current URL.
 

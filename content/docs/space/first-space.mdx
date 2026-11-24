@@ -119,14 +119,14 @@ or unavailable cost is not evidence that no work occurred.
 Open **Projects → Timeline** after the project has Git commits. File dates and
 commit lanes come from Git; creating a file does not give it a committed date.
 Review **Inbox → Items** for incoming work and **Activity** for observed project
-events. **Inbox → Jobs** monitors recurring saved commands. Create, edit, or run
-any saved command in **Setup → Commands**.
+events. **Inbox → Jobs** lists saved jobs and can run them. Create, edit, or run
+jobs in **Setup → Jobs**.
 
 ## If something is missing
 
 | Symptom | Check |
 |---|---|
-| Project is absent | It must be directly under the XO projects root shown in Setup. Refresh Data → List after the watcher has run. |
+| Project is absent | It must be directly under the XO projects root shown in Setup. Use **Refresh** in the top bar after the watcher has run. |
 | Files appear but todos do not | Create/update the todo through `/api/xo-projects/{id}/todos`; the watcher does not mirror native task tools. |
 | No live activity | Check the runtime's native store, watcher source mode, and project working directory. |
 | Agents shows no usable source | Check [runtime discovery](/docs/space/auto-detection); only available telemetry providers can contribute. |

@@ -1,0 +1,106 @@
+---
+title: Settings
+description: Every Cowork setting - General, Shape, Routing, Runtimes, Rules, Worktrees, Sounds and Keyboard.
+icon: Settings
+---
+
+<Lead>
+  Choose **Settings** in the sidebar foot. The sections are listed on the left;
+  each saves as you change it.
+</Lead>
+
+## General
+
+How the conversation shows what happens behind it.
+
+| Setting | What it does |
+|---|---|
+| **Show how messages travel** | Inside a thread, a quiet line each time a message passes between the workspace, a project's coordinator and the thread. Off unless you turn it on. |
+| **Show pictures from the web** | A picture an agent links to shows in the conversation, read straight from its site (which can tell someone looked). Off, it's a link. Applies only on this device. |
+
+![Settings, General, with Show how messages travel and Show pictures from the web](/images/cowork/settings-general.png)
+
+## Shape
+
+What Cowork shows you, and in which words. It changes only when you change it.
+
+- **What you mostly do here**:
+  - **Build software**: branches, runtimes, the commands agents ran, and Shells a key away.
+  - **Make content and campaigns**: what was made, in plain words; technical detail is a click away.
+  - **Everything** (the default): every part of XO, as it is today; nothing hidden.
+- **What it changes** lists what your choice hides or renames. **Reset to preset**
+  undoes your own changes; **Show everything** shows every part again.
+- **On this device**: **Compact** gives tighter rows and controls and 14 px
+  reading text, only on this device.
+- **Edit as JSON** edits your shape directly.
+
+![Settings, Shape, with Everything selected and the Compact option for this device](/images/cowork/settings-shape.png)
+
+## Routing
+
+**Who routes a new message** decides where a message you write to the Workspace
+or a project goes. A reply inside a thread always goes straight to its agent.
+
+- **The coordinator** reads your message and decides itself: answer, forward, or start a thread.
+- **Off**: chats using this setting refuse new messages; replies inside threads still work.
+
+**Decision models** sets the small model that routes quickly. Its key is saved on
+the machine and never shown again.
+
+## Runtimes
+
+The agents Cowork can run threads on, and where each project's work may go.
+
+- **On this machine**: one card per runtime with its version, whether it is
+  **Usable**, the account it is logged in as, and a meter for each usage window
+  with when it resets. Cowork reads them again every 30 seconds while the page is open.
+- **Paid usage**: when an account's plan runs out it may go on to paid usage.
+  Choose, for **All accounts** or for one: **Never**, **Ask me** or **Always allow**.
+- **Defaults**:
+  - **Usual runtime**: where new work runs when its coordinator doesn't choose.
+  - **Runtimes XO may use**: work never goes to a runtime you turn off.
+  - **Start elsewhere at a limit**: at a usage limit, work goes to another provider without asking you.
+  - **How coordinators choose**: in your words, read when a coordinator on Auto picks a runtime for a new thread.
+
+![Settings, Runtimes, with two runtimes, their usage meters, Paid usage and Defaults](/images/cowork/settings-runtimes.png)
+
+## Rules
+
+What agents may do without asking you. A rule is only ever made by you, from a
+decision's **Make it a rule**, word for word.
+
+- **Your rules**: the rules you made. Until you make one: "None yet."
+- **XO's defaults**: safe, routine things, such as reading inside the project,
+  read-only git and XO's own tools.
+
+**Revoke** on any rule removes it (Cowork asks first), and agents ask again.
+
+![Settings, Rules, with one rule of your own and XO's default rules, each with Revoke](/images/cowork/settings-rules.png)
+
+## Worktrees
+
+Each thread works in its own checkout of the project. Cowork removes one by itself
+only when nothing would be lost. Here you can see each project's worktrees, their
+thread and branch and whether an agent is still using them, and **Remove** one
+sooner.
+
+## Sounds
+
+**Soft sounds** on Allow, Send back and "That's everything". Off unless you turn them on.
+
+## Keyboard
+
+Every shortcut. Click a key to change it.
+
+| Key | Anywhere |
+|---|---|
+| **Ctrl K** | Jump to a place, project, thread or file |
+| **Ctrl .** | Intelligence (model and thinking) |
+| **/** | Write in the composer |
+| **?** | All shortcuts |
+| **Ctrl `** | Shells |
+| **Ctrl \\** | Map |
+| **Esc** | Back |
+
+On macOS, **⌘** replaces **Ctrl**. For keys on a decision, see
+[Decide what needs you](/docs/cowork/decide#keyboard).

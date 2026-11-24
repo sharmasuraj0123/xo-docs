@@ -89,7 +89,7 @@ workspace/
 │   └── venv/
 ├── .quirq/                   machine-local configuration and telemetry
 │   ├── logs/quirq.log         server output
-│   ├── logs/commands.log      external commands run by Space
+│   ├── inbox/activity/commands.log  external commands run by Space
 │   ├── projects/             durable history and watcher cursors
 │   ├── cache/                rebuildable views and live presence
 │   ├── settings/             roots and runtime controls
@@ -131,9 +131,9 @@ The installer creates `.env` once and preserves later edits. Common settings are
 |---|---|---|
 | `XO_PROJECTS_ROOT` | Directory where you launched the installer | Its child folders are projects. |
 | `QUIRQ_STATE_ROOT` | `.quirq` in that directory | Machine-local state and logs. |
-| `AGENT_NAME` | `claude_code` | Active chat backend; also supports `codex`, `openclaw`, `hermes`, `antigravity`. |
+| `AGENT_NAME` | `claude_code` | Active chat backend; also supports `codex`, `openclaw`, `hermes`, `antigravity`, and `grokbot` (partial support, through a separately running Grok Bot gateway). |
 | `QUIRQ_WATCHER_SOURCE_MODE` | `all` | Watch all configured runtime sources; `active` limits watcher ingestion to the active backend. |
-| `HOST` | `127.0.0.1` | Listening interface. |
+| `HOST` | `127.0.0.1` | Listening interface. The API has no login: `0.0.0.0` lets every device on your network read and change your files, so use it only on a network you trust. |
 | `PORT` | `5002` | Preferred port. |
 | `QUIRQ_SKIP_BOOT_INSTALL` | `1` | Skip system/agent bootstrap installation. |
 | `UVICORN_RELOAD` | `false` | Enable server reload for development. |

@@ -1,0 +1,84 @@
+---
+title: Follow a thread
+description: Read a thread's checklist and turns, reply to its agent, choose its model, and stop, resolve or rename it.
+icon: GitPullRequest
+---
+
+<Lead>
+  A thread is one task given to one agent. It has its own checklist, its own
+  branch and its own copy of the project to work in. Open one from a thread card's
+  **Open →**, a **Now** chip, **All threads**, or **Ctrl K**.
+</Lead>
+
+![A working thread with its checklist open at step 2 of 4, the conversation, changed-file chips and the composer](/images/cowork/thread.png)
+
+## Read the header
+
+- **‹ project** (or **Esc**) goes back to the project.
+- The title, then the thread's state: **Working**, **Needs you**, **Idle** and so
+  on. "Working" means its agent is busy right now.
+- The runtime it runs on, such as **Claude Code**, when your workspace has more
+  than one runtime.
+- **Resolve** marks it resolved: nothing more is owed.
+- **✎** ("Rename, label and more") opens **Rename**, **Add a label**, **Open a
+  shell in its worktree** and **Continue on another runtime…**.
+- The last button opens the panel with the thread's changes, agents and Map (see
+  [Review changes and files](/docs/cowork/changes-and-files)).
+
+## Read the checklist
+
+Under the header, the checklist bar shows progress ("2 of 4"), the current step
+and the thread's branch. Choose it to see every step: **✓** done, **✱** the
+current step, **○** still to do. When the thread waits for you, the bar reads
+"Paused on you".
+
+## Read the conversation
+
+Your messages are on the right; the agent's are on the left. Between them, Cowork
+summarises the work instead of showing every tool call:
+
+- "Worked 2m 51s · 3 steps": choose it to unfold the steps.
+- An activity line, such as "Created 1 file, edited 2 files, ran 1 command".
+- One chip per changed file, with its added and removed lines. Choose a chip to
+  see its changes in the panel; **Ctrl**-click (**⌘**-click on macOS) opens the
+  file in Files.
+- While the agent works, a live row shows its current step and for how long.
+
+![File chips for three changed files with their added and removed line counts](/images/cowork/changed-files.png)
+
+## Answer what the thread needs
+
+A thread that needs you shows its decision above the composer, the same card as
+in the Needs you panel, with **Read the thread first** to fold it while you read.
+See [Decide what needs you](/docs/cowork/decide).
+
+![A thread paused on you, with a permission request above the composer](/images/cowork/thread-decision.png)
+
+## Reply to the agent
+
+Type in the composer ("Reply to the agent…"). The line under it says "Reply in
+**this thread**": the reply goes straight to this thread's agent, not to a
+coordinator. While the agent works, the round button is **Stop**: it stops the
+agent, which keeps what is already done.
+
+![The thread composer with Reply in this thread, the Sonnet · Balanced model chip and the stop button](/images/cowork/composer-thread.png)
+
+## Choose the model, thinking and runtime
+
+The model chip (for example **Sonnet · Balanced**) opens **Intelligence for this
+thread**, or press **Ctrl .**:
+
+- **Model**: **Opus** (for complex work), **Sonnet** (fast and capable) or
+  **Haiku** (quick answers).
+- **Thinking**: **Quick**, **Balanced** or **Deep**. Balanced is "a sensible
+  default for most work."
+- **Runtime**: the runtime the thread runs on.
+- **Default model** goes back to the default.
+
+Changes apply from the next turn.
+
+![Intelligence for this thread: Opus, Sonnet and Haiku, the Quick, Balanced and Deep thinking choices and the runtime](/images/cowork/model-picker.png)
+
+A thread keeps one runtime for its whole life. Choosing another runtime, here or
+with **Continue on another runtime…**, continues the work in a new thread on that
+runtime. The two threads link to each other, and the old one reads "Continued".

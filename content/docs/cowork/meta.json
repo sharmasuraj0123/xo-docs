@@ -1,0 +1,15 @@
+{
+  "title": "Cowork",
+  "icon": "XoCowork",
+  "pages": [
+    "index",
+    "open-cowork",
+    "decide",
+    "coordinators",
+    "threads",
+    "changes-and-files",
+    "artifacts-and-search",
+    "shells",
+    "settings"
+  ]
+}

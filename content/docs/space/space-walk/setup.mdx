@@ -9,28 +9,63 @@ import { Callout } from "fumadocs-ui/components/callout";
 <Lead>
   **Setup** separates initial setup from ongoing management. Start with
   **Workspace** and **Intelligence layer**, then use **Connectors**, **Secrets**,
-  **Commands**, and **Server** as needed.
+  **Jobs**, and **Server** as needed.
 </Lead>
 
-![Setup Workspace with identity, folders, and section navigation](/images/space/setup.png)
+![Setup Workspace with the section sidebar, Branding and the start of Theme](/images/space/setup.png)
 
 Open the fourth primary tab, **Setup**, press **4**, or use
-`/space/#/setup/workspace`. **Refresh status** checks the installation again. The
-banner distinguishes unsaved edits from saved changes that require a restart.
+`/space/#/setup/workspace`. The banner distinguishes unsaved edits from saved
+changes that require a restart. To check the installation again, use **Refresh**
+in the top bar; it reloads the whole page, so unsaved edits are discarded.
 
 | Section | What you can do | Route |
 | --- | --- | --- |
-| Workspace | Check Space and account identity; choose folders | `#/setup/workspace` |
+| Workspace | Name, logo and theme; Space and account identity; folders | `#/setup/workspace` |
 | Intelligence layer | Choose the agent for new chats and configure activity collection | `#/setup/intelligence` |
 | Connectors | Connect workspace tools and account apps | `#/setup/connectors` |
 | Secrets | Add, replace, or remove environment values | `#/setup/secrets` |
-| Commands | Save, run, and schedule commands; read their results | `#/setup/commands` |
+| Jobs | Save repeating and one-time jobs, run them, and read their results | `#/setup/commands` |
 | Server | Restart, check updates, and inspect technical details | `#/setup/server` |
 
 Use the sidebar or the [command palette](/docs/space/space-walk#search-and-quick-actions)
 to find a section. If the **Search setup…** page filter is visible, it searches
 setting names, not typed values or saved credentials. Older `#/secrets` and
 `#/connectors` links still reach their corresponding sections.
+
+## Name your workspace and add a logo
+
+![Branding card with Workspace name, Workspace logo, a header preview, Save branding and Reset to defaults](/images/space/setup-branding.png)
+
+In **Workspace → Branding**:
+
+1. Enter a **Workspace name**, up to 80 characters. It is shown in the header
+   and the browser tab.
+2. Optionally choose a **Workspace logo**: a PNG, JPG or WebP image up to 2 MB
+   and 4096 × 4096 pixels.
+3. Check **Preview**, which shows how the header will look.
+4. Click **Save branding**. The header changes at once.
+
+**Remove logo** brings back the default logo when you save, and **Reset to
+defaults** restores the name **Space** and the default logo. The card's status
+reads **Unsaved changes** until you save, then **Saved**.
+
+## Choose a theme
+
+![Theme card with the Workspace theme menu set to Grove — default and Save theme](/images/space/setup-theme.png)
+
+In **Workspace → Theme**, choose a **Workspace theme** and click **Save theme**.
+It applies immediately; your workspace name and logo stay the same.
+
+| Theme | What Space says about it |
+| --- | --- |
+| **Grove** (default) | Moss green and warm neutrals. |
+| **Neon** | Soft magenta, violet and amber on charcoal. |
+| **Midnight** | Periwinkle blue and silver on near-black. |
+| **Graphite** | Quiet black and grey. Clear, simple and focused. |
+| **Linen** (light) | Warm white, soft stone and burnt orange. |
+
+The theme and branding are saved for the workspace, not per browser.
 
 ## Check the running installation
 
@@ -58,7 +93,8 @@ In **Workspace → Folders**:
 4. Apply the displayed instructions. Restart to use saved folders; for an
    installer-managed container, run the displayed installer command to update
    its mounts. **Copy installer command** copies that installation's command.
-5. Refresh status after applying the changes to confirm the folders in use.
+5. Use **Refresh** in the top bar after applying the changes to confirm the
+   folders in use.
 
 In installer-managed environments, the installer can copy current state when
 the new state directory is empty. Use the displayed command because host paths
@@ -150,7 +186,7 @@ as completion.
 | **Native** | The native process manager checks its PID file and restarts that installation. |
 | **Foreground** | A manually launched process or development reload mode requires **Ctrl-C and re-run** in its original terminal. The UI restart button is disabled. |
 
-If Space cannot reconnect, use **Refresh status** and check its server log or
+If Space cannot reconnect, refresh the page and check its server log or
 original terminal. A saved container folder change may require the installer
 command before a restart can apply it.
 
@@ -176,30 +212,43 @@ guidance.
   before updating.
 </Callout>
 
-## Run saved commands
+## Run jobs [#run-saved-commands]
 
-Open **Commands** to add a manual command or an interval schedule. **Copy agent
-prompt** supplies instructions for an agent to manage commands through the
-Space API. Nothing is seeded or run when you open the page.
+Open **Jobs** to create a **Repeating** or **One time** job, run one with
+**Run now**, or read its **Results**. **Copy agent prompt** supplies
+instructions for an agent to manage jobs through the Space API. Nothing is
+seeded or run when you open the page.
 
-Follow [Commands & schedules](/docs/space/space-walk/commands) for command fields,
-start times, execution, and results.
-
-### Read results and history
-
-Each saved command's **Inbox** button opens its newest 20 runs and local log
-path. Scheduled commands also appear under **Inbox → Jobs**, where **Results**
-opens the same drawer. See
-[command results](/docs/space/space-walk/commands#read-results-and-history).
+Follow [Jobs](/docs/space/space-walk/commands) for the job form, schedules,
+execution, and results. Every saved job also appears under **Inbox → Jobs**.
 
 ## Open Quirq state
 
 Choose **Server → Technical details** to open `/space/#/setup/server/details`.
 The older `#/quirq` link remains an alias. This view maps installation state,
 watcher activity, project records, runtime configuration, and their availability.
-Use **Refresh data** for another snapshot or **← Setup** to return to Server.
+Use **Refresh** in the top bar for another snapshot or **← Setup** to return to
+Server.
 
-![Quirq state view with machine-local and portable project records](/images/space/quirq.png)
+![Inside .quirq with Health checks reading Healthy and No problems found, above the storage roots and counts](/images/space/quirq.png)
+
+### Check the health of Space data
+
+**Health checks** at the top of the view reads the files Space keeps on this
+machine and reports problems in plain words. It runs when you open the view;
+click **Run checks** to check again. It only reads: it changes nothing unless
+you ask it to.
+
+The badge reads **Healthy** when nothing is wrong, or the worst level found, and
+adds **(partly checked)** when not every file could be checked. Beside it, Space
+shows when it last checked and how many files it read. Each problem lists what
+was observed and, where known, **What stops working**, **What the Space does by
+itself**, and **What you can do**, with the file path. A problem that went away
+since the previous check is listed under **No longer seen since the previous
+check**.
+
+For a leftover runtime folder, the problem offers **Move aside…**. Confirm with
+**Move aside** to move the folder into quarantine; you can move it back by hand.
 
 Portable project metadata lives in project `.xo/` folders. Machine-local
 materialized records and operational state live under the configured Space data

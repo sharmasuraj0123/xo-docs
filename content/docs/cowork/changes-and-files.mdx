@@ -1,0 +1,68 @@
+---
+title: Review changes and files
+description: See every file a thread changed, read its diff, open any project file, ask about lines, and watch agents on the Map.
+icon: Map
+---
+
+<Lead>
+  The panel on the right of a project or thread, the **Agentic Control Pane**,
+  shows what changed, which agents are at work and where they are. **Files** opens
+  any file whole, with the conversation beside it.
+</Lead>
+
+## Open the panel
+
+Choose the panel button at the right of a project or thread header ("Agents, Map
+and Changes"). The panel has three sections:
+
+- **Changes**, with how many files changed and the lines added and removed.
+- **Agents**: the threads at work here, with their state.
+- **Map**: where the agents are working, drawn.
+
+**Full size** widens the panel; **Close** puts it away.
+
+![A thread with the panel open: three changed files, the diff of releases.ts, Agents and Map](/images/cowork/panel-changes.png)
+
+## Read a thread's changes
+
+1. Under **Changes**, choose a file. Each row shows its name, its folder, **new**
+   for a file the thread created, and its added and removed lines.
+2. The file's diff appears under the list.
+3. **Follow** is on by default: the panel shows each file the agent changes as it
+   changes it. Selecting a file pauses Follow; later edits show as a "changed ·
+   Show" pill instead of moving the view. Sending a message turns Follow back on.
+
+In a project with nothing changed yet, Changes says "Nothing changed here yet."
+
+## Open a file in Files
+
+Choose **Open in Files** beside a diff, or **Ctrl**-click (**⌘**-click on macOS) a
+file chip in the conversation. Files opens with the conversation beside it:
+
+- **Changed in this thread** lists the thread's files; **All files** is the whole
+  project (or the thread's worktree), a folder at a time.
+- **Find a loaded file** searches the files listed so far.
+- A changed file opens on **Changes**; **File** shows it whole. **More** has copy
+  and download.
+- **Back to chat**, or **Esc**, puts the file away.
+
+![Files showing the changed files, the releases.ts diff on Changes and the thread conversation beside it](/images/cowork/files.png)
+
+In a diff, **J** and **K** step through the changes. To ask the thread about part
+of a file, select the lines and choose **Ask about lines** (**⌘L**): the question
+goes to the file's thread and links back to those lines. Press **E** to edit a
+file Space lets you edit, and **⌘S** to save.
+
+## Watch agents on the Map
+
+**Map** (or **Ctrl \\**) draws the folder an agent works in. Each agent is a
+coloured cursor with its name that moves to the file it reads or edits. In a
+thread, the Map shows its own worktree, with the files it made or changed marked
+**new** or **edited**; in a project, the project folder with every agent at work.
+
+- **Diagram** draws the folder as boxes and connectors; **Graph** as a node graph
+  that settles.
+- Zoom out (**−**), zoom in (**+**), **Fit it all** (**0**) and **Follow the
+  agent** (**F**).
+
+![The Map at full size as a Diagram, with new and edited files marked and the agent's cursor on releases.ts](/images/cowork/map.png)

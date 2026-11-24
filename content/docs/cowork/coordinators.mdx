@@ -1,0 +1,83 @@
+---
+title: Give work to a coordinator
+description: Write to the Workspace or a project's coordinator, aim a message at a project, browse a project's threads and create a project.
+icon: Workflow
+---
+
+<Lead>
+  You don't start agents one by one. You tell a coordinator what should get done:
+  the **Workspace** coordinator for anything across your projects, or a project's
+  own coordinator. It answers, forwards your message, or starts a thread for the
+  work.
+</Lead>
+
+## Write to the Workspace
+
+1. Choose **Workspace** in the sidebar. Its header counts what is working and
+   what finished today across your projects.
+2. Type what should get done in the composer ("Ask anything across your
+   projects…") and send it.
+3. To aim a message at one project, start with `@` and the project's name, for
+   example `@aurora-console`. The line under the composer shows where the message
+   goes: "To the **Workspace** coordinator · @ to aim at a project".
+
+A message the Workspace passes on shows a receipt such as **Routed to
+aurora-console**. In that project's conversation, the same message reads
+"Forwarded by the **Workspace**". Asks that come back wait on Home, not in the
+conversation.
+
+![The Workspace conversation, with a message routed to aurora-console and the coordinator's reply](/images/cowork/workspace.png)
+
+The composer on Home writes to the Workspace in the same way.
+
+![The Workspace composer with its placeholder, the routing line and Auto](/images/cowork/composer-workspace.png)
+
+## Work in a project
+
+Choose a project in the sidebar (or type in **Find a project**). Its page is the
+conversation with the project's coordinator:
+
+- The header shows how many threads are working and done, and the **Now** shelf:
+  one chip per thread in progress, each with a progress bar.
+- In the conversation, every thread the coordinator started appears as a card
+  with its title, its state ("Needs you · ~1 min", "Working · 2 of 4",
+  "Done · 3 of 3"), its current step or ask, its branch, and **Open →**. A thread
+  that needs you also has **Decide**.
+- The composer writes "To the aurora-console coordinator" (with your project's name).
+
+![A project's conversation with thread cards and the Now shelf of threads in progress](/images/cowork/project.png)
+
+![A thread card that needs you, with its ask, branch, Open and Decide](/images/cowork/thread-card.png)
+
+### See every thread
+
+**Threads** in the project header opens **All threads** for the project. Search by
+title, or filter by state: **All**, **Needs you**, **Working**, **Waiting**,
+**Done** and **Stopped**, each with its count. Finished threads are folded at the
+bottom.
+
+![All threads for aurora-console, filtered to All, with two that need you and one working](/images/cowork/project-threads.png)
+
+## Choose the coordinator's model
+
+The chip on the right of the composer (**Auto** by default) opens **Intelligence**
+for the coordinator. Choose **Auto** to let the coordinator pick, or a model
+(Opus, Sonnet or Haiku). The choice applies from the next turn. Threads have their
+own picker: see [Follow a thread](/docs/cowork/threads#choose-the-model-thinking-and-runtime).
+
+## Create a project
+
+Choose **Create XO Project** at the top right of Home, or **+ New** beside
+**Projects** in the sidebar. A new project gets its own coordinator, plan and
+memory.
+
+- **Start empty**: enter a **Project name** and, optionally, **What is it for?**
+  Cowork shows the folder it will create ("Saved as …/harbor-status-page"). Choose
+  **Create project**.
+- **From GitHub**: enter the **Repository** as `owner/repo` or a Git URL, then the
+  name and description, and choose **Clone project**. Cowork shows the GitHub
+  account it will use ("Connected as …"); private repositories work too.
+
+![Create XO Project with Start empty filled in for Harbor Status Page](/images/cowork/create-project.png)
+
+![Create XO Project on From GitHub, with a repository, the connected account and Clone project](/images/cowork/create-project-github.png)

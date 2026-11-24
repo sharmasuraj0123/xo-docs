@@ -14,6 +14,8 @@ import { Callout } from "fumadocs-ui/components/callout";
 
 Open **Inbox → Sharing**, or use `/space/#/inbox/sharing`. The older `#/sharing` and `#/projects/sharing` routes also resolve here. Sharing activity has its own neighboring **Sharing activity** page.
 
+From **Inbox → Items**, **Open** on a sharing item comes here with that project already selected and the focus on its **Apply** button.
+
 ## Check that sharing is ready
 
 The top strip shows whether sharing is on, its last check, the watched branch, and **your id**. It normally checks about once a minute. **Check now** asks the sharing service to run its next check sooner.
@@ -59,7 +61,7 @@ Incoming repositories first appear under **Shared with you · not on this machin
 
 The shared-project rail puts work waiting ahead of quiet projects. A row can show **N new · not applied**, **in sync**, or **fetch failed**. Select it for details.
 
-The detail panel shows the repository, watched branch, latest check, up to five recent commits, and members. New commits are marked **new**. **Open in List** switches to that project's expanded drawer in **Projects → Data → List**.
+The detail panel shows the repository, watched branch, latest check, up to five recent commits, and members. When commits have been fetched but not yet applied, the panel says so above the commit list. New commits are marked **new**. **Open in List** switches to that project's expanded drawer in **Projects → Data → List**.
 
 When commits are waiting, click the row's **Apply** or the detail panel's **Apply N commits**. This runs a fast-forward merge from the watched origin branch into the project's current checkout. The equivalent command and a **copy** button appear beside it for manual use.
 
@@ -68,6 +70,10 @@ When commits are waiting, click the row's **Apply** or the detail panel's **Appl
 </Callout>
 
 To send your own changes, commit and push them to the watched repository branch using your normal development tools. Sharing does not automatically commit or push uncommitted edits.
+
+## Clone a project you removed
+
+A shared repository you removed from this machine is listed with **Clone project**. It opens **Projects → Manage** with the **Add project** form already holding the repository URL and a suggested folder name. Check them and click **Clone project** there to clone it; nothing is cloned until you do. If the Add form already has text in it, Space keeps your draft and does not fill it.
 
 ## Manage members
 

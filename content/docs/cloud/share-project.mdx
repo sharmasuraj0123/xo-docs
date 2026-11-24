@@ -1,68 +1,33 @@
 ---
-title: Share Your Project
-description: Grant and revoke collaborator access to your space by email.
+title: Share a space
+description: Give another XO Cloud user access to one of your spaces by their email address.
 icon: Share2
 ---
 
-import { Step, Steps } from 'fumadocs-ui/components/steps';
-import { Callout } from 'fumadocs-ui/components/callout';
+<Lead>
+  You can share a space with someone who has an XO Cloud account. They find it
+  under **Spaces Shared with me** in their sidebar.
+</Lead>
 
-Invite team members to collaborate on your space by granting them access through their email address. You can also revoke access at any time.
+## What you need
 
-## What You'll Need
+- A space of your own. See [Create a space](/docs/cloud/create-a-space).
+- The exact email address the other person uses for XO Cloud. They need an
+  account first; see [Create an account](/docs/cloud/create-account).
 
-- An [XO account](/docs/getting-started/create-account) with an active space
-- The exact email address of the person you want to invite
+## Share a space
 
-## Grant Access
+1. Open the space from **My Spaces** in the sidebar.
+2. Choose **Share Space** at the top right.
+3. In the **Share Space** dialog, type the person's exact email address in the
+   search box ("Search by exact email address...").
+4. When XO Cloud finds them, give them access from the result.
 
-<Steps>
-  <Step>
-    ### Open the Share Dialog
+If no XO Cloud account uses that address, the dialog says "No user found with that
+email address." Check the spelling, or ask them to create an account first.
 
-    From your project dashboard, click **Share Project**.
+![The Share Space dialog with an email address typed and No user found with that email address](/images/cloud/share-space-dialog.png)
 
-    ![Click Share Project](/images/core-platform-setup/share-project-01-share-click.jpeg)
-  </Step>
-  <Step>
-    ### Search by Email
-
-    Type the collaborator's **exact email address** in the search field.
-
-    ![Search by email address](/images/core-platform-setup/share-project-02-grant-click.jpeg)
-
-    <Callout type="warn">
-      The email must match exactly. Partial matches or usernames won't work — use the full email address the collaborator registered with.
-    </Callout>
-  </Step>
-  <Step>
-    ### Confirm Access
-
-    Click **Grant Access** to give them access to your space.
-
-    ![Click Grant Access](/images/core-platform-setup/share-project-03-grant-confirm.jpeg)
-  </Step>
-</Steps>
-
-## Revoke Access
-
-<Steps>
-  <Step>
-    ### Find the Collaborator
-
-    In the same share dialog, locate the collaborator you want to remove and click **Revoke**.
-
-    ![Click Revoke](/images/core-platform-setup/share-project-04-revoke-click.jpeg)
-  </Step>
-  <Step>
-    ### Confirm Revocation
-
-    Click **Revoke Access** to confirm. The collaborator loses access immediately.
-
-    ![Click Revoke Access](/images/core-platform-setup/share-project-05-revoke-confirm.jpeg)
-  </Step>
-</Steps>
-
-<Callout type="info">
-  Revoking access is instant. The collaborator won't be able to open the space or its IDE after removal.
-</Callout>
+Spaces shared with you appear under **Spaces Shared with me** in the sidebar
+("No shared spaces yet" until someone shares one), and in the dashboard's
+**Spaces** table.

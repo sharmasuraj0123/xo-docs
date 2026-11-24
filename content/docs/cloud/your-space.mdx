@@ -1,0 +1,71 @@
+---
+title: Your space
+description: Read a space's status, stop it, check its machine logs, and open its apps from the app grid.
+icon: Monitor
+---
+
+<Lead>
+  Open a space from **My Spaces** in the sidebar. Its page shows whether it is
+  ready and what its machine is doing, and the panel on the right holds the space's
+  apps, like a phone home screen.
+</Lead>
+
+![A Claude Code space: its card with Ready and Stop, Status & Metadata, Machine Logs and the app grid on the right](/images/cloud/space-overview.png)
+
+## Status and Stop
+
+The space's card shows its name, its agent type, and how long until it stops on
+its own ("Stops in …"). The status reads **Ready** when you can use it. **Stop**
+stops the space's machine.
+
+![The space card for atlas-research: claude-code, Stops in 29d, Ready and Stop](/images/cloud/space-card.png)
+
+**Status & Metadata** shows whether the space's **XO Space API** is **Up**.
+**Machine Logs** lists what the machine did as it started, numbered line by line.
+Read them when a space doesn't become ready.
+
+## The app grid
+
+The panel on the right shows the machine's **Disk Usage**, **RAM Usage** and **CPU
+Usage**, then the space's apps. Choose an app to open it; an app that opens in the
+panel has a back arrow that returns to the grid and a refresh icon that reloads it.
+More apps are on the next page of the grid, to the right: scroll sideways to reach
+them.
+
+![The app grid with disk, RAM and CPU usage, then VS Code, Space, Cowork, Web VS Code, Terminal, Cursor, Claude and OpenAI](/images/cloud/space-apps.png)
+
+Which apps you see depends on the space's agent. Common ones:
+
+| App | Opens |
+|---|---|
+| **Space** | The [XO Space](/docs/space/space-walk) UI for this space. See [Apps](/docs/cloud/apps). |
+| **Cowork** | The [Cowork](/docs/cowork) UI for this space. |
+| **Web VS Code** | VS Code in a new browser tab, on the space's files. See [Browser VS Code](/docs/cloud/vs-code-server). |
+| **Terminal** | A terminal on the space's machine. |
+| **Claude**, **OpenAI** | The agent's model account. See [Apps](/docs/cloud/apps). |
+
+Later pages of the grid hold data sources such as Google Drive, OneDrive, GitHub
+and Vercel (see [Setup](/docs/cloud/setup/data)).
+
+The first time you open a space, a short tour starts with **Apps & Integrations**.
+Choose **Next** to go through it.
+
+![The first tour step, Apps & Integrations, beside the app grid](/images/cloud/space-tour.png)
+
+## The space's pages
+
+The four icons in the dock at the bottom of the panel open the space's own pages.
+They have no labels; from left to right they are **Setup** (the blue round icon),
+**Work** (the folder), **Secrets** (the keys) and **Usage** (the chart). The bar at
+the top names the page you are on, for example **Spaces › atlas-research › Setup ›
+Overview**.
+
+| Page | Use it to |
+|---|---|
+| [Work](/docs/cloud/work) | Browse the space's projects and files. |
+| [Setup](/docs/cloud/setup) | Connect models, data sources and channels. |
+| [Secrets](/docs/cloud/secrets) | Store environment values. |
+| [Usage](/docs/cloud/usage) | See this space's cost, tokens and messages. |
+
+**Share Space** at the top right gives someone else access. See
+[Share a space](/docs/cloud/share-project).

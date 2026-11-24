@@ -77,3 +77,23 @@ aside [data-sidebar-viewport],
   overflow-y: hidden;
   padding: 2px 0;
 }
+
+/* Numbered equations: KaTeX pins \tag to the right edge, so a formula wider
+   than the column runs under its number. Lay the number out after the
+   formula instead; a too-wide line then scrolls, number included. */
+.katex-display > .katex {
+  display: block;
+}
+.katex-display > .katex > .katex-html:has(> .tag) {
+  display: flex;
+  align-items: center;
+  min-width: max-content;
+}
+.katex-display > .katex > .katex-html:has(> .tag) > .base:first-child {
+  margin-left: auto;
+}
+.katex-display > .katex > .katex-html > .tag {
+  position: static;
+  margin-left: auto;
+  padding-left: 1.5em;
+}

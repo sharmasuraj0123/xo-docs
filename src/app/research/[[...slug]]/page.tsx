@@ -180,6 +180,7 @@ function ResearchListing() {
       description?: string;
       tags?: string[];
       date?: string;
+      featured?: boolean;
     };
     const tags = data.tags ?? [];
     const track = getTrack(page.slugs, tags);
@@ -198,6 +199,7 @@ function ResearchListing() {
       track,
       num,
       readTime: "5 min read",
+      featured: data.featured === true,
     };
   });
 

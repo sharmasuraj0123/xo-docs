@@ -1,5 +1,6 @@
 import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata } from "next";
+import "katex/dist/katex.css";
 import "./global.css";
 import { Raleway } from "next/font/google";
 import { GoogleAnalyticsProvider } from "@/components/google-analytics";

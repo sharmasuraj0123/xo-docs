@@ -16,7 +16,7 @@ These apply whether you run locally or on Managed Cloud.
 | Term | What it means | Do not confuse with |
 |---|---|---|
 | **XO Space** | The core open-source product engine (`cowork-api`). The workspace environment, observability platform, and session runtime where your agents run and work gets measured. | An XO account, or the word “quirq” |
-| **`cowork-api`** | The FastAPI control plane and event broker running inside every Space instance (local or cloud). Manages agent sessions, secrets, connectors, and trace streaming. | Upstream cloud API (`xo-swarm-api`) |
+| **`cowork-api`** | The FastAPI control plane and event broker running inside every Space instance (local or cloud). Manages agent sessions, secrets, connectors, and trace streaming. | The XO Cloud service |
 | **Self-Hosted Local Space** | An XO Space instance running on your local machine (`http://localhost:5002/space/`). | Cloud dashboard |
 | **Managed Cloud Space** | An XO Space instance hosted on an isolated cloud VM managed via [app.xo.builders](https://app.xo.builders). | Local offline space |
 | **Agent** | The software runtime doing the work (OpenClaw, Claude Code, Hermes, Antigravity, XO Cowork, and others). Each offers a different interface and workflow. | The VM or the dashboard item |

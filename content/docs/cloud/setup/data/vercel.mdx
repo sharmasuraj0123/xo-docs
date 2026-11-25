@@ -1,0 +1,44 @@
+---
+title: Vercel
+description: Connect Vercel so your agent can read deployments and project metadata.
+icon: Vercel
+---
+
+<Lead>
+  Connect a Vercel account to a space with an API token or by signing in to Vercel.
+  Credentials live in the space's workspace, not on the XO platform.
+</Lead>
+
+## What you need
+
+- A space whose status reads **Ready** (see [Your space](/docs/cloud/your-space)).
+- A Vercel account. For the token method, an API token created at
+  [vercel.com/account/tokens](https://vercel.com/account/tokens).
+
+## Open Connect Vercel
+
+Open the space's **Setup** page and choose **Data**. Under **DATA SOURCES**, choose
+**Connect** on the **Vercel** row. The **Connect Vercel** dialog has two tabs,
+**Token** and **OAuth**.
+
+## With a token
+
+1. On the **Token** tab, paste your token into **API token**. It is hidden as you
+   paste it.
+2. Choose **Connect**.
+
+![The Connect Vercel dialog, highlighted, on the Token tab with a token pasted and Connect](/images/cloud/setup-vercel-token.png)
+
+## By signing in (OAuth)
+
+1. On the **OAuth** tab, choose **Open Vercel**. Vercel's sign-in page opens in a
+   new tab. If it didn't open, choose **Re-open sign-in**.
+2. Sign in and authorize access.
+3. When you're done, the browser lands on a new address, even if that page doesn't
+   load. Copy the full address from the address bar.
+4. Back in XO Cloud, paste it into **Callback URL** and choose **Finish**.
+
+![The Connect Vercel dialog, highlighted, on the OAuth tab after Open Vercel: Re-open sign-in, Callback URL and Finish](/images/cloud/setup-vercel-oauth.png)
+
+When the account is connected, the **Vercel** row shows **Connected** and
+**Disconnect**.

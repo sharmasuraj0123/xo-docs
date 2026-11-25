@@ -1,0 +1,47 @@
+---
+title: GitHub
+description: Connect GitHub so your agent can read repositories, issues and pull requests.
+icon: Github
+---
+
+<Lead>
+  Connect a GitHub account to a space with a personal access token or a one-time
+  device code. Credentials live in the space's workspace, not on the XO platform.
+</Lead>
+
+## What you need
+
+- A space whose status reads **Ready** (see [Your space](/docs/cloud/your-space)).
+- A GitHub account. For the token method, a personal access token with the
+  **repo** and **read:org** scopes, created at
+  [github.com/settings/tokens](https://github.com/settings/tokens).
+
+## Open Connect GitHub
+
+Open the space's **Setup** page and choose **Data**. Under **DATA SOURCES**, choose
+**Connect** on the **GitHub** row. The **Connect GitHub** dialog has two tabs,
+**Token** and **Device code**.
+
+![Setup › Data with the GitHub row and its Connect highlighted](/images/cloud/setup-data-github.png)
+
+## With a token
+
+1. On the **Token** tab, paste your token into **Personal access token**. It is
+   hidden as you paste it.
+2. Choose **Connect**.
+
+![The Connect GitHub dialog, highlighted, on the Token tab with a token pasted and Connect](/images/cloud/setup-github-dialog.png)
+
+## With a device code
+
+1. On the **Device code** tab, choose **Start**. The dialog shows **YOUR CODE**, a
+   one-time code, and a link to
+   [github.com/login/device](https://github.com/login/device).
+2. Choose **Open**, sign in to GitHub, enter the code and authorize the app.
+3. Back in XO Cloud, the dialog reads "Waiting for you to authorize the app on
+   GitHub…" until you're done.
+
+![The Connect GitHub dialog on the Device code tab, with the one-time code highlighted](/images/cloud/setup-github-device.png)
+
+When the account is connected, the **GitHub** row shows **Connected** and
+**Disconnect**.

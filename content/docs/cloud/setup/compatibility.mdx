@@ -1,0 +1,42 @@
+---
+title: Agent Compatibility Guide
+description: Choose model authentication, interfaces, and messaging channels that match your XO agent.
+icon: ClipboardCheck
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+XO agents share the same space platform, but they do not all use the same
+model authentication or communication channels. Choose the agent first, then
+follow only the setup paths listed for it.
+
+| Agent | Documented model connections | Primary interface or channels | Start here |
+|---|---|---|---|
+| **OpenClaw** | Anthropic, OpenAI or OpenRouter API key; optional ChatGPT/Codex OAuth | Telegram, WhatsApp, or Slack; OpenClaw dashboard | [OpenClaw quickstart](/docs/agents/openclaw/setup) |
+| **Claude Code** | Anthropic API key or Claude OAuth | Browser or desktop IDE and terminal | [Claude Code quickstart](/docs/agents/claude-code/setup) |
+| **Hermes** | Anthropic, OpenAI or OpenRouter API key | Telegram or Slack; Hermes dashboard | [Hermes quickstart](/docs/agents/hermes/setup) |
+| **Antigravity** | Google account sign-in | Browser IDE and `antigravity` terminal | [Antigravity quickstart](/docs/agents/antigravity/setup) |
+
+<Callout type="info">
+	The space-creation form and the space's Setup page are the source of truth
+	for currently available options. Third-party provider and channel support can
+	change independently of these docs.
+</Callout>
+
+## Choose a model connection
+
+- Use [Claude OAuth](/docs/cloud/setup/models/oauth/claude) when a supported Claude Code
+  space should authenticate with a Claude subscription.
+- Use [ChatGPT/Codex OAuth](/docs/cloud/setup/models/oauth/codex) when a supported agent
+  should authenticate with a ChatGPT subscription.
+- Use an [API key](/docs/cloud/setup/models/api-key) when you want provider-based billing
+  through Anthropic, OpenAI, or OpenRouter.
+
+## Add data and channels
+
+[Data sources](/docs/cloud/setup/data) connect external accounts such as Google Drive,
+OneDrive, GitHub, and Vercel. Availability and permissions still depend on the
+space and account.
+
+The current [Setup channels guide](/docs/cloud/setup/channels) documents the
+OpenClaw-style Telegram and Slack flow.

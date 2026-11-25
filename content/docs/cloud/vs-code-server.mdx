@@ -1,65 +1,33 @@
 ---
-title: Access Your Machine via VS Code Server
-description: Open a browser-based VS Code IDE and start running commands in your space.
+title: Browser VS Code
+description: Open VS Code in your browser on a space's files, trust the folder, and open a terminal.
 icon: Monitor
 ---
 
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { Callout } from 'fumadocs-ui/components/callout';
 
-Code-Server gives you a full VS Code experience in your browser — no local installation required. This guide walks you through first-time setup, including trusting the space and opening a terminal.
+**Web VS Code** gives you a full VS Code editor in your browser, on the space's
+files, with nothing to install. This guide covers the first launch, trusting the
+folder, and opening a terminal.
 
 ## What You'll Need
 
-- An [XO account](/docs/getting-started/create-account) with an active space
-- A space machine in the **running** state (see [Manage Your Machine](/docs/getting-started/manage-space))
+- A space whose status reads **Ready** (see [Your space](/docs/cloud/your-space))
 
-## Launch Code-Server
+## Launch Web VS Code
 
-<Steps>
-  <Step>
-    ### Open the Launch Tab
+1. On the space's page, choose **Web VS Code** in the app grid on the right. The
+   editor opens in a new browser tab, on the space's home folder.
 
-    From your project page, open the **Launch** tab in the top sub-navigation.
+   ![A space's app grid with Web VS Code highlighted](/images/cloud/space-app-web-vs-code.png)
 
-    ![Open the Launch tab](/images/cfg-launch-tab.jpeg)
-  </Step>
-  <Step>
-    ### Click code-server
+2. The first time, VS Code opens on its **Welcome** page in **Restricted Mode**: a
+   banner at the top reads "Restricted Mode is intended for safe code browsing.
+   Trust this folder to enable all features." Choose **Manage** in the banner.
 
-    Under **Agent Connections**, click **code-server**. A new browser tab opens with the editor.
-
-    ![Click code-server](/images/cfg-07-codeserver.jpeg)
-  </Step>
-  <Step>
-    ### First-Time Setup
-
-    On first launch, VS Code shows a welcome screen. This is normal.
-
-    ![VS Code welcome screen](/images/core-platform-setup/vs-code-server-3.jpeg)
-  </Step>
-  <Step>
-    ### Trust the Space
-
-    A dialog asks if you trust the files in this folder. Check **Trust the authors of all files in the parent folder 'home'**.
-
-    ![Check trust checkbox](/images/core-platform-setup/vs-code-server-4.jpeg)
-  </Step>
-  <Step>
-    ### Confirm Trust
-
-    Click **Yes, I trust the authors** to proceed.
-
-    ![Click Yes, I trust the authors](/images/core-platform-setup/vs-code-server-5.jpeg)
-  </Step>
-  <Step>
-    ### Dismiss the Welcome Tab
-
-    Click **Mark Done** to close the welcome walkthrough. You're now in the editor.
-
-    ![Click Mark Done](/images/core-platform-setup/vs-code-server-6.jpeg)
-  </Step>
-</Steps>
+3. **Workspace Trust** opens: "You are in Restricted Mode". Under **In a Trusted
+   Folder**, choose **Trust**. The banner goes away and all features are enabled.
 
 ## Open a Terminal
 
@@ -70,8 +38,6 @@ You need a terminal to run space commands like `openclaw config`, `openclaw star
     ### Keyboard Shortcut (Fastest)
 
     Press **Ctrl + `** (backtick) to toggle the integrated terminal panel.
-
-    ![Terminal opened via keyboard shortcut](/images/core-platform-setup/vs-code-server-7.jpeg)
   </Step>
 </Steps>
 
@@ -82,22 +48,16 @@ You need a terminal to run space commands like `openclaw config`, `openclaw star
     ### Open the Application Menu
 
     Click the hamburger menu icon (three horizontal lines) in the top-left corner.
-
-    ![Click Application Menu](/images/core-platform-setup/vs-code-server-8.jpeg)
   </Step>
   <Step>
     ### Select New Terminal
 
     Navigate to **Terminal** and click **New Terminal**.
-
-    ![Click New Terminal](/images/core-platform-setup/vs-code-server-9.jpeg)
   </Step>
   <Step>
     ### Start Typing Commands
 
     The terminal panel appears at the bottom. Click inside it and start running commands.
-
-    ![Terminal ready for input](/images/core-platform-setup/vs-code-server-10.jpeg)
   </Step>
 </Steps>
 

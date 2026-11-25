@@ -1,0 +1,36 @@
+---
+title: OAuth
+description: Sign a space's agent in with your Claude or ChatGPT subscription instead of an API key.
+icon: Plug2
+---
+
+import { Cards, Card } from "@/components/card";
+
+<Lead>
+  OAuth lets a space's agent use a subscription you already have, with no API key.
+  Open the space's **Setup › Models** page and choose **Connect** on the
+  subscription's row under **OAUTH SUBSCRIPTIONS**.
+</Lead>
+
+| Row | Subscription | Agents that can use it |
+|---|---|---|
+| **Claude** | Claude | Claude Code, OpenClaw |
+| **OpenAI** | ChatGPT (Codex) | Codex, OpenClaw |
+| **Google AI** | | Not supported by these agents |
+
+A row an agent can't use shows **NOT SUPPORTED**.
+
+<Cards>
+	<Card
+		icon={<BrandIcon name="claude-code" size={20} />}
+		title="Connect Claude"
+		description="Sign the agent in with your Claude subscription."
+		href="/docs/cloud/setup/models/oauth/claude"
+	/>
+	<Card
+		icon={<BrandIcon name="codex" size={20} />}
+		title="Connect ChatGPT"
+		description="Sign the agent in with your ChatGPT subscription (Codex)."
+		href="/docs/cloud/setup/models/oauth/codex"
+	/>
+</Cards>

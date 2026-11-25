@@ -1,0 +1,41 @@
+---
+title: Connect Codex
+description: Sign a space's agent in with your ChatGPT subscription (Codex), with no API key.
+icon: Codex
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+<Lead>
+  Connect your ChatGPT subscription to a Codex or OpenClaw space. XO Cloud shows a
+  one-time code; you enter it on ChatGPT's sign-in page.
+</Lead>
+
+## What you need
+
+- A space whose status reads **Ready** (see [Your space](/docs/cloud/your-space)).
+- A ChatGPT account with a subscription that includes Codex.
+
+<Callout type="warn">
+  Device code login must be enabled in your ChatGPT security settings. The dialog
+  links to them.
+</Callout>
+
+## Connect your ChatGPT subscription
+
+1. Open the space's **Setup** page and choose **Models**.
+2. Under **OAUTH SUBSCRIPTIONS**, choose **Connect** on the **OpenAI** row.
+
+   ![Setup › Models in a Codex space with the OpenAI row and its Connect highlighted](/images/cloud/setup-models-openai.png)
+
+3. The **Connect ChatGPT subscription** dialog opens with a one-time code under
+   **2 Enter this one-time code**. The copy button next to it copies it.
+4. Under **1 Open ChatGPT sign-in**, choose **Open ChatGPT sign-in**. OpenAI's
+   device sign-in page opens in a new tab.
+5. Sign in with the account that has your subscription and enter the one-time code.
+
+   ![The Connect ChatGPT subscription dialog with the one-time code highlighted, waiting for you to enter it](/images/cloud/setup-codex-connect.png)
+
+While you sign in, the dialog reads "Waiting for you to enter the code…". When the
+subscription is connected, the **OpenAI** row shows a green check mark. Close the
+dialog with **Close**.

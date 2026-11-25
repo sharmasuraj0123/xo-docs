@@ -1,14 +1,23 @@
 {
-  "title": "Cloud Space (Managed)",
+  "title": "Managed Cloud",
   "icon": "Cloud",
   "pages": [
-    "overview",
+    "index",
+    "---Get started---",
     "create-account",
-    "choose-an-agent",
-    "launch-first-agent",
-    "---Manage Infrastructure---",
-    "manage-space",
+    "create-a-space",
+    "dashboard",
+    "---Your space---",
+    "your-space",
+    "apps",
     "vs-code-server",
-    "share-project"
+    "work",
+    "setup",
+    "secrets",
+    "usage",
+    "---Teams and account---",
+    "share-project",
+    "organizations",
+    "billing"
   ]
 }

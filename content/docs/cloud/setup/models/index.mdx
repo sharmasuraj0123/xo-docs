@@ -1,0 +1,36 @@
+---
+title: Connect a Model Provider
+description: Connect your agent's model provider with a subscription you already have or an API key.
+icon: Cpu
+---
+
+import { Cards, Card } from "@/components/card";
+
+<Lead>
+  A space's agent needs a model to think with. Open the space's **Setup** page and
+  choose **Models**: connect a subscription you already pay for, or paste an API key.
+</Lead>
+
+- **OAUTH SUBSCRIPTIONS**: sign in with your **Claude** or **ChatGPT** subscription.
+  Best if you already pay for one of those plans.
+- **API KEYS**: paste a key from a provider such as **Anthropic**, **OpenAI** or
+  **OpenRouter**. Best for pay-as-you-go access.
+
+Which options appear depends on the space's agent; an option the agent can't use
+shows **NOT SUPPORTED**. See the [Agent Compatibility Guide](/docs/cloud/setup/compatibility).
+Credentials live in the space's workspace, not on the XO platform.
+
+<Cards>
+	<Card
+		icon={<span className="icon-[ph--plug-fill] size-4.5 text-green-400" />}
+		title="OAuth"
+		description="Sign in with your Claude or ChatGPT subscription, no API key needed."
+		href="/docs/cloud/setup/models/oauth"
+	/>
+	<Card
+		icon={<span className="icon-[ph--key-fill] size-4.5 text-green-400" />}
+		title="API Key"
+		description="Paste a key from Anthropic, OpenAI, OpenRouter or another listed provider."
+		href="/docs/cloud/setup/models/api-key"
+	/>
+</Cards>

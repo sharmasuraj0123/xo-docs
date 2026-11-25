@@ -1,0 +1,41 @@
+---
+title: Google Drive
+description: Connect Google Drive so your agent can read your files, docs and sheets.
+icon: GoogleDrive
+---
+
+<Lead>
+  Connect Google to a space so its agent can read your files. You name the connection,
+  sign in to Google in a new browser tab, and paste back the address the browser lands on.
+  Credentials live in the space's workspace, not on the XO platform.
+</Lead>
+
+## What you need
+
+- A space whose status reads **Ready** (see [Your space](/docs/cloud/your-space)).
+- A Google account with access to the files you want the agent to read.
+
+## Connect Google Drive
+
+1. Open the space's **Setup** page and choose **Data**. Under **DATA SOURCES**,
+   choose **Connect** on the **Google Drive** row.
+
+   ![Setup › Data in a space with nothing connected yet, the Google Drive row and its Connect highlighted](/images/cloud/setup-data-gdrive.png)
+
+2. The **Connect Google Drive** dialog asks for a **Connection name**: the name you'll use for
+   this account in the workspace, in lowercase letters, numbers and hyphens (for
+   example `team-drive`). Choose **Continue**.
+
+   ![The Connect Google Drive dialog with the connection name team-drive and Continue highlighted](/images/cloud/setup-gdrive-name.png)
+
+3. Google's sign-in page opens in a new tab. Sign in and allow access. If the tab
+   didn't open, choose **Re-open sign-in**.
+4. When you're done, the browser lands on a new address, even if that page doesn't
+   load. Copy the full address from the address bar.
+5. Back in XO Cloud, paste it into **Verification code or URL** (the code alone also
+   works) and choose **Finish**.
+
+   ![The second step of Connect Google Drive: an address pasted into Verification code or URL, and Finish, highlighted](/images/cloud/setup-gdrive-code.png)
+
+When the account is connected, the **Google Drive** row shows **Connected** and
+**Disconnect**.

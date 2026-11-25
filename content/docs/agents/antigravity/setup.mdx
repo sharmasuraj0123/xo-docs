@@ -1,13 +1,13 @@
 ---
 title: Antigravity Quickstart
-description: Create an Antigravity project on XO and start a coding session in your terminal.
+description: Create an Antigravity space on XO and start a coding session in your terminal.
 icon: Rocket
 ---
 
 import { Step, Steps } from "fumadocs-ui/components/steps";
 import { Callout } from "fumadocs-ui/components/callout";
 
-Set up a Google Antigravity agent on XO: create a project from the template, open the browser-based editor, and run `antigravity` to start a session.
+Set up a Google Antigravity agent on XO: create a space, open the browser-based editor, and run `antigravity` to start a session.
 
 ## What You'll Need
 
@@ -33,29 +33,37 @@ Set up a Google Antigravity agent on XO: create a project from the template, ope
   <Step>
     ### Choose Antigravity
     Go to [app.xo.builders](https://app.xo.builders/) and choose **New Space** in the sidebar.
-    On the **Antigravity** card (powered by Google), choose **Create Space**. See
+    On the **Antigravity** card (Powered by Google), choose **Create Space**. See
     [Create a space](/docs/cloud/create-a-space) for the whole flow.
+
+    ![New Space with the Antigravity card highlighted: Powered by Google, with Create Space](/images/cloud/agent-antigravity-card.png)
   </Step>
   <Step>
     ### Fill In the Space
 
-    Enter a unique **Space Name**, then click **Create Space**.
+    **Create New Antigravity Space** asks only for a unique **Space Name**, for example `orbit-gravity`, and the **Volume Size (GB)**, the space's disk, from 20 (the default) to 100. Choose **Create Space**.
+
+    ![The Create New Antigravity Space form highlighted: Space Name orbit-gravity, Volume Size 20, Cancel and Create Space](/images/cloud/agent-antigravity-form.png)
   </Step>
   <Step>
     ### Wait for Startup
 
-    Wait until the space's status reads **Ready** and **XO SPACE API** shows **Up**.
+    XO Cloud opens the new space's page. Wait until its card reads **Ready** and **Status & Metadata** shows **XO SPACE API** **Up**.
+
+    ![The orbit-gravity space's page with its card highlighted: antigravity, Stops in 29d, Ready and Stop](/images/cloud/agent-antigravity-ready.png)
 
     <Callout type="info">
-      Don't proceed until the space is fully running.
+      Don't go on until the space is ready.
     </Callout>
   </Step>
   <Step>
     ### Open Your Editor
 
-    Open the **Launch** tab. Under **Agent Connections**, click **code-server** to open the browser-based VS Code in a new tab, then click **Yes, I trust the authors**.
+    In the app grid on the right, choose **Web VS Code**: VS Code opens on the space's files in a new browser tab. The first time, it opens in **Restricted Mode**: choose **Manage** in its banner, then **Trust**.
 
-    Full walkthrough: [Access Your Machine via VS Code Server](/docs/cloud/vs-code-server).
+    ![The orbit-gravity app grid with Web VS Code highlighted; Antigravity IDE is next to it](/images/cloud/agent-antigravity-apps.png)
+
+    Full walkthrough: [Browser VS Code](/docs/cloud/vs-code-server).
   </Step>
   <Step>
     ### Start a Session

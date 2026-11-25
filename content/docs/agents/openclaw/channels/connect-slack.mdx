@@ -26,8 +26,6 @@ import { VideoEmbed } from "@/components/video-embed";
 
     Go to [api.slack.com/apps](https://api.slack.com/apps) and click **Create New App**. Choose **From a manifest**, then select your target space.
 
-    ![Create New App](/images/create-app.png)
-
     Paste the following manifest:
 
     ```json
@@ -99,8 +97,6 @@ import { VideoEmbed } from "@/components/video-embed";
     }
     ```
 
-    ![App manifest](/images/manifest.png)
-
     Click **Next**, then **Create**. Slack validates the manifest and creates the app.
 
   </Step>
@@ -109,15 +105,9 @@ import { VideoEmbed } from "@/components/video-embed";
 
     In the left sidebar, go to **OAuth & Permissions**. Click **Install to \<your space\>**.
 
-    ![Install to space](/images/install-to-openclaw.png)
-
     Approve the permissions.
 
-    ![Approve permissions](/images/allow-install.png)
-
     Copy the **Bot User OAuth Token** — it starts with `xoxb-`.
-
-    ![Bot User OAuth Token](/images/oauthtoken.png)
 
   </Step>
   <Step>
@@ -130,17 +120,17 @@ import { VideoEmbed } from "@/components/video-embed";
     | **Token Name** | `openclaw-socket-token` (or any name) |
     | **Scope** | `connections:write` |
 
-    ![Select connections:write scope](/images/select-connectionswrite.png)
-
     Click **Generate** and copy the **App-Level Token** — it starts with `xapp-`.
-
-    ![App-level token](/images/app-token.png)
 
   </Step>
   <Step>
     ### Connect in OpenClaw
 
-    [Open your space IDE](/docs/cloud/your-space#opening-your-ide) (Launch → Agent Connections → code-server), [open a terminal](/docs/cloud/vs-code-server#open-a-terminal), and run:
+    The quickest way is your space's **Setup** page: choose **Channels**, then the **Slack** row, paste both tokens and choose **Save**, then restart with **OpenClaw Restart**. See [Configure OpenClaw Channels](/docs/cloud/setup/channels).
+
+    Or use the OpenClaw config wizard in a terminal:
+
+    On your space's page, choose **Web VS Code** in the app grid (see [Browser VS Code](/docs/cloud/vs-code-server)), [open a terminal](/docs/cloud/vs-code-server#open-a-terminal), and run:
 
     ```bash
     openclaw config
@@ -152,8 +142,6 @@ import { VideoEmbed } from "@/components/video-embed";
     |--------|-------|
     | **Bot Token** | `xoxb-...` |
     | **App-Level Token** | `xapp-...` |
-
-    ![OpenClaw config terminal](/images/terminal.png)
 
   </Step>
 </Steps>

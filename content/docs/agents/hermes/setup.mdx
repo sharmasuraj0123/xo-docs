@@ -1,6 +1,6 @@
 ---
 title: Hermes Quickstart
-description: Create and configure a new Hermes project agent on XO.
+description: Create and configure a new Hermes agent space on XO.
 icon: Rocket
 ---
 
@@ -8,7 +8,7 @@ import { VideoEmbed } from '@/components/video-embed';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { Callout } from 'fumadocs-ui/components/callout';
 
-Set up a Hermes agent on XO: name your project, supply your model and channel credentials, and open the dashboard to monitor your agent.
+Set up a Hermes agent on XO: name your space, add your model and channel credentials, and open the Hermes dashboard to monitor your agent.
 
 ## Setup Walkthrough
 
@@ -17,10 +17,10 @@ Set up a Hermes agent on XO: name your project, supply your model and channel cr
 ## What You'll Need
 
 - An [XO account](https://app.xo.builders)
-- *(Preferred)* a **model provider** — an Anthropic API key, an OpenAI API key, or both
-- *(Preferred)* a **channel** — a Telegram bot token (from [@BotFather](https://t.me/botfather)), a WhatsApp QR scan, or a Slack app token + bot token
+- *(Recommended)* a **model provider:** an Anthropic, OpenAI or OpenRouter API key
+- *(Recommended)* a **channel:** a Telegram bot token (from [@BotFather](https://t.me/botfather)), or a Slack bot token and app token
 
-Both are optional at project creation — you can add them later from the **Setup** menu — but configuring at least one of each up front is recommended.
+Both are optional when you create the space: you can add them later on the space's **Setup** page. Adding at least one of each up front is recommended.
 
 ## Deploy Hermes
 
@@ -28,83 +28,60 @@ Both are optional at project creation — you can add them later from the **Setu
   <Step>
     ### Choose Hermes Agent
     Go to [app.xo.builders](https://app.xo.builders/) and choose **New Space** in the sidebar.
-    On the **Hermes Agent** card (powered by Hermes), choose **Create Space**. See
+    On the **Hermes Agent** card (Powered by Hermes), choose **Create Space**. See
     [Create a space](/docs/cloud/create-a-space) for the whole flow.
+
+    ![New Space with the Hermes Agent card highlighted: Powered by Hermes, with Create Space](/images/cloud/agent-hermes-card.png)
   </Step>
   <Step>
     ### Fill In the Space
-    Fill in the project creation form:
+    Fill in **Create New Hermes Agent Space**:
 
     | Field | Value |
     |---|---|
-    | **Space Name** | A unique name — e.g. `xo-hermes` (note this down, you'll need it for the dashboard URL) |
-    | **Anthropic API Key** | Your Anthropic API key |
-    | **OpenAI API Key** | Your OpenAI API key |
-    | **Telegram Bot Token** | Your token from @BotFather |
-    | **WhatsApp** | Scan the QR code shown in the form |
-    | **Slack** | Your Slack app token and bot token |
-    | **Volume Size** | Default 2 GB is fine for most setups |
+    | **Space Name** | A unique name, e.g. `relay-hermes`. Note it down: you sign in to the Hermes dashboard with it. Up to 32 letters, numbers and hyphens, starting with a letter or number. |
+    | **AI Provider** | **Add Anthropic**, **Add OpenAI** or **Add OpenRouter**, then paste that provider's **API Key**. |
+    | **Notification Channel** | **Add Telegram** (a **Bot Token**) or **Add Slack** (a **Bot Token** and an **App Token**). |
+    | **Volume Size (GB)** | The space's disk, from 20 (the default) to 100. |
 
-    All fields are optional — you can create the project without a provider or channel and add them later from the **Setup** menu. Configuring at least one of each up front is recommended.
+    The form starts with no provider or channel. Each one you add needs its key or token; **Remove** takes it off the form again.
 
-    Select **Anthropic** as the AI provider and paste your API key.
+    ![The Create New Hermes Agent Space form highlighted: Space Name relay-hermes, Anthropic and Telegram added with an API Key and a Bot Token filled in, Add OpenAI, Add OpenRouter, Add Slack, Volume Size 20](/images/cloud/agent-hermes-form.png)
 
-    ![Select Anthropic and enter API key](/images/hermes-setup-05-anthropic.webp)
-
-    Add **Telegram** as a notification channel and paste your Bot Token.
-
-    ![Add Telegram and enter Bot Token](/images/hermes-setup-06-telegram.webp)
-
-    Click **Create Space**.
+    Choose **Create Space**.
   </Step>
   <Step>
     ### Wait for Startup
-    Your space takes **5–6 minutes** to provision. The Hermes environment is being set up in the background.
+    XO Cloud opens the new space's page. The space is ready when its card reads **Ready** and **Status & Metadata** shows **XO SPACE API** **Up**.
 
-    <Callout type="info">
-      The agent is ready when **Hermes Dashboard** and **Gateway** appear in the Space Details sidebar.
-    </Callout>
+    ![The relay-hermes space's page with its card highlighted: hermes, Stops in 29d, Ready and Stop](/images/cloud/agent-hermes-ready.png)
   </Step>
   <Step>
-    ### Verify Setup
-    Open the **Setup** menu and select **Overview**.
+    ### Check the Setup
+    Open the space's **Setup** page: the blue round icon in the dock at the bottom of the panel on the right (see [Your space](/docs/cloud/your-space#the-spaces-pages)). **Setup › Overview** has three cards, **Models**, **Data** and **Channels**, each with **Open**.
 
-    ![Open Setup → Overview](/images/hermes-setup-08-overview.jpeg)
+    ![Setup › Overview in relay-hermes, highlighted: the Models, Data and Channels cards, each with Open](/images/cloud/agent-hermes-setup.png)
 
-    Confirm your **Anthropic** provider is connected and your API key is valid.
+    Open **Models**: the provider you added reads **Connected**. If you skipped it, add a key under **API KEYS** (see [Add an API key](/docs/cloud/setup/models/api-key)) or connect a subscription under **OAUTH SUBSCRIPTIONS**.
 
-    ![Connect Anthropic and verify API key](/images/hermes-setup-09-connect-anthropic.jpeg)
+    ![Setup › Models in relay-hermes with the Anthropic row highlighted: Connected](/images/cloud/agent-hermes-models.png)
 
-    You can also adjust your agent's **Data** sources and **Channels** from the Setup menu. These are optional — the defaults from project creation will work.
-  </Step>
-  <Step>
-    ### Set Up a Project Directory
-    Open the **Work** menu and create a new project directory for your agent's work — e.g. `marketing`.
-
-    ![Open Work menu](/images/hermes-setup-10-work-menu.jpeg)
-
-    ![Create a project directory](/images/hermes-setup-11-project-dir.webp)
+    **Channels** works the same way: the channel you added reads **Connected**, and you can add Telegram or Slack there later. See [Setup](/docs/cloud/setup).
   </Step>
   <Step>
     ### Open the Hermes Dashboard
-    Open the **Launch** tab and select **Hermes Dashboard**. The dashboard opens in a new tab.
+    Go back to the space's page (choose the space under **My Spaces** in the sidebar). In the app grid, choose **Hermes Dashboard**. The dashboard opens in a new browser tab.
 
-    ![Open the Launch tab](/images/hermes-setup-12-launch.jpeg)
+    ![The relay-hermes app grid with Hermes Dashboard highlighted, next to Hermes Restart](/images/cloud/agent-hermes-dashboard.png)
 
-    You'll land on a sign-in page for the dashboard.
+    You'll land on the dashboard's sign-in page. Sign in with your **space name** as both the username and the password. The Hermes Agent dashboard opens.
 
-    ![Hermes Dashboard sign-in](/images/hermes-setup-13-signin.png)
-
-    Sign in with your **project name** as both the username and password.
-
-    You'll land on the Hermes Agent dashboard.
-
-    ![Hermes Agent dashboard](/images/hermes-setup-14-dashboard.png)
-
-    Your agent is now live. Send it a message from your connected messaging app (Telegram, WhatsApp, or Slack), and monitor active conversations from the dashboard.
+    Your agent is now live. Send it a message from your connected messaging app (Telegram or Slack), and monitor active conversations from the dashboard.
   </Step>
 </Steps>
 
-<Callout type="info">
-  The Hermes Dashboard URL follows the pattern `hermes-dashboard--<project-name>--<space-user>.space.helloxo.nl`. The project name in the URL must match the name you set in Step 2.
-</Callout>
+## Restart Hermes
+
+To restart the Hermes gateway, for example when your agent stops answering, choose **Hermes Restart** in the space's app grid. XO Cloud confirms with **Hermes gateway restarted**.
+
+![The relay-hermes app grid with Hermes Restart highlighted, and the message Hermes gateway restarted](/images/cloud/agent-hermes-restart.png)

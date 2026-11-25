@@ -8,7 +8,7 @@ import { VideoEmbed } from '@/components/video-embed';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { Callout } from 'fumadocs-ui/components/callout';
 
-OpenClaw is an AI agent gateway you deploy on XO. Connect it to Telegram, give it your Anthropic API key, and your agent is live — no infrastructure to manage.
+OpenClaw is an AI agent gateway you deploy on XO. Create a space with a model provider and a messaging channel, and your agent is live, with no infrastructure to manage.
 
 ## Setup Walkthrough
 
@@ -17,8 +17,8 @@ OpenClaw is an AI agent gateway you deploy on XO. Connect it to Telegram, give i
 ## What You'll Need
 
 - An [XO account](https://app.xo.builders)
-- **At least one model provider** — an Anthropic API key, an OpenAI API key, or both
-- **At least one channel** — a Telegram bot token (from [@BotFather](https://t.me/botfather)), a WhatsApp QR scan, or a Slack app token + bot token
+- **At least one model provider:** an Anthropic, OpenAI or OpenRouter API key
+- **At least one channel:** a Telegram bot token (from [@BotFather](https://t.me/botfather)), a WhatsApp QR scan, or a Slack bot token and app token
 
 Any combination of providers and channels works.
 
@@ -28,83 +28,70 @@ Any combination of providers and channels works.
   <Step>
     ### Choose AI Executive Team
     Go to [app.xo.builders](https://app.xo.builders/) and choose **New Space** in the sidebar.
-    On the **AI Executive Team** card (powered by OpenClaw), choose **Create Space**. See
+    On the **AI Executive Team** card (Powered by OpenClaw), choose **Create Space**. See
     [Create a space](/docs/cloud/create-a-space) for the whole flow.
+
+    ![New Space with the AI Executive Team card highlighted: Powered by OpenClaw, with Create Space](/images/cloud/agent-openclaw-card.png)
   </Step>
   <Step>
     ### Fill In the Space
-    Fill in the project creation form:
+    The form, **Create New Open Claw Space**, starts with **Anthropic** under **AI Provider** and **Telegram** under **Notification Channel**:
 
     | Field | Value |
     |---|---|
-    | **Space Name** | A unique name — e.g. `xo-openclaw` (note this down, you'll need it later) |
-    | **Anthropic API Key** | Your Anthropic API key |
-    | **OpenAI API Key** | Your OpenAI API key |
-    | **Telegram Bot Token** | Your token from @BotFather |
-    | **WhatsApp** | Scan the QR code shown in the form |
-    | **Slack** | Your Slack app token and bot token |
-    | **Volume Size** | Default 2 GB is fine for most setups |
+    | **Space Name** | A unique name, e.g. `beacon-desk`. Note it down: it is your Gateway Token later. Up to 32 letters, numbers and hyphens, starting with a letter or number. |
+    | **AI Provider** | **Anthropic** › **API Key**. **Add OpenAI** and **Add OpenRouter** add those providers, each with its own **API Key**. |
+    | **Notification Channel** | **Telegram** › **Bot Token**. **Add WhatsApp** shows a QR code to scan with WhatsApp; **Add Slack** asks for a **Bot Token** and an **App Token**. |
+    | **Volume Size (GB)** | The space's disk, from 20 (the default) to 100. |
 
-    **At least one provider (Anthropic or OpenAI) and at least one channel (Telegram, WhatsApp, or Slack) are required.**
+    **Remove** takes a provider or channel off the form. At least one provider and one channel are required, and each one you add needs its key or token.
 
-    Click **Create Space**.
+    ![The Create New Open Claw Space form highlighted: Space Name beacon-desk, an Anthropic API Key and a Telegram Bot Token filled in, Add OpenAI, Add OpenRouter, Add WhatsApp, Add Slack, Volume Size 20](/images/cloud/agent-openclaw-form.png)
+
+    Choose **Create Space**.
   </Step>
   <Step>
     ### Wait for Startup
-    Your space takes about **5–6 minutes** to provision.
+    XO Cloud opens the new space's page. The space is ready when its card reads **Ready** and **Status & Metadata** shows **XO SPACE API** **Up**. **Machine Logs** lists what the machine did as it started.
 
-    <Callout type="info">
-      The agent is ready when the **OpenClaw Gateway** status shows **Up** in the Space Details sidebar.
-    </Callout>
+    ![The beacon-desk space's page with its card highlighted: openclaw, Stops in 29d, Ready and Stop](/images/cloud/agent-openclaw-ready.png)
   </Step>
   <Step>
-    ### Verify Setup
-    Open the **Overview** tab and review the setup checklist. Confirm **Model connected** and save your Anthropic API key from the project page if it isn't already filled in.
+    ### Check the Setup
+    Open the space's **Setup** page: the blue round icon in the dock at the bottom of the panel on the right (see [Your space](/docs/cloud/your-space#the-spaces-pages)).
 
-    ![Overview setup checklist](/images/openclaw-setup-05-overview-checklist.jpeg)
+    In **Setup › Models**, the provider you added reads **Connected**.
 
-    You can also adjust your agent's **Data** sources, **Channels**, and **Secrets** from the same top-nav. These are optional — the defaults from project creation will work.
-  </Step>
-  <Step>
-    ### Set Up a Project Directory
-    Open the **Projects** tab and create a new project directory for your agent's work — e.g. `marketing`.
+    ![Setup › Models in beacon-desk with the Anthropic row highlighted: Connected](/images/cloud/agent-openclaw-models.png)
 
-    ![Create a project directory](/images/openclaw-setup-06-project-dir.webp)
+    In **Setup › Channels**, the channel you added reads **Connected**.
+
+    ![Setup › Channels in beacon-desk with the Telegram row highlighted: Connected](/images/cloud/agent-openclaw-channels.png)
+
+    You can add or change providers, data sources and channels on these pages later. See [Setup](/docs/cloud/setup).
   </Step>
   <Step>
     ### Connect Codex (Optional)
-    Prefer to use Codex via your ChatGPT subscription instead of an Anthropic API key? Open **Setup → Models** and click **Connect ChatGPT** to link your account via OAuth.
-
-    <Callout type="warn">
-      OAuth is only available **after provisioning is complete**. Wait for the space to finish starting up before clicking Connect ChatGPT.
-    </Callout>
-
-    See [Connect Codex](/docs/cloud/setup/models/oauth/codex) for the full OAuth walkthrough.
+    To use Codex through your ChatGPT subscription instead of an API key, choose **Connect** on the **OpenAI** row under **OAUTH SUBSCRIPTIONS** in **Setup › Models**. See [Connect Codex](/docs/cloud/setup/models/oauth/codex) for the whole flow.
   </Step>
   <Step>
     ### Open the OpenClaw Gateway
-    Open the **Launch** tab and select **OpenClaw Gateway**. This opens the OpenClaw Dashboard in a new tab.
+    Go back to the space's page (choose the space under **My Spaces** in the sidebar). In the app grid, choose **OpenClaw Gateway**. The OpenClaw dashboard opens in a new browser tab.
 
-    ![Click OpenClaw Gateway in the Launch tab](/images/openclaw-setup-07-gateway.jpeg)
+    ![The beacon-desk app grid with OpenClaw Gateway highlighted](/images/cloud/agent-openclaw-gateway.png)
   </Step>
   <Step>
     ### Connect to the Gateway
-    In the **Gateway Token** field, enter the exact project name you used in Step 2 (e.g. `xo-openclaw`), then click **Connect**. The status indicator turns **green (OK)** when connected.
-
-    ![Enter Gateway Token and click Connect](/images/openclaw-setup-08-token-connect.webp)
+    In the OpenClaw dashboard's **Gateway Token** field, enter your space name exactly as you typed it in step 2 (e.g. `beacon-desk`), then choose **Connect**. The status indicator turns **green (OK)** when connected.
   </Step>
   <Step>
     ### Test Your Agent
-    Navigate to the **Chat** tab in the sidebar. Send a message — try `hello`.
-
-    ![Test your agent in chat](/images/openclaw-setup-09-chat.jpeg)
-
-    Your agent responds. OpenClaw is live.
+    Go to the **Chat** tab in the OpenClaw dashboard's sidebar and send a message, for example `hello`. Your agent answers: OpenClaw is live. You can also message it on the channel you connected.
   </Step>
 </Steps>
 
 <Callout type="warn">
-  The Gateway Token must exactly match your project name from Step 2. A mismatch will prevent the dashboard from connecting.
+  The Gateway Token must exactly match your space name from step 2. A mismatch will prevent the dashboard from connecting.
 </Callout>
 
 ## Troubleshooting
@@ -113,4 +100,4 @@ Running into issues? Check the [Troubleshooting](/docs/troubleshooting/agents/op
 
 ## Next Steps
 
-Your agent is live — now protect its state. Set up [Backup & Restore](/docs/agents/openclaw/skills/backup-restore) to encrypt and version your agent folder with a single conversation.
+Your agent is live. Now protect its state: set up [Backup & Restore](/docs/agents/openclaw/skills/backup-restore) to encrypt and version your agent folder with a single conversation.

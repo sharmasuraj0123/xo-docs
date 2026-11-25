@@ -13,6 +13,10 @@ import { VideoEmbed } from "@/components/video-embed";
 	title="Switch OpenClaw to OpenAI Codex"
 />
 
+<Callout type="info">
+  You can also connect your ChatGPT subscription without a terminal: on the space's **Setup** page, choose **Models**, then **Connect** on the **OpenAI** row under **OAUTH SUBSCRIPTIONS**. See [Connect Codex](/docs/cloud/setup/models/oauth/codex).
+</Callout>
+
 ## What You'll Need
 
 - A [deployed OpenClaw agent](/docs/agents/openclaw)
@@ -22,31 +26,27 @@ import { VideoEmbed } from "@/components/video-embed";
 
 <Steps>
   <Step>
-    ### Open Your Project
+    ### Open Your Space
 
-    Go to [app.xo.builders](https://app.xo.builders) and select your OpenClaw project from the sidebar.
+    Go to [app.xo.builders](https://app.xo.builders) and choose your OpenClaw space under **My Spaces** in the sidebar.
 
-    ![Select your OpenClaw project on the dashboard](/images/codex-select-project-1.jpeg)
+    ![The sidebar's My Spaces with the beacon-desk space highlighted, its page open](/images/cloud/agent-openclaw-my-spaces.png)
 
   </Step>
   <Step>
-    ### Open Your Space
+    ### Open a Terminal
 
-    [Open your space IDE](/docs/cloud/your-space#opening-your-ide) (Launch → Agent Connections → code-server), then [open a terminal](/docs/cloud/vs-code-server#open-a-terminal) and run:
+    On your space's page, choose **Web VS Code** in the app grid (see [Browser VS Code](/docs/cloud/vs-code-server)), then [open a terminal](/docs/cloud/vs-code-server#open-a-terminal) and run:
 
     ```bash
     openclaw config
     ```
-
-    ![Running openclaw configure in the terminal](/images/codex-openclaw-configure-1.png)
 
   </Step>
   <Step>
     ### Select Gateway Location
 
     When prompted with **"Where will the Gateway run?"**, select **Local (this machine)**.
-
-    ![Selecting Local gateway location](/images/codex-select-local-2.png)
 
   </Step>
   <Step>
@@ -56,15 +56,11 @@ import { VideoEmbed } from "@/components/video-embed";
 
     - **Model** (pick provider + credentials)
 
-    ![Selecting the Model section to configure](/images/codex-select-model-3.png)
-
   </Step>
   <Step>
     ### Choose OpenAI Codex
 
     In the **Model/auth provider** list, scroll down and select **OpenAI Codex**.
-
-    ![Selecting OpenAI Codex as the model provider](/images/codex-select-openai-codex-4.png)
 
   </Step>
   <Step>
@@ -72,15 +68,9 @@ import { VideoEmbed } from "@/components/video-embed";
 
     The terminal generates a unique OAuth URL and waits for a redirect URI. Copy the URL and open it in your local browser.
 
-    ![OAuth URL ready in the terminal](/images/codex-auth-url-5.png)
-
     Sign in to OpenAI with your email, Google, Apple, or Microsoft account.
 
-    ![OpenAI sign-in page](/images/codex-open-auth-browser-6.png)
-
     Review the **"Sign in to Codex with ChatGPT"** permissions screen and click **Continue**.
-
-    ![Codex permissions screen — click Continue](/images/codex-sign-in-7.png)
 
   </Step>
   <Step>
@@ -88,11 +78,7 @@ import { VideoEmbed } from "@/components/video-embed";
 
     After authentication, the browser redirects to a `localhost` URL. The page itself won't load — that's expected. Copy the full URL from the address bar.
 
-    ![Copy the localhost redirect URI from the address bar](/images/codex-copy-uri-9.png)
-
     Switch back to your terminal and paste the redirect URI when prompted.
-
-    ![Pasting the redirect URI in the terminal](/images/codex-paste-uri-10.png)
 
   </Step>
   <Step>
@@ -100,15 +86,11 @@ import { VideoEmbed } from "@/components/video-embed";
 
     The wizard shows the available Codex models. Use arrow keys and spacebar to pick the models you want in the `/model` picker (e.g., **gpt-5.3-codex**, **gpt-5.4**).
 
-    ![Selecting models in the multi-select picker](/images/codex-select-model-11.png)
-
   </Step>
   <Step>
     ### Finish the Wizard
 
     Back at the section menu, scroll to **Continue (Done)** and press Enter. The config wizard finalizes and your agent now uses OpenAI Codex.
-
-    ![Selecting Continue to finish configuration](/images/codex-continue-12.png)
 
   </Step>
 </Steps>

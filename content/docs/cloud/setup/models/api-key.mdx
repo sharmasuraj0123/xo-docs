@@ -1,51 +1,43 @@
 ---
 title: API Key
-description: Connect Anthropic, OpenAI, or OpenRouter to your XO project via an API key.
+description: Connect a model provider to a space with an API key from Anthropic, OpenAI, OpenRouter or another listed provider.
 icon: Key
 ---
 
-import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { Callout } from 'fumadocs-ui/components/callout';
 
-Paste an API key from any supported provider — OpenRouter, Anthropic, or OpenAI. Credentials live in your project's space, not on the XO platform.
+<Lead>
+  Paste an API key on the space's **Setup › Models** page, under **API KEYS**. The
+  key is stored in the space's workspace, not on the XO platform.
+</Lead>
 
 <Callout type="info">
-  Prefer subscription auth? See [OAuth](/docs/cloud/setup/models/oauth) to connect with your Claude or ChatGPT account instead.
+  Prefer to use a subscription? See [OAuth](/docs/cloud/setup/models/oauth) to sign in
+  with your Claude or ChatGPT account instead.
 </Callout>
 
-## What You'll Need
+## What you need
 
-- An XO project that has finished provisioning
-- An API key from your model provider:
-  - **OpenRouter** — [openrouter.ai/keys](https://openrouter.ai/keys) (single key for 100+ models — Anthropic, OpenAI, Google, DeepSeek, and more)
-  - **Anthropic** — [console.anthropic.com](https://console.anthropic.com/settings/keys)
-  - **OpenAI** — [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+- A space whose status reads **Ready** (see [Your space](/docs/cloud/your-space)).
+- An API key from one of the providers listed for the space's agent, for example:
+  - **Anthropic**: [console.anthropic.com](https://console.anthropic.com/settings/keys)
+  - **OpenAI**: [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+  - **OpenRouter**: [openrouter.ai/keys](https://openrouter.ai/keys), one key for
+    models from many providers
 
-## Connect via API Key
+The providers under **API KEYS** depend on the agent. A Claude Code space lists
+**OpenRouter** and **Anthropic**; a Codex space lists **OpenRouter** and **OpenAI**;
+an OpenClaw space lists **OpenRouter**, **Anthropic**, **OpenAI** and **Kimi**. Each
+shows **Not connected** until it has a key.
 
-<Steps>
-  <Step>
-    ### Open Setup → Models
-    From your project page, open the **Setup** tab and select **Models**.
+## Add a key
 
-    ![Setup → Models](/images/models-01-tab.jpeg)
-  </Step>
-  <Step>
-    ### Save Your API Key
-    Scroll to the **API Keys** section. Paste your key into the relevant provider's field (e.g. **Anthropic API Key**) and click **Save**.
+1. Open the space's **Setup** page and choose **Models**.
+2. Under **API KEYS**, choose the provider's row, for example **Anthropic**. A key
+   field opens in the row, with **Save** and **Cancel**.
+3. Paste your key. It is hidden as you paste it.
+4. Choose **Save**. XO Cloud confirms with a message such as **Anthropic key saved**.
 
-    ![Save the API key](/images/models-02-save.webp)
-  </Step>
-  <Step>
-    ### Restart the OpenClaw Gateway
-    Model changes only take effect after the Gateway restarts. Open the **Launch** tab.
+![Setup › Models in a Claude Code space with the Anthropic row open and highlighted: a key pasted, hidden, and Save](/images/cloud/setup-models-api-key.png)
 
-    ![Open the Launch tab](/images/models-03-launch.jpeg)
-
-    Click **OpenClaw Restart** to apply the new model.
-
-    ![Click OpenClaw Restart](/images/models-04-restart.jpeg)
-  </Step>
-</Steps>
-
-Your model is now connected. Send a test message to your agent to confirm it's responding with the new provider.
+Send a message to your agent to check that it answers with the new provider.

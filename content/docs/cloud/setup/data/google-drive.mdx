@@ -1,74 +1,41 @@
 ---
 title: Google Drive
-description: Connect Google Drive so your agent can read your files, docs, and sheets.
+description: Connect Google Drive so your agent can read your files, docs and sheets.
 icon: GoogleDrive
 ---
 
-import { Step, Steps } from 'fumadocs-ui/components/steps';
-import { Callout } from 'fumadocs-ui/components/callout';
+<Lead>
+  Connect Google to a space so its agent can read your files. You name the connection,
+  sign in to Google in a new browser tab, and paste back the address the browser lands on.
+  Credentials live in the space's workspace, not on the XO platform.
+</Lead>
 
-Connect a Google account to your XO project so your agent can read documents, sheets, and folders from Google Drive. Credentials live in your project's space, not on the XO platform.
+## What you need
 
-## What You'll Need
-
-- An XO project that has finished provisioning
-- A Google account with access to the files you want your agent to read
+- A space whose status reads **Ready** (see [Your space](/docs/cloud/your-space)).
+- A Google account with access to the files you want the agent to read.
 
 ## Connect Google Drive
 
-<Steps>
-  <Step>
-    ### Open the Setup Tab
-    From your project page, open the **Setup** tab in the top sub-navigation.
+1. Open the space's **Setup** page and choose **Data**. Under **DATA SOURCES**,
+   choose **Connect** on the **Google Drive** row.
 
-    ![Open the Setup tab](/images/gdrive-01-setup-tab.jpeg)
-  </Step>
-  <Step>
-    ### Select Data
-    In the Setup sidebar, select **Data**.
+   ![Setup › Data in a space with nothing connected yet, the Google Drive row and its Connect highlighted](/images/cloud/setup-data-gdrive.png)
 
-    ![Select Data from the Setup sidebar](/images/gdrive-02-data-sidebar.jpeg)
-  </Step>
-  <Step>
-    ### Click Connect Google Drive
-    On the Google Drive row, click **Connect Google Drive**.
+2. The **Connect Google Drive** dialog asks for a **Connection name**: the name you'll use for
+   this account in the workspace, in lowercase letters, numbers and hyphens (for
+   example `team-drive`). Choose **Continue**.
 
-    ![Click Connect Google Drive](/images/gdrive-03-connect.jpeg)
-  </Step>
-  <Step>
-    ### Name the Connection
-    Enter a name for the connection — e.g. `gdrive-cowork` — and click **Continue**. This is how the connection appears in your project.
+   ![The Connect Google Drive dialog with the connection name team-drive and Continue highlighted](/images/cloud/setup-gdrive-name.png)
 
-    ![Enter a name and click Continue](/images/gdrive-04-name.jpeg)
-  </Step>
-  <Step>
-    ### Choose Your Google Account
-    Pick the Google account that owns the files you want your agent to read.
+3. Google's sign-in page opens in a new tab. Sign in and allow access. If the tab
+   didn't open, choose **Re-open sign-in**.
+4. When you're done, the browser lands on a new address, even if that page doesn't
+   load. Copy the full address from the address bar.
+5. Back in XO Cloud, paste it into **Verification code or URL** (the code alone also
+   works) and choose **Finish**.
 
-    ![Choose your Google account](/images/gdrive-05-account.jpeg)
-  </Step>
-  <Step>
-    ### Grant Permissions
-    Review the requested scopes and click **Continue** to authorize XO.
+   ![The second step of Connect Google Drive: an address pasted into Verification code or URL, and Finish, highlighted](/images/cloud/setup-gdrive-code.png)
 
-    ![Grant permissions](/images/gdrive-06-permissions.jpeg)
-  </Step>
-  <Step>
-    ### Paste the Verification Code
-    After granting permissions, Google redirects to a `127.0.0.1/callback?state=...&code=...` URL. Your browser will show **"This site can't be reached"** — that's expected. The URL itself contains the auth code.
-
-    Copy the **full URL** from your browser's address bar.
-
-    ![Copy the callback URL from the address bar](/images/gdrive-08-copy-url.png)
-
-    <Callout type="info">
-      Don't worry about the connection error — XO doesn't run a local callback server. The auth code lives in the URL, not on the page.
-    </Callout>
-
-    Switch back to the XO tab, paste the URL into the verification field, and click **Finish**.
-
-    ![Paste the verification code and click Finish](/images/gdrive-07-verification.webp)
-  </Step>
-</Steps>
-
-Your Google Drive is now connected. Your agent can read from it on subsequent runs.
+When the account is connected, the **Google Drive** row shows **Connected** and
+**Disconnect**.

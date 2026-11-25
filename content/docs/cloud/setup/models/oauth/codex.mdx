@@ -1,65 +1,41 @@
 ---
 title: Connect Codex
-description: Authenticate XO agents with an OpenAI Codex subscription via OAuth.
+description: Sign a space's agent in with your ChatGPT subscription (Codex), with no API key.
 icon: Codex
 ---
 
-import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Callout } from 'fumadocs-ui/components/callout';
 
-Connect your OpenAI Codex subscription to an XO agent via OAuth — no API key required. This flow is shared across any agent that exposes a **Connect ChatGPT** button (OpenClaw, future agents).
+<Lead>
+  Connect your ChatGPT subscription to a Codex or OpenClaw space. XO Cloud shows a
+  one-time code; you enter it on ChatGPT's sign-in page.
+</Lead>
 
-## What You'll Need
+## What you need
 
-- An XO project that has finished provisioning
-- An OpenAI account with a Codex subscription
+- A space whose status reads **Ready** (see [Your space](/docs/cloud/your-space)).
+- A ChatGPT account with a subscription that includes Codex.
 
-## Connect Your Codex Account
+<Callout type="warn">
+  Device code login must be enabled in your ChatGPT security settings. The dialog
+  links to them.
+</Callout>
 
-<Steps>
-  <Step>
-    ### Open Setup → Models
-    From your project page, open the **Setup** tab in the top sub-navigation, then select **Models**.
+## Connect your ChatGPT subscription
 
-    ![Setup → Models](/images/codex-oauth-01-models.jpeg)
-  </Step>
-  <Step>
-    ### Click Connect ChatGPT
-    On the Codex model row, click **Connect ChatGPT**.
+1. Open the space's **Setup** page and choose **Models**.
+2. Under **OAUTH SUBSCRIPTIONS**, choose **Connect** on the **OpenAI** row.
 
-    ![Click Connect ChatGPT](/images/codex-oauth-02-connect-chatgpt.jpeg)
-  </Step>
-  <Step>
-    ### Open the Sign-in Page
-    In the Connect ChatGPT modal, click **Open ChatGPT sign-in**. A new browser tab opens with the OpenAI sign-in.
+   ![Setup › Models in a Codex space with the OpenAI row and its Connect highlighted](/images/cloud/setup-models-openai.png)
 
-    ![Click Open ChatGPT sign-in](/images/codex-oauth-03-open-signin.jpeg)
-  </Step>
-  <Step>
-    ### Sign In to OpenAI
-    Sign in with the account tied to your Codex subscription and complete any multi-factor authentication prompts.
+3. The **Connect ChatGPT subscription** dialog opens with a one-time code under
+   **2 Enter this one-time code**. The copy button next to it copies it.
+4. Under **1 Open ChatGPT sign-in**, choose **Open ChatGPT sign-in**. OpenAI's
+   device sign-in page opens in a new tab.
+5. Sign in with the account that has your subscription and enter the one-time code.
 
-    ![Sign in to OpenAI](/images/codex-oauth-04-signin.webp)
-  </Step>
-  <Step>
-    ### Click Try Again
-    Switch back to the XO tab and click **Try again** to generate a device verification code.
+   ![The Connect ChatGPT subscription dialog with the one-time code highlighted, waiting for you to enter it](/images/cloud/setup-codex-connect.png)
 
-    ![Click Try again](/images/codex-oauth-05-try-again.jpeg)
-  </Step>
-  <Step>
-    ### Verify the Device
-    Click **Open ChatGPT sign-in** again — this time it produces a device verification code. Switch to the OpenAI tab, paste the code into the verification field, and click **Continue**.
-
-    ![Click Open ChatGPT sign-in to get a code](/images/codex-oauth-06-generate-code.jpeg)
-
-    ![Paste the verification code and click Continue](/images/codex-oauth-07-paste-code.webp)
-  </Step>
-  <Step>
-    ### Confirm Connection
-    Once the connection is confirmed, close the setup modal.
-
-    ![Codex connected](/images/codex-oauth-08-connected.jpeg)
-  </Step>
-</Steps>
-
-Your Codex subscription is now connected. Your agent will use it for all model calls.
+While you sign in, the dialog reads "Waiting for you to enter the code…". When the
+subscription is connected, the **OpenAI** row shows a green check mark. Close the
+dialog with **Close**.

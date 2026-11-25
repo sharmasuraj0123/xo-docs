@@ -1,86 +1,64 @@
 ---
 title: Configure OpenClaw Channels
-description: Connect Telegram or Slack through XO Setup and restart the OpenClaw Gateway.
+description: Connect Telegram or Slack to an OpenClaw space in Setup, then restart the OpenClaw Gateway.
 icon: Network
 ---
 
-import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { Callout } from 'fumadocs-ui/components/callout';
 
-This guide documents the **OpenClaw-style** channel flow shown in XO Setup. It
-connects an OpenClaw agent to **Telegram** or **Slack** so your team can interact
-with it from the tools they already use.
+<Lead>
+  Connect your agent to **Telegram** or **Slack** so your team can talk to it from
+  the tools they already use. You paste the channel's tokens on the space's **Setup ›
+  Channels** page, then restart the OpenClaw Gateway.
+</Lead>
 
 <Callout type="info">
-	Using XO Cowork or another agent? Check the [Agent Compatibility Guide](/docs/cloud/setup/compatibility)
-	first. Its channel flow and restart controls may differ from the screenshots
-	below.
+  Channels are for messaging agents such as OpenClaw. Coding agents such as Claude
+  Code say "Channels not supported". See the
+  [Agent Compatibility Guide](/docs/cloud/setup/compatibility).
 </Callout>
 
-The flow is the same for both — open **Setup → Channels**, add the channel, paste your token(s), save, and restart the **OpenClaw Gateway**.
+## What you need
 
-## What You'll Need
+- A space whose status reads **Ready** (see [Your space](/docs/cloud/your-space)).
+- **For Telegram:** a bot token from [@BotFather](https://t.me/botfather).
+- **For Slack:** a Slack app with a Bot User OAuth Token (`xoxb-...`) and an
+  App-Level Token (`xapp-...`). See the
+  [Slack app deep-dive](/docs/agents/openclaw/channels/connect-slack) for creating the
+  app and finding the tokens.
 
-- An XO project that has finished provisioning
-- **For Telegram:** a bot token from [@BotFather](https://t.me/botfather)
-- **For Slack:** a Slack app with a Bot User OAuth Token (`xoxb-...`) and an App-Level Token (`xapp-...`). See the [Slack app deep-dive](/docs/agents/openclaw/channels/connect-slack) for creating the app and finding the tokens.
+## Connect a channel
 
-## Connect a Channel
+1. Open the space's **Setup** page and choose **Channels**. **Active Channels** shows
+   how many channels are connected, for example **1/2**, and **NOTIFICATION
+   CHANNELS** lists **Telegram** and **Slack** with their state.
+2. Choose the channel's row. It opens with its token fields and **Save** and
+   **Cancel**:
+   - **Telegram:** **Bot Token**.
+   - **Slack:** **Bot Token** (`xoxb-...`) and **App Token** (`xapp-...`).
+3. Paste the tokens. They are hidden as you paste them.
+4. Choose **Save**. XO Cloud confirms, for example **Slack saved**, and asks you to
+   restart.
 
-<Steps>
-  <Step>
-    ### Open Setup → Channels
-    From your project page, open the **Setup** tab and select **Channels**.
+![Setup › Channels in an OpenClaw space with the Slack row open and highlighted: Bot Token and App Token pasted, Save and Cancel](/images/cloud/setup-channels-slack.png)
 
-    ![Open Setup → Channels](/images/slack-01-channels.jpeg)
-  </Step>
-  <Step>
-    ### Add Your Channel
-    Click **Add Telegram** or **Add Slack** depending on which channel you want.
+A connected channel's row reads **Connected**; open it to change the token or
+choose **Disconnect**.
 
-    ![Add Slack](/images/slack-02-add.jpeg)
-  </Step>
-  <Step>
-    ### Paste Your Token(s)
-    Paste the credentials for the channel you picked:
+## Restart the OpenClaw Gateway
 
-    - **Telegram:** one **bot token** from [@BotFather](https://t.me/botfather).
-    - **Slack:** two tokens — a **Bot User OAuth Token** (`xoxb-...`) and an **App-Level Token** (`xapp-...`).
+Channel changes take effect after the OpenClaw Gateway restarts.
 
-    ![Paste the bot token](/images/slack-03-bot-token.jpeg)
+1. Go back to the space's page: choose the space under **My Spaces** in the sidebar.
+2. In the app grid, choose **OpenClaw Restart**. XO Cloud confirms with **OpenClaw
+   gateway restarted**.
 
-    ![Paste the app token](/images/slack-04-app-token.jpeg)
-  </Step>
-  <Step>
-    ### Save Changes
-    Click **Save changes** to apply.
-
-    ![Click Save changes](/images/slack-05-save.jpeg)
-  </Step>
-  <Step>
-    ### Restart the OpenClaw Gateway
-    Channel changes only take effect after the Gateway restarts. Open the **Launch** tab.
-
-    ![Open the Launch tab](/images/slack-06-launch.jpeg)
-
-    Click **OpenClaw Restart**.
-
-    ![Click OpenClaw Restart](/images/slack-07-restart.jpeg)
-  </Step>
-  <Step>
-    ### Verify the Connection
-    Back on **Setup → Channels**, the **Notifications** widget shows how many channels are active. Right after saving (before the Gateway restart) you'll see **0/2**:
-
-    ![0/2 channels active — click Refresh](/images/slack-08-refresh.jpeg)
-
-    Click **Refresh** once the Gateway has restarted. The widget flips to **2/2 channels active** (or however many you've configured):
-
-    ![2/2 channels active](/images/slack-09-status.jpeg)
-
-    Send a test message to your agent on the channel you connected to confirm it responds.
-  </Step>
-</Steps>
+![An OpenClaw space's app grid with OpenClaw Restart highlighted, and the message OpenClaw gateway restarted](/images/cloud/setup-openclaw-restart.png)
 
 <Callout type="warn">
-  If your agent isn't responding on a newly-connected channel, double-check that the Gateway has actually restarted from the **Launch** tab.
+  The message after **Save** says to restart from the **Launch** tab. Spaces no
+  longer have that tab: use **OpenClaw Restart** in the app grid.
 </Callout>
+
+Send a test message to your agent on the channel you connected to check that it
+answers.
